@@ -13,6 +13,7 @@ import { initCommand, InitOptions } from './commands/init.js';
 import { statusCommand } from './commands/status.js';
 import { sprintCommand, SprintOptions } from './commands/sprint.js';
 import { specCommand, SpecOptions } from './commands/spec.js';
+import { dashboardCommand, DashboardOptions } from './commands/dashboard.js';
 
 const VERSION = '1.0.0';
 
@@ -99,6 +100,19 @@ program
     }
   });
 
+// Dashboard command
+program
+  .command('dashboard')
+  .description('Launch the monitoring dashboard')
+  .option('-p, --port <port>', 'Port to run dashboard on', '3847')
+  .action(async (options: DashboardOptions) => {
+    try {
+      await dashboardCommand(options);
+    } catch (error) {
+      process.exit(1);
+    }
+  });
+
 // Help command with banner
 program
   .command('help')
@@ -116,6 +130,7 @@ program.action(() => {
   console.log(chalk.cyan('    sdd status') + '          Show current sprint status');
   console.log(chalk.cyan('    sdd sprint <num>') + '    Generate sprint prompt');
   console.log(chalk.cyan('    sdd spec <name>') + '     Create a new feature spec');
+  console.log(chalk.cyan('    sdd dashboard') + '       Launch monitoring dashboard');
   console.log('');
   console.log(chalk.dim('  Run ' + chalk.cyan('sdd <command> --help') + ' for more info\n'));
 });
