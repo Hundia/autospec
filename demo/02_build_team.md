@@ -7,11 +7,11 @@ You are executing the AutoSpec methodology for ShopFlow E-Commerce.
 
 ## Context
 Read the methodology at:
-- docs/methodology/02_ten_role_model.md
+- docs/methodology/03_team_roles.md
 - templates/specs/*.md (all 10 templates)
 
 ## Input
-Read: docs/examples/ecommerce/requirements.md
+Read: examples/ecommerce/requirements.md
 
 ## Task
 Generate the complete 10-role spec suite. Create these files in `shopflow_demo/specs/`:

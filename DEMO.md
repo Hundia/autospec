@@ -1,5 +1,11 @@
 # AutoSpec Live Demo Guide
 
+For hands-on usage instructions, see **[QUICKSTART.md](./QUICKSTART.md)**.
+
+This guide is for presenting AutoSpec in a demo or talk setting.
+
+---
+
 ## Running the Presentation
 
 ### Prerequisites
@@ -63,7 +69,7 @@ Copy prompts from `demo/` folder and paste into your AI assistant.
 ## Step-by-Step Demo Walkthrough
 
 ### Step 1: Show Requirements (2 min)
-Open `docs/examples/ecommerce/requirements.md` and highlight:
+Open `examples/ecommerce/requirements.md` and highlight:
 - Project overview
 - Core features list
 - Technical requirements
@@ -72,7 +78,7 @@ Open `docs/examples/ecommerce/requirements.md` and highlight:
 ### Step 2: Generate Specs (5 min)
 Use the prompt from `demo/02_build_team.md` or run:
 ```
-/init-project docs/examples/ecommerce/requirements.md
+/init-project examples/ecommerce/requirements.md
 ```
 Show the 10 generated spec files and their structure.
 

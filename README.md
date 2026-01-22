@@ -11,329 +11,215 @@
                             |_|
 ```
 
+AutoSpec is a battle-tested methodology for AI-assisted software development. It transforms vague requirements into comprehensive specifications, enabling AI coding assistants to execute with precision.
+
+**Validated on 263 tickets across two production case studies.**
+
 ---
 
-## What is AutoSpec?
-
-**AutoSpec** is a battle-tested methodology and CLI tool for AI-assisted software development. It transforms vague requirements into comprehensive specifications, enabling AI coding assistants to execute with precision.
-
-### The Problem
+## The Problem
 
 Most developers use AI like this:
+
 1. Ask AI to "build a login system"
 2. Get 500 lines of code
 3. Spend hours debugging and adapting
 4. Realize it doesn't fit the codebase
 5. Start over
 
-### The AutoSpec Solution
+**The result:** Wasted time, inconsistent outputs, poor scalability.
+
+## The Solution
 
 ```
-Requirements → Specs → Tickets → AI Execution → Working Code
+Requirements → Specs → Backlog → Sprint 0 → Sprint 1 → ... → Done
 ```
 
-1. **Auto-generate specifications** from your requirements
-2. **Create structured backlogs** with sized tickets
-3. **Execute with multiple AI agents** in parallel
-4. **Ship faster** with fewer bugs
+1. Write what you want (requirements)
+2. Generate 10 comprehensive specs covering all perspectives
+3. Extract tickets into a structured backlog
+4. Execute sprints with AI agents following the specs exactly
 
 ---
 
-## Quick Start
+## Get Started in 5 Minutes
 
-### Install
+**Read the [QUICKSTART Guide](./QUICKSTART.md)** for step-by-step instructions with copy-paste prompts.
 
-```bash
-# Install globally
-npm install -g autospec
-
-# Or use npx
-npx autospec init
-```
-
-### Bootstrap a New Project
-
-```bash
-# Initialize AutoSpec in your project
-autospec init
-
-# Answer prompts about your project
-# ✓ Project name: My App
-# ✓ Project type: Web Application
-# ✓ Stack: React + Node.js
-# ✓ AI platform: Claude
-
-# AutoSpec creates:
-# specs/
-#   01_product_manager.md
-#   02_backend_lead.md
-#   03_frontend_lead.md
-#   04_db_architect.md
-#   05_qa_lead.md
-#   06_devops_lead.md
-#   10_ui_designer.md
-#   backlog.md
-# prompts/
-#   prompt_sprint0.md
-# .claude/commands/
-#   execute-ticket.md
-#   qa-review.md
-#   ...
-```
-
-### Run Your First Sprint
-
-```bash
-# Generate sprint prompt
-autospec sprint 0
-
-# Open your AI assistant (Claude, Copilot, etc.)
-# Paste the generated prompt
-# Watch it execute Sprint 0
-
-# Check status
-autospec status
-```
+Or jump straight to an example:
+- **[ShopFlow E-commerce](./examples/ecommerce/)** - Full example (174 tickets, 7 sprints)
+- **[DataHub API Service](./examples/api-service/)** - Working code example (89 tickets)
 
 ---
 
-## Core Concepts
+## How It Works
 
 ### 1. The 10-Role Model
 
-Every project is specified from 10 perspectives:
+Every project gets 10 specification documents, each from a specialist perspective:
 
-| # | Role | Responsibility |
-|---|------|----------------|
-| 01 | Product Manager | Vision, personas, user flows |
-| 02 | Backend Lead | API design, auth, services |
-| 03 | Frontend Lead | Design system, components |
-| 04 | DB Architect | Schema, migrations |
-| 05 | QA Lead | Testing strategy |
-| 06 | DevOps Lead | Infrastructure, CI/CD |
-| 07 | Marketing Lead | Go-to-market |
-| 08 | Finance Lead | Pricing, economics |
-| 09 | Business Lead | Strategy, competition |
-| 10 | UI Designer | Screen specs, wireframes |
+| Role | What It Covers |
+|------|----------------|
+| Product Manager | Vision, personas, user flows |
+| Backend Lead | API design, auth, services |
+| Frontend Lead | Design system, components, state |
+| DB Architect | Schema, migrations, indexes |
+| QA Lead | Test strategy, coverage targets |
+| DevOps Lead | CI/CD, infrastructure, monitoring |
+| Marketing Lead | Go-to-market, positioning |
+| Finance Lead | Pricing, unit economics |
+| Business Lead | Strategy, competition |
+| UI Designer | Screen specs, wireframes |
 
-Even solo developers benefit from thinking in roles.
+Even solo developers benefit from thinking in roles — it ensures nothing is overlooked.
 
 ### 2. Single Source of Truth
 
-`specs/backlog.md` is the master tracker:
+All work is tracked in `specs/backlog.md`:
 
 ```markdown
 ## Sprint 1: Authentication
 
-| # | Ticket | Status | Owner | Model | Depends |
-|---|--------|--------|-------|-------|---------|
-| 1.1 | Create users table | 🔲 Todo | DB | haiku | - |
-| 1.2 | Implement auth service | 🔲 Todo | Backend | sonnet | 1.1 |
-| 1.3 | Build login form | 🔲 Todo | Frontend | sonnet | 1.2 |
+| ID | Ticket | Status | Owner | Model | Depends |
+|----|--------|--------|-------|-------|---------|
+| 1.1 | Create users table | done | DB | haiku | - |
+| 1.2 | Implement auth service | in-progress | Backend | sonnet | 1.1 |
+| 1.3 | Build login form | todo | Frontend | sonnet | 1.2 |
 ```
 
-### 3. Multi-Agent Execution
+### 3. Multi-Agent Execution (Optional)
 
-Two AI agents working in parallel:
+Run two AI agents in parallel:
+- **Agent A (Backend):** Database + API tickets
+- **Agent B (Frontend):** UI + component tickets
 
-```
-Agent A (Backend): 1.1, 1.2, 1.4
-Agent B (Frontend): 1.3, 1.5, 1.6
-```
-
-**~45% time savings** with clear boundaries.
+**~45% time savings** with clear boundaries preventing conflicts.
 
 ### 4. Model Selection (FinOps)
 
 Match AI model to task complexity:
 
-| Model | Use For | % of Tasks | Cost |
-|-------|---------|------------|------|
-| Haiku | Migrations, configs, seeds | 40% | $ |
-| Sonnet | Services, components, tests | 45% | $$ |
-| Opus | Architecture, security, debugging | 15% | $$$ |
+| Model | Use For | % of Tasks |
+|-------|---------|------------|
+| Haiku/GPT-3.5 | Migrations, configs, CRUD | 40% |
+| Sonnet/GPT-4 | Services, components, tests | 45% |
+| Opus/GPT-4+ | Architecture, security | 15% |
+
+**~40% cost savings** vs. using premium models for everything.
 
 ---
 
-## CLI Commands
+## Repository Structure
+
+```
+autospec/
+├── QUICKSTART.md           # Start here!
+├── examples/               # Complete worked examples
+│   ├── ecommerce/          # ShopFlow (7 sprints)
+│   └── api-service/        # DataHub with source code
+├── templates/              # Templates for new projects
+│   ├── requirements.template.md
+│   ├── specs/              # All 10 role templates
+│   └── prompts/            # Sprint execution prompts
+├── skills/                 # AI assistant integrations
+│   ├── claude/             # Claude Code commands
+│   └── copilot/            # Copilot instructions
+├── docs/                   # Deep-dive documentation
+│   ├── methodology/        # 9 chapters on the method
+│   └── environments/       # IDE-specific guides
+├── cli/                    # TypeScript CLI tool
+└── demo/                   # Live demo prompts
+```
+
+---
+
+## Using the CLI (Optional)
+
+For automation, install the CLI:
 
 ```bash
-autospec init              # Initialize new project
+npm install -g autospec
+
+autospec init              # Initialize project with specs
 autospec status            # Show sprint progress
 autospec sprint <number>   # Generate sprint prompt
-autospec spec <name>       # Generate feature spec
-autospec validate          # Validate project structure
 ```
+
+See [cli/README.md](./cli/README.md) for full documentation.
 
 ---
 
 ## Documentation
 
-### Methodology
+### Methodology (the "why")
 
-- [01 - Philosophy](./docs/methodology/01_philosophy.md) - Why AutoSpec works
-- [02 - Spec Structure](./docs/methodology/02_spec_structure.md) - How to write specs
-- [03 - Team Roles](./docs/methodology/03_team_roles.md) - The 10-role model
-- [04 - Backlog Management](./docs/methodology/04_backlog_management.md) - Sprint patterns
-- [05 - Multi-Agent](./docs/methodology/05_multi_agent.md) - Parallel execution
-- [06 - QA Methodology](./docs/methodology/06_qa_methodology.md) - Testing & quality
-- [07 - Model Selection](./docs/methodology/07_model_selection.md) - Cost optimization
-- [09 - Ground Truth](./docs/methodology/09_ground_truth_schema.md) - Validation schema
+- [Philosophy](./docs/methodology/01_philosophy.md) — Why spec-driven development works
+- [Spec Structure](./docs/methodology/02_spec_structure.md) — How to write effective specs
+- [Team Roles](./docs/methodology/03_team_roles.md) — The 10-role model explained
+- [Backlog Management](./docs/methodology/04_backlog_management.md) — Sprint patterns
+- [Multi-Agent](./docs/methodology/05_multi_agent.md) — Parallel execution
+- [QA Methodology](./docs/methodology/06_qa_methodology.md) — Testing strategy
+- [Model Selection](./docs/methodology/07_model_selection.md) — Cost optimization
 
 ### Environment Guides
 
-- [VSCode Setup](./docs/environments/vscode/setup.md)
-- [VSCode + GitHub Copilot](./docs/environments/vscode/github_copilot.md)
-- [JetBrains Setup](./docs/environments/jetbrains/setup.md)
 - [Terminal + Claude Code](./docs/environments/terminal/claude_code.md)
+- [VSCode + GitHub Copilot](./docs/environments/vscode/github_copilot.md)
 
 ### Templates
 
-- [Spec Templates](./templates/specs/) - All 10 role templates
-- [Prompt Templates](./templates/prompts/) - Sprint execution prompts
-- [AI Skills](./skills/) - Claude commands, Copilot instructions
-
----
-
-## Platform Support
-
-### AI Models
-
-| Platform | Supported | Notes |
-|----------|-----------|-------|
-| Claude (Anthropic) | ✅ Full | Primary development platform |
-| GitHub Copilot | ✅ Full | VSCode & JetBrains |
-| Gemini (Google) | 🟡 Partial | Context-based |
-| OpenAI GPT | 🟡 Partial | Via API |
-
-### IDEs
-
-| IDE | Supported | Features |
-|-----|-----------|----------|
-| VSCode | ✅ Full | Extensions, multi-window |
-| JetBrains | ✅ Full | AI Assistant |
-| Terminal | ✅ Full | Claude Code CLI |
-| Cursor | ✅ Full | Built-in AI |
-
----
-
-## Example: Multi-Agent Setup
-
-### VSCode with Two Copilot Windows
-
-```
-┌───────────────────────────────────────────────┐
-│ VSCode                                         │
-├─────────────────────┬─────────────────────────┤
-│ Copilot Chat        │ Copilot Chat            │
-│ (Agent A - Backend) │ (Agent B - Frontend)    │
-├─────────────────────┴─────────────────────────┤
-│ Editor                                         │
-└───────────────────────────────────────────────┘
-```
-
-### Agent A Prompt
-
-```
-You are Agent A - Backend Lead for Sprint 1.
-
-Project: My App
-Your tickets: 1.1, 1.2, 1.4
-
-Read specs/02_backend_lead.md before implementing.
-Update backlog.md status as you work.
-
-Do NOT touch frontend code.
-```
-
-### Agent B Prompt
-
-```
-You are Agent B - Frontend Lead for Sprint 1.
-
-Project: My App
-Your tickets: 1.3, 1.5, 1.6
-
-Read specs/03_frontend_lead.md before implementing.
-Wait for 1.2 before starting 1.3 (API dependency).
-
-Do NOT touch backend code.
-```
-
----
-
-## Generated Project Structure
-
-```
-my-project/
-├── specs/                    # Specification documents
-│   ├── 01_product_manager.md
-│   ├── 02_backend_lead.md
-│   ├── 03_frontend_lead.md
-│   ├── 04_db_architect.md
-│   ├── 05_qa_lead.md
-│   ├── 06_devops_lead.md
-│   ├── 10_ui_designer.md     # Screen wireframes
-│   └── backlog.md            # Master work tracker
-├── prompts/                  # Sprint execution prompts
-│   ├── prompt_sprint0.md
-│   └── prompt_sprint1.md
-├── sprints/                  # Sprint documentation
-│   └── sprint-01-auth/
-│       ├── summary.md
-│       ├── qa-results.md
-│       └── release-notes.md
-├── .claude/commands/         # Claude Code skills
-│   ├── execute-ticket.md
-│   ├── qa-review.md
-│   └── ...
-├── .github/
-│   └── copilot-instructions.md
-└── .autospecrc.json          # AutoSpec configuration
-```
+- [Requirements Template](./templates/requirements.template.md) — Starting point
+- [Spec Templates](./templates/specs/) — All 10 role templates
+- [Prompt Templates](./templates/prompts/) — Sprint execution prompts
 
 ---
 
 ## Proven Results
 
-AutoSpec was developed and refined through building a production application:
-
 | Metric | Result |
 |--------|--------|
-| Sprints completed | 16+ |
-| Tickets executed | 200+ |
-| Time from idea to production | 12 days |
-| Test coverage | 70%+ |
-| Cost savings (vs. all-Opus) | ~40% |
-| Multi-agent time savings | ~45% |
+| Case studies completed | 2 (ShopFlow, DataHub) |
+| Total tickets executed | 263 |
+| Test coverage achieved | 70%+ |
+| Cost savings vs. all-premium models | ~40% |
+| Time savings with multi-agent | ~45% |
+
+---
+
+## Platform Support
+
+**AI Models:** Claude, GitHub Copilot, OpenAI GPT, Gemini
+
+**IDEs:** VSCode, JetBrains, Cursor, Terminal (Claude Code)
 
 ---
 
 ## Contributing
 
-We welcome contributions! See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+We welcome contributions! See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-### Areas for Contribution
-
+**Good first contributions:**
 - Additional environment guides
 - More example projects
 - CLI tool improvements
-- Template refinements
 - Documentation translations
 
 ---
 
 ## License
 
-MIT License - see [LICENSE](./LICENSE) for details.
+MIT — see [LICENSE](./LICENSE)
 
 ---
 
-## Support
+## Quick Links
 
-- **Issues:** [GitHub Issues](https://github.com/user/autospec/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/user/autospec/discussions)
-- **Documentation:** [Full Docs](./docs/)
+| Resource | Description |
+|----------|-------------|
+| [QUICKSTART.md](./QUICKSTART.md) | Get started in 5 minutes |
+| [examples/](./examples/) | Complete worked examples |
+| [templates/](./templates/) | Templates for new projects |
+| [docs/methodology/](./docs/methodology/) | Deep-dive on the method |
 
 ---
 

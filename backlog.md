@@ -46,10 +46,10 @@ sdd_for_all/
 │   │   └── terminal/
 │   │       ├── claude_code.md        # Claude Code CLI usage
 │   │       └── shell_workflows.md    # Terminal-based workflows
-│   └── examples/                      # Real-world examples
-│       ├── simple_crud_app/          # Basic example
-│       ├── saas_platform/            # Complex example
-│       └── mobile_app/               # Mobile example
+├── examples/                          # Real-world examples (at root)
+│   ├── ecommerce/                    # ShopFlow e-commerce
+│   ├── api-service/                  # DataHub API gateway
+│   └── taskflow/                     # Simple task app
 ├── cli/                               # Bootstrap CLI tool
 │   ├── package.json
 │   ├── src/
@@ -320,9 +320,9 @@ sdd_for_all/
 
 | # | Ticket | Status | Owner | Model |
 |---|--------|--------|-------|-------|
-| 7.1 | Create docs/examples/simple_crud_app/ - basic example | 🔲 | Full Stack | sonnet |
-| 7.2 | Create docs/examples/saas_platform/ - complex example | 🔲 | Full Stack | opus |
-| 7.3 | Create docs/examples/mobile_app/ - React Native example | 🔲 | Frontend | sonnet |
+| 7.1 | Create examples/simple_crud_app/ - basic example | 🔲 | Full Stack | sonnet |
+| 7.2 | Create examples/saas_platform/ - complex example | 🔲 | Full Stack | opus |
+| 7.3 | Create examples/mobile_app/ - React Native example | 🔲 | Frontend | sonnet |
 | 7.4 | Write walkthrough documentation for each example | 🔲 | Product | sonnet |
 | 7.5 | Create video script for demo walkthrough | 🔲 | Product | haiku |
 
@@ -358,7 +358,7 @@ sdd_for_all/
 
 ### Sprint 8 Progress Notes
 **TaskFlow Test Project (Completed):**
-- Created comprehensive test project at `docs/examples/taskflow/`
+- Created comprehensive test project at `examples/taskflow/`
 - 5 specs created (product_manager, backend_lead, frontend_lead, db_architect, qa_lead)
 - Backlog with Sprint 0 (18 tickets) and Sprint 1 (36 tickets)
 - Sprint prompts generated for both sprints
