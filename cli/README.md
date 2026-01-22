@@ -2,6 +2,27 @@
 
 Command-line interface for AutoSpec - AI-powered spec-driven development.
 
+## What the CLI Does
+
+The AutoSpec CLI is a **scaffolding tool** that creates project structure and template-based specifications. It provides:
+
+- **Quick project setup** with the 10-role spec structure
+- **Template-based specs** with placeholders for your content
+- **Sprint prompt generation** for AI execution
+- **Progress tracking** via the backlog
+
+### CLI vs Manual AI Workflow
+
+| Aspect | CLI (`autospec init`) | Manual (AI Prompts from QUICKSTART) |
+|--------|----------------------|-------------------------------------|
+| **Speed** | Fast (~30 seconds) | Slower (~15-30 min) |
+| **Spec Quality** | Template-based with placeholders | AI-generated, project-specific |
+| **Best For** | Quick scaffolding, experienced users | First time, detailed guidance needed |
+
+**Recommended**: Use the CLI for structure, then enhance specs with AI using prompts from [QUICKSTART.md](../QUICKSTART.md).
+
+---
+
 ## Installation
 
 ### Global Installation (Recommended)
@@ -64,25 +85,30 @@ autospec init --force
 
 ```
 project/
-  specs/
-    01_product_manager.md
-    02_backend_lead.md
-    03_frontend_lead.md
-    04_db_architect.md
-    05_qa_lead.md
-    06_devops_lead.md
-    10_ui_designer.md
-    backlog.md
+  specs/                     # 10-role specification documents
+    01_product_manager.md    # Vision, personas, user flows
+    02_backend_lead.md       # API design, services, auth
+    03_frontend_lead.md      # Components, state, design system
+    04_db_architect.md       # Schema, migrations, indexes
+    05_qa_lead.md            # Test strategy, coverage
+    06_devops_lead.md        # CI/CD, infrastructure
+    07_marketing_lead.md     # Go-to-market, positioning
+    08_finance_lead.md       # Pricing, unit economics
+    09_business_lead.md      # Strategy, competition
+    10_ui_designer.md        # Screens, wireframes, accessibility
+    backlog.md               # Sprint tickets and tracking
   prompts/
-    prompt_sprint0.md
-  .claude/commands/        # If provider is claude
+    prompt_sprint0.md        # Sprint 0 execution prompt
+  .claude/commands/          # If provider is claude
     execute-ticket.md
     qa-review.md
     ...
   .github/
     copilot-instructions.md  # If provider is copilot
-  .autospecrc.json
+  .autospecrc.json           # Project configuration
 ```
+
+**Note:** The generated specs are template-based with placeholders. For detailed, project-specific content, enhance them using AI prompts from [QUICKSTART.md](../QUICKSTART.md).
 
 ---
 

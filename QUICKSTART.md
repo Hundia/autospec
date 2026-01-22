@@ -485,22 +485,41 @@ using the auth API from specs/02_backend_lead.md
 
 ## Using the CLI (Optional)
 
-If you prefer automation, install the AutoSpec CLI:
+The AutoSpec CLI provides scaffolding and workflow automation:
 
 ```bash
 npm install -g autospec
 
-# Initialize project
+# Initialize project structure with template-based specs
 autospec init
 
-# Check status
+# Check sprint progress
 autospec status
 
-# Generate sprint prompt
+# Generate sprint execution prompt
 autospec sprint 1
 ```
 
-See [cli/README.md](./cli/README.md) for full documentation.
+### CLI vs Manual Workflow
+
+| Aspect | CLI (`autospec init`) | Manual (AI Prompts) |
+|--------|----------------------|---------------------|
+| **Speed** | Fast (~30 seconds) | Slower (~15-30 min) |
+| **Spec Quality** | Template-based with placeholders | AI-generated, project-specific |
+| **Spec Count** | 10 specs (all roles) | 10 specs (all roles) |
+| **Customization** | Generic patterns | Tailored to your project |
+| **Best For** | Quick start, familiar with method | First time, need detailed guidance |
+
+### Recommended Approach: CLI + AI Enhancement
+
+1. **Run `autospec init`** to create structure and template specs
+2. **Enhance specs with AI** using prompts from Step 2 above
+3. **Use `autospec status`** to track progress
+4. **Use `autospec sprint N`** to generate sprint prompts
+
+This gives you the best of both: quick scaffolding plus detailed, project-specific content.
+
+See [cli/README.md](./cli/README.md) for full CLI documentation.
 
 ---
 
