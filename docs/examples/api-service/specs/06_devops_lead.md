@@ -5,6 +5,7 @@
 This document defines the complete DevOps infrastructure for DataHub API Gateway, including containerization, CI/CD pipelines, monitoring, logging, and deployment strategies.
 
 **Target Platforms:**
+
 - Docker / Docker Compose (development)
 - Kubernetes (production)
 - Cloud agnostic (AWS, GCP, Azure compatible)
@@ -166,8 +167,8 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     ports:
-      - "3000:3000"
-      - "9229:9229"  # Debug port
+      - '3000:3000'
+      - '9229:9229' # Debug port
     volumes:
       - .:/app
       - /app/node_modules
@@ -188,7 +189,7 @@ services:
   postgres:
     image: postgres:14-alpine
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
       POSTGRES_USER: datahub
       POSTGRES_PASSWORD: datahub
@@ -197,7 +198,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
       - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U datahub"]
+      test: ['CMD-SHELL', 'pg_isready -U datahub']
       interval: 5s
       timeout: 5s
       retries: 5
@@ -207,12 +208,12 @@ services:
   redis:
     image: redis:7-alpine
     ports:
-      - "6379:6379"
+      - '6379:6379'
     command: redis-server --appendonly yes
     volumes:
       - redis-data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ['CMD', 'redis-cli', 'ping']
       interval: 5s
       timeout: 5s
       retries: 5
@@ -223,7 +224,7 @@ services:
   redis-commander:
     image: rediscommander/redis-commander:latest
     ports:
-      - "8081:8081"
+      - '8081:8081'
     environment:
       REDIS_HOSTS: local:redis:6379
     depends_on:
@@ -269,24 +270,24 @@ services:
         delay: 10s
         failure_action: rollback
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       NODE_ENV: production
       DATABASE_URL: ${DATABASE_URL}
       REDIS_URL: ${REDIS_URL}
       LOG_LEVEL: info
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/health"]
+      test: ['CMD', 'wget', '--spider', '-q', 'http://localhost:3000/health']
       interval: 30s
       timeout: 10s
       retries: 3
     networks:
       - datahub-network
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
-        max-size: "100m"
-        max-file: "3"
+        max-size: '100m'
+        max-file: '3'
 
 networks:
   datahub-network:
@@ -316,14 +317,14 @@ metadata:
   name: datahub-config
   namespace: datahub
 data:
-  NODE_ENV: "production"
-  PORT: "3000"
-  LOG_LEVEL: "info"
-  LOG_FORMAT: "json"
-  WEBHOOK_TIMEOUT_MS: "30000"
-  WEBHOOK_MAX_RETRIES: "5"
-  DEFAULT_RATE_LIMIT_MINUTE: "100"
-  DEFAULT_RATE_LIMIT_HOUR: "5000"
+  NODE_ENV: 'production'
+  PORT: '3000'
+  LOG_LEVEL: 'info'
+  LOG_FORMAT: 'json'
+  WEBHOOK_TIMEOUT_MS: '30000'
+  WEBHOOK_MAX_RETRIES: '5'
+  DEFAULT_RATE_LIMIT_MINUTE: '100'
+  DEFAULT_RATE_LIMIT_HOUR: '5000'
 ```
 
 ### Secrets
@@ -337,10 +338,10 @@ metadata:
   namespace: datahub
 type: Opaque
 stringData:
-  DATABASE_URL: "postgresql://user:password@postgres:5432/datahub"
-  REDIS_URL: "redis://redis:6379"
-  API_KEY_SALT: "your-secret-salt-here"
-  ADMIN_API_KEY: "dh_live_initial_admin_key"
+  DATABASE_URL: 'postgresql://user:password@postgres:5432/datahub'
+  REDIS_URL: 'redis://redis:6379'
+  API_KEY_SALT: 'your-secret-salt-here'
+  ADMIN_API_KEY: 'dh_live_initial_admin_key'
 ```
 
 ### Deployment
@@ -372,9 +373,9 @@ spec:
         app: datahub
         component: api
       annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "3000"
-        prometheus.io/path: "/metrics"
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '3000'
+        prometheus.io/path: '/metrics'
     spec:
       serviceAccountName: datahub
       securityContext:
@@ -396,11 +397,11 @@ spec:
                 name: datahub-secrets
           resources:
             requests:
-              cpu: "250m"
-              memory: "256Mi"
+              cpu: '250m'
+              memory: '256Mi'
             limits:
-              cpu: "1000m"
-              memory: "512Mi"
+              cpu: '1000m'
+              memory: '512Mi'
           livenessProbe:
             httpGet:
               path: /health/live
@@ -484,10 +485,10 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/rate-limit: "100"
-    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
-    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+    nginx.ingress.kubernetes.io/rate-limit: '100'
+    nginx.ingress.kubernetes.io/rate-limit-window: '1m'
+    nginx.ingress.kubernetes.io/proxy-body-size: '10m'
+    nginx.ingress.kubernetes.io/proxy-read-timeout: '60'
 spec:
   tls:
     - hosts:
@@ -797,7 +798,7 @@ export const httpRequestsTotal = new Counter({
   name: 'datahub_http_requests_total',
   help: 'Total number of HTTP requests',
   labelNames: ['method', 'path', 'status'],
-  registers: [register]
+  registers: [register],
 });
 
 export const httpRequestDuration = new Histogram({
@@ -805,7 +806,7 @@ export const httpRequestDuration = new Histogram({
   help: 'HTTP request duration in seconds',
   labelNames: ['method', 'path', 'status'],
   buckets: [0.01, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10],
-  registers: [register]
+  registers: [register],
 });
 
 // Rate limiting metrics
@@ -813,14 +814,14 @@ export const rateLimitHits = new Counter({
   name: 'datahub_rate_limit_hits_total',
   help: 'Total number of rate limit hits',
   labelNames: ['key_id', 'limit_type'],
-  registers: [register]
+  registers: [register],
 });
 
 // API key metrics
 export const activeApiKeys = new Gauge({
   name: 'datahub_active_api_keys',
   help: 'Number of active API keys',
-  registers: [register]
+  registers: [register],
 });
 
 // Webhook metrics
@@ -828,7 +829,7 @@ export const webhookDeliveriesTotal = new Counter({
   name: 'datahub_webhook_deliveries_total',
   help: 'Total webhook deliveries',
   labelNames: ['webhook_id', 'event', 'status'],
-  registers: [register]
+  registers: [register],
 });
 
 export const webhookDeliveryDuration = new Histogram({
@@ -836,7 +837,7 @@ export const webhookDeliveryDuration = new Histogram({
   help: 'Webhook delivery duration',
   labelNames: ['webhook_id'],
   buckets: [0.1, 0.5, 1, 2, 5, 10, 30],
-  registers: [register]
+  registers: [register],
 });
 
 // Database metrics
@@ -845,14 +846,14 @@ export const dbQueryDuration = new Histogram({
   help: 'Database query duration',
   labelNames: ['operation', 'table'],
   buckets: [0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1],
-  registers: [register]
+  registers: [register],
 });
 
 export const dbConnectionPool = new Gauge({
   name: 'datahub_db_connection_pool',
   help: 'Database connection pool status',
   labelNames: ['status'],
-  registers: [register]
+  registers: [register],
 });
 
 // Redis metrics
@@ -860,7 +861,7 @@ export const redisOperations = new Counter({
   name: 'datahub_redis_operations_total',
   help: 'Total Redis operations',
   labelNames: ['operation', 'status'],
-  registers: [register]
+  registers: [register],
 });
 ```
 
@@ -976,8 +977,8 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "High error rate detected"
-            description: "Error rate is above 5% for the last 5 minutes"
+            summary: 'High error rate detected'
+            description: 'Error rate is above 5% for the last 5 minutes'
 
         - alert: HighLatency
           expr: |
@@ -986,8 +987,8 @@ spec:
           labels:
             severity: warning
           annotations:
-            summary: "High latency detected"
-            description: "95th percentile latency is above 1 second"
+            summary: 'High latency detected'
+            description: '95th percentile latency is above 1 second'
 
         - alert: RateLimitExceeded
           expr: |
@@ -996,8 +997,8 @@ spec:
           labels:
             severity: warning
           annotations:
-            summary: "High rate of rate limit hits"
-            description: "Over 1000 rate limit hits in 5 minutes"
+            summary: 'High rate of rate limit hits'
+            description: 'Over 1000 rate limit hits in 5 minutes'
 
         - alert: WebhookDeliveryFailures
           expr: |
@@ -1007,8 +1008,8 @@ spec:
           labels:
             severity: warning
           annotations:
-            summary: "High webhook delivery failure rate"
-            description: "More than 10% of webhooks failing"
+            summary: 'High webhook delivery failure rate'
+            description: 'More than 10% of webhooks failing'
 
         - alert: DatabaseConnectionPoolExhausted
           expr: |
@@ -1017,8 +1018,8 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "Database connection pool exhausted"
-            description: "More than 5 queries waiting for connections"
+            summary: 'Database connection pool exhausted'
+            description: 'More than 5 queries waiting for connections'
 
         - alert: PodRestarting
           expr: |
@@ -1027,8 +1028,8 @@ spec:
           labels:
             severity: warning
           annotations:
-            summary: "Pod restarting frequently"
-            description: "Pod has restarted more than 3 times in the last hour"
+            summary: 'Pod restarting frequently'
+            description: 'Pod has restarted more than 3 times in the last hour'
 ```
 
 ---
@@ -1176,7 +1177,7 @@ metadata:
   name: datahub-backup
   namespace: datahub
 spec:
-  schedule: "0 */6 * * *"  # Every 6 hours
+  schedule: '0 */6 * * *' # Every 6 hours
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -1185,7 +1186,7 @@ spec:
           containers:
             - name: backup
               image: postgres:14-alpine
-              command: ["/scripts/backup-db.sh"]
+              command: ['/scripts/backup-db.sh']
               env:
                 - name: DATABASE_URL
                   valueFrom:
@@ -1193,7 +1194,7 @@ spec:
                       name: datahub-secrets
                       key: DATABASE_URL
                 - name: BACKUP_BUCKET
-                  value: "datahub-backups"
+                  value: 'datahub-backups'
               volumeMounts:
                 - name: scripts
                   mountPath: /scripts
@@ -1256,7 +1257,7 @@ spec:
       ports:
         - protocol: TCP
           port: 6379
-    - to:  # Allow webhook deliveries
+    - to: # Allow webhook deliveries
         - ipBlock:
             cidr: 0.0.0.0/0
             except:
@@ -1303,21 +1304,22 @@ spec:
 
 ### Environment Variables Summary
 
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `NODE_ENV` | Environment mode | development | Yes |
-| `PORT` | Server port | 3000 | No |
-| `DATABASE_URL` | PostgreSQL connection | - | Yes |
-| `REDIS_URL` | Redis connection | - | Yes |
-| `LOG_LEVEL` | Logging level | info | No |
-| `API_KEY_SALT` | Salt for key hashing | - | Yes |
-| `ADMIN_API_KEY` | Initial admin key | - | Yes (first run) |
-| `WEBHOOK_TIMEOUT_MS` | Webhook timeout | 30000 | No |
-| `WEBHOOK_MAX_RETRIES` | Max webhook retries | 5 | No |
+| Variable              | Description           | Default     | Required        |
+| --------------------- | --------------------- | ----------- | --------------- |
+| `NODE_ENV`            | Environment mode      | development | Yes             |
+| `PORT`                | Server port           | 3000        | No              |
+| `DATABASE_URL`        | PostgreSQL connection | -           | Yes             |
+| `REDIS_URL`           | Redis connection      | -           | Yes             |
+| `LOG_LEVEL`           | Logging level         | info        | No              |
+| `API_KEY_SALT`        | Salt for key hashing  | -           | Yes             |
+| `ADMIN_API_KEY`       | Initial admin key     | -           | Yes (first run) |
+| `WEBHOOK_TIMEOUT_MS`  | Webhook timeout       | 30000       | No              |
+| `WEBHOOK_MAX_RETRIES` | Max webhook retries   | 5           | No              |
 
 ### Secrets Management
 
 Recommended: Use external secrets management:
+
 - **AWS**: AWS Secrets Manager with External Secrets Operator
 - **GCP**: Google Secret Manager
 - **Azure**: Azure Key Vault
@@ -1381,4 +1383,4 @@ spec:
 
 ---
 
-*This DevOps specification provides complete infrastructure configuration for deploying and operating DataHub API Gateway in production environments.*
+_This DevOps specification provides complete infrastructure configuration for deploying and operating DataHub API Gateway in production environments._

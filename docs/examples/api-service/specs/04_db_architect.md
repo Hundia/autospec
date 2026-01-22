@@ -115,24 +115,24 @@ CREATE TRIGGER api_keys_updated_at
 
 **Field Descriptions:**
 
-| Field | Type | Description |
-|-------|------|-------------|
-| id | VARCHAR(32) | ULID-based unique identifier |
-| key_hash | VARCHAR(64) | SHA-256 hash of the API key |
-| key_prefix | VARCHAR(20) | Visible prefix for identification |
-| name | VARCHAR(100) | Human-readable key name |
-| description | TEXT | Optional detailed description |
-| status | VARCHAR(20) | Current key status |
-| scopes | TEXT[] | Array of permission scopes |
-| rate_limit_minute | INTEGER | Max requests per minute |
-| rate_limit_hour | INTEGER | Max requests per hour |
-| rate_limit_day | INTEGER | Max requests per day |
-| burst_limit | INTEGER | Max concurrent requests |
-| metadata | JSONB | Custom key-value metadata |
-| total_requests | BIGINT | Lifetime request count |
-| last_used_at | TIMESTAMPTZ | Last successful authentication |
-| expires_at | TIMESTAMPTZ | Automatic expiration time |
-| rotated_from_id | VARCHAR(32) | Link to previous key (rotation) |
+| Field             | Type         | Description                       |
+| ----------------- | ------------ | --------------------------------- |
+| id                | VARCHAR(32)  | ULID-based unique identifier      |
+| key_hash          | VARCHAR(64)  | SHA-256 hash of the API key       |
+| key_prefix        | VARCHAR(20)  | Visible prefix for identification |
+| name              | VARCHAR(100) | Human-readable key name           |
+| description       | TEXT         | Optional detailed description     |
+| status            | VARCHAR(20)  | Current key status                |
+| scopes            | TEXT[]       | Array of permission scopes        |
+| rate_limit_minute | INTEGER      | Max requests per minute           |
+| rate_limit_hour   | INTEGER      | Max requests per hour             |
+| rate_limit_day    | INTEGER      | Max requests per day              |
+| burst_limit       | INTEGER      | Max concurrent requests           |
+| metadata          | JSONB        | Custom key-value metadata         |
+| total_requests    | BIGINT       | Lifetime request count            |
+| last_used_at      | TIMESTAMPTZ  | Last successful authentication    |
+| expires_at        | TIMESTAMPTZ  | Automatic expiration time         |
+| rotated_from_id   | VARCHAR(32)  | Link to previous key (rotation)   |
 
 ---
 
@@ -210,25 +210,25 @@ CREATE INDEX idx_request_logs_path_time ON request_logs(path, started_at DESC);
 
 **Field Descriptions:**
 
-| Field | Type | Description |
-|-------|------|-------------|
-| id | VARCHAR(32) | ULID-based unique identifier |
-| api_key_id | VARCHAR(32) | Reference to authenticated key |
-| method | VARCHAR(10) | HTTP method (GET, POST, etc.) |
-| path | VARCHAR(2000) | Request path |
-| query_params | JSONB | URL query parameters |
-| headers | JSONB | Request headers (sanitized) |
-| body | JSONB | Request body (if applicable) |
-| body_size | INTEGER | Request body size in bytes |
-| ip_address | INET | Client IP address |
-| user_agent | VARCHAR(500) | Client user agent string |
-| status_code | SMALLINT | HTTP response status code |
-| response_headers | JSONB | Response headers |
-| response_body | JSONB | Response body |
-| response_size | INTEGER | Response size in bytes |
-| duration_ms | INTEGER | Request duration in milliseconds |
-| rate_limited | BOOLEAN | Whether request was rate limited |
-| error_code | VARCHAR(50) | Error code if applicable |
+| Field            | Type          | Description                      |
+| ---------------- | ------------- | -------------------------------- |
+| id               | VARCHAR(32)   | ULID-based unique identifier     |
+| api_key_id       | VARCHAR(32)   | Reference to authenticated key   |
+| method           | VARCHAR(10)   | HTTP method (GET, POST, etc.)    |
+| path             | VARCHAR(2000) | Request path                     |
+| query_params     | JSONB         | URL query parameters             |
+| headers          | JSONB         | Request headers (sanitized)      |
+| body             | JSONB         | Request body (if applicable)     |
+| body_size        | INTEGER       | Request body size in bytes       |
+| ip_address       | INET          | Client IP address                |
+| user_agent       | VARCHAR(500)  | Client user agent string         |
+| status_code      | SMALLINT      | HTTP response status code        |
+| response_headers | JSONB         | Response headers                 |
+| response_body    | JSONB         | Response body                    |
+| response_size    | INTEGER       | Response size in bytes           |
+| duration_ms      | INTEGER       | Request duration in milliseconds |
+| rate_limited     | BOOLEAN       | Whether request was rate limited |
+| error_code       | VARCHAR(50)   | Error code if applicable         |
 
 ---
 
@@ -333,15 +333,15 @@ CREATE INDEX idx_webhook_events_event_type ON webhook_events(event_type);
 
 **Valid Event Types:**
 
-| Event Type | Description |
-|------------|-------------|
-| `key.created` | API key created |
-| `key.updated` | API key updated |
-| `key.rotated` | API key rotated |
-| `key.revoked` | API key revoked |
-| `rate_limit.exceeded` | Rate limit exceeded |
-| `webhook.failing` | Webhook consecutive failures |
-| `request.error` | Request resulted in error |
+| Event Type            | Description                  |
+| --------------------- | ---------------------------- |
+| `key.created`         | API key created              |
+| `key.updated`         | API key updated              |
+| `key.rotated`         | API key rotated              |
+| `key.revoked`         | API key revoked              |
+| `rate_limit.exceeded` | Rate limit exceeded          |
+| `webhook.failing`     | Webhook consecutive failures |
+| `request.error`       | Request resulted in error    |
 
 ---
 
@@ -520,15 +520,15 @@ CREATE INDEX idx_audit_logs_resource_time
 
 **Audit Actions:**
 
-| Action | Description |
-|--------|-------------|
-| `key.create` | API key created |
-| `key.update` | API key updated |
-| `key.rotate` | API key rotated |
-| `key.revoke` | API key revoked |
-| `webhook.create` | Webhook created |
-| `webhook.update` | Webhook updated |
-| `webhook.delete` | Webhook deleted |
+| Action              | Description        |
+| ------------------- | ------------------ |
+| `key.create`        | API key created    |
+| `key.update`        | API key updated    |
+| `key.rotate`        | API key rotated    |
+| `key.revoke`        | API key revoked    |
+| `webhook.create`    | Webhook created    |
+| `webhook.update`    | Webhook updated    |
+| `webhook.delete`    | Webhook deleted    |
 | `rate_limit.update` | Rate limit changed |
 
 ---
@@ -914,14 +914,14 @@ COMMIT;
 
 ## Data Retention Policy
 
-| Table | Retention | Strategy |
-|-------|-----------|----------|
-| api_keys | Indefinite | Soft delete (revoked status) |
-| request_logs | 30 days | Partition drop |
-| webhooks | Indefinite | Cascade delete with key |
-| webhook_deliveries | 30 days | Partition drop |
-| audit_logs | 1 year | Partition drop |
-| rate_limits | Indefinite | Manual cleanup |
+| Table              | Retention  | Strategy                     |
+| ------------------ | ---------- | ---------------------------- |
+| api_keys           | Indefinite | Soft delete (revoked status) |
+| request_logs       | 30 days    | Partition drop               |
+| webhooks           | Indefinite | Cascade delete with key      |
+| webhook_deliveries | 30 days    | Partition drop               |
+| audit_logs         | 1 year     | Partition drop               |
+| rate_limits        | Indefinite | Manual cleanup               |
 
 ### Cleanup Job
 
@@ -991,4 +991,4 @@ ORDER BY idx_scan DESC;
 
 ---
 
-*This schema supports the complete DataHub API Gateway functionality with proper indexing, partitioning, and performance optimizations.*
+_This schema supports the complete DataHub API Gateway functionality with proper indexing, partitioning, and performance optimizations._

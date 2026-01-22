@@ -2,16 +2,16 @@
 
 ## Sprint Overview
 
-| Attribute | Value |
-|-----------|-------|
-| Sprint Number | 1 |
-| Sprint Name | Core API Features |
-| Duration | 2 weeks |
-| Start Date | 2026-01-06 |
-| End Date | 2026-01-19 |
-| Total Points | 52 |
-| Completed Points | 52 |
-| Velocity | 100% |
+| Attribute        | Value             |
+| ---------------- | ----------------- |
+| Sprint Number    | 1                 |
+| Sprint Name      | Core API Features |
+| Duration         | 2 weeks           |
+| Start Date       | 2026-01-06        |
+| End Date         | 2026-01-19        |
+| Total Points     | 52                |
+| Completed Points | 52                |
+| Velocity         | 100%              |
 
 ## Sprint Goal
 
@@ -21,30 +21,30 @@ Implement the foundational API key management system, authentication middleware,
 
 ## Completed Tickets Summary
 
-| Ticket | Title | Points | Status |
-|--------|-------|--------|--------|
-| DH-016 | API key generation utility | 3 | Completed |
-| DH-017 | API key hashing service | 2 | Completed |
-| DH-018 | API key repository | 5 | Completed |
-| DH-019 | Authentication middleware | 5 | Completed |
-| DH-020 | Scope-based authorization | 5 | Completed |
-| DH-021 | POST /api/v1/keys endpoint | 3 | Completed |
-| DH-022 | GET /api/v1/keys endpoint | 3 | Completed |
-| DH-023 | GET /api/v1/keys/:id endpoint | 2 | Completed |
-| DH-024 | PUT /api/v1/keys/:id endpoint | 2 | Completed |
-| DH-025 | DELETE /api/v1/keys/:id endpoint | 2 | Completed |
-| DH-026 | POST /api/v1/keys/:id/rotate | 5 | Completed |
-| DH-027 | Sliding window rate limiter | 8 | Completed |
-| DH-028 | Rate limiting middleware | 5 | Completed |
-| DH-029 | Rate limit headers | 2 | Completed |
-| DH-030 | GET /api/v1/rate-limits/status | 2 | Completed |
-| DH-031 | Request ID middleware | 2 | Completed |
-| DH-032 | Error handling middleware | 3 | Completed |
-| DH-033 | Zod validation schemas | 3 | Completed |
-| DH-034 | Unit tests for API key service | 3 | Completed |
-| DH-035 | Unit tests for rate limiter | 3 | Completed |
-| DH-036 | Integration tests for auth | 3 | Completed |
-| DH-037 | Integration tests for keys | 3 | Completed |
+| Ticket | Title                            | Points | Status    |
+| ------ | -------------------------------- | ------ | --------- |
+| DH-016 | API key generation utility       | 3      | Completed |
+| DH-017 | API key hashing service          | 2      | Completed |
+| DH-018 | API key repository               | 5      | Completed |
+| DH-019 | Authentication middleware        | 5      | Completed |
+| DH-020 | Scope-based authorization        | 5      | Completed |
+| DH-021 | POST /api/v1/keys endpoint       | 3      | Completed |
+| DH-022 | GET /api/v1/keys endpoint        | 3      | Completed |
+| DH-023 | GET /api/v1/keys/:id endpoint    | 2      | Completed |
+| DH-024 | PUT /api/v1/keys/:id endpoint    | 2      | Completed |
+| DH-025 | DELETE /api/v1/keys/:id endpoint | 2      | Completed |
+| DH-026 | POST /api/v1/keys/:id/rotate     | 5      | Completed |
+| DH-027 | Sliding window rate limiter      | 8      | Completed |
+| DH-028 | Rate limiting middleware         | 5      | Completed |
+| DH-029 | Rate limit headers               | 2      | Completed |
+| DH-030 | GET /api/v1/rate-limits/status   | 2      | Completed |
+| DH-031 | Request ID middleware            | 2      | Completed |
+| DH-032 | Error handling middleware        | 3      | Completed |
+| DH-033 | Zod validation schemas           | 3      | Completed |
+| DH-034 | Unit tests for API key service   | 3      | Completed |
+| DH-035 | Unit tests for rate limiter      | 3      | Completed |
+| DH-036 | Integration tests for auth       | 3      | Completed |
+| DH-037 | Integration tests for keys       | 3      | Completed |
 
 ---
 
@@ -88,6 +88,7 @@ export function extractEnvironment(key: string): KeyEnvironment | null {
 ```
 
 **Security Features**:
+
 - Uses `crypto.randomBytes()` for cryptographically secure random generation
 - 24 bytes of entropy (192 bits) encoded as base64url
 - Environment prefix prevents accidental cross-environment usage
@@ -112,14 +113,12 @@ export function hashApiKey(apiKey: string): string {
 
 export function compareKeyHash(apiKey: string, storedHash: string): boolean {
   const inputHash = hashApiKey(apiKey);
-  return crypto.timingSafeEqual(
-    Buffer.from(inputHash, 'hex'),
-    Buffer.from(storedHash, 'hex')
-  );
+  return crypto.timingSafeEqual(Buffer.from(inputHash, 'hex'), Buffer.from(storedHash, 'hex'));
 }
 ```
 
 **Security Considerations**:
+
 - SHA-256 produces consistent 64-character hex output
 - Optional environment-based salt for additional security
 - Timing-safe comparison prevents timing attacks
@@ -153,24 +152,34 @@ export interface ApiKeyRecord {
 export class KeyRepository {
   async create(data: CreateKeyInput): Promise<ApiKeyRecord> {
     const id = generateUUID();
-    const result = await db.query(`
+    const result = await db.query(
+      `
       INSERT INTO api_keys (
         id, name, description, key_hash, key_prefix, environment,
         status, scopes, rate_limit, metadata, expires_at
       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
       RETURNING *
-    `, [id, data.name, data.description, data.keyHash, data.keyPrefix,
-        data.environment, 'active', data.scopes, data.rateLimit,
-        data.metadata, data.expiresAt]);
+    `,
+      [
+        id,
+        data.name,
+        data.description,
+        data.keyHash,
+        data.keyPrefix,
+        data.environment,
+        'active',
+        data.scopes,
+        data.rateLimit,
+        data.metadata,
+        data.expiresAt,
+      ],
+    );
 
     return this.mapToRecord(result.rows[0]);
   }
 
   async findByHash(hash: string): Promise<ApiKeyRecord | null> {
-    const result = await db.query(
-      'SELECT * FROM api_keys WHERE key_hash = $1',
-      [hash]
-    );
+    const result = await db.query('SELECT * FROM api_keys WHERE key_hash = $1', [hash]);
     return result.rows[0] ? this.mapToRecord(result.rows[0]) : null;
   }
 
@@ -195,14 +204,13 @@ export class KeyRepository {
 
     const orderClause = `ORDER BY ${sortBy || 'created_at'} ${sortOrder || 'DESC'}`;
 
-    const countResult = await db.query(
-      `SELECT COUNT(*) FROM api_keys ${whereClause}`, params
-    );
+    const countResult = await db.query(`SELECT COUNT(*) FROM api_keys ${whereClause}`, params);
 
     params.push(pageSize, offset);
     const result = await db.query(
       `SELECT * FROM api_keys ${whereClause} ${orderClause}
-       LIMIT $${paramIndex++} OFFSET $${paramIndex}`, params
+       LIMIT $${paramIndex++} OFFSET $${paramIndex}`,
+      params,
     );
 
     return {
@@ -211,18 +219,21 @@ export class KeyRepository {
         page,
         pageSize,
         total: parseInt(countResult.rows[0].count),
-        totalPages: Math.ceil(countResult.rows[0].count / pageSize)
-      }
+        totalPages: Math.ceil(countResult.rows[0].count / pageSize),
+      },
     };
   }
 
   async revoke(id: string): Promise<ApiKeyRecord> {
-    const result = await db.query(`
+    const result = await db.query(
+      `
       UPDATE api_keys
       SET status = 'revoked', revoked_at = NOW(), updated_at = NOW()
       WHERE id = $1
       RETURNING *
-    `, [id]);
+    `,
+      [id],
+    );
 
     // Invalidate cache
     await redis.del(`apikey:${id}`);
@@ -231,10 +242,7 @@ export class KeyRepository {
   }
 
   async updateLastUsed(id: string): Promise<void> {
-    await db.query(
-      'UPDATE api_keys SET last_used_at = NOW() WHERE id = $1',
-      [id]
-    );
+    await db.query('UPDATE api_keys SET last_used_at = NOW() WHERE id = $1', [id]);
   }
 }
 ```
@@ -256,11 +264,7 @@ import { redis } from '../config/redis';
 
 const CACHE_TTL = 300; // 5 minutes
 
-export async function authenticate(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> {
+export async function authenticate(req: Request, res: Response, next: NextFunction): Promise<void> {
   // Step 1: Extract API key from headers
   const apiKey = extractApiKey(req);
 
@@ -297,8 +301,10 @@ export async function authenticate(
     return next(new ApiError(401, 'KEY_REVOKED', 'API key has been revoked'));
   }
 
-  if (keyRecord.status === 'expired' ||
-      (keyRecord.expiresAt && new Date(keyRecord.expiresAt) < new Date())) {
+  if (
+    keyRecord.status === 'expired' ||
+    (keyRecord.expiresAt && new Date(keyRecord.expiresAt) < new Date())
+  ) {
     return next(new ApiError(401, 'KEY_EXPIRED', 'API key has expired'));
   }
 
@@ -306,7 +312,7 @@ export async function authenticate(
   req.apiKey = keyRecord;
 
   // Step 8: Update last used (async, non-blocking)
-  keyRepository.updateLastUsed(keyRecord.id).catch(err => {
+  keyRepository.updateLastUsed(keyRecord.id).catch((err) => {
     logger.error('Failed to update last used', { error: err, keyId: keyRecord.id });
   });
 
@@ -340,9 +346,11 @@ import { Request, Response, NextFunction } from 'express';
 
 export type Scope =
   | 'admin'
-  | 'read:keys' | 'write:keys'
+  | 'read:keys'
+  | 'write:keys'
   | 'read:requests'
-  | 'read:webhooks' | 'write:webhooks';
+  | 'read:webhooks'
+  | 'write:webhooks';
 
 export function requireScope(...requiredScopes: Scope[]) {
   return (req: Request, res: Response, next: NextFunction): void => {
@@ -354,17 +362,17 @@ export function requireScope(...requiredScopes: Scope[]) {
     }
 
     // Check all required scopes (AND logic)
-    const hasAllScopes = requiredScopes.every(scope =>
-      keyScopes.includes(scope) || keyScopes.includes(scope.split(':')[0] + ':*')
+    const hasAllScopes = requiredScopes.every(
+      (scope) => keyScopes.includes(scope) || keyScopes.includes(scope.split(':')[0] + ':*'),
     );
 
     if (!hasAllScopes) {
-      return next(new ApiError(
-        403,
-        'INSUFFICIENT_SCOPE',
-        `Required scopes: ${requiredScopes.join(', ')}`,
-        { required: requiredScopes, provided: keyScopes }
-      ));
+      return next(
+        new ApiError(403, 'INSUFFICIENT_SCOPE', `Required scopes: ${requiredScopes.join(', ')}`, {
+          required: requiredScopes,
+          provided: keyScopes,
+        }),
+      );
     }
 
     next();
@@ -379,14 +387,12 @@ export function requireAnyScope(...requiredScopes: Scope[]) {
       return next();
     }
 
-    const hasAnyScope = requiredScopes.some(scope => keyScopes.includes(scope));
+    const hasAnyScope = requiredScopes.some((scope) => keyScopes.includes(scope));
 
     if (!hasAnyScope) {
-      return next(new ApiError(
-        403,
-        'INSUFFICIENT_SCOPE',
-        `Required one of: ${requiredScopes.join(', ')}`
-      ));
+      return next(
+        new ApiError(403, 'INSUFFICIENT_SCOPE', `Required one of: ${requiredScopes.join(', ')}`),
+      );
     }
 
     next();
@@ -437,19 +443,16 @@ interface TierStatus {
 const WINDOWS = {
   minute: 60,
   hour: 3600,
-  day: 86400
+  day: 86400,
 };
 
 export class RateLimiter {
-  async checkLimit(
-    keyId: string,
-    config: RateLimitConfig
-  ): Promise<RateLimitResult> {
+  async checkLimit(keyId: string, config: RateLimitConfig): Promise<RateLimitResult> {
     const now = Date.now();
     const limits = [
       { tier: 'minute' as const, limit: config.requestsPerMinute, window: WINDOWS.minute },
       { tier: 'hour' as const, limit: config.requestsPerHour, window: WINDOWS.hour },
-      { tier: 'day' as const, limit: config.requestsPerDay, window: WINDOWS.day }
+      { tier: 'day' as const, limit: config.requestsPerDay, window: WINDOWS.day },
     ];
 
     for (const { tier, limit, window } of limits) {
@@ -463,13 +466,18 @@ export class RateLimiter {
     await this.recordRequest(keyId, now);
 
     // Return the most restrictive tier (minute)
-    const minuteStatus = await this.getTierStatus(keyId, 'minute', config.requestsPerMinute, WINDOWS.minute);
+    const minuteStatus = await this.getTierStatus(
+      keyId,
+      'minute',
+      config.requestsPerMinute,
+      WINDOWS.minute,
+    );
     return {
       allowed: true,
       tier: 'minute',
       limit: config.requestsPerMinute,
       remaining: minuteStatus.remaining,
-      resetAt: minuteStatus.resetsAt
+      resetAt: minuteStatus.resetsAt,
     };
   }
 
@@ -478,10 +486,10 @@ export class RateLimiter {
     tier: string,
     limit: number,
     windowSeconds: number,
-    now: number
+    now: number,
   ): Promise<RateLimitResult> {
     const key = `ratelimit:${keyId}:${tier}`;
-    const windowStart = now - (windowSeconds * 1000);
+    const windowStart = now - windowSeconds * 1000;
 
     // Remove old entries
     await redis.zremrangebyscore(key, '-inf', windowStart);
@@ -489,15 +497,16 @@ export class RateLimiter {
     // Count current entries
     const count = await redis.zcard(key);
 
-    const resetAt = new Date(now + (windowSeconds * 1000));
+    const resetAt = new Date(now + windowSeconds * 1000);
     const remaining = Math.max(0, limit - count);
 
     if (count >= limit) {
       // Find oldest entry to calculate retry-after
       const oldest = await redis.zrange(key, 0, 0, 'WITHSCORES');
-      const retryAfter = oldest.length >= 2
-        ? Math.ceil((parseInt(oldest[1]) + (windowSeconds * 1000) - now) / 1000)
-        : windowSeconds;
+      const retryAfter =
+        oldest.length >= 2
+          ? Math.ceil((parseInt(oldest[1]) + windowSeconds * 1000 - now) / 1000)
+          : windowSeconds;
 
       return {
         allowed: false,
@@ -505,7 +514,7 @@ export class RateLimiter {
         limit,
         remaining: 0,
         resetAt,
-        retryAfter
+        retryAfter,
       };
     }
 
@@ -514,7 +523,7 @@ export class RateLimiter {
       tier: tier as 'minute' | 'hour' | 'day',
       limit,
       remaining: remaining - 1,
-      resetAt
+      resetAt,
     };
   }
 
@@ -536,7 +545,7 @@ export class RateLimiter {
     const [perMinute, perHour, perDay] = await Promise.all([
       this.getTierStatus(keyId, 'minute', config.requestsPerMinute, WINDOWS.minute),
       this.getTierStatus(keyId, 'hour', config.requestsPerHour, WINDOWS.hour),
-      this.getTierStatus(keyId, 'day', config.requestsPerDay, WINDOWS.day)
+      this.getTierStatus(keyId, 'day', config.requestsPerDay, WINDOWS.day),
     ]);
 
     return { perMinute, perHour, perDay };
@@ -546,11 +555,11 @@ export class RateLimiter {
     keyId: string,
     tier: string,
     limit: number,
-    windowSeconds: number
+    windowSeconds: number,
   ): Promise<TierStatus> {
     const key = `ratelimit:${keyId}:${tier}`;
     const now = Date.now();
-    const windowStart = now - (windowSeconds * 1000);
+    const windowStart = now - windowSeconds * 1000;
 
     await redis.zremrangebyscore(key, '-inf', windowStart);
     const count = await redis.zcard(key);
@@ -558,7 +567,7 @@ export class RateLimiter {
     return {
       limit,
       remaining: Math.max(0, limit - count),
-      resetsAt: new Date(now + (windowSeconds * 1000))
+      resetsAt: new Date(now + windowSeconds * 1000),
     };
   }
 }
@@ -578,7 +587,7 @@ import { rateLimiter, RateLimitResult } from '../services/rateLimiter';
 export async function applyRateLimit(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> {
   const apiKey = req.apiKey;
 
@@ -593,16 +602,13 @@ export async function applyRateLimit(
 
   if (!result.allowed) {
     res.set('Retry-After', String(result.retryAfter || 60));
-    return next(new ApiError(
-      429,
-      'RATE_LIMIT_EXCEEDED',
-      `Rate limit exceeded for ${result.tier} window`,
-      {
+    return next(
+      new ApiError(429, 'RATE_LIMIT_EXCEEDED', `Rate limit exceeded for ${result.tier} window`, {
         limit: result.limit,
         window: result.tier,
-        retryAfter: result.retryAfter
-      }
-    ));
+        retryAfter: result.retryAfter,
+      }),
+    );
   }
 
   next();
@@ -613,7 +619,7 @@ function setRateLimitHeaders(res: Response, result: RateLimitResult): void {
     'X-RateLimit-Limit': String(result.limit),
     'X-RateLimit-Remaining': String(result.remaining),
     'X-RateLimit-Reset': String(Math.floor(result.resetAt.getTime() / 1000)),
-    'X-RateLimit-Window': result.tier
+    'X-RateLimit-Window': result.tier,
   });
 }
 ```
@@ -624,20 +630,20 @@ function setRateLimitHeaders(res: Response, result: RateLimitResult): void {
 
 ### Key Management Endpoints
 
-| Method | Endpoint | Handler | Scope |
-|--------|----------|---------|-------|
-| POST | /api/v1/keys | createKeyHandler | write:keys |
-| GET | /api/v1/keys | listKeysHandler | read:keys |
-| GET | /api/v1/keys/:id | getKeyHandler | read:keys |
-| PUT | /api/v1/keys/:id | updateKeyHandler | write:keys |
-| DELETE | /api/v1/keys/:id | revokeKeyHandler | write:keys |
-| POST | /api/v1/keys/:id/rotate | rotateKeyHandler | write:keys |
+| Method | Endpoint                | Handler          | Scope      |
+| ------ | ----------------------- | ---------------- | ---------- |
+| POST   | /api/v1/keys            | createKeyHandler | write:keys |
+| GET    | /api/v1/keys            | listKeysHandler  | read:keys  |
+| GET    | /api/v1/keys/:id        | getKeyHandler    | read:keys  |
+| PUT    | /api/v1/keys/:id        | updateKeyHandler | write:keys |
+| DELETE | /api/v1/keys/:id        | revokeKeyHandler | write:keys |
+| POST   | /api/v1/keys/:id/rotate | rotateKeyHandler | write:keys |
 
 ### Rate Limit Endpoints
 
-| Method | Endpoint | Handler | Scope |
-|--------|----------|---------|-------|
-| GET | /api/v1/rate-limits/status | rateLimitStatusHandler | any |
+| Method | Endpoint                   | Handler                | Scope |
+| ------ | -------------------------- | ---------------------- | ----- |
+| GET    | /api/v1/rate-limits/status | rateLimitStatusHandler | any   |
 
 ### Route Configuration
 
@@ -656,38 +662,17 @@ const router = Router();
 router.use(authenticate);
 router.use(applyRateLimit);
 
-router.post('/',
-  requireScope('write:keys'),
-  validate(createKeySchema),
-  createKeyHandler
-);
+router.post('/', requireScope('write:keys'), validate(createKeySchema), createKeyHandler);
 
-router.get('/',
-  requireScope('read:keys'),
-  listKeysHandler
-);
+router.get('/', requireScope('read:keys'), listKeysHandler);
 
-router.get('/:id',
-  requireScope('read:keys'),
-  getKeyHandler
-);
+router.get('/:id', requireScope('read:keys'), getKeyHandler);
 
-router.put('/:id',
-  requireScope('write:keys'),
-  validate(updateKeySchema),
-  updateKeyHandler
-);
+router.put('/:id', requireScope('write:keys'), validate(updateKeySchema), updateKeyHandler);
 
-router.delete('/:id',
-  requireScope('write:keys'),
-  revokeKeyHandler
-);
+router.delete('/:id', requireScope('write:keys'), revokeKeyHandler);
 
-router.post('/:id/rotate',
-  requireScope('write:keys'),
-  validate(rotateKeySchema),
-  rotateKeyHandler
-);
+router.post('/:id/rotate', requireScope('write:keys'), validate(rotateKeySchema), rotateKeyHandler);
 
 export default router;
 ```
@@ -731,25 +716,32 @@ export async function rotateKeyHandler(req: Request, res: Response): Promise<voi
     const newKeyHash = hashApiKey(newRawKey);
 
     // Create new key
-    const newKey = await keyRepository.create({
-      name: existingKey.name,
-      description: existingKey.description,
-      keyHash: newKeyHash,
-      keyPrefix: newPrefix,
-      environment: existingKey.environment,
-      scopes: existingKey.scopes,
-      rateLimit: existingKey.rateLimit,
-      metadata: existingKey.metadata,
-      expiresAt: existingKey.expiresAt,
-      rotatedFromId: existingKey.id
-    }, client);
+    const newKey = await keyRepository.create(
+      {
+        name: existingKey.name,
+        description: existingKey.description,
+        keyHash: newKeyHash,
+        keyPrefix: newPrefix,
+        environment: existingKey.environment,
+        scopes: existingKey.scopes,
+        rateLimit: existingKey.rateLimit,
+        metadata: existingKey.metadata,
+        expiresAt: existingKey.expiresAt,
+        rotatedFromId: existingKey.id,
+      },
+      client,
+    );
 
     // Deprecate old key
-    const deprecationExpiry = new Date(Date.now() + (deprecationPeriod * 1000));
-    await keyRepository.update(id, {
-      status: 'deprecated',
-      expiresAt: deprecationExpiry
-    }, client);
+    const deprecationExpiry = new Date(Date.now() + deprecationPeriod * 1000);
+    await keyRepository.update(
+      id,
+      {
+        status: 'deprecated',
+        expiresAt: deprecationExpiry,
+      },
+      client,
+    );
 
     await client.query('COMMIT');
 
@@ -763,17 +755,16 @@ export async function rotateKeyHandler(req: Request, res: Response): Promise<voi
           id: newKey.id,
           key: newRawKey, // Only shown once
           prefix: newPrefix,
-          createdAt: newKey.createdAt
+          createdAt: newKey.createdAt,
         },
         oldKey: {
           id: existingKey.id,
           status: 'deprecated',
-          expiresAt: deprecationExpiry
+          expiresAt: deprecationExpiry,
         },
-        deprecationPeriod
-      }
+        deprecationPeriod,
+      },
     });
-
   } catch (error) {
     await client.query('ROLLBACK');
     throw error;
@@ -843,14 +834,17 @@ export async function rotateKeyHandler(req: Request, res: Response): Promise<voi
 ## Files Created/Modified
 
 ### Services
+
 - `src/services/keyGenerator.ts`
 - `src/services/keyHasher.ts`
 - `src/services/rateLimiter.ts`
 
 ### Repositories
+
 - `src/repositories/keyRepository.ts`
 
 ### Middleware
+
 - `src/middleware/auth.ts`
 - `src/middleware/authorize.ts`
 - `src/middleware/rateLimit.ts`
@@ -859,6 +853,7 @@ export async function rotateKeyHandler(req: Request, res: Response): Promise<voi
 - `src/middleware/validate.ts`
 
 ### Handlers
+
 - `src/handlers/keys/create.ts`
 - `src/handlers/keys/list.ts`
 - `src/handlers/keys/get.ts`
@@ -868,21 +863,26 @@ export async function rotateKeyHandler(req: Request, res: Response): Promise<voi
 - `src/handlers/rateLimits/status.ts`
 
 ### Routes
+
 - `src/routes/keys.ts`
 - `src/routes/rateLimits.ts`
 
 ### Types
+
 - `src/types/apiKey.ts`
 - `src/types/scopes.ts`
 - `src/types/express.d.ts`
 
 ### Validation
+
 - `src/validation/schemas.ts`
 
 ### Utils
+
 - `src/utils/ApiError.ts`
 
 ### Tests
+
 - `tests/unit/services/keyService.test.ts`
 - `tests/unit/services/rateLimiter.test.ts`
 - `tests/integration/auth.test.ts`
@@ -893,22 +893,26 @@ export async function rotateKeyHandler(req: Request, res: Response): Promise<voi
 ## Sprint Retrospective
 
 ### What Went Well
+
 - All 22 tickets completed within sprint duration
 - Clean separation of concerns in middleware architecture
 - Comprehensive test coverage achieved (86%)
 - Rate limiter performance exceeded expectations
 
 ### Challenges Encountered
+
 - Key rotation transaction handling required careful consideration
 - Redis connection handling in rate limiter needed optimization
 - Scope wildcard matching added complexity to authorization
 
 ### Technical Debt Identified
+
 - Consider adding OpenAPI documentation generation
 - Rate limiter could benefit from Lua scripting for atomicity
 - Cache warming strategy needed for high-traffic scenarios
 
 ### Recommendations for Next Sprint
+
 - Build on authentication foundation for webhook signatures
 - Reuse rate limiter patterns for webhook delivery throttling
 - Leverage request ID middleware for request logging correlation
@@ -917,12 +921,12 @@ export async function rotateKeyHandler(req: Request, res: Response): Promise<voi
 
 ## Sign-Off
 
-| Role | Name | Date | Signature |
-|------|------|------|-----------|
-| Tech Lead | - | 2026-01-19 | Approved |
-| QA Lead | - | 2026-01-19 | Approved |
-| Product Owner | - | 2026-01-19 | Approved |
+| Role          | Name | Date       | Signature |
+| ------------- | ---- | ---------- | --------- |
+| Tech Lead     | -    | 2026-01-19 | Approved  |
+| QA Lead       | -    | 2026-01-19 | Approved  |
+| Product Owner | -    | 2026-01-19 | Approved  |
 
 ---
 
-*Sprint 1 completed successfully. All acceptance criteria met. Ready for Sprint 2: Request Logging & Webhooks.*
+_Sprint 1 completed successfully. All acceptance criteria met. Ready for Sprint 2: Request Logging & Webhooks._

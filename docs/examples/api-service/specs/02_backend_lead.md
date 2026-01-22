@@ -5,6 +5,7 @@
 This document provides the complete backend technical specification for DataHub API Gateway. It covers all REST API endpoints, authentication mechanisms, rate limiting implementation, request processing pipeline, and internal service architecture.
 
 **Tech Stack:**
+
 - **Language**: Node.js with TypeScript
 - **Framework**: Express.js
 - **Database**: PostgreSQL 14+
@@ -40,12 +41,12 @@ This document provides the complete backend technical specification for DataHub 
 
 ### Component Responsibilities
 
-| Component | Responsibility |
-|-----------|---------------|
-| Gateway Layer | Auth, rate limiting, routing |
-| Redis Cache | Rate limit counters, session cache |
-| PostgreSQL | Persistent storage, audit logs |
-| Webhook Queue | Async webhook delivery |
+| Component     | Responsibility                     |
+| ------------- | ---------------------------------- |
+| Gateway Layer | Auth, rate limiting, routing       |
+| Redis Cache   | Rate limit counters, session cache |
+| PostgreSQL    | Persistent storage, audit logs     |
+| Webhook Queue | Async webhook delivery             |
 
 ---
 
@@ -62,6 +63,7 @@ This document provides the complete backend technical specification for DataHub 
 ### Standard Response Format
 
 **Success Response:**
+
 ```json
 {
   "success": true,
@@ -74,6 +76,7 @@ This document provides the complete backend technical specification for DataHub 
 ```
 
 **Error Response:**
+
 ```json
 {
   "success": false,
@@ -117,11 +120,13 @@ This document provides the complete backend technical specification for DataHub 
 ### 1. Health Check Endpoints
 
 #### GET /health
+
 Basic health check for load balancers.
 
 **Authentication**: None required
 
 **Response 200:**
+
 ```json
 {
   "status": "healthy",
@@ -130,11 +135,13 @@ Basic health check for load balancers.
 ```
 
 #### GET /health/ready
+
 Readiness check including dependencies.
 
 **Authentication**: None required
 
 **Response 200:**
+
 ```json
 {
   "status": "ready",
@@ -147,6 +154,7 @@ Readiness check including dependencies.
 ```
 
 **Response 503:**
+
 ```json
 {
   "status": "not_ready",
@@ -159,11 +167,13 @@ Readiness check including dependencies.
 ```
 
 #### GET /health/live
+
 Liveness check for container orchestration.
 
 **Authentication**: None required
 
 **Response 200:**
+
 ```json
 {
   "status": "alive",
@@ -177,11 +187,13 @@ Liveness check for container orchestration.
 ### 2. API Key Management
 
 #### POST /api/v1/keys
+
 Create a new API key.
 
 **Authentication**: Admin API key required
 
 **Request Body:**
+
 ```json
 {
   "name": "Production Service",
@@ -201,6 +213,7 @@ Create a new API key.
 ```
 
 **Validation Rules:**
+
 - `name`: Required, 3-100 characters
 - `scopes`: Required, array of valid scope strings
 - `rateLimit.requestsPerMinute`: Optional, 1-100000
@@ -208,6 +221,7 @@ Create a new API key.
 - `expiresAt`: Optional, must be future date
 
 **Response 201:**
+
 ```json
 {
   "success": true,
@@ -232,6 +246,7 @@ Create a new API key.
 **Note**: The full API key is only returned once at creation. Store it securely.
 
 #### GET /api/v1/keys
+
 List all API keys.
 
 **Authentication**: Admin API key required
@@ -247,6 +262,7 @@ List all API keys.
 | sortOrder | string | desc | asc or desc |
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -271,11 +287,13 @@ List all API keys.
 ```
 
 #### GET /api/v1/keys/:id
+
 Get a single API key by ID.
 
 **Authentication**: Admin API key required
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -306,11 +324,13 @@ Get a single API key by ID.
 ```
 
 #### PUT /api/v1/keys/:id
+
 Update an API key.
 
 **Authentication**: Admin API key required
 
 **Request Body:**
+
 ```json
 {
   "name": "Updated Service Name",
@@ -326,6 +346,7 @@ Update an API key.
 ```
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -339,11 +360,13 @@ Update an API key.
 ```
 
 #### DELETE /api/v1/keys/:id
+
 Revoke an API key (soft delete).
 
 **Authentication**: Admin API key required
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -356,11 +379,13 @@ Revoke an API key (soft delete).
 ```
 
 #### POST /api/v1/keys/:id/rotate
+
 Rotate an API key (create new, deprecate old).
 
 **Authentication**: Admin API key required
 
 **Request Body:**
+
 ```json
 {
   "deprecationPeriod": 86400
@@ -368,6 +393,7 @@ Rotate an API key (create new, deprecate old).
 ```
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -392,6 +418,7 @@ Rotate an API key (create new, deprecate old).
 ### 3. Request Logging
 
 #### GET /api/v1/requests
+
 List logged requests.
 
 **Authentication**: API key with `read:requests` scope
@@ -411,6 +438,7 @@ List logged requests.
 | maxDuration | integer | - | Max response time (ms) |
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -438,11 +466,13 @@ List logged requests.
 ```
 
 #### GET /api/v1/requests/:id
+
 Get detailed request log.
 
 **Authentication**: API key with `read:requests` scope
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -479,6 +509,7 @@ Get detailed request log.
 ```
 
 #### GET /api/v1/requests/stats
+
 Get request statistics.
 
 **Authentication**: API key with `read:requests` scope
@@ -492,6 +523,7 @@ Get request statistics.
 | endDate | datetime | now | End of time range |
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -535,11 +567,13 @@ Get request statistics.
 ### 4. Rate Limit Management
 
 #### GET /api/v1/rate-limits
+
 Get rate limit configurations.
 
 **Authentication**: Admin API key required
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -568,11 +602,13 @@ Get rate limit configurations.
 ```
 
 #### GET /api/v1/rate-limits/status
+
 Get current rate limit status for the requesting key.
 
 **Authentication**: Any valid API key
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -600,11 +636,13 @@ Get current rate limit status for the requesting key.
 ```
 
 #### PUT /api/v1/rate-limits/keys/:keyId
+
 Update rate limits for a specific key.
 
 **Authentication**: Admin API key required
 
 **Request Body:**
+
 ```json
 {
   "requestsPerMinute": 2000,
@@ -615,6 +653,7 @@ Update rate limits for a specific key.
 ```
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -636,11 +675,13 @@ Update rate limits for a specific key.
 ### 5. Webhook Management
 
 #### POST /api/v1/webhooks
+
 Create a webhook subscription.
 
 **Authentication**: API key with `write:webhooks` scope
 
 **Request Body:**
+
 ```json
 {
   "name": "Order Notifications",
@@ -660,6 +701,7 @@ Create a webhook subscription.
 ```
 
 **Validation Rules:**
+
 - `name`: Required, 3-100 characters
 - `url`: Required, valid HTTPS URL
 - `events`: Required, array of valid event types
@@ -668,6 +710,7 @@ Create a webhook subscription.
 - `retryPolicy.initialDelay`: Optional, 100-60000 ms
 
 **Response 201:**
+
 ```json
 {
   "success": true,
@@ -684,6 +727,7 @@ Create a webhook subscription.
 ```
 
 #### GET /api/v1/webhooks
+
 List webhook subscriptions.
 
 **Authentication**: API key with `read:webhooks` scope
@@ -697,6 +741,7 @@ List webhook subscriptions.
 | event | string | - | Filter by event type |
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -725,11 +770,13 @@ List webhook subscriptions.
 ```
 
 #### GET /api/v1/webhooks/:id
+
 Get webhook details.
 
 **Authentication**: API key with `read:webhooks` scope
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -764,11 +811,13 @@ Get webhook details.
 ```
 
 #### PUT /api/v1/webhooks/:id
+
 Update a webhook subscription.
 
 **Authentication**: API key with `write:webhooks` scope
 
 **Request Body:**
+
 ```json
 {
   "name": "Updated Webhook Name",
@@ -779,6 +828,7 @@ Update a webhook subscription.
 ```
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -792,6 +842,7 @@ Update a webhook subscription.
 ```
 
 #### DELETE /api/v1/webhooks/:id
+
 Delete a webhook subscription.
 
 **Authentication**: API key with `write:webhooks` scope
@@ -799,6 +850,7 @@ Delete a webhook subscription.
 **Response 204:** No content
 
 #### GET /api/v1/webhooks/:id/deliveries
+
 Get webhook delivery history.
 
 **Authentication**: API key with `read:webhooks` scope
@@ -813,6 +865,7 @@ Get webhook delivery history.
 | endDate | datetime | now | End of time range |
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -845,11 +898,13 @@ Get webhook delivery history.
 ```
 
 #### POST /api/v1/webhooks/:id/test
+
 Send a test webhook delivery.
 
 **Authentication**: API key with `write:webhooks` scope
 
 **Request Body:**
+
 ```json
 {
   "event": "test.ping",
@@ -860,6 +915,7 @@ Send a test webhook delivery.
 ```
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -877,11 +933,13 @@ Send a test webhook delivery.
 ```
 
 #### POST /api/v1/webhooks/:id/deliveries/:deliveryId/retry
+
 Retry a failed webhook delivery.
 
 **Authentication**: API key with `write:webhooks` scope
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -967,36 +1025,33 @@ Examples:
 
 **Available Scopes:**
 
-| Scope | Description |
-|-------|-------------|
-| `admin` | Full administrative access |
-| `read:keys` | View API keys |
-| `write:keys` | Create/update/delete API keys |
-| `read:requests` | View request logs |
-| `read:webhooks` | View webhooks |
-| `write:webhooks` | Create/update/delete webhooks |
-| `read:rate-limits` | View rate limit status |
-| `write:rate-limits` | Modify rate limits |
+| Scope               | Description                   |
+| ------------------- | ----------------------------- |
+| `admin`             | Full administrative access    |
+| `read:keys`         | View API keys                 |
+| `write:keys`        | Create/update/delete API keys |
+| `read:requests`     | View request logs             |
+| `read:webhooks`     | View webhooks                 |
+| `write:webhooks`    | Create/update/delete webhooks |
+| `read:rate-limits`  | View rate limit status        |
+| `write:rate-limits` | Modify rate limits            |
 
 **Endpoint Scope Requirements:**
 
-| Endpoint | Required Scope |
-|----------|---------------|
-| `POST /api/v1/keys` | `admin` or `write:keys` |
-| `GET /api/v1/keys` | `admin` or `read:keys` |
-| `GET /api/v1/requests` | `read:requests` |
-| `POST /api/v1/webhooks` | `write:webhooks` |
-| `GET /api/v1/rate-limits/status` | (any valid key) |
+| Endpoint                         | Required Scope          |
+| -------------------------------- | ----------------------- |
+| `POST /api/v1/keys`              | `admin` or `write:keys` |
+| `GET /api/v1/keys`               | `admin` or `read:keys`  |
+| `GET /api/v1/requests`           | `read:requests`         |
+| `POST /api/v1/webhooks`          | `write:webhooks`        |
+| `GET /api/v1/rate-limits/status` | (any valid key)         |
 
 ### Security Implementation
 
 ```typescript
 // Key hashing for storage
 const hashApiKey = (apiKey: string): string => {
-  return crypto
-    .createHash('sha256')
-    .update(apiKey)
-    .digest('hex');
+  return crypto.createHash('sha256').update(apiKey).digest('hex');
 };
 
 // Key generation
@@ -1014,8 +1069,8 @@ const validateApiKey = async (req, res, next) => {
       success: false,
       error: {
         code: 'MISSING_API_KEY',
-        message: 'API key is required'
-      }
+        message: 'API key is required',
+      },
     });
   }
 
@@ -1027,8 +1082,8 @@ const validateApiKey = async (req, res, next) => {
       success: false,
       error: {
         code: 'INVALID_API_KEY',
-        message: 'Invalid or expired API key'
-      }
+        message: 'Invalid or expired API key',
+      },
     });
   }
 
@@ -1047,9 +1102,9 @@ DataHub uses a sliding window log algorithm for precise rate limiting:
 
 ```typescript
 interface RateLimitConfig {
-  windowSize: number;      // Window size in seconds
-  maxRequests: number;     // Max requests per window
-  keyPrefix: string;       // Redis key prefix
+  windowSize: number; // Window size in seconds
+  maxRequests: number; // Max requests per window
+  keyPrefix: string; // Redis key prefix
 }
 
 interface RateLimitResult {
@@ -1063,12 +1118,9 @@ interface RateLimitResult {
 class SlidingWindowRateLimiter {
   private redis: Redis;
 
-  async checkLimit(
-    identifier: string,
-    config: RateLimitConfig
-  ): Promise<RateLimitResult> {
+  async checkLimit(identifier: string, config: RateLimitConfig): Promise<RateLimitResult> {
     const now = Date.now();
-    const windowStart = now - (config.windowSize * 1000);
+    const windowStart = now - config.windowSize * 1000;
     const key = `${config.keyPrefix}:${identifier}`;
 
     // Use Redis MULTI for atomic operations
@@ -1089,21 +1141,22 @@ class SlidingWindowRateLimiter {
     const results = await pipeline.exec();
     const currentCount = results[1][1] as number;
 
-    const resetAt = new Date(now + (config.windowSize * 1000));
+    const resetAt = new Date(now + config.windowSize * 1000);
 
     if (currentCount >= config.maxRequests) {
       // Find oldest entry to calculate retry time
       const oldest = await this.redis.zrange(key, 0, 0, 'WITHSCORES');
-      const retryAfter = oldest.length > 1
-        ? Math.ceil((parseInt(oldest[1]) + config.windowSize * 1000 - now) / 1000)
-        : config.windowSize;
+      const retryAfter =
+        oldest.length > 1
+          ? Math.ceil((parseInt(oldest[1]) + config.windowSize * 1000 - now) / 1000)
+          : config.windowSize;
 
       return {
         allowed: false,
         limit: config.maxRequests,
         remaining: 0,
         resetAt,
-        retryAfter
+        retryAfter,
       };
     }
 
@@ -1111,7 +1164,7 @@ class SlidingWindowRateLimiter {
       allowed: true,
       limit: config.maxRequests,
       remaining: config.maxRequests - currentCount - 1,
-      resetAt
+      resetAt,
     };
   }
 }
@@ -1129,6 +1182,7 @@ X-RateLimit-Window: minute
 ```
 
 For 429 responses:
+
 ```
 Retry-After: 45
 X-RateLimit-Limit: 1000
@@ -1148,22 +1202,22 @@ const rateLimitMiddleware = async (req, res, next) => {
     rateLimiter.checkLimit(keyId, {
       windowSize: 60,
       maxRequests: limits.requestsPerMinute,
-      keyPrefix: 'rl:min'
+      keyPrefix: 'rl:min',
     }),
     rateLimiter.checkLimit(keyId, {
       windowSize: 3600,
       maxRequests: limits.requestsPerHour,
-      keyPrefix: 'rl:hour'
+      keyPrefix: 'rl:hour',
     }),
     rateLimiter.checkLimit(keyId, {
       windowSize: 86400,
       maxRequests: limits.requestsPerDay,
-      keyPrefix: 'rl:day'
-    })
+      keyPrefix: 'rl:day',
+    }),
   ]);
 
   // Find the most restrictive limit that was exceeded
-  const exceeded = checks.find(c => !c.allowed);
+  const exceeded = checks.find((c) => !c.allowed);
 
   if (exceeded) {
     setRateLimitHeaders(res, exceeded);
@@ -1175,15 +1229,15 @@ const rateLimitMiddleware = async (req, res, next) => {
         details: {
           limit: exceeded.limit,
           remaining: exceeded.remaining,
-          resetAt: exceeded.resetAt.toISOString()
-        }
-      }
+          resetAt: exceeded.resetAt.toISOString(),
+        },
+      },
     });
   }
 
   // Set headers for the most restrictive remaining limit
   const mostRestrictive = checks.reduce((min, check) =>
-    check.remaining < min.remaining ? check : min
+    check.remaining < min.remaining ? check : min,
   );
   setRateLimitHeaders(res, mostRestrictive);
 
@@ -1201,16 +1255,16 @@ const rateLimitMiddleware = async (req, res, next) => {
 const app = express();
 
 // 1. Basic middleware
-app.use(helmet());                    // Security headers
-app.use(cors(corsConfig));            // CORS handling
-app.use(express.json({ limit: '10mb' }));  // JSON parsing
+app.use(helmet()); // Security headers
+app.use(cors(corsConfig)); // CORS handling
+app.use(express.json({ limit: '10mb' })); // JSON parsing
 
 // 2. Request context
-app.use(requestIdMiddleware);         // Add request ID
-app.use(requestTimingMiddleware);     // Start timing
+app.use(requestIdMiddleware); // Add request ID
+app.use(requestTimingMiddleware); // Start timing
 
 // 3. Logging (pre-auth)
-app.use(requestLoggerMiddleware);     // Log incoming request
+app.use(requestLoggerMiddleware); // Log incoming request
 
 // 4. Health checks (no auth)
 app.use('/health', healthRouter);
@@ -1271,7 +1325,7 @@ const requestLoggerMiddleware = (req, res, next) => {
     body: sanitizeBody(req.body),
     ipAddress: getClientIp(req),
     userAgent: req.get('user-agent'),
-    startedAt: new Date()
+    startedAt: new Date(),
   };
 
   // Store for later completion
@@ -1279,7 +1333,7 @@ const requestLoggerMiddleware = (req, res, next) => {
 
   // Capture response
   const originalSend = res.send;
-  res.send = function(body) {
+  res.send = function (body) {
     res.responseBody = body;
     return originalSend.call(this, body);
   };
@@ -1291,7 +1345,7 @@ const requestLoggerMiddleware = (req, res, next) => {
       headers: res.getHeaders(),
       body: parseResponseBody(res.responseBody),
       duration: Date.now() - requestLog.startedAt.getTime(),
-      completedAt: new Date()
+      completedAt: new Date(),
     };
 
     // Async log to database
@@ -1322,16 +1376,16 @@ const sanitizeHeaders = (headers: Record<string, string>) => {
 
 ### Error Codes
 
-| Code | HTTP Status | Description |
-|------|-------------|-------------|
-| `MISSING_API_KEY` | 401 | API key not provided |
-| `INVALID_API_KEY` | 401 | API key invalid or expired |
-| `INSUFFICIENT_SCOPE` | 403 | Key lacks required scope |
-| `RATE_LIMIT_EXCEEDED` | 429 | Rate limit exceeded |
-| `VALIDATION_ERROR` | 400 | Request validation failed |
-| `RESOURCE_NOT_FOUND` | 404 | Resource not found |
-| `CONFLICT` | 409 | Resource conflict |
-| `INTERNAL_ERROR` | 500 | Internal server error |
+| Code                  | HTTP Status | Description                |
+| --------------------- | ----------- | -------------------------- |
+| `MISSING_API_KEY`     | 401         | API key not provided       |
+| `INVALID_API_KEY`     | 401         | API key invalid or expired |
+| `INSUFFICIENT_SCOPE`  | 403         | Key lacks required scope   |
+| `RATE_LIMIT_EXCEEDED` | 429         | Rate limit exceeded        |
+| `VALIDATION_ERROR`    | 400         | Request validation failed  |
+| `RESOURCE_NOT_FOUND`  | 404         | Resource not found         |
+| `CONFLICT`            | 409         | Resource conflict          |
+| `INTERNAL_ERROR`      | 500         | Internal server error      |
 
 ### Error Handler Implementation
 
@@ -1341,7 +1395,7 @@ class ApiError extends Error {
     public code: string,
     public message: string,
     public statusCode: number,
-    public details?: any
+    public details?: any,
   ) {
     super(message);
     this.name = 'ApiError';
@@ -1354,7 +1408,7 @@ const errorHandler = (err, req, res, next) => {
     requestId: req.id,
     error: err.message,
     stack: err.stack,
-    code: err.code
+    code: err.code,
   });
 
   if (err instanceof ApiError) {
@@ -1363,12 +1417,12 @@ const errorHandler = (err, req, res, next) => {
       error: {
         code: err.code,
         message: err.message,
-        details: err.details
+        details: err.details,
       },
       meta: {
         timestamp: new Date().toISOString(),
-        requestId: req.id
-      }
+        requestId: req.id,
+      },
     });
   }
 
@@ -1378,15 +1432,15 @@ const errorHandler = (err, req, res, next) => {
       error: {
         code: 'VALIDATION_ERROR',
         message: 'Request validation failed',
-        details: err.errors.map(e => ({
+        details: err.errors.map((e) => ({
           path: e.path.join('.'),
-          message: e.message
-        }))
+          message: e.message,
+        })),
       },
       meta: {
         timestamp: new Date().toISOString(),
-        requestId: req.id
-      }
+        requestId: req.id,
+      },
     });
   }
 
@@ -1395,12 +1449,12 @@ const errorHandler = (err, req, res, next) => {
     success: false,
     error: {
       code: 'INTERNAL_ERROR',
-      message: 'An unexpected error occurred'
+      message: 'An unexpected error occurred',
     },
     meta: {
       timestamp: new Date().toISOString(),
-      requestId: req.id
-    }
+      requestId: req.id,
+    },
   });
 };
 ```
@@ -1430,10 +1484,10 @@ class WebhookDeliveryQueue {
       attempts: job.maxRetries,
       backoff: {
         type: 'exponential',
-        delay: 1000
+        delay: 1000,
       },
       removeOnComplete: true,
-      removeOnFail: false
+      removeOnFail: false,
     });
   }
 
@@ -1453,10 +1507,10 @@ class WebhookDeliveryQueue {
         'X-Webhook-Signature': signature,
         'X-Webhook-Event': job.data.event,
         'X-Webhook-Delivery': job.data.id,
-        ...webhook.headers
+        ...webhook.headers,
       },
       body: JSON.stringify(job.data.payload),
-      timeout: 30000
+      timeout: 30000,
     });
 
     await logDelivery({
@@ -1466,7 +1520,7 @@ class WebhookDeliveryQueue {
       attempt: job.attemptsMade + 1,
       statusCode: response.status,
       success: response.ok,
-      responseBody: await response.text()
+      responseBody: await response.text(),
     });
 
     if (!response.ok) {
@@ -1549,31 +1603,31 @@ LOG_SENSITIVE_DATA=false
 const configSchema = z.object({
   server: z.object({
     port: z.number().default(3000),
-    env: z.enum(['development', 'staging', 'production']).default('development')
+    env: z.enum(['development', 'staging', 'production']).default('development'),
   }),
   database: z.object({
     url: z.string().url(),
-    poolSize: z.number().min(1).max(100).default(20)
+    poolSize: z.number().min(1).max(100).default(20),
   }),
   redis: z.object({
     url: z.string().url(),
-    keyPrefix: z.string().default('datahub:')
+    keyPrefix: z.string().default('datahub:'),
   }),
   rateLimits: z.object({
     defaultPerMinute: z.number().default(100),
     defaultPerHour: z.number().default(5000),
-    defaultPerDay: z.number().default(100000)
+    defaultPerDay: z.number().default(100000),
   }),
   webhooks: z.object({
     timeoutMs: z.number().default(30000),
     maxRetries: z.number().min(1).max(10).default(5),
-    concurrency: z.number().min(1).max(50).default(10)
+    concurrency: z.number().min(1).max(50).default(10),
   }),
   logging: z.object({
     level: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
     retentionDays: z.number().min(1).max(365).default(30),
-    logSensitiveData: z.boolean().default(false)
-  })
+    logSensitiveData: z.boolean().default(false),
+  }),
 });
 ```
 
@@ -1625,12 +1679,12 @@ src/
 
 ### Caching Strategy
 
-| Data | Cache Location | TTL | Invalidation |
-|------|----------------|-----|--------------|
-| API Key (validated) | Redis | 5 min | On update/revoke |
-| Rate Limit Counters | Redis | Window size | Automatic |
-| Request Logs | PostgreSQL | 30 days | Scheduled cleanup |
-| Webhook Config | Redis | 10 min | On update |
+| Data                | Cache Location | TTL         | Invalidation      |
+| ------------------- | -------------- | ----------- | ----------------- |
+| API Key (validated) | Redis          | 5 min       | On update/revoke  |
+| Rate Limit Counters | Redis          | Window size | Automatic         |
+| Request Logs        | PostgreSQL     | 30 days     | Scheduled cleanup |
+| Webhook Config      | Redis          | 10 min      | On update         |
 
 ### Database Indexing
 
@@ -1657,4 +1711,4 @@ See `04_db_architect.md` for complete index definitions.
 
 ---
 
-*This specification provides the complete backend implementation details for DataHub API Gateway. Refer to individual sprint tickets for implementation tasks.*
+_This specification provides the complete backend implementation details for DataHub API Gateway. Refer to individual sprint tickets for implementation tasks._

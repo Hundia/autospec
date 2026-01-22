@@ -11,10 +11,13 @@ This document outlines the product vision, target users, market positioning, and
 ## Product Vision
 
 ### Mission Statement
+
 "Empower developers and organizations to build, secure, and scale their API infrastructure with confidence through a simple yet powerful gateway service."
 
 ### Vision Statement
+
 DataHub will become the go-to solution for API management, providing:
+
 - **Security First**: Robust API key authentication and request validation
 - **Observable**: Complete visibility into API traffic patterns and performance
 - **Scalable**: Handle millions of requests without breaking a sweat
@@ -53,6 +56,7 @@ DataHub will become the go-to solution for API management, providing:
 ### Primary Personas
 
 #### 1. Platform Developer (Alex)
+
 - **Role**: Backend developer building microservices
 - **Goals**:
   - Secure API endpoints quickly
@@ -65,6 +69,7 @@ DataHub will become the go-to solution for API management, providing:
 - **DataHub Value**: Pre-built security and monitoring
 
 #### 2. DevOps Engineer (Jordan)
+
 - **Role**: Infrastructure and operations specialist
 - **Goals**:
   - Maintain high availability
@@ -77,6 +82,7 @@ DataHub will become the go-to solution for API management, providing:
 - **DataHub Value**: Standardized observability and easy deployment
 
 #### 3. API Product Manager (Sam)
+
 - **Role**: Manages API as a product
 - **Goals**:
   - Track API adoption metrics
@@ -89,6 +95,7 @@ DataHub will become the go-to solution for API management, providing:
 - **DataHub Value**: Consumer management and analytics
 
 #### 4. Security Engineer (Morgan)
+
 - **Role**: Ensures API security compliance
 - **Goals**:
   - Audit API access patterns
@@ -103,11 +110,13 @@ DataHub will become the go-to solution for API management, providing:
 ### Secondary Personas
 
 #### 5. API Consumer (External Developer)
+
 - Needs clear documentation
 - Wants reliable API access
 - Requires predictable rate limits
 
 #### 6. System Administrator
+
 - Manages DataHub deployment
 - Configures system settings
 - Monitors resource utilization
@@ -117,6 +126,7 @@ DataHub will become the go-to solution for API management, providing:
 ## API Consumer Segments
 
 ### Segment 1: Internal Microservices
+
 - **Characteristics**: High volume, trusted, need low latency
 - **Requirements**:
   - Service-to-service authentication
@@ -125,6 +135,7 @@ DataHub will become the go-to solution for API management, providing:
 - **Authentication**: Service API keys with elevated permissions
 
 ### Segment 2: Partner Integrations
+
 - **Characteristics**: Medium volume, semi-trusted, SLA requirements
 - **Requirements**:
   - Dedicated API keys per partner
@@ -133,6 +144,7 @@ DataHub will become the go-to solution for API management, providing:
 - **Authentication**: Partner API keys with specific scopes
 
 ### Segment 3: Public API Consumers
+
 - **Characteristics**: Variable volume, untrusted, need protection
 - **Requirements**:
   - Self-service key registration
@@ -141,6 +153,7 @@ DataHub will become the go-to solution for API management, providing:
 - **Authentication**: Public API keys with restricted scopes
 
 ### Segment 4: Administrative Access
+
 - **Characteristics**: Low volume, highly trusted, full access
 - **Requirements**:
   - Management API access
@@ -269,28 +282,31 @@ DataHub will become the go-to solution for API management, providing:
 ## Success Metrics (KPIs)
 
 ### Technical Metrics
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| API Latency (p99) | < 50ms | Gateway overhead only |
-| Uptime | 99.95% | Monthly availability |
-| Error Rate | < 0.1% | Gateway-caused errors |
-| Throughput | 10K+ RPS | Sustained capacity |
+
+| Metric            | Target   | Measurement           |
+| ----------------- | -------- | --------------------- |
+| API Latency (p99) | < 50ms   | Gateway overhead only |
+| Uptime            | 99.95%   | Monthly availability  |
+| Error Rate        | < 0.1%   | Gateway-caused errors |
+| Throughput        | 10K+ RPS | Sustained capacity    |
 
 ### Business Metrics
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| API Keys Active | Track growth | Monthly active keys |
-| Request Volume | Track growth | Daily/monthly requests |
-| Webhook Delivery | > 99% | Successful deliveries |
-| Consumer Adoption | Track growth | New integrations |
+
+| Metric            | Target       | Measurement            |
+| ----------------- | ------------ | ---------------------- |
+| API Keys Active   | Track growth | Monthly active keys    |
+| Request Volume    | Track growth | Daily/monthly requests |
+| Webhook Delivery  | > 99%        | Successful deliveries  |
+| Consumer Adoption | Track growth | New integrations       |
 
 ### Operational Metrics
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| Mean Time to Detection | < 1 min | Issue identification |
-| Mean Time to Recovery | < 5 min | Incident resolution |
-| Deployment Frequency | Daily capable | CI/CD maturity |
-| Change Failure Rate | < 5% | Rollback frequency |
+
+| Metric                 | Target        | Measurement          |
+| ---------------------- | ------------- | -------------------- |
+| Mean Time to Detection | < 1 min       | Issue identification |
+| Mean Time to Recovery  | < 5 min       | Incident resolution  |
+| Deployment Frequency   | Daily capable | CI/CD maturity       |
+| Change Failure Rate    | < 5%          | Rollback frequency   |
 
 ---
 
@@ -298,16 +314,17 @@ DataHub will become the go-to solution for API management, providing:
 
 ### Comparison Matrix
 
-| Feature | DataHub | Kong | AWS API Gateway | Apigee |
-|---------|---------|------|-----------------|--------|
-| Self-hosted | Yes | Yes | No | Hybrid |
-| Rate Limiting | Yes | Yes | Yes | Yes |
-| Request Logging | Yes | Plugin | CloudWatch | Yes |
-| Webhooks | Yes | Plugin | EventBridge | Yes |
-| Complexity | Low | Medium | Medium | High |
-| Cost | Low | Medium | Variable | High |
+| Feature         | DataHub | Kong   | AWS API Gateway | Apigee |
+| --------------- | ------- | ------ | --------------- | ------ |
+| Self-hosted     | Yes     | Yes    | No              | Hybrid |
+| Rate Limiting   | Yes     | Yes    | Yes             | Yes    |
+| Request Logging | Yes     | Plugin | CloudWatch      | Yes    |
+| Webhooks        | Yes     | Plugin | EventBridge     | Yes    |
+| Complexity      | Low     | Medium | Medium          | High   |
+| Cost            | Low     | Medium | Variable        | High   |
 
 ### DataHub Differentiators
+
 1. **Simplicity**: Single binary deployment, minimal configuration
 2. **All-in-One**: Auth, rate limiting, logging, webhooks built-in
 3. **Self-Hosted**: Full control over data and infrastructure
@@ -318,24 +335,28 @@ DataHub will become the go-to solution for API management, providing:
 ## Release Strategy
 
 ### Phase 1: Foundation (Sprint 0)
+
 - Project scaffolding and configuration
 - Database schema and migrations
 - Basic health check endpoint
 - Docker deployment setup
 
 ### Phase 2: Core Gateway (Sprint 1)
+
 - API key management (CRUD)
 - Request authentication
 - Rate limiting implementation
 - Request/response logging
 
 ### Phase 3: Advanced Features (Sprint 2+)
+
 - Webhook subscriptions and delivery
 - Analytics dashboard API
 - Key rotation automation
 - Advanced rate limiting rules
 
 ### Phase 4: Enterprise (Future)
+
 - Multi-tenant support
 - SSO integration
 - Custom plugins
@@ -345,36 +366,36 @@ DataHub will become the go-to solution for API management, providing:
 
 ## Risks & Mitigations
 
-| Risk | Impact | Likelihood | Mitigation |
-|------|--------|------------|------------|
-| Performance bottleneck | High | Medium | Redis caching, horizontal scaling |
-| Security vulnerability | Critical | Low | Security audits, penetration testing |
-| Data loss | High | Low | Backups, replication, audit logs |
-| Adoption challenges | Medium | Medium | Clear docs, examples, support |
+| Risk                   | Impact   | Likelihood | Mitigation                           |
+| ---------------------- | -------- | ---------- | ------------------------------------ |
+| Performance bottleneck | High     | Medium     | Redis caching, horizontal scaling    |
+| Security vulnerability | Critical | Low        | Security audits, penetration testing |
+| Data loss              | High     | Low        | Backups, replication, audit logs     |
+| Adoption challenges    | Medium   | Medium     | Clear docs, examples, support        |
 
 ---
 
 ## Glossary
 
-| Term | Definition |
-|------|------------|
-| API Key | Unique identifier for authenticating API consumers |
-| Rate Limit | Maximum requests allowed per time window |
-| Scope | Permission level assigned to an API key |
-| Webhook | HTTP callback triggered by system events |
-| Gateway | Service that routes and manages API traffic |
-| Consumer | Entity (user, service) that calls APIs |
-| Throttling | Slowing down requests when limits approached |
-| Circuit Breaker | Pattern to prevent cascading failures |
+| Term            | Definition                                         |
+| --------------- | -------------------------------------------------- |
+| API Key         | Unique identifier for authenticating API consumers |
+| Rate Limit      | Maximum requests allowed per time window           |
+| Scope           | Permission level assigned to an API key            |
+| Webhook         | HTTP callback triggered by system events           |
+| Gateway         | Service that routes and manages API traffic        |
+| Consumer        | Entity (user, service) that calls APIs             |
+| Throttling      | Slowing down requests when limits approached       |
+| Circuit Breaker | Pattern to prevent cascading failures              |
 
 ---
 
 ## Document History
 
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | Sprint 0 | Product Team | Initial vision document |
+| Version | Date     | Author       | Changes                 |
+| ------- | -------- | ------------ | ----------------------- |
+| 1.0     | Sprint 0 | Product Team | Initial vision document |
 
 ---
 
-*This document serves as the north star for DataHub development. All technical decisions should align with the product vision and target user needs outlined here.*
+_This document serves as the north star for DataHub development. All technical decisions should align with the product vision and target user needs outlined here._

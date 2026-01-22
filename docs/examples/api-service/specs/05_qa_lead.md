@@ -5,6 +5,7 @@
 This document defines the comprehensive testing strategy for DataHub API Gateway. As an API-only service, testing focuses on endpoint validation, authentication, rate limiting, data integrity, and performance under load.
 
 **Testing Frameworks:**
+
 - Unit Tests: Jest
 - Integration Tests: Jest + Supertest
 - API Tests: Jest + Supertest / Postman/Newman
@@ -32,12 +33,12 @@ This document defines the comprehensive testing strategy for DataHub API Gateway
 
 ### Test Distribution Goals
 
-| Test Type | Coverage | Execution Time |
-|-----------|----------|----------------|
-| Unit Tests | 80%+ | < 30 seconds |
-| Integration Tests | 70%+ | < 2 minutes |
-| E2E Tests | Critical paths | < 5 minutes |
-| Load Tests | Performance | < 10 minutes |
+| Test Type         | Coverage       | Execution Time |
+| ----------------- | -------------- | -------------- |
+| Unit Tests        | 80%+           | < 30 seconds   |
+| Integration Tests | 70%+           | < 2 minutes    |
+| E2E Tests         | Critical paths | < 5 minutes    |
+| Load Tests        | Performance    | < 10 minutes   |
 
 ---
 
@@ -63,9 +64,7 @@ describe('KeyService', () => {
     });
 
     it('should generate unique keys on each call', () => {
-      const keys = new Set(
-        Array.from({ length: 100 }, () => keyService.generateApiKey('live'))
-      );
+      const keys = new Set(Array.from({ length: 100 }, () => keyService.generateApiKey('live')));
       expect(keys.size).toBe(100);
     });
   });
@@ -112,7 +111,7 @@ describe('KeyService', () => {
     it('should create key with default rate limits', async () => {
       const key = await keyService.createKey({
         name: 'Test Key',
-        scopes: ['read:requests']
+        scopes: ['read:requests'],
       });
 
       expect(key.rateLimit.requestsPerMinute).toBe(100);
@@ -123,7 +122,7 @@ describe('KeyService', () => {
       const key = await keyService.createKey({
         name: 'Custom Key',
         scopes: ['read:requests'],
-        rateLimit: { requestsPerMinute: 500 }
+        rateLimit: { requestsPerMinute: 500 },
       });
 
       expect(key.rateLimit.requestsPerMinute).toBe(500);
@@ -133,8 +132,8 @@ describe('KeyService', () => {
       await expect(
         keyService.createKey({
           name: 'Invalid',
-          scopes: ['invalid:scope']
-        })
+          scopes: ['invalid:scope'],
+        }),
       ).rejects.toThrow('Invalid scope');
     });
   });
@@ -160,7 +159,7 @@ describe('RateLimitService', () => {
 
       const result = await rateLimitService.checkLimit('key_123', {
         windowSize: 60,
-        maxRequests: 100
+        maxRequests: 100,
       });
 
       expect(result.allowed).toBe(true);
@@ -172,7 +171,7 @@ describe('RateLimitService', () => {
 
       const result = await rateLimitService.checkLimit('key_123', {
         windowSize: 60,
-        maxRequests: 100
+        maxRequests: 100,
       });
 
       expect(result.allowed).toBe(false);
@@ -186,7 +185,7 @@ describe('RateLimitService', () => {
 
       const result = await rateLimitService.checkLimit('key_123', {
         windowSize: 60,
-        maxRequests: 100
+        maxRequests: 100,
       });
 
       expect(result.resetAt.getTime()).toBe(now + 60000);
@@ -197,10 +196,10 @@ describe('RateLimitService', () => {
     it('should return correct remaining count', async () => {
       mockRedis.setZCard(25);
 
-      const remaining = await rateLimitService.getRemainingRequests(
-        'key_123',
-        { windowSize: 60, maxRequests: 100 }
-      );
+      const remaining = await rateLimitService.getRemainingRequests('key_123', {
+        windowSize: 60,
+        maxRequests: 100,
+      });
 
       expect(remaining).toBe(75);
     });
@@ -253,11 +252,7 @@ describe('WebhookService', () => {
       const timestamp = Date.now();
       const signature = webhookService.signPayload(payload, secret, timestamp);
 
-      const isValid = webhookService.verifySignature(
-        payload,
-        signature,
-        secret
-      );
+      const isValid = webhookService.verifySignature(payload, signature, secret);
 
       expect(isValid).toBe(true);
     });
@@ -267,11 +262,7 @@ describe('WebhookService', () => {
       const timestamp = Date.now();
       const signature = webhookService.signPayload({ original: true }, secret, timestamp);
 
-      const isValid = webhookService.verifySignature(
-        { tampered: true },
-        signature,
-        secret
-      );
+      const isValid = webhookService.verifySignature({ tampered: true }, signature, secret);
 
       expect(isValid).toBe(false);
     });
@@ -303,7 +294,7 @@ describe('Validation Schemas', () => {
     it('should validate correct input', () => {
       const input = {
         name: 'My API Key',
-        scopes: ['read:requests']
+        scopes: ['read:requests'],
       };
 
       const result = createKeySchema.safeParse(input);
@@ -328,7 +319,7 @@ describe('Validation Schemas', () => {
     it('should reject name over 100 characters', () => {
       const input = {
         name: 'A'.repeat(101),
-        scopes: ['read:requests']
+        scopes: ['read:requests'],
       };
 
       const result = createKeySchema.safeParse(input);
@@ -346,7 +337,7 @@ describe('Validation Schemas', () => {
       const input = {
         name: 'Test',
         scopes: ['read:requests'],
-        rateLimit: { requestsPerMinute: 0 }
+        rateLimit: { requestsPerMinute: 0 },
       };
 
       const result = createKeySchema.safeParse(input);
@@ -395,9 +386,7 @@ describe('Authentication', () => {
 
   describe('API Key Validation', () => {
     it('should reject request without API key', async () => {
-      const response = await request(app)
-        .get('/api/v1/keys')
-        .expect(401);
+      const response = await request(app).get('/api/v1/keys').expect(401);
 
       expect(response.body.error.code).toBe('MISSING_API_KEY');
     });
@@ -444,7 +433,7 @@ describe('Authentication', () => {
     it('should reject expired API key', async () => {
       const expiredKey = await createTestKey({
         scopes: ['read:requests'],
-        expiresAt: new Date(Date.now() - 1000)
+        expiresAt: new Date(Date.now() - 1000),
       });
 
       const response = await request(app)
@@ -480,10 +469,10 @@ describe('Authentication', () => {
       const responses = await Promise.all([
         request(app).get('/api/v1/keys').set('X-API-Key', adminKey),
         request(app).get('/api/v1/requests').set('X-API-Key', adminKey),
-        request(app).get('/api/v1/webhooks').set('X-API-Key', adminKey)
+        request(app).get('/api/v1/webhooks').set('X-API-Key', adminKey),
       ]);
 
-      responses.forEach(response => {
+      responses.forEach((response) => {
         expect(response.status).toBe(200);
       });
     });
@@ -511,7 +500,7 @@ describe('API Keys Endpoints', () => {
         .send({
           name: 'Test Key',
           description: 'A test API key',
-          scopes: ['read:requests', 'write:requests']
+          scopes: ['read:requests', 'write:requests'],
         })
         .expect(201);
 
@@ -531,8 +520,8 @@ describe('API Keys Endpoints', () => {
           scopes: ['read:requests'],
           rateLimit: {
             requestsPerMinute: 5000,
-            requestsPerHour: 250000
-          }
+            requestsPerHour: 250000,
+          },
         })
         .expect(201);
 
@@ -546,7 +535,7 @@ describe('API Keys Endpoints', () => {
         .set('X-API-Key', adminKey)
         .send({
           name: 'AB', // Too short
-          scopes: []  // Empty
+          scopes: [], // Empty
         })
         .expect(400);
 
@@ -560,7 +549,7 @@ describe('API Keys Endpoints', () => {
         .set('X-API-Key', adminKey)
         .send({
           name: 'One-time Key',
-          scopes: ['read:requests']
+          scopes: ['read:requests'],
         })
         .expect(201);
 
@@ -595,7 +584,7 @@ describe('API Keys Endpoints', () => {
         .set('X-API-Key', adminKey)
         .expect(200);
 
-      response.body.data.forEach(key => {
+      response.body.data.forEach((key) => {
         expect(key.status).toBe('active');
       });
     });
@@ -611,7 +600,7 @@ describe('API Keys Endpoints', () => {
         .set('X-API-Key', adminKey)
         .expect(200);
 
-      expect(response.body.data.some(k => k.name === 'Searchable Key')).toBe(true);
+      expect(response.body.data.some((k) => k.name === 'Searchable Key')).toBe(true);
     });
 
     it('should respect pageSize limit', async () => {
@@ -714,7 +703,7 @@ describe('Rate Limiting', () => {
   beforeEach(async () => {
     limitedKey = await createTestKey({
       scopes: ['read:requests'],
-      rateLimit: { requestsPerMinute: 5 }
+      rateLimit: { requestsPerMinute: 5 },
     });
     await clearRateLimits(limitedKey);
   });
@@ -734,9 +723,7 @@ describe('Rate Limiting', () => {
     it('should return 429 when limit exceeded', async () => {
       // Make requests up to limit
       for (let i = 0; i < 5; i++) {
-        await request(app)
-          .get('/api/v1/requests')
-          .set('X-API-Key', limitedKey);
+        await request(app).get('/api/v1/requests').set('X-API-Key', limitedKey);
       }
 
       // Next request should fail
@@ -763,9 +750,7 @@ describe('Rate Limiting', () => {
     it('should reset after window expires', async () => {
       // Exhaust rate limit
       for (let i = 0; i < 5; i++) {
-        await request(app)
-          .get('/api/v1/requests')
-          .set('X-API-Key', limitedKey);
+        await request(app).get('/api/v1/requests').set('X-API-Key', limitedKey);
       }
 
       // Wait for window to reset (use time mocking in real tests)
@@ -784,9 +769,7 @@ describe('Rate Limiting', () => {
     it('should return current rate limit status', async () => {
       // Make some requests
       for (let i = 0; i < 3; i++) {
-        await request(app)
-          .get('/api/v1/requests')
-          .set('X-API-Key', limitedKey);
+        await request(app).get('/api/v1/requests').set('X-API-Key', limitedKey);
       }
 
       const response = await request(app)
@@ -827,7 +810,7 @@ describe('Webhooks', () => {
         .send({
           name: 'Test Webhook',
           url: 'https://localhost:4567/webhook',
-          events: ['key.created', 'key.revoked']
+          events: ['key.created', 'key.revoked'],
         })
         .expect(201);
 
@@ -842,7 +825,7 @@ describe('Webhooks', () => {
         .send({
           name: 'HTTP Webhook',
           url: 'http://example.com/webhook',
-          events: ['key.created']
+          events: ['key.created'],
         })
         .expect(400);
 
@@ -853,7 +836,7 @@ describe('Webhooks', () => {
   describe('POST /api/v1/webhooks/:id/test', () => {
     it('should send test webhook delivery', async () => {
       const webhook = await createTestWebhook(webhookKey, {
-        url: 'https://localhost:4567/webhook'
+        url: 'https://localhost:4567/webhook',
       });
 
       webhookServer.expectRequest();
@@ -863,7 +846,7 @@ describe('Webhooks', () => {
         .set('X-API-Key', webhookKey)
         .send({
           event: 'test.ping',
-          payload: { test: true }
+          payload: { test: true },
         })
         .expect(200);
 
@@ -873,7 +856,7 @@ describe('Webhooks', () => {
 
     it('should handle webhook delivery failure', async () => {
       const webhook = await createTestWebhook(webhookKey, {
-        url: 'https://localhost:4567/webhook'
+        url: 'https://localhost:4567/webhook',
       });
 
       webhookServer.respondWith(500);
@@ -892,7 +875,7 @@ describe('Webhooks', () => {
   describe('GET /api/v1/webhooks/:id/deliveries', () => {
     it('should list webhook delivery history', async () => {
       const webhook = await createTestWebhook(webhookKey, {
-        url: 'https://localhost:4567/webhook'
+        url: 'https://localhost:4567/webhook',
       });
 
       // Trigger some deliveries
@@ -917,34 +900,26 @@ describe('Webhooks', () => {
 describe('Health Checks', () => {
   describe('GET /health', () => {
     it('should return healthy status', async () => {
-      const response = await request(app)
-        .get('/health')
-        .expect(200);
+      const response = await request(app).get('/health').expect(200);
 
       expect(response.body.status).toBe('healthy');
       expect(response.body.timestamp).toBeDefined();
     });
 
     it('should not require authentication', async () => {
-      await request(app)
-        .get('/health')
-        .expect(200);
+      await request(app).get('/health').expect(200);
     });
   });
 
   describe('GET /health/ready', () => {
     it('should check database connection', async () => {
-      const response = await request(app)
-        .get('/health/ready')
-        .expect(200);
+      const response = await request(app).get('/health/ready').expect(200);
 
       expect(response.body.checks.database).toBe('connected');
     });
 
     it('should check Redis connection', async () => {
-      const response = await request(app)
-        .get('/health/ready')
-        .expect(200);
+      const response = await request(app).get('/health/ready').expect(200);
 
       expect(response.body.checks.redis).toBe('connected');
     });
@@ -952,9 +927,7 @@ describe('Health Checks', () => {
     it('should return 503 if database disconnected', async () => {
       await disconnectDatabase();
 
-      const response = await request(app)
-        .get('/health/ready')
-        .expect(503);
+      const response = await request(app).get('/health/ready').expect(503);
 
       expect(response.body.status).toBe('not_ready');
       expect(response.body.checks.database).toBe('disconnected');
@@ -965,9 +938,7 @@ describe('Health Checks', () => {
 
   describe('GET /health/live', () => {
     it('should return alive with uptime', async () => {
-      const response = await request(app)
-        .get('/health/live')
-        .expect(200);
+      const response = await request(app).get('/health/live').expect(200);
 
       expect(response.body.status).toBe('alive');
       expect(response.body.uptime).toBeGreaterThanOrEqual(0);
@@ -994,11 +965,11 @@ const errorRate = new Rate('errors');
 
 export const options = {
   stages: [
-    { duration: '1m', target: 50 },   // Ramp up
-    { duration: '3m', target: 50 },   // Steady state
-    { duration: '1m', target: 100 },  // Peak load
-    { duration: '2m', target: 100 },  // Sustained peak
-    { duration: '1m', target: 0 },    // Ramp down
+    { duration: '1m', target: 50 }, // Ramp up
+    { duration: '3m', target: 50 }, // Steady state
+    { duration: '1m', target: 100 }, // Peak load
+    { duration: '2m', target: 100 }, // Sustained peak
+    { duration: '1m', target: 0 }, // Ramp down
   ],
   thresholds: {
     http_req_duration: ['p(95)<200', 'p(99)<500'],
@@ -1010,7 +981,7 @@ export const options = {
 const API_KEY = __ENV.API_KEY;
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:3000';
 
-export default function() {
+export default function () {
   const headers = {
     'X-API-Key': API_KEY,
     'Content-Type': 'application/json',
@@ -1022,7 +993,7 @@ export default function() {
     ['GET', `${BASE_URL}/api/v1/rate-limits/status`, null, { headers }],
   ]);
 
-  responses.forEach(res => {
+  responses.forEach((res) => {
     const success = check(res, {
       'status is 200': (r) => r.status === 200,
       'response time < 200ms': (r) => r.timings.duration < 200,
@@ -1049,7 +1020,7 @@ export const options = {
   scenarios: {
     burst: {
       executor: 'constant-arrival-rate',
-      rate: 200,           // 200 requests per second
+      rate: 200, // 200 requests per second
       timeUnit: '1s',
       duration: '1m',
       preAllocatedVUs: 50,
@@ -1058,7 +1029,7 @@ export const options = {
   },
 };
 
-export default function() {
+export default function () {
   const response = http.get(`${__ENV.BASE_URL}/api/v1/requests`, {
     headers: { 'X-API-Key': __ENV.API_KEY },
   });
@@ -1094,14 +1065,14 @@ export const options = {
     },
   },
   thresholds: {
-    http_req_duration: ['p(95)<1000'],  // Webhook delivery can be slower
+    http_req_duration: ['p(95)<1000'], // Webhook delivery can be slower
   },
 };
 
-export default function() {
+export default function () {
   const payload = JSON.stringify({
     event: 'test.load',
-    payload: { timestamp: Date.now() }
+    payload: { timestamp: Date.now() },
   });
 
   const response = http.post(
@@ -1112,7 +1083,7 @@ export default function() {
         'X-API-Key': __ENV.API_KEY,
         'Content-Type': 'application/json',
       },
-    }
+    },
   );
 
   check(response, {
@@ -1124,13 +1095,13 @@ export default function() {
 
 ### Performance Targets
 
-| Metric | Target | Critical |
-|--------|--------|----------|
-| p50 Latency | < 20ms | < 50ms |
-| p95 Latency | < 100ms | < 200ms |
-| p99 Latency | < 250ms | < 500ms |
-| Error Rate | < 0.1% | < 1% |
-| Throughput | > 1000 RPS | > 500 RPS |
+| Metric      | Target     | Critical  |
+| ----------- | ---------- | --------- |
+| p50 Latency | < 20ms     | < 50ms    |
+| p95 Latency | < 100ms    | < 200ms   |
+| p99 Latency | < 250ms    | < 500ms   |
+| Error Rate  | < 0.1%     | < 1%      |
+| Throughput  | > 1000 RPS | > 500 RPS |
 
 ---
 
@@ -1145,32 +1116,32 @@ export const testKeys = {
   adminKey: {
     name: 'Test Admin Key',
     scopes: ['admin'],
-    rateLimit: { requestsPerMinute: 10000 }
+    rateLimit: { requestsPerMinute: 10000 },
   },
   readOnlyKey: {
     name: 'Read Only Key',
     scopes: ['read:requests', 'read:webhooks'],
-    rateLimit: { requestsPerMinute: 100 }
+    rateLimit: { requestsPerMinute: 100 },
   },
   limitedKey: {
     name: 'Limited Key',
     scopes: ['read:requests'],
-    rateLimit: { requestsPerMinute: 5 }
-  }
+    rateLimit: { requestsPerMinute: 5 },
+  },
 };
 
 export const testWebhooks = {
   basicWebhook: {
     name: 'Basic Webhook',
     url: 'https://httpbin.org/post',
-    events: ['key.created']
+    events: ['key.created'],
   },
   fullWebhook: {
     name: 'Full Webhook',
     url: 'https://httpbin.org/post',
     events: ['key.created', 'key.updated', 'key.revoked'],
-    headers: { 'X-Custom': 'value' }
-  }
+    headers: { 'X-Custom': 'value' },
+  },
 };
 ```
 
@@ -1257,13 +1228,13 @@ jobs:
 
 ### Test Coverage Requirements
 
-| Component | Minimum Coverage |
-|-----------|------------------|
-| Services | 85% |
-| Middleware | 80% |
-| Routes | 75% |
-| Utils | 90% |
-| Overall | 80% |
+| Component  | Minimum Coverage |
+| ---------- | ---------------- |
+| Services   | 85%              |
+| Middleware | 80%              |
+| Routes     | 75%              |
+| Utils      | 90%              |
+| Overall    | 80%              |
 
 ---
 
@@ -1288,4 +1259,4 @@ jobs:
 
 ---
 
-*This QA strategy ensures comprehensive testing coverage for the DataHub API Gateway, with emphasis on API reliability, security, and performance.*
+_This QA strategy ensures comprehensive testing coverage for the DataHub API Gateway, with emphasis on API reliability, security, and performance._
