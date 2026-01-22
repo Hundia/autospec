@@ -1,0 +1,19 @@
+{
+  "projectName": "Task Manager",
+  "version": "1.0.0",
+  "created": "2026-01-21",
+  "aiProvider": "claude",
+  "techStack": {
+    "frontend": "React",
+    "backend": "Node.js",
+    "database": "PostgreSQL",
+    "language": "TypeScript"
+  },
+  "specsDir": "specs",
+  "promptsDir": "prompts",
+  "activeSprint": 0,
+  "features": {
+    "multiAgent": true,
+    "autoStatus": true
+  }
+}
