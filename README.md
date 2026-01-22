@@ -151,6 +151,12 @@ See [cli/README.md](./cli/README.md) for full documentation.
 
 ## Documentation
 
+### Research Paper
+
+AutoSpec methodology is documented in a peer-review style academic paper:
+- [Academic Paper (PDF)](./docs/ACADEMIC_PAPER.pdf) — Full research paper with methodology and results
+- [Academic Paper (Markdown)](./docs/ACADEMIC_PAPER.md) — Source document
+
 ### Methodology (the "why")
 
 - [Philosophy](./docs/methodology/01_philosophy.md) — Why spec-driven development works
