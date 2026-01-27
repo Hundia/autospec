@@ -16,6 +16,7 @@ import { generatePromptFile } from '../generators/prompt.generator.js';
 import { generateSkills } from '../generators/skill.generator.js';
 import { generateDocs } from '../generators/docs.generator.js';
 import { generateSprintPrompts } from '../generators/sprint-prompts.generator.js';
+import { generateViewerPrompts } from '../generators/viewer-prompt.generator.js';
 import { parseRequirements, ParsedRequirements } from '../parsers/requirements.parser.js';
 
 export interface InitOptions {
@@ -200,6 +201,16 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
       techStack: info.techStack,
     });
 
+    spinner.text = 'Generating viewer prompts...';
+
+    // Generate project viewer website prompts
+    const viewerPromptFiles = await generateViewerPrompts({
+      projectName: info.projectName,
+      outputDir: promptsDir,
+      requirements: info.requirements,
+      techStack: info.techStack,
+    });
+
     spinner.text = 'Generating AI skills...';
 
     // Generate AI skills
@@ -242,6 +253,11 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
       console.log(chalk.green(`    ✓ ${path.basename(file)}`));
     }
 
+    console.log(chalk.dim('\n  prompts/viewer/'));
+    for (const file of viewerPromptFiles) {
+      console.log(chalk.green(`    ✓ ${path.basename(file)}`));
+    }
+
     console.log(chalk.dim('\n  ai skills/'));
     for (const file of skillFiles) {
       console.log(chalk.green(`    ✓ ${path.relative(projectDir, file)}`));
@@ -258,6 +274,7 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
     console.log(chalk.dim('  5. Run ' + chalk.cyan('sdd status') + ' to see progress'));
     console.log(chalk.dim('  6. Use docs/gemini-diagram-prompts.md for visual diagrams'));
     console.log(chalk.dim('  7. Use docs/remotion-video-prompt.md for video generation'));
+    console.log(chalk.dim('  8. Use prompts/viewer/ to generate a project viewer website'));
 
     console.log('');
   } catch (error) {
