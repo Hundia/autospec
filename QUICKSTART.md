@@ -121,6 +121,10 @@ project/
 │   ├── qa-review.md                    # QA review checklist prompt
 │   └── finops.md                       # Model selection optimizer (haiku/sonnet/opus)
 │
+├── prompts/                            # Additional generation prompts
+│   ├── gemini-diagram-prompts.md       # Prompts for Gemini to generate architecture diagrams
+│   └── remotion-video-prompt.md        # Prompt for Remotion video generation
+│
 └── viewer/                             # Project monitor website (React app)
     └── (see Section 7 for full spec)
 
@@ -389,52 +393,288 @@ Each file should be 100–300 lines, specific to THIS project.
 SECTION 5 — SPRINT PROMPTS
 ══════════════════════════════════════════════════════════════
 
-Generate every file in sprint_prompts/.
+Generate every file in sprint_prompts/. Each prompt must be COMPLETE and
+READY TO PASTE into an AI assistant — the user should not need to add context.
+
+CRITICAL: Every sprint prompt must begin with an instruction block that tells
+the AI to read ALL relevant project files before executing. This is how the AI
+gets full context. Each prompt must list the exact files to read.
 
 ### sprint_prompts/sprint-0-foundation.md
-A complete, ready-to-paste prompt for executing Sprint 0 with:
-- Full project context (name, stack, what the specs say)
-- Phase breakdown: Infrastructure → Backend setup → Frontend setup → Quality gates
+
+A complete, ready-to-paste prompt for executing Sprint 0. Structure:
+
+```
+## Context — Read These Files First
+
+Read the following files to understand the full project:
+
+SPECS (read all):
+  specs/01_product_manager.md   — requirements, personas, user flows
+  specs/02_backend_lead.md      — API design, service layer, error handling
+  specs/03_frontend_lead.md     — components, state, routing, design tokens
+  specs/04_db_architect.md      — database schema, migrations, queries
+  specs/05_qa_lead.md           — test strategy, coverage targets
+  specs/06_devops_lead.md       — infrastructure, CI/CD, Docker
+  specs/10_ui_designer.md       — screens, wireframes, responsive design
+
+BACKLOG:
+  specs/backlog.md              — Sprint 0 tickets (your work items)
+
+DOCS (read all relevant):
+  docs/architecture/overview.md     — system architecture
+  docs/architecture/backend.md      — backend layer design
+  docs/architecture/frontend.md     — frontend component architecture
+  docs/architecture/database.md     — ERD, tables, relationships
+  docs/architecture/security.md     — auth flow, security rules
+  docs/environments/development.md  — local setup prerequisites
+  docs/environments/docker.md       — Docker setup
+  docs/environments/environment-variables.md — all env vars
+  docs/project/setup.md             — repo structure, config files
+  docs/project/coding-standards.md  — naming conventions, patterns
+  docs/workflows/development.md     — development workflow
+  docs/workflows/git-workflow.md    — branching, commit format
+  docs/testing/strategy.md          — test pyramid, tooling
+  docs/ui-design-system/tokens.md   — design tokens
+```
+
+Then:
+- Phase breakdown: Infrastructure → Database → Backend setup → Frontend setup → Quality gates
 - Per-ticket instructions referencing the exact spec file and section
-- Definition of done checklist
-- Commands to verify each phase (health check, lint, test)
+- Definition of done checklist per ticket
+- Commands to verify each phase (health check, lint, typecheck, test)
+- Backlog update: mark each ticket "done" in specs/backlog.md after completion
 
 ### sprint_prompts/sprint-N-template.md
-A template prompt for any feature sprint with:
-- [N] placeholder for sprint number
-- Instructions to read specs/backlog.md for the sprint's tickets
+
+A template prompt for any feature sprint with [N] placeholder. Structure:
+
+```
+## Context — Read These Files First
+
+Read the following files:
+  specs/backlog.md                          — find Sprint [N] tickets
+  specs/01_product_manager.md               — requirements for this sprint's features
+  specs/02_backend_lead.md                  — API contracts for endpoints in this sprint
+  specs/03_frontend_lead.md                 — component specs for UI in this sprint
+  specs/04_db_architect.md                  — database changes needed
+  specs/05_qa_lead.md                       — test requirements
+  docs/architecture/overview.md             — ensure changes fit architecture
+  docs/architecture/backend.md              — follow backend patterns
+  docs/architecture/frontend.md             — follow frontend patterns
+  docs/architecture/database.md             — follow DB conventions
+  docs/api/reference.md                     — endpoint contracts
+  docs/api/authentication.md                — auth patterns (if auth-related)
+  docs/api/error-codes.md                   — error handling patterns
+  docs/testing/unit-tests.md                — unit test patterns
+  docs/testing/integration-tests.md         — integration test patterns
+  docs/workflows/development.md             — development workflow to follow
+  docs/workflows/git-workflow.md            — branch + commit conventions
+  docs/ui-design-system/tokens.md           — design tokens for UI work
+  docs/ui-design-system/components.md       — component patterns
+  docs/project/coding-standards.md          — naming + patterns
+```
+
+Then:
 - Backend ticket pattern: migration → schema → repo → service → controller → routes → tests
 - Frontend ticket pattern: types → API service → components → page → routes → tests
-- Backlog update reminders after every ticket
-- Sprint completion checklist
+- After EVERY ticket: update specs/backlog.md (status → "done", add notes)
+- Sprint completion checklist: all tests pass, lint clean, typecheck clean
 
 ### sprint_prompts/multi-agent.md
-- Agent A (Backend) prompt: scope, directory, specs to read, pattern, rules
-- Agent B (Frontend) prompt: scope, directory, specs to read, pattern, rules
-- Integration phase prompt: merge, connect APIs, full test suite, fix issues
-- Rules: no cross-directory work, shared backlog, dependency order
+
+Two separate prompts (Agent A and Agent B) that can be pasted into parallel AI sessions:
+
+Agent A (Backend) prompt must start with:
+```
+Read these files:
+  specs/02_backend_lead.md, specs/04_db_architect.md, specs/05_qa_lead.md
+  specs/backlog.md (your tickets: Owner = "Backend" or "DB")
+  docs/architecture/backend.md, docs/architecture/database.md, docs/architecture/security.md
+  docs/api/reference.md, docs/api/authentication.md, docs/api/error-codes.md
+  docs/environments/environment-variables.md
+  docs/testing/unit-tests.md, docs/testing/integration-tests.md
+  docs/project/coding-standards.md
+```
+
+Agent B (Frontend) prompt must start with:
+```
+Read these files:
+  specs/03_frontend_lead.md, specs/10_ui_designer.md, specs/05_qa_lead.md
+  specs/backlog.md (your tickets: Owner = "Frontend")
+  docs/architecture/frontend.md
+  docs/ui-design-system/tokens.md, docs/ui-design-system/components.md,
+  docs/ui-design-system/layouts.md, docs/ui-design-system/accessibility.md
+  docs/testing/unit-tests.md, docs/testing/e2e-tests.md
+  docs/project/coding-standards.md
+```
+
+Integration phase prompt: merge branches, connect APIs, run full test suite, fix issues
+Rules: no cross-directory work, shared backlog, dependency order respected
 
 ### sprint_prompts/qa-review.md
-- Prompt for QA review after a sprint
+
+Prompt for QA review after a sprint. Must start with:
+```
+Read ALL specs and docs to understand the full project:
+  specs/* (all 10 specs + backlog.md)
+  docs/testing/* (strategy, unit, integration, e2e, test-data)
+  docs/architecture/security.md
+  docs/api/reference.md, docs/api/error-codes.md
+  docs/ui-design-system/accessibility.md
+  docs/workflows/qa-review.md
+```
+
+Then:
 - Checklist sections: code quality, test coverage, security, functional, performance, accessibility
 - Per-ticket output format: status (PASS/FAIL), issues found, verdict
-- Final actions: mark tickets done, add bugs to backlog
+- Final actions: mark tickets done in backlog, add bugs to Bug Backlog
 
 ### sprint_prompts/finops.md
 - Model selection guide: haiku (40%), sonnet (45%), opus (15%)
-- Per-task-type recommendations
+- Per-task-type recommendations (haiku: boilerplate/CRUD, sonnet: features/tests, opus: architecture/complex)
 - Cost comparison table
 - Sprint cost forecast template
 
 ══════════════════════════════════════════════════════════════
-SECTION 6 — VIEWER / PROJECT MONITOR WEBSITE
+SECTION 6 — GENERATION PROMPTS (GEMINI DIAGRAMS + REMOTION VIDEO)
+══════════════════════════════════════════════════════════════
+
+Generate the following prompt files in prompts/.
+
+### prompts/gemini-diagram-prompts.md
+
+A ready-to-paste prompt for Google Gemini (or any image-capable AI) to generate
+architecture and workflow diagrams. The prompt must instruct the AI to:
+
+- Read ALL generated files to understand the full project
+- Generate these diagrams:
+  1. System Architecture Diagram — from docs/architecture/overview.md
+     (client → API → services → DB → cache → queue → external)
+  2. Database ERD — from specs/04_db_architect.md and docs/architecture/database.md
+     (all tables, relationships, cardinality, key columns)
+  3. Frontend Component Tree — from specs/03_frontend_lead.md and docs/architecture/frontend.md
+     (App → layouts → pages → organisms → molecules → atoms)
+  4. CI/CD Pipeline — from specs/06_devops_lead.md and docs/workflows/ci-cd-pipeline.md
+     (stages with parallel branches, triggers, artifacts)
+  5. Authentication Flow — from docs/architecture/security.md and docs/api/authentication.md
+     (register → login → JWT → refresh → logout, with token storage)
+  6. Cloud Infrastructure — from docs/architecture/cloud.md
+     (VPC, subnets, services, load balancer, CDN, monitoring)
+  7. User Journey Map — from specs/01_product_manager.md
+     (persona → entry point → core actions → completion → edge cases)
+  8. Sprint Workflow — from docs/workflows/sprint-execution.md
+     (ticket pickup → implement → test → review → merge → deploy)
+
+- Style: clean, professional, consistent colour palette, legible at 1x zoom
+- Format: SVG or high-res PNG (300 DPI)
+- Include a legend on each diagram
+
+### prompts/remotion-video-prompt.md
+
+A ready-to-paste prompt for generating a Remotion (React video framework)
+project that creates an animated project overview video.
+
+The prompt must instruct the AI to:
+
+1. READ ALL GENERATED PROJECT FILES to understand every aspect:
+   - All 10 specs in specs/ (01_product_manager.md through 10_ui_designer.md)
+   - The complete backlog in specs/backlog.md (all sprints, tickets, story points)
+   - All 37 docs across docs/architecture/, docs/workflows/, docs/environments/,
+     docs/api/, docs/testing/, docs/ui-design-system/, docs/project/
+   - The sprint prompts in sprint_prompts/
+
+2. GENERATE A REMOTION PROJECT with these scenes (in order):
+
+   Scene 1 — Title Card (3s):
+     Project name, tagline from 01_product_manager.md, tech stack badges
+
+   Scene 2 — Problem & Solution (8s):
+     Problem statement from 01_product_manager.md
+     Animated bullet points of key pain points → solution value props
+
+   Scene 3 — Architecture Overview (10s):
+     Animate the system architecture from docs/architecture/overview.md
+     Components fly in: client → API → services → DB → cache
+     Connection lines draw between components
+     Tech stack labels appear on each component
+
+   Scene 4 — Database Schema (8s):
+     Animate ERD from specs/04_db_architect.md
+     Tables slide in, relationships draw as lines
+     Show key columns and data types per table
+
+   Scene 5 — User Flows (10s):
+     Animate 2-3 key user flows from specs/01_product_manager.md
+     Show persona → screens → actions → outcomes
+     Use screen mockup shapes from specs/10_ui_designer.md
+
+   Scene 6 — API Overview (6s):
+     Animate endpoint groups from docs/api/reference.md
+     Show request → response flow with status codes
+     Group by resource (auth, users, core features)
+
+   Scene 7 — Frontend Architecture (8s):
+     Component tree animation from docs/architecture/frontend.md
+     App root → pages → layouts → components (cascade reveal)
+     Show state management flow arrows
+
+   Scene 8 — Sprint Roadmap (10s):
+     Animate sprint timeline from specs/backlog.md
+     Each sprint slides in as a card with:
+       Sprint name, goal, ticket count, story points
+     Progress bar fills for each sprint
+     Total project: X sprints, Y tickets, Z story points
+
+   Scene 9 — DevOps & Deployment (6s):
+     CI/CD pipeline animation from docs/workflows/ci-cd-pipeline.md
+     Pipeline stages flow: lint → test → build → deploy
+     Docker + cloud infrastructure from docs/architecture/cloud.md
+
+   Scene 10 — Security (5s):
+     Auth flow animation from docs/architecture/security.md
+     Show JWT token lifecycle, RBAC roles
+     Security checklist items check off
+
+   Scene 11 — Testing Strategy (5s):
+     Test pyramid animation from docs/testing/strategy.md
+     Unit (70%) → Integration (20%) → E2E (10%)
+     Coverage targets and CI gates
+
+   Scene 12 — Team & Roles (6s):
+     Show all 10 AutoSpec roles animating in:
+     Product Manager, Backend Lead, Frontend Lead, DB Architect,
+     QA Lead, DevOps Lead, Marketing Lead, Finance Lead,
+     Business Lead, UI Designer
+     Each with an icon and one-line responsibility
+
+   Scene 13 — Closing Card (4s):
+     Project name, "Built with AutoSpec"
+     Key stats: X specs, Y docs, Z sprint prompts
+     GitHub URL / project URL
+
+3. TECHNICAL REQUIREMENTS:
+   - Remotion v4 + TypeScript
+   - 1920x1080 (1080p), 30fps
+   - Total duration: ~90 seconds
+   - Use @remotion/transitions for scene transitions (slide, fade, wipe)
+   - Use @remotion/paths for SVG path drawing animations
+   - Use spring() for physics-based animations
+   - Consistent colour palette matching the project's design tokens from
+     docs/ui-design-system/tokens.md
+   - Font: Inter (headings) + JetBrains Mono (code)
+   - Background: dark gradient (#0f172a → #1e293b)
+   - Export as MP4 (H.264) and WebM
+
+══════════════════════════════════════════════════════════════
+SECTION 7 — VIEWER / PROJECT MONITOR WEBSITE
 ══════════════════════════════════════════════════════════════
 
 Generate a complete, self-contained React application in viewer/ that
 provides a visual dashboard for ALL generated artefacts (specs, docs,
 backlog, workflows).
 
-### 6.1 Tech Stack
+### 7.1 Tech Stack
 
   React 18 + TypeScript + Vite + Tailwind CSS + React Router
   @xyflow/react (React Flow v12) — workflow graph visualisation
@@ -442,7 +682,7 @@ backlog, workflows).
   lucide-react — icons
   react-markdown + remark-gfm — Markdown rendering
 
-### 6.2 Project Structure
+### 7.2 Project Structure
 
 viewer/
 ├── public/
@@ -524,7 +764,7 @@ viewer/
 ├── tsconfig.json
 └── package.json
 
-### 6.3 Design System (Dark Theme)
+### 7.3 Design System (Dark Theme)
 
 Colours:
   --bg:           #0f172a   (slate-950)
@@ -545,50 +785,82 @@ Base: 16 px, scale: 1.25
 Spacing: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 px
 Radii: sm 6, md 10, lg 16, full 9999
 
-### 6.4 Pages
+### 7.4 Pages
 
 Dashboard ("/"):
   - Project name, description, tech stack badges
-  - Sprint progress ring (% done)
-  - Stat cards: tickets, done, in-progress, blocked
-  - Top 5 in-progress tickets table
-  - Quick-links grid to all 10 specs and all doc sections
+  - Sprint progress ring (% done calculated from backlog.json)
+  - Stat cards: total tickets, done, in-progress, blocked (from backlog.json)
+  - Top 5 in-progress tickets table (from backlog.json)
+  - Quick-links grid to ALL 10 specs (01_product_manager → 10_ui_designer)
+  - Quick-links grid to ALL doc folders (architecture, workflows, environments, api, testing, ui-design-system, project)
   - "View Workflows" CTA
+  - "View Backlog" CTA with total ticket count
 
 Specs ("/specs"):
   - 10 spec cards in responsive grid (2 col md, 3 col lg)
-  - Card: role icon, title, excerpt, word count
-  - Detail ("/specs/:slug"): full Markdown, sticky TOC from ## headings
+  - Card: role icon, title, excerpt (first 150 chars), word count badge
+  - Must render ALL 10 specs:
+    01_product_manager.md  │  02_backend_lead.md    │  03_frontend_lead.md
+    04_db_architect.md     │  05_qa_lead.md         │  06_devops_lead.md
+    07_marketing_lead.md   │  08_finance_lead.md    │  09_business_lead.md
+    10_ui_designer.md
+  - Detail ("/specs/:slug"): full Markdown rendered with react-markdown + remark-gfm
+  - Sticky TOC auto-generated from ## headings
+  - "Back to all specs" breadcrumb
 
 Docs ("/docs"):
-  - Nested tree navigation mirroring docs/ folder structure
-  - Cards per folder (architecture, workflows, environments, etc.)
+  - Nested tree navigation mirroring the EXACT docs/ folder structure
+  - Top-level cards per folder with file count badge:
+    📁 architecture/ (7 files)  — overview, backend, frontend, database, security, cloud, deep-dive
+    📁 workflows/ (8 files)     — development, sprint-execution, git-workflow, ci-cd-pipeline, bug-fix, deployment, multi-agent, qa-review
+    📁 environments/ (5 files)  — development, docker, staging, production, environment-variables
+    📁 api/ (4 files)           — reference, authentication, error-codes, rate-limiting
+    📁 testing/ (5 files)       — strategy, unit-tests, integration-tests, e2e-tests, test-data
+    📁 ui-design-system/ (5 files) — tokens, components, layouts, accessibility, icons-assets
+    📁 project/ (3 files)       — setup, coding-standards, glossary
+  - Clicking a folder shows all files inside as cards
   - Detail ("/docs/:section/:slug"): full Markdown with TOC
   - Breadcrumb: Docs > Architecture > Security
+  - EVERY .md file from ALL 37 doc files must be accessible and rendered
 
 Backlog ("/backlog"):
+  THIS IS THE MOST CRITICAL DATA PAGE — it renders specs/backlog.md as a fully
+  interactive board.
+
+  - Parse backlog.md into structured data: sprints, tickets, stats
   - Tab per sprint (Sprint 0, 1, 2, …)
-  - Table with ticket rows, status badges (colour-coded), owner, model
-  - Filters: status, owner, model
-  - Search: free-text across descriptions
-  - Sprint progress bar per tab
+  - Per-sprint header: sprint goal, total points, progress bar (done/total)
+  - Table with columns: ID | Title | Description | Points | Status | Owner | Model | Dependencies
+  - Status badges colour-coded:
+    todo = slate, in-progress = blue, done = emerald, blocked = red
+  - Filters: status dropdown, owner dropdown, model dropdown (haiku/sonnet/opus)
+  - Search: free-text across ticket titles and descriptions
+  - Sprint summary stats: total tickets, total points, points completed, % done
+  - Overall project stats header: total sprints, total tickets, total story points
+  - Bug Backlog tab at the end with severity badges
+  - Click any ticket row → DetailsPanel slides in with full description,
+    dependencies (linked to their tickets), and owner info
 
 Workflows ("/workflows"):
-  - Full-screen React Flow canvas (see Section 6.5)
+  - Full-screen React Flow canvas (see Section 7.5)
   - Top toolbar: animation controls + search + filters
   - Bottom-right: legend overlay (collapsible)
   - Sidebar auto-collapses on this page
 
 Architecture ("/architecture"):
-  - Renders docs/architecture/overview.md as Markdown
-  - ASCII diagrams in styled <pre> blocks
-  - Links to other architecture docs
+  - Renders ALL 7 docs/architecture/ files:
+    overview.md | backend.md | frontend.md | database.md | security.md | cloud.md | deep-dive.md
+  - Tab or accordion per file
+  - ASCII diagrams rendered in styled <pre> blocks with monospace font
+  - Cross-links between architecture docs (e.g., "See security.md" becomes a click)
 
 Requirements ("/requirements"):
-  - Renders original SRS as Markdown
-  - Functional vs non-functional badges
+  - Renders original SRS/PRD as Markdown
+  - Functional vs non-functional sections with colour badges
+  - Highlight extracted requirements that map to spec tickets
 
-### 6.5 Workflow Animation Engine
+### 7.5 Workflow Animation Engine
 
 DATA MODEL:
 
@@ -721,18 +993,83 @@ PERFORMANCE (>50 nodes or >80 edges):
   7. Framer Motion: panels/pages ONLY. Never on canvas elements.
   8. Zero setInterval / setTimeout for animation.
 
-### 6.6 Viewer Data Files
+### 7.6 Viewer Data Files
 
-Generate these inside viewer/src/data/:
+Generate these inside viewer/src/data/. The viewer must have access to
+EVERY SINGLE generated .md file so it can render them all.
 
-- Copy all 10 spec .md files into data/specs/.
-- Copy all docs .md files into data/docs/ (preserving folder structure).
-- Generate backlog.json from specs/backlog.md (structured JSON).
-- Generate workflows.json with 6+ graphs (per Section 6.5).
-- Copy the original requirements into data/requirements.md.
+viewer/src/data/
+├── specs/
+│   ├── 01_product_manager.md
+│   ├── 02_backend_lead.md
+│   ├── 03_frontend_lead.md
+│   ├── 04_db_architect.md
+│   ├── 05_qa_lead.md
+│   ├── 06_devops_lead.md
+│   ├── 07_marketing_lead.md
+│   ├── 08_finance_lead.md
+│   ├── 09_business_lead.md
+│   └── 10_ui_designer.md
+│
+├── docs/
+│   ├── architecture/
+│   │   ├── overview.md
+│   │   ├── backend.md
+│   │   ├── frontend.md
+│   │   ├── database.md
+│   │   ├── security.md
+│   │   ├── cloud.md
+│   │   └── deep-dive.md
+│   ├── workflows/
+│   │   ├── development.md
+│   │   ├── sprint-execution.md
+│   │   ├── git-workflow.md
+│   │   ├── ci-cd-pipeline.md
+│   │   ├── bug-fix.md
+│   │   ├── deployment.md
+│   │   ├── multi-agent.md
+│   │   └── qa-review.md
+│   ├── environments/
+│   │   ├── development.md
+│   │   ├── docker.md
+│   │   ├── staging.md
+│   │   ├── production.md
+│   │   └── environment-variables.md
+│   ├── api/
+│   │   ├── reference.md
+│   │   ├── authentication.md
+│   │   ├── error-codes.md
+│   │   └── rate-limiting.md
+│   ├── testing/
+│   │   ├── strategy.md
+│   │   ├── unit-tests.md
+│   │   ├── integration-tests.md
+│   │   ├── e2e-tests.md
+│   │   └── test-data.md
+│   ├── ui-design-system/
+│   │   ├── tokens.md
+│   │   ├── components.md
+│   │   ├── layouts.md
+│   │   ├── accessibility.md
+│   │   └── icons-assets.md
+│   └── project/
+│       ├── setup.md
+│       ├── coding-standards.md
+│       └── glossary.md
+│
+├── backlog.json              # Parsed from specs/backlog.md into structured JSON:
+│                             #   { sprints: [{ id, name, goal, tickets: [{ id, title,
+│                             #     description, points, status, owner, model, deps }] }],
+│                             #     bugs: [{ id, title, severity, status, sprint, notes }] }
+│
+├── workflows.json            # Graph definitions (per Section 7.5)
+└── requirements.md           # Original SRS/PRD input documents
+
+Import strategy: Use Vite's ?raw import for .md files so they are embedded
+at build time. For .json files, use standard import.
 
 ══════════════════════════════════════════════════════════════
-SECTION 7 — QUALITY GATES
+SECTION 8 — QUALITY GATES
 ══════════════════════════════════════════════════════════════
 
 Every generated file must:
@@ -774,6 +1111,7 @@ Once the AI has generated everything, your project folder contains:
 | `docs/ui-design-system/` | Tokens, components, layouts, a11y, assets | 5 |
 | `docs/project/` | Setup, coding standards, glossary | 3 |
 | `sprint_prompts/` | Sprint 0, sprint N, multi-agent, QA, finops | 5 |
+| `prompts/` | Gemini diagram prompts, Remotion video prompt | 2 |
 | `viewer/` | React monitor app | Full project |
 
 **Next steps:**
