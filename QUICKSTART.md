@@ -1,573 +1,828 @@
-# AutoSpec Quickstart
+# AutoSpec — Master Generation Prompt
 
-**Go from requirements to working code in 5 steps.**
-
-This guide shows you how to use AutoSpec manually with any AI assistant (Claude, Copilot, ChatGPT, etc.). No CLI required.
+**The single prompt that generates everything.** Paste this into your AI assistant alongside your SRS / requirements documents. No CLI needed.
 
 ---
 
-## Overview
+## How To Use
 
-```
-Requirements → Specs → Backlog → Sprint 0 → Sprint 1+
-   (5 min)    (15 min)  (10 min)  (2-4 hrs)   (repeat)
-```
-
-Each step produces artifacts that feed the next. By the end, you'll have:
-- 10 specification documents covering all aspects of your project
-- A structured backlog with sized tickets
-- Working code with tests
-- Clear documentation of what was built
+1. Place your SRS, PRD, or requirements documents in a folder.
+2. Copy the **Generation Prompt** below into your AI assistant.
+3. Replace `{{INPUT_FOLDER}}` with the path to your documents folder.
+4. The AI generates the complete output structure in one pass.
 
 ---
 
-## Before You Start
+## Generation Prompt
 
-1. **Create a project folder** for your new project
-2. **Have an AI assistant ready** (Claude Code, VS Code + Copilot, etc.)
-3. **Know what you want to build** (even a rough idea works)
+Copy everything between the `---START---` and `---END---` markers.
 
----
-
-## Step 1: Write Your Requirements
-
-Create a `requirements.md` file describing what you want to build.
-
-### Option A: Start from Template
-
-Copy this template and fill it in:
-
-```markdown
-# [Project Name] - Requirements
-
-## Vision
-[One paragraph describing what you're building and why]
-
-## Target Users
-- Primary: [Who is the main user?]
-- Secondary: [Other users?]
-
-## Core Features
-1. [Feature 1] - [Brief description]
-2. [Feature 2] - [Brief description]
-3. [Feature 3] - [Brief description]
-4. [Feature 4] - [Brief description]
-5. [Feature 5] - [Brief description]
-
-## Technical Requirements
-- **Frontend**: [React/Vue/etc.]
-- **Backend**: [Node/Python/etc.]
-- **Database**: [PostgreSQL/MongoDB/etc.]
-- **Hosting**: [Vercel/AWS/etc.]
-
-## Success Metrics
-- [Metric 1]: [Target]
-- [Metric 2]: [Target]
-
-## Constraints
-- Timeline: [Deadline if any]
-- Budget: [If relevant]
-- Must integrate with: [Existing systems]
-
-## Out of Scope (for now)
-- [What you're NOT building in v1]
-```
-
-### Option B: Look at Examples
-
-See complete examples:
-- **E-commerce (ShopFlow)**: [examples/ecommerce/requirements.md](./examples/ecommerce/requirements.md)
-- **API Service (DataHub)**: [examples/api-service/requirements.md](./examples/api-service/requirements.md)
-
----
-
-## Step 2: Generate Your Team (10 Specs)
-
-Use this prompt to generate all 10 specification documents from your requirements.
-
-### The Prompt
-
-Copy and paste this into your AI assistant:
+---START---
 
 ```
-You are executing the AutoSpec methodology to generate specifications.
+You are executing the AutoSpec Spec-Driven Development methodology.
 
-## Your Task
-Read my requirements document and generate 10 comprehensive specification files, one for each role in the 10-role model.
+Read ALL documents in the input folder. Use them as the single source of truth.
 
 ## Input
-[PASTE YOUR requirements.md CONTENT HERE]
 
-## Output Structure
-Create these files in a `specs/` folder:
+Read every file in: {{INPUT_FOLDER}}
+These are the project's SRS, PRD, and/or requirements documents.
 
-### 1. specs/01_product_manager.md
-- Product vision and objectives (specific to this project)
-- 3-5 detailed user personas with goals, frustrations, behaviors
-- User stories with acceptance criteria (Given/When/Then format)
-- User flows (registration, core actions, edge cases)
-- Feature prioritization using MoSCoW method
+Extract from them:
+  - Project name and description
+  - Target users / personas
+  - All functional and non-functional requirements
+  - Technical stack (frontend, backend, database, language, hosting)
+  - Constraints, assumptions, and out-of-scope items
+  - User flows and business rules
 
-### 2. specs/02_backend_lead.md
-- System architecture overview with diagram
-- Complete API contracts table (Method, Path, Auth, Request, Response)
-- Request/response JSON examples for each endpoint
-- Authentication flow (JWT, sessions, OAuth if needed)
-- Service layer design with responsibilities
-- Error handling standards (error codes, messages, HTTP status mapping)
-- Rate limiting strategy
+If any of the above are missing from the input documents, state your assumptions
+explicitly at the top of 01_product_manager.md and continue generating.
 
-### 3. specs/03_frontend_lead.md
-- Component hierarchy using atomic design (atoms, molecules, organisms)
-- State management approach (what goes in global vs local state)
-- Design system tokens (colors with hex, spacing scale, typography)
-- Complete routing structure with auth guards
-- Form handling patterns with validation
-- Performance requirements (Core Web Vitals targets)
+══════════════════════════════════════════════════════════════
+GENERATION PLAN — WHAT YOU MUST PRODUCE
+══════════════════════════════════════════════════════════════
 
-### 4. specs/04_db_architect.md
-- Entity-Relationship diagram (ASCII art or description)
-- Complete CREATE TABLE statements with all columns, types, constraints
-- Index definitions for query optimization
-- Migration strategy (naming convention, versioning)
-- Common query patterns
-- Seed data plan for development/testing
+Generate the COMPLETE output structure below.
+Every file must be specific to THIS project — no generic placeholders.
 
-### 5. specs/05_qa_lead.md
-- Test strategy (unit/integration/e2e percentages)
-- Test cases for critical user paths
-- Coverage requirements (target 70%+)
-- Performance benchmarks (response times, load capacity)
-- Security testing checklist based on OWASP top 10
+project/
+│
+├── specs/                              # 10 role-based specifications
+│   ├── 01_product_manager.md
+│   ├── 02_backend_lead.md
+│   ├── 03_frontend_lead.md
+│   ├── 04_db_architect.md
+│   ├── 05_qa_lead.md
+│   ├── 06_devops_lead.md
+│   ├── 07_marketing_lead.md
+│   ├── 08_finance_lead.md
+│   ├── 09_business_lead.md
+│   ├── 10_ui_designer.md
+│   └── backlog.md                      # Sprint-organized ticket backlog
+│
+├── docs/                               # Comprehensive project documentation
+│   ├── architecture/
+│   │   ├── overview.md                 # High-level system architecture
+│   │   ├── backend.md                  # Backend layers, patterns, structure
+│   │   ├── frontend.md                 # Component architecture, state, routing
+│   │   ├── database.md                 # ERD, schemas, migrations, queries
+│   │   ├── security.md                 # Auth flow, encryption, OWASP checklist
+│   │   ├── cloud.md                    # Cloud provider architecture (AWS/GCP/Azure)
+│   │   └── deep-dive.md               # Detailed technical decisions and trade-offs
+│   │
+│   ├── workflows/
+│   │   ├── development.md              # Feature development step-by-step
+│   │   ├── sprint-execution.md         # How to run a sprint (single + multi-agent)
+│   │   ├── git-workflow.md             # Branching strategy, commit conventions, PR flow
+│   │   ├── ci-cd-pipeline.md           # Pipeline stages, triggers, artifacts
+│   │   ├── bug-fix.md                  # Triage → reproduce → fix → verify flow
+│   │   ├── deployment.md               # Dev → staging → production deployment
+│   │   ├── multi-agent.md              # Parallel agent execution rules
+│   │   └── qa-review.md               # QA checklist and review process
+│   │
+│   ├── environments/
+│   │   ├── development.md              # Local setup guide with prerequisites
+│   │   ├── docker.md                   # docker-compose, Dockerfiles, commands
+│   │   ├── staging.md                  # Staging environment config
+│   │   ├── production.md               # Production environment + checklist
+│   │   └── environment-variables.md    # Complete .env reference with every variable
+│   │
+│   ├── api/
+│   │   ├── reference.md                # Full REST API reference (all endpoints)
+│   │   ├── authentication.md           # Auth endpoints, token flow, refresh
+│   │   ├── error-codes.md              # Error code catalog with HTTP mappings
+│   │   └── rate-limiting.md            # Rate limit rules per endpoint
+│   │
+│   ├── testing/
+│   │   ├── strategy.md                 # Test pyramid, coverage targets
+│   │   ├── unit-tests.md               # Unit test patterns with examples
+│   │   ├── integration-tests.md        # API integration test patterns
+│   │   ├── e2e-tests.md                # End-to-end test scenarios
+│   │   └── test-data.md                # Seed data, fixtures, factories
+│   │
+│   ├── ui-design-system/
+│   │   ├── tokens.md                   # Colors, typography, spacing, radii, shadows
+│   │   ├── components.md               # Component inventory with states
+│   │   ├── layouts.md                  # Page layouts, grid system, breakpoints
+│   │   ├── accessibility.md            # WCAG 2.1 AA checklist, screen reader notes
+│   │   └── icons-assets.md             # Icon set, image guidelines, loading strategy
+│   │
+│   └── project/
+│       ├── setup.md                    # Repo structure, configs, IDE setup
+│       ├── coding-standards.md         # Naming, patterns, linting rules
+│       └── glossary.md                 # Project-specific terms defined
+│
+├── sprint_prompts/                     # Ready-to-paste sprint execution prompts
+│   ├── sprint-0-foundation.md          # Foundation sprint with phase breakdown
+│   ├── sprint-N-template.md            # Feature sprint template (replace N)
+│   ├── multi-agent.md                  # Agent A (backend) + Agent B (frontend) prompts
+│   ├── qa-review.md                    # QA review checklist prompt
+│   └── finops.md                       # Model selection optimizer (haiku/sonnet/opus)
+│
+└── viewer/                             # Project monitor website (React app)
+    └── (see Section 7 for full spec)
 
-### 6. specs/06_devops_lead.md
-- Infrastructure architecture diagram
-- CI/CD pipeline design (stages, triggers, artifacts)
-- Environment configuration (dev, staging, prod differences)
-- Deployment strategy (blue-green, rolling, etc.)
-- Monitoring stack (what metrics, what alerts)
-- Logging strategy
-- Backup and recovery procedures
+══════════════════════════════════════════════════════════════
+SECTION 1 — SPECS (10 Role-Based Specifications)
+══════════════════════════════════════════════════════════════
 
-### 7. specs/07_marketing_lead.md
-- Go-to-market strategy
-- Target audience segments with size estimates
-- Messaging framework (value props, taglines, elevator pitch)
+Generate 10 specification files in specs/. Each must be 300–800 lines,
+specific to THIS project, with concrete examples — never generic placeholders.
+Cross-reference other specs by filename where relevant.
+
+### specs/01_product_manager.md
+- Project vision, elevator pitch (one paragraph)
+- Problem statement (what pain does this solve?)
+- 3–5 detailed user personas: name, role, goals, frustrations, tech comfort
+- User stories with acceptance criteria (Given/When/Then)
+- Complete user flows (registration, core actions, edge cases) with ASCII diagrams
+- Feature prioritization (MoSCoW: Must/Should/Could/Won't for v1)
+- Success metrics with numeric targets
+- Assumptions stated explicitly
+
+### specs/02_backend_lead.md
+- System architecture overview with ASCII diagram
+- Tech stack table (framework, ORM, validation, auth, testing)
+- Project directory structure
+- Complete API contracts table: Method | Path | Auth | Request Body | Response | Status Codes
+- Request/response JSON examples for EVERY endpoint
+- Authentication flow (JWT access + refresh tokens, or sessions)
+- Service layer design with responsibility boundaries
+- Error handling: custom error classes, error code enum, HTTP mapping
+- Rate limiting rules per endpoint category
+- Middleware chain order
+
+### specs/03_frontend_lead.md
+- Tech stack (framework, build tool, CSS approach, state management)
+- Component hierarchy: atoms → molecules → organisms → pages
+- State management: what is global (auth, theme) vs local (form, modal)
+- Complete routing table with auth guards and lazy loading
+- Design system tokens: colors (hex), spacing scale (px), typography (font, sizes, weights)
+- Form handling pattern (library, validation, error display)
+- API client abstraction (base URL, interceptors, error handling)
+- Performance targets (LCP < 2.5s, FID < 100ms, CLS < 0.1)
+
+### specs/04_db_architect.md
+- Database technology and ORM/query builder
+- Entity-Relationship diagram (ASCII)
+- Complete CREATE TABLE SQL for every table: columns, types, constraints, defaults
+- Index definitions with purpose (what query each index optimises)
+- Migration strategy: naming convention (YYYYMMDDHHMMSS_desc), tooling
+- Common query patterns (list with pagination, search, joins)
+- Seed data plan: what tables, how many rows, realistic data
+- Soft delete vs hard delete policy
+
+### specs/05_qa_lead.md
+- Test pyramid: unit (70%) / integration (20%) / e2e (10%)
+- Coverage target: 70%+ lines, 80%+ for critical services
+- Test file naming and location conventions
+- Unit test examples for services (with mock setup)
+- Integration test examples for API endpoints (with test DB)
+- E2E critical path scenarios (list every flow to test)
+- Performance benchmarks: p50 < 100ms, p95 < 300ms, p99 < 1s
+- Security testing checklist (OWASP top 10 mapped to this project)
+- QA process: when to test, who reviews, definition of done
+
+### specs/06_devops_lead.md
+- Infrastructure diagram (ASCII)
+- CI/CD pipeline: stages (lint → typecheck → test → build → deploy), triggers
+- Docker setup: base images, multi-stage builds, compose services
+- Environment matrix: dev | staging | production differences
+- Deployment strategy (blue-green, rolling, or canary)
+- Monitoring: what metrics, what alerts, what thresholds
+- Logging: structured JSON, log levels, retention policy
+- Backup: database backup schedule, recovery procedure, RTO/RPO
+
+### specs/07_marketing_lead.md
+- Go-to-market strategy (phased: beta → launch → growth)
+- Target audience segments with estimated sizes
+- Messaging framework: value props, taglines, elevator pitch
 - Launch timeline with milestones
-- Channel strategy (which channels, why)
-- Success metrics (CAC, conversion, retention targets)
+- Channel strategy: which channels, why, expected CAC per channel
+- Content plan: blog posts, social, email sequences
+- Success metrics: signups, activation rate, retention targets
 
-### 8. specs/08_finance_lead.md
-- Cost analysis (infrastructure, tools, labor estimates)
-- Pricing strategy (if applicable)
-- Revenue projections (3-6-12 month)
-- Unit economics (CAC, LTV, payback period)
+### specs/08_finance_lead.md
+- Infrastructure cost estimate (monthly: compute, DB, storage, CDN, monitoring)
+- AI/LLM cost estimate (tokens per sprint, model tier breakdown)
+- Pricing strategy (if SaaS: free tier, paid tiers with limits)
+- Revenue projections (3, 6, 12 month)
+- Unit economics: CAC, LTV, LTV:CAC ratio, payback period
 - Budget allocation by phase
+- Break-even analysis
 
-### 9. specs/09_business_lead.md
-- Business model overview
-- Competitive analysis (3-5 competitors with strengths/weaknesses)
+### specs/09_business_lead.md
+- Business model overview (how it makes money or delivers value)
+- Competitive analysis: 3–5 competitors with strengths/weaknesses table
 - SWOT analysis
-- KPIs and success metrics with targets
-- Risk assessment with mitigations
-- Growth strategy (phases)
+- Value proposition canvas (jobs, pains, gains)
+- KPIs with targets and measurement method
+- Risk assessment: 5+ risks with likelihood, impact, mitigation
+- Growth strategy: phases with triggers to advance
 
-### 10. specs/10_ui_designer.md
-- Complete screen inventory (all pages/views/modals)
+### specs/10_ui_designer.md
+- Complete screen inventory: every page, modal, drawer, toast
 - Wireframe descriptions for each screen (layout, elements, interactions)
-- Component states (default, hover, active, disabled, error, loading)
-- Responsive breakpoints (mobile, tablet, desktop layouts)
-- Accessibility requirements (WCAG 2.1 AA compliance)
+- Component states: default, hover, active, disabled, error, loading, empty
+- Responsive breakpoints: mobile (< 640), tablet (640–1024), desktop (> 1024)
+- Design tokens repeated from frontend spec for self-containment
+- Interaction patterns: navigation, forms, tables, cards, drag-and-drop
+- Accessibility: WCAG 2.1 AA compliance, color contrast ratios, focus management
+- Animation principles: micro-interactions, transitions, loading states
 
-## Requirements for All Specs
-- Be SPECIFIC to my project, not generic
-- Include concrete examples, not placeholders
-- Cross-reference other specs where relevant (e.g., "See API in 02_backend_lead.md")
-- Use consistent naming conventions across all specs
-- Each spec should be 300-800 lines with real detail
+══════════════════════════════════════════════════════════════
+SECTION 2 — BACKLOG
+══════════════════════════════════════════════════════════════
 
-Create all 10 files now.
-```
+Generate specs/backlog.md.
 
-### What You Get
-
-```
-your-project/
-└── specs/
-    ├── 01_product_manager.md
-    ├── 02_backend_lead.md
-    ├── 03_frontend_lead.md
-    ├── 04_db_architect.md
-    ├── 05_qa_lead.md
-    ├── 06_devops_lead.md
-    ├── 07_marketing_lead.md
-    ├── 08_finance_lead.md
-    ├── 09_business_lead.md
-    └── 10_ui_designer.md
-```
-
-**Tip:** Review the generated specs. The AI might ask clarifying questions - answer them to improve the specs.
-
----
-
-## Step 3: Generate Backlog
-
-Now extract all actionable work items from your specs into a single backlog.
-
-### The Prompt
-
-```
-You have generated 10 specs for my project.
-
-## Your Task
-Create `specs/backlog.md` extracting ALL actionable tickets from the specs.
-
-## Backlog Format
+Format:
 
 # [Project Name] Backlog
 
-Generated: [Today's date]
-Total Tickets: [Count]
-Total Story Points: [Sum]
+Generated: [date]
+Total Tickets: [count]
+Total Story Points: [sum]
 
 ## Sprint 0: Foundation
-Goal: Project setup, basic infrastructure, "walking skeleton"
+Goal: Project setup, infrastructure, walking skeleton.
 
 | ID | Title | Description | Points | Status | Owner | Model | Dependencies |
-|----|-------|-------------|--------|--------|-------|-------|--------------|
-| 0.1 | Initialize project | Set up monorepo with TypeScript, ESLint, Prettier | 2 | todo | DevOps | haiku | - |
-| 0.2 | Configure CI/CD | GitHub Actions for lint, test, build | 3 | todo | DevOps | haiku | 0.1 |
-| 0.3 | Create database schema | Initial tables from 04_db_architect.md | 3 | todo | DB | haiku | 0.1 |
-| ... | ... | ... | ... | ... | ... | ... | ... |
+|----|-------|-------------|--------|--------|-------|-------|-------------|
 
 ## Sprint 1: [Theme]
-Goal: [What this sprint delivers]
+Goal: [description]
 
 | ID | Title | Description | Points | Status | Owner | Model | Dependencies |
-|----|-------|-------------|--------|--------|-------|-------|--------------|
-| 1.1 | ... | ... | ... | todo | ... | ... | ... |
+|----|-------|-------------|--------|--------|-------|-------|-------------|
 
-[Continue for all sprints...]
+[Continue for all sprints]
 
-## Ticket Guidelines
+## Bug Backlog
+| ID | Title | Severity | Status | Sprint | Notes |
+|----|-------|----------|--------|--------|-------|
 
-### Story Points
-- 1: Trivial (config change, copy update) - ~30 min
-- 2: Small (simple component, basic CRUD) - ~1-2 hours
-- 3: Medium (feature with logic, API endpoint) - ~2-4 hours
-- 5: Large (complex feature, integrations) - ~4-8 hours
-- 8: XL (major feature - consider splitting) - ~1-2 days
+Rules:
+- Extract EVERY actionable item from all 10 specs.
+- Sprint 0: 15–25 points (setup + skeleton).
+- Feature sprints: 25–40 points each.
+- Each ticket: 1–5 points (split anything > 5).
+- Story points: 1 = ~30 min, 2 = ~1–2h, 3 = ~2–4h, 5 = ~4–8h.
+- Model column: haiku (40%), sonnet (45%), opus (15%).
+- Owner: DB, Backend, Frontend, DevOps, QA.
+- All statuses start as "todo".
+- Include dependencies (e.g., "1.3" means ticket 1.3 must complete first).
 
-### Status Values
-- `todo` - Ready to start
-- `in-progress` - Currently being worked
-- `qa-review` - Code complete, needs testing
-- `done` - Tested and merged
-- `blocked` - Waiting on something
+══════════════════════════════════════════════════════════════
+SECTION 3 — DOCS: ARCHITECTURE
+══════════════════════════════════════════════════════════════
 
-### Owner (Role)
-- DB: Database work
-- Backend: API, services, auth
-- Frontend: UI components, pages
-- DevOps: Infrastructure, CI/CD
-- QA: Test writing, reviews
+Generate every file in docs/architecture/.
 
-### Model (AI complexity)
-- haiku: Simple tasks (40% of tickets) - migrations, configs, CRUD
-- sonnet: Standard tasks (45%) - services, components, tests
-- opus: Complex tasks (15%) - architecture, security, debugging
+### docs/architecture/overview.md
+- High-level system diagram (ASCII): client → API → DB → cache → queue
+- Tech stack summary table
+- Request lifecycle from browser to database and back
+- Non-functional requirements summary (latency, throughput, availability)
+- Key architectural decisions with rationale
 
-## Your Output
-- Extract EVERY actionable item from all 10 specs
-- Group into logical sprints (Foundation, then feature-based)
-- Sprint 0 should be 15-25 points (setup + minimal working feature)
-- Subsequent sprints: 25-40 points each
-- Target 2-4 hour tickets (split larger ones)
-- Include clear dependencies
-- Assign appropriate model tier
+### docs/architecture/backend.md
+- Layered architecture: Routes → Middleware → Controllers → Services → Repositories
+- Directory structure with file purposes
+- Dependency injection approach
+- Error propagation through layers
+- Logging at each layer
 
-Read all specs in `specs/` and create the complete backlog now.
+### docs/architecture/frontend.md
+- Component tree from App root to leaf components
+- State flow: global store → context → local state → derived
+- Data fetching strategy (React Query / SWR / fetch)
+- Code splitting and lazy loading plan
+- Asset pipeline (images, fonts, icons)
+
+### docs/architecture/database.md
+- Full ERD with all relationships (ASCII)
+- Table catalog: every table with column list and purpose
+- Query performance expectations
+- Connection pooling configuration
+- Partitioning or sharding strategy (if applicable, else state "not needed at this scale")
+
+### docs/architecture/security.md
+- Authentication flow diagram (ASCII): register → login → token → refresh → logout
+- Authorization model (RBAC/ABAC) with role definitions
+- Input validation layer (where, how, which library)
+- SQL injection, XSS, CSRF prevention
+- Secret management (env vars, vault, rotation policy)
+- HTTPS, CORS, CSP, rate limiting
+- Data encryption: at rest (DB) and in transit (TLS)
+
+### docs/architecture/cloud.md
+- Target cloud provider architecture
+- Service mapping: which cloud service for each component
+- Networking: VPC, subnets, security groups
+- Scaling strategy: horizontal auto-scaling rules
+- Cost optimisation notes
+- If cloud provider is unknown, generate for AWS with notes on GCP/Azure equivalents
+
+### docs/architecture/deep-dive.md
+- Technical decisions log: decision, options considered, chosen option, rationale
+- Trade-offs acknowledged
+- Known limitations and future migration paths
+- Performance bottleneck analysis
+- Caching strategy (what, where, TTL, invalidation)
+
+══════════════════════════════════════════════════════════════
+SECTION 4 — DOCS: WORKFLOWS, ENVIRONMENTS, API, TESTING,
+             UI DESIGN SYSTEM, PROJECT
+══════════════════════════════════════════════════════════════
+
+Generate every file in docs/workflows/, docs/environments/, docs/api/,
+docs/testing/, docs/ui-design-system/, and docs/project/.
+
+Each file should be 100–300 lines, specific to THIS project.
+
+### docs/workflows/
+- development.md: Feature development flow from ticket to done (step-by-step)
+- sprint-execution.md: How to run a sprint with AutoSpec (read specs, execute tickets, update backlog)
+- git-workflow.md: Branch naming, commit format (type(scope): desc), PR template, merge strategy
+- ci-cd-pipeline.md: Pipeline diagram, stage details, failure handling, artifact outputs
+- bug-fix.md: Triage → reproduce → failing test → fix → verify → update backlog
+- deployment.md: Dev auto-deploy, staging on merge to develop, production on release tag
+- multi-agent.md: Agent A (backend) + Agent B (frontend) rules, shared backlog, integration phase
+- qa-review.md: Code quality, test coverage, security, functional, performance, accessibility checklists
+
+### docs/environments/
+- development.md: Prerequisites, clone, install, env vars, start services, verify health
+- docker.md: docker-compose.yml content, Dockerfiles, common commands, troubleshooting
+- staging.md: Staging URL, deployment, data seeding, access control
+- production.md: Production URL, deployment, checklist, rollback procedure
+- environment-variables.md: Every env var with name, description, example value, required/optional
+
+### docs/api/
+- reference.md: Full endpoint catalog with Method | Path | Auth | Body | Response | Codes
+- authentication.md: Register, login, refresh, logout flows with curl examples
+- error-codes.md: Every error code, HTTP status, user message, developer message
+- rate-limiting.md: Rules table, headers returned, retry-after handling
+
+### docs/testing/
+- strategy.md: Test pyramid, tooling, coverage targets, CI integration
+- unit-tests.md: Service test pattern (arrange/act/assert), mocking guide, examples
+- integration-tests.md: API test pattern (supertest), test DB setup/teardown, examples
+- e2e-tests.md: Critical user journeys as test scenarios, Playwright/Cypress patterns
+- test-data.md: Seed script, factory functions, fixture files
+
+### docs/ui-design-system/
+- tokens.md: Full token table: colors (hex + semantic name), spacing (scale), font sizes, weights, line heights, border radii, shadows, z-index scale
+- components.md: Every UI component: name, props, variants, states (default/hover/active/disabled/error/loading)
+- layouts.md: Page layout templates, grid system (12-col), sidebar width, header height, breakpoints
+- accessibility.md: WCAG 2.1 AA checklist applied to this project, focus management, aria attributes, skip links
+- icons-assets.md: Icon library (Lucide/Heroicons), image optimisation (WebP, lazy loading), favicon, OG image
+
+### docs/project/
+- setup.md: Full repo structure tree, config files explained (tsconfig, eslint, prettier, vite)
+- coding-standards.md: Naming conventions (camelCase vars, PascalCase types, snake_case DB), patterns, import order
+- glossary.md: Every project-specific term defined (domain language)
+
+══════════════════════════════════════════════════════════════
+SECTION 5 — SPRINT PROMPTS
+══════════════════════════════════════════════════════════════
+
+Generate every file in sprint_prompts/.
+
+### sprint_prompts/sprint-0-foundation.md
+A complete, ready-to-paste prompt for executing Sprint 0 with:
+- Full project context (name, stack, what the specs say)
+- Phase breakdown: Infrastructure → Backend setup → Frontend setup → Quality gates
+- Per-ticket instructions referencing the exact spec file and section
+- Definition of done checklist
+- Commands to verify each phase (health check, lint, test)
+
+### sprint_prompts/sprint-N-template.md
+A template prompt for any feature sprint with:
+- [N] placeholder for sprint number
+- Instructions to read specs/backlog.md for the sprint's tickets
+- Backend ticket pattern: migration → schema → repo → service → controller → routes → tests
+- Frontend ticket pattern: types → API service → components → page → routes → tests
+- Backlog update reminders after every ticket
+- Sprint completion checklist
+
+### sprint_prompts/multi-agent.md
+- Agent A (Backend) prompt: scope, directory, specs to read, pattern, rules
+- Agent B (Frontend) prompt: scope, directory, specs to read, pattern, rules
+- Integration phase prompt: merge, connect APIs, full test suite, fix issues
+- Rules: no cross-directory work, shared backlog, dependency order
+
+### sprint_prompts/qa-review.md
+- Prompt for QA review after a sprint
+- Checklist sections: code quality, test coverage, security, functional, performance, accessibility
+- Per-ticket output format: status (PASS/FAIL), issues found, verdict
+- Final actions: mark tickets done, add bugs to backlog
+
+### sprint_prompts/finops.md
+- Model selection guide: haiku (40%), sonnet (45%), opus (15%)
+- Per-task-type recommendations
+- Cost comparison table
+- Sprint cost forecast template
+
+══════════════════════════════════════════════════════════════
+SECTION 6 — VIEWER / PROJECT MONITOR WEBSITE
+══════════════════════════════════════════════════════════════
+
+Generate a complete, self-contained React application in viewer/ that
+provides a visual dashboard for ALL generated artefacts (specs, docs,
+backlog, workflows).
+
+### 6.1 Tech Stack
+
+  React 18 + TypeScript + Vite + Tailwind CSS + React Router
+  @xyflow/react (React Flow v12) — workflow graph visualisation
+  framer-motion — panel transitions ONLY (NOT for mass edge animation)
+  lucide-react — icons
+  react-markdown + remark-gfm — Markdown rendering
+
+### 6.2 Project Structure
+
+viewer/
+├── public/
+├── src/
+│   ├── App.tsx
+│   ├── main.tsx
+│   ├── index.css                    # Tailwind + global tokens + @keyframes
+│   │
+│   ├── data/                        # Static artefacts (import at build time)
+│   │   ├── specs/                   # All 10 spec .md files
+│   │   ├── docs/                    # All docs .md files (mirrored structure)
+│   │   ├── backlog.json             # Parsed backlog (sprints + tickets)
+│   │   ├── workflows.json           # Graph definitions (nodes + edges)
+│   │   └── requirements.md          # Original SRS
+│   │
+│   ├── pages/
+│   │   ├── DashboardPage.tsx        # "/"
+│   │   ├── SpecsPage.tsx            # "/specs" + "/specs/:slug"
+│   │   ├── DocsPage.tsx             # "/docs" + "/docs/:section/:slug"
+│   │   ├── BacklogPage.tsx          # "/backlog"
+│   │   ├── WorkflowsPage.tsx        # "/workflows"
+│   │   ├── ArchitecturePage.tsx     # "/architecture"
+│   │   └── RequirementsPage.tsx     # "/requirements"
+│   │
+│   ├── components/
+│   │   ├── layout/
+│   │   │   ├── Sidebar.tsx          # Collapsible nav (260 px → 64 px)
+│   │   │   ├── Header.tsx           # Search, breadcrumb, theme toggle
+│   │   │   ├── DetailsPanel.tsx     # Right drawer (380 px, slide-in)
+│   │   │   └── Layout.tsx           # Three-column shell
+│   │   │
+│   │   ├── specs/
+│   │   │   ├── SpecViewer.tsx       # Markdown renderer + sticky TOC
+│   │   │   └── SpecCard.tsx         # Grid card for spec list
+│   │   │
+│   │   ├── docs/
+│   │   │   ├── DocViewer.tsx        # Markdown renderer for docs
+│   │   │   ├── DocTree.tsx          # Nested folder tree navigation
+│   │   │   └── DocCard.tsx          # Card for doc section
+│   │   │
+│   │   ├── backlog/
+│   │   │   ├── BacklogBoard.tsx     # Tab per sprint + table
+│   │   │   ├── SprintTab.tsx
+│   │   │   └── TicketRow.tsx
+│   │   │
+│   │   ├── workflows/
+│   │   │   ├── WorkflowCanvas.tsx   # React Flow wrapper
+│   │   │   ├── AnimatedEdge.tsx     # SVG stroke-dashoffset animation
+│   │   │   ├── WorkflowNode.tsx     # Memoised node component
+│   │   │   ├── AnimationController.tsx  # Play/Pause/Speed/Focus toolbar
+│   │   │   ├── WorkflowLegend.tsx   # Collapsible legend overlay
+│   │   │   ├── WorkflowSearch.tsx   # Search + filter bar
+│   │   │   └── PlayTour.tsx         # Auto-walk critical path
+│   │   │
+│   │   ├── dashboard/
+│   │   │   ├── OverviewCards.tsx
+│   │   │   ├── ProgressRing.tsx
+│   │   │   └── RecentTickets.tsx
+│   │   │
+│   │   └── ui/
+│   │       ├── Button.tsx
+│   │       ├── Badge.tsx
+│   │       ├── Card.tsx
+│   │       ├── Toggle.tsx
+│   │       └── Tooltip.tsx
+│   │
+│   ├── hooks/
+│   │   ├── useAnimationEngine.ts    # Central animation state
+│   │   ├── useAnimationSettings.ts  # localStorage persistence
+│   │   └── useReducedMotion.ts      # prefers-reduced-motion
+│   │
+│   └── lib/
+│       ├── animation.ts             # Constants, easing, helpers
+│       ├── graph.ts                 # BFS, critical path, subgraph
+│       └── theme.ts                 # Design tokens
+│
+├── tailwind.config.js
+├── vite.config.ts
+├── tsconfig.json
+└── package.json
+
+### 6.3 Design System (Dark Theme)
+
+Colours:
+  --bg:           #0f172a   (slate-950)
+  --surface:      #1e293b   (slate-800)
+  --surface-2:    #334155   (slate-700)
+  --border:       rgba(255,255,255,0.08)
+  --text:         #f1f5f9   (slate-100)
+  --text-muted:   #94a3b8   (slate-400)
+  --primary:      #3b82f6   (blue-500)
+  --secondary:    #a855f7   (purple-500)
+  --success:      #10b981   (emerald-500)
+  --warning:      #f59e0b   (amber-500)
+  --error:        #ef4444   (red-500)
+  --info:         #06b6d4   (cyan-500)
+
+Typography: Inter (headings 600–700, body 400), JetBrains Mono (code)
+Base: 16 px, scale: 1.25
+Spacing: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 px
+Radii: sm 6, md 10, lg 16, full 9999
+
+### 6.4 Pages
+
+Dashboard ("/"):
+  - Project name, description, tech stack badges
+  - Sprint progress ring (% done)
+  - Stat cards: tickets, done, in-progress, blocked
+  - Top 5 in-progress tickets table
+  - Quick-links grid to all 10 specs and all doc sections
+  - "View Workflows" CTA
+
+Specs ("/specs"):
+  - 10 spec cards in responsive grid (2 col md, 3 col lg)
+  - Card: role icon, title, excerpt, word count
+  - Detail ("/specs/:slug"): full Markdown, sticky TOC from ## headings
+
+Docs ("/docs"):
+  - Nested tree navigation mirroring docs/ folder structure
+  - Cards per folder (architecture, workflows, environments, etc.)
+  - Detail ("/docs/:section/:slug"): full Markdown with TOC
+  - Breadcrumb: Docs > Architecture > Security
+
+Backlog ("/backlog"):
+  - Tab per sprint (Sprint 0, 1, 2, …)
+  - Table with ticket rows, status badges (colour-coded), owner, model
+  - Filters: status, owner, model
+  - Search: free-text across descriptions
+  - Sprint progress bar per tab
+
+Workflows ("/workflows"):
+  - Full-screen React Flow canvas (see Section 6.5)
+  - Top toolbar: animation controls + search + filters
+  - Bottom-right: legend overlay (collapsible)
+  - Sidebar auto-collapses on this page
+
+Architecture ("/architecture"):
+  - Renders docs/architecture/overview.md as Markdown
+  - ASCII diagrams in styled <pre> blocks
+  - Links to other architecture docs
+
+Requirements ("/requirements"):
+  - Renders original SRS as Markdown
+  - Functional vs non-functional badges
+
+### 6.5 Workflow Animation Engine
+
+DATA MODEL:
+
+  interface WorkflowGraph {
+    id: string;
+    name: string;
+    description: string;
+    nodes: WorkflowNode[];
+    edges: WorkflowEdge[];
+  }
+
+  interface WorkflowNode {
+    id: string;
+    label: string;
+    type: 'process' | 'decision' | 'start' | 'end' | 'external';
+    metadata?: Record<string, string>;
+    position: { x: number; y: number };
+  }
+
+  interface WorkflowEdge {
+    id: string;
+    source: string;
+    target: string;
+    label?: string;
+    animated: boolean;
+    animationDirection: 'forward' | 'reverse';
+    priority: number;   // 0 = critical path, 1+ = secondary
+  }
+
+Generate workflows.json with at LEAST these graphs:
+  1. Feature Development Flow (8–12 nodes)
+  2. Sprint Execution Flow (6–10 nodes)
+  3. System Request Lifecycle (8–12 nodes, from client to DB and back)
+  4. CI/CD Pipeline (8–10 nodes with parallel stages)
+  5. User Authentication Flow (8–10 nodes)
+  6. One additional flow derived from the project's specific user flows
+
+EDGE ANIMATION (AnimatedEdge.tsx):
+
+  Technique: SVG stroke-dasharray + stroke-dashoffset via CSS @keyframes.
+  NO JavaScript timers. Pure CSS on an SVG <path>.
+
+  The edge draws a second <path> overlay (the "pulse"):
+    - strokeDasharray = pathLength
+    - strokeDashoffset animates from pathLength → 0 (forward)
+    - animation-duration reads from CSS variable --edge-anim-duration
+    - animationTimingFunction: ease-in-out
+    - animationIterationCount: infinite
+
+  @keyframes edgeFlow {
+    0%   { stroke-dashoffset: var(--path-length); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { stroke-dashoffset: 0; opacity: 0; }
+  }
+
+  Speed mapping (set as CSS custom property on wrapper):
+    0.5x → --edge-anim-duration: 6s
+    1.0x → --edge-anim-duration: 3s
+    1.5x → --edge-anim-duration: 2s
+
+NODE SELECTION — CAUSAL TRACE:
+
+  Click a node →
+    Step 1 (0 ms): Dim all nodes/edges to opacity 0.15.
+                    Highlight clicked node (opacity 1 + ring).
+    Step 2 (0–600 ms): Incoming edges animate (pulse travels TO node).
+                        Source nodes fade to 0.8.
+    Step 3 (600–900 ms): Pause. Clicked node pulses (scale 1.0 → 1.03 → 1.0).
+    Step 4 (900–1500 ms): Outgoing edges animate (pulse travels AWAY).
+                           Target nodes fade to 0.8.
+                           Multiple outgoing edges stagger 150 ms each.
+    Step 5 (1500 ms+): Hold. Edges loop. Click another node or canvas bg to reset.
+
+  Implementation: CSS classes toggled by useAnimationEngine hook.
+  NO per-node/per-edge React state. Only hook holds selectedNodeId.
+
+CONTROLS (AnimationController.tsx):
+
+  ┌──────────────────────────────────────────────────────────┐
+  │ ▶ Play │ ⏸ Pause │ 0.5x  1x  1.5x │ 🔍 Focus │ ⚙ │
+  └──────────────────────────────────────────────────────────┘
+
+  - Play / Pause: toggle edge CSS animation-name.
+  - Speed: set --edge-anim-duration CSS property. No React re-render.
+  - Focus Mode: only selected node's subgraph (BFS depth 2) visible.
+    If no node selected: auto-highlight critical path (longest path heuristic).
+  - Settings gear (⚙) popover: master ON/OFF + reduced-motion override.
+  - Persist to localStorage: animationsEnabled, speed, focusMode.
+
+PLAY TOUR (PlayTour.tsx):
+
+  1. Compute critical path (longest start→end path).
+  2. fitView to start node (800 ms pan).
+  3. Trigger causal trace on current node.
+  4. Open DetailsPanel with node metadata.
+  5. Wait 1500 ms / speed multiplier.
+  6. Advance to next node.
+  7. On final node: fitView to full graph (1200 ms).
+  Cancel: click canvas, press Escape, or click Pause.
+
+LEGEND (WorkflowLegend.tsx):
+
+  Bottom-right corner, semi-transparent, collapsible.
+  ──▶  Animated pulse = active data flow
+  - -▶  Dashed = secondary / inactive path
+  ● Blue   = process step
+  ◆ Yellow = decision point
+  ○ Grey   = external system
+  Click a node to trace its flow. "Play Tour" auto-walks the main path.
+  Hidden on viewports < 768 px.
+
+ACCESSIBILITY:
+
+  - Read prefers-reduced-motion on mount and on change.
+  - If active: animations default OFF, edges show static dashes,
+    node selection uses instant opacity (0 ms transition).
+    User can still opt-in via Settings toggle.
+  - All controls: keyboard-accessible (Tab, Enter, Space).
+  - Animated edges: aria-hidden="true" (decorative).
+
+PERFORMANCE (>50 nodes or >80 edges):
+
+  1. Only animate priority-0 edges by default.
+  2. Enable React Flow viewport virtualisation.
+  3. React.memo on EVERY node and edge component.
+  4. Memo comparator ignores: playing, speed, focusedNodeId.
+  5. ONE requestAnimationFrame loop (if needed) via useAnimationEngine.
+  6. Only GPU-composited properties: opacity, transform, stroke-dashoffset.
+  7. Framer Motion: panels/pages ONLY. Never on canvas elements.
+  8. Zero setInterval / setTimeout for animation.
+
+### 6.6 Viewer Data Files
+
+Generate these inside viewer/src/data/:
+
+- Copy all 10 spec .md files into data/specs/.
+- Copy all docs .md files into data/docs/ (preserving folder structure).
+- Generate backlog.json from specs/backlog.md (structured JSON).
+- Generate workflows.json with 6+ graphs (per Section 6.5).
+- Copy the original requirements into data/requirements.md.
+
+══════════════════════════════════════════════════════════════
+SECTION 7 — QUALITY GATES
+══════════════════════════════════════════════════════════════
+
+Every generated file must:
+
+  ✓ Be SPECIFIC to this project — no "[insert here]" placeholders.
+  ✓ Cross-reference other files by name (e.g., "See specs/02_backend_lead.md").
+  ✓ Use consistent naming across all files.
+  ✓ Contain concrete examples (real endpoint paths, real table names).
+
+Specs: 300–800 lines each.
+Docs: 100–300 lines each.
+Viewer: must build with zero TypeScript errors (strict mode).
+
+══════════════════════════════════════════════════════════════
+BEGIN GENERATION
+══════════════════════════════════════════════════════════════
+
+Read all documents in {{INPUT_FOLDER}}.
+Generate every file listed above.
+Start now.
 ```
 
-### What You Get
-
-A `specs/backlog.md` file with every ticket needed to build your project, organized into sprints.
+---END---
 
 ---
 
-## Step 4: Run Sprint 0 (Foundation)
+## After Generation — What To Do Next
 
-Sprint 0 sets up the project and creates a "walking skeleton" - minimal end-to-end functionality.
+Once the AI has generated everything, your project folder contains:
 
-### The Prompt
+| Folder | Contents | Files |
+|--------|----------|-------|
+| `specs/` | 10 role specs + backlog | 11 |
+| `docs/architecture/` | System design, cloud, security, deep-dive | 7 |
+| `docs/workflows/` | Dev, sprint, git, CI/CD, deploy, bug, multi-agent, QA | 8 |
+| `docs/environments/` | Dev, Docker, staging, prod, env vars | 5 |
+| `docs/api/` | Reference, auth, errors, rate limits | 4 |
+| `docs/testing/` | Strategy, unit, integration, e2e, test data | 5 |
+| `docs/ui-design-system/` | Tokens, components, layouts, a11y, assets | 5 |
+| `docs/project/` | Setup, coding standards, glossary | 3 |
+| `sprint_prompts/` | Sprint 0, sprint N, multi-agent, QA, finops | 5 |
+| `viewer/` | React monitor app | Full project |
 
-```
-Execute Sprint 0 for my project.
+**Next steps:**
 
-## Context
-- Specs: Read all files in `specs/`
-- Backlog: `specs/backlog.md`
-- Sprint tickets: All tickets with IDs starting with "0."
-
-## Sprint 0 Goal
-Create a working foundation:
-- Project initialized with tooling
-- Database schema created
-- Basic API running
-- Minimal UI showing data
-- CI/CD pipeline working
-
-## Execution Process
-
-For EACH ticket in Sprint 0:
-
-### 1. Start
-- Update backlog.md: change status to `in-progress`
-- Read the relevant spec for requirements
-
-### 2. Implement
-- Create code following the specs EXACTLY
-- Use naming conventions from specs
-- Add comments for complex logic
-
-### 3. Test
-- Write tests as specified in 05_qa_lead.md
-- Cover happy path + key edge cases
-
-### 4. Complete
-- Run tests to verify
-- Update backlog.md: change status to `done`
-- Move to next ticket
-
-## Deliverables
-
-### 1. Working Code
-- All source files in `src/`
-- Follow structure from specs
-
-### 2. Tests
-- Test files in `tests/` or alongside source
-- Should pass when run
-
-### 3. Updated Backlog
-- `specs/backlog.md` with Sprint 0 tickets marked `done`
-
-### 4. Sprint Report
-Create `sprints/sprint-0/summary.md`:
-
-# Sprint 0 Summary
-
-## Completed
-- [x] Ticket 0.1: Description
-- [x] Ticket 0.2: Description
-...
-
-## Test Results
-- Tests: X passing
-- Coverage: X%
-
-## What's Working
-- [Describe what a user can do now]
-
-## Known Issues
-- [Any bugs or technical debt]
-
-## Ready for Sprint 1
-- [What's now possible to build]
-
-Execute all Sprint 0 tickets now, updating the backlog as you go.
-```
-
-### What You Get
-
-- Working project with foundation code
-- Tests passing
-- CI/CD running (if configured)
-- Backlog updated with completed tickets
-- Sprint summary documenting what was built
+1. **Review specs** — Skim for accuracy, correct any assumptions.
+2. **Open the viewer** — `cd viewer && npm install && npm run dev` — see everything visually.
+3. **Start Sprint 0** — Paste `sprint_prompts/sprint-0-foundation.md` into your AI.
+4. **Execute sprints** — Repeat with `sprint_prompts/sprint-N-template.md`.
 
 ---
 
-## Step 5: Run Sprint 1+ (Features)
-
-Repeat for each subsequent sprint.
-
-### The Prompt
+## Quick Reference — Sprint Execution
 
 ```
-Execute Sprint [N] for my project.
+# Sprint 0 (Foundation)
+Paste sprint_prompts/sprint-0-foundation.md into AI.
 
-## Context
-- Specs: Read all files in `specs/`
-- Backlog: `specs/backlog.md`
-- Previous sprints: `sprints/sprint-*/summary.md`
-- Sprint tickets: All tickets with IDs starting with "[N]."
+# Sprint 1+ (Features)
+Copy sprint_prompts/sprint-N-template.md, replace [N], paste into AI.
 
-## Sprint [N] Goal
-[Copy the goal from your backlog for this sprint]
+# Parallel execution
+Paste sprint_prompts/multi-agent.md — run two AI sessions.
 
-## Execution Process
+# QA Review
+Paste sprint_prompts/qa-review.md after a sprint completes.
 
-Same as Sprint 0:
-1. Start ticket (update status to in-progress)
-2. Reference relevant specs
-3. Implement code
-4. Write tests
-5. Complete ticket (update status to done)
-6. Repeat
-
-## Multi-Agent Strategy (Optional)
-
-If using two AI sessions in parallel:
-
-**Agent A (Backend)**:
-- Tickets: [List backend ticket IDs]
-- Focus: Database, API, services
-- Specs to read: 02_backend_lead.md, 04_db_architect.md
-
-**Agent B (Frontend)**:
-- Tickets: [List frontend ticket IDs]
-- Focus: Components, pages, styling
-- Specs to read: 03_frontend_lead.md, 10_ui_designer.md
-
-**Sync Points**:
-- Agent B waits for [ticket ID] before starting [dependent ticket ID]
-
-## Deliverables
-
-1. All Sprint [N] tickets implemented and tested
-2. Backlog updated with `done` status
-3. Sprint summary: `sprints/sprint-[N]/summary.md`
-4. QA report if issues found: `sprints/sprint-[N]/qa-results.md`
-
-Execute all Sprint [N] tickets now.
-```
-
----
-
-## Tips for Success
-
-### 1. Review Specs Before Executing
-
-Don't blindly execute. Skim the generated specs to catch:
-- Missing features you forgot to mention
-- Incorrect assumptions
-- Over-engineering
-
-### 2. Small Tickets Win
-
-If a ticket feels too big (>5 points), split it. Small tickets:
-- Show visible progress
-- Are easier for AI to complete correctly
-- Allow parallel work
-
-### 3. Update the Backlog
-
-Always update ticket status. The backlog is your single source of truth.
-
-### 4. Use the Right Model
-
-- **Haiku/GPT-3.5**: Migrations, configs, simple CRUD
-- **Sonnet/GPT-4**: Services, components, tests
-- **Opus/GPT-4+**: Architecture, security, complex debugging
-
-Using expensive models for simple tasks wastes money.
-
-### 5. Reference Specs in Prompts
-
-Instead of "build a login page", say:
-```
-Build the login page per specs/03_frontend_lead.md (lines 45-80)
-using the auth API from specs/02_backend_lead.md
+# Cost optimisation
+Read sprint_prompts/finops.md before each sprint.
 ```
 
 ---
 
 ## Using the CLI (Optional)
 
-The AutoSpec CLI provides scaffolding and workflow automation:
+If you prefer scaffolding, the CLI generates templates for everything above:
 
 ```bash
 npm install -g autospec
-
-# Initialize project structure with template-based specs
-autospec init
-
-# Check sprint progress
-autospec status
-
-# Generate sprint execution prompt
-autospec sprint 1
+autospec init          # Scaffold specs + docs + prompts + viewer prompts
+autospec status        # Sprint progress
+autospec sprint 1      # Generate sprint prompt
 ```
 
-### CLI vs Manual Workflow
-
-| Aspect | CLI (`autospec init`) | Manual (AI Prompts) |
-|--------|----------------------|---------------------|
-| **Speed** | Fast (~30 seconds) | Slower (~15-30 min) |
-| **Spec Quality** | Template-based with placeholders | AI-generated, project-specific |
-| **Spec Count** | 10 specs (all roles) | 10 specs (all roles) |
-| **Customization** | Generic patterns | Tailored to your project |
-| **Best For** | Quick start, familiar with method | First time, need detailed guidance |
-
-### Recommended Approach: CLI + AI Enhancement
-
-1. **Run `autospec init`** to create structure and template specs
-2. **Enhance specs with AI** using prompts from Step 2 above
-3. **Use `autospec status`** to track progress
-4. **Use `autospec sprint N`** to generate sprint prompts
-
-This gives you the best of both: quick scaffolding plus detailed, project-specific content.
-
-See [cli/README.md](./cli/README.md) for full CLI documentation.
-
 ---
 
-## Example Walkthroughs
+## Examples
 
-See complete worked examples:
-
-- **[ShopFlow E-commerce](./examples/ecommerce/)** - Full e-commerce platform (7 sprints, 174 tickets)
-- **[DataHub API Service](./examples/api-service/)** - API gateway with auth (4 sprints, 89 tickets)
-
----
-
-## Next Steps
-
-1. **Read the methodology** - [docs/methodology/](./docs/methodology/) explains the "why"
-2. **Explore templates** - [templates/](./templates/) has detailed templates for each spec
-3. **Set up your IDE** - [docs/environments/](./docs/environments/) has guides for VS Code, terminal, etc.
-
----
-
-## FAQ
-
-### How long does this take?
-
-- Step 1 (Requirements): 5-30 minutes depending on complexity
-- Step 2 (Specs): 15-30 minutes for AI generation + 15 minutes review
-- Step 3 (Backlog): 10-15 minutes
-- Step 4 (Sprint 0): 2-4 hours
-- Each additional sprint: 4-8 hours
-
-### Can I skip the business specs (Marketing, Finance, Business)?
-
-Yes. For personal projects, focus on:
-- 01_product_manager.md (what you're building)
-- 02_backend_lead.md
-- 03_frontend_lead.md
-- 04_db_architect.md
-- 05_qa_lead.md
-
-### What if the AI generates something wrong?
-
-1. Correct it in the spec before executing
-2. Or note the issue and have the AI fix it
-3. Specs are living documents - update them as you learn
-
-### Do I need multiple AI sessions for multi-agent?
-
-No. Multi-agent is optional and helps with speed. Single-agent works fine.
+- **ShopFlow E-commerce** — [examples/ecommerce/](./examples/ecommerce/) (7 sprints, 174 tickets)
+- **DataHub API Service** — [examples/api-service/](./examples/api-service/) (4 sprints, 89 tickets)
 
 ---
 
