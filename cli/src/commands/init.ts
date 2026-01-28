@@ -14,6 +14,9 @@ import { generateAllSpecs } from '../generators/spec.generator.js';
 import { generateBacklog } from '../generators/backlog.generator.js';
 import { generatePromptFile } from '../generators/prompt.generator.js';
 import { generateSkills } from '../generators/skill.generator.js';
+import { generateDocs } from '../generators/docs.generator.js';
+import { generateSprintPrompts } from '../generators/sprint-prompts.generator.js';
+import { generateViewerPrompts } from '../generators/viewer-prompt.generator.js';
 import { parseRequirements, ParsedRequirements } from '../parsers/requirements.parser.js';
 
 export interface InitOptions {
@@ -143,9 +146,13 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
     // Create directories
     const specsDir = path.join(projectDir, 'specs');
     const promptsDir = path.join(projectDir, 'prompts');
+    const docsDir = path.join(projectDir, 'docs');
+    const sprintPromptsDir = path.join(projectDir, 'sprint_prompts');
 
     await ensureDir(specsDir);
     await ensureDir(promptsDir);
+    await ensureDir(docsDir);
+    await ensureDir(sprintPromptsDir);
 
     spinner.text = 'Generating spec files...';
 
@@ -171,6 +178,36 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
     const promptPath = await generatePromptFile(0, {
       projectName: info.projectName,
       outputDir: promptsDir,
+      techStack: info.techStack,
+    });
+
+    spinner.text = 'Generating documentation...';
+
+    // Generate comprehensive docs
+    const docFiles = await generateDocs({
+      projectName: info.projectName,
+      outputDir: docsDir,
+      requirements: info.requirements,
+      techStack: info.techStack,
+    });
+
+    spinner.text = 'Generating sprint prompts...';
+
+    // Generate sprint elaboration prompts
+    const sprintPromptFiles = await generateSprintPrompts({
+      projectName: info.projectName,
+      outputDir: sprintPromptsDir,
+      requirements: info.requirements,
+      techStack: info.techStack,
+    });
+
+    spinner.text = 'Generating viewer prompts...';
+
+    // Generate project viewer website prompts
+    const viewerPromptFiles = await generateViewerPrompts({
+      projectName: info.projectName,
+      outputDir: promptsDir,
+      requirements: info.requirements,
       techStack: info.techStack,
     });
 
@@ -206,6 +243,21 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
     console.log(chalk.dim('\n  prompts/'));
     console.log(chalk.green(`    ✓ ${path.basename(promptPath)}`));
 
+    console.log(chalk.dim('\n  docs/'));
+    for (const file of docFiles) {
+      console.log(chalk.green(`    ✓ ${path.basename(file)}`));
+    }
+
+    console.log(chalk.dim('\n  sprint_prompts/'));
+    for (const file of sprintPromptFiles) {
+      console.log(chalk.green(`    ✓ ${path.basename(file)}`));
+    }
+
+    console.log(chalk.dim('\n  prompts/viewer/'));
+    for (const file of viewerPromptFiles) {
+      console.log(chalk.green(`    ✓ ${path.basename(file)}`));
+    }
+
     console.log(chalk.dim('\n  ai skills/'));
     for (const file of skillFiles) {
       console.log(chalk.green(`    ✓ ${path.relative(projectDir, file)}`));
@@ -216,9 +268,13 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
     // Next steps
     console.log('\n' + chalk.bold('  Next steps:\n'));
     console.log(chalk.dim('  1. Review and customize specs in specs/'));
-    console.log(chalk.dim('  2. Review Sprint 0 tickets in specs/backlog.md'));
-    console.log(chalk.dim('  3. Start Sprint 0 with prompts/prompt_sprint0.md'));
-    console.log(chalk.dim('  4. Run ' + chalk.cyan('sdd status') + ' to see progress'));
+    console.log(chalk.dim('  2. Review documentation in docs/'));
+    console.log(chalk.dim('  3. Review Sprint 0 tickets in specs/backlog.md'));
+    console.log(chalk.dim('  4. Start Sprint 0 with sprint_prompts/sprint-0-foundation.md'));
+    console.log(chalk.dim('  5. Run ' + chalk.cyan('sdd status') + ' to see progress'));
+    console.log(chalk.dim('  6. Use docs/gemini-diagram-prompts.md for visual diagrams'));
+    console.log(chalk.dim('  7. Use docs/remotion-video-prompt.md for video generation'));
+    console.log(chalk.dim('  8. Use prompts/viewer/ to generate a project viewer website'));
 
     console.log('');
   } catch (error) {
