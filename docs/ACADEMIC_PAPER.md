@@ -1,13 +1,10 @@
-# AutoSpec: A Specification-Driven Framework for Scalable AI-Assisted Software Development
-
-**Authors:** AutoSpec Research Team
-
-**Abstract**
-
-Large Language Models (LLMs) have transformed software development, yet their application at scale remains problematic due to inconsistent outputs, context limitations, and prohibitive costs. We present AutoSpec, a Specification-Driven Development (SDD) framework that addresses these challenges through three key innovations: (1) a 10-role specification model ensuring comprehensive project coverage, (2) a structured backlog system enabling multi-agent parallel execution, and (3) a FinOps-optimized model selection strategy reducing costs by approximately 40%. We validate AutoSpec through two case studies comprising 263 tickets across 11 sprints: ShopFlow, a full-stack e-commerce platform (174 tickets, 7 sprints), and DataHub, an API gateway service (89 tickets, 4 sprints). Results demonstrate that specifications eliminate implementation ambiguity, multi-agent execution achieves 45% time savings through parallelization, and tiered model selection significantly reduces costs while maintaining quality. AutoSpec provides a reproducible methodology for leveraging AI assistants in production software development.
-
-**Keywords:** Large Language Models, AI-Assisted Development, Specification-Driven Development, Multi-Agent Systems, Software Engineering
-
+---
+title: "AutoSpec: A Specification-Driven Framework for Scalable AI-Assisted Software Development"
+author: "Eli Hundia"
+date: "January 2026"
+abstract: |
+  Large Language Models (LLMs) have transformed software development, yet their application at scale remains problematic due to inconsistent outputs, context limitations, and prohibitive costs. We present AutoSpec, a Specification-Driven Development (SDD) framework that addresses these challenges through three key innovations: (1) a 10-role specification model ensuring comprehensive project coverage, (2) a structured backlog system enabling multi-agent parallel execution, and (3) a FinOps-optimized model selection strategy reducing costs by approximately 40%. We validate AutoSpec through two case studies comprising 263 tickets across 11 sprints: ShopFlow, a full-stack e-commerce platform (174 tickets, 7 sprints), and DataHub, an API gateway service (89 tickets, 4 sprints). Results demonstrate that specifications eliminate implementation ambiguity, multi-agent execution achieves 45% time savings through parallelization, and tiered model selection significantly reduces costs while maintaining quality. AutoSpec provides a reproducible methodology for leveraging AI assistants in production software development.
+keywords: "Large Language Models, AI-Assisted Development, Specification-Driven Development, Multi-Agent Systems, Software Engineering"
 ---
 
 ## 1. Introduction

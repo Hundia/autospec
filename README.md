@@ -143,9 +143,27 @@ npm install -g autospec
 autospec init              # Initialize project with specs
 autospec status            # Show sprint progress
 autospec sprint <number>   # Generate sprint prompt
+autospec spec <name>       # Generate feature spec
+autospec dashboard         # Launch monitoring dashboard
+autospec validate          # Validate project structure
 ```
 
-See [cli/README.md](./cli/README.md) for full documentation.
+### Monitoring Dashboard
+
+Launch a real-time web dashboard to monitor your project:
+
+```bash
+autospec dashboard
+```
+
+The dashboard provides:
+- **Backlog Board** - Kanban view of all tickets
+- **Sprint Burndown** - Progress charts and velocity tracking
+- **Agent Activity** - Multi-agent execution monitoring
+- **Screen Preview** - Visualize wireframes from UI specs
+- **Cost Analysis** - Model usage and savings metrics
+
+See [dashboard/README.md](./dashboard/README.md) for details.
 
 ---
 
