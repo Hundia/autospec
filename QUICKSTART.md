@@ -1681,11 +1681,23 @@ Flows ("/flows") — **NEW VISUAL PAGE**:
     - Token lifecycle visualization
     - Animate on play button
 
+  - **VISUAL: Core Features Flow**
+    - Parse docs/flows/core-features-flow.md
+    - Render as multi-lane process flow diagram
+    - Show main feature workflows extracted from SRS
+    - Clickable nodes link to relevant specs
+
   - **VISUAL: Data Flow Diagram**
     - Parse docs/flows/data-flow.md
     - Render as React Flow graph
     - Show data moving between components
     - Colour-coded by data type
+
+  - **VISUAL: Error Handling Flow**
+    - Parse docs/flows/error-handling-flow.md
+    - Render as decision tree diagram
+    - Show error types, propagation paths, recovery actions
+    - Colour-coded by severity (warning=yellow, error=red, fatal=dark red)
 
   - **VISUAL: State Transition Diagrams**
     - Parse docs/flows/state-transitions.md
