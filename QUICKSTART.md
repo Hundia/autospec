@@ -158,19 +158,22 @@ project/
 │   │   ├── sprint_plan_0.md            # Sprint 0 planning guide & definition of done
 │   │   ├── dev_sprint_0.md             # Development execution prompt
 │   │   ├── qa_sprint_0.md              # QA testing prompt with curl/API tests
-│   │   └── summary_sprint_0.md         # Sprint summary generation prompt
+│   │   ├── summary_sprint_0.md         # Sprint summary generation prompt
+│   │   └── sprint_dod_checklist_0.md   # Definition of Done verification checklist (NEW)
 │   │
 │   ├── sprint_1/                       # Feature sprint 1 folder
 │   │   ├── sprint_plan_1.md            # Sprint 1 planning guide
 │   │   ├── dev_sprint_1.md             # Development execution prompt
 │   │   ├── qa_sprint_1.md              # QA testing prompt
-│   │   └── summary_sprint_1.md         # Sprint summary generation prompt
+│   │   ├── summary_sprint_1.md         # Sprint summary generation prompt
+│   │   └── sprint_dod_checklist_1.md   # Definition of Done verification checklist (NEW)
 │   │
 │   ├── sprint_N/                       # (Repeat for ALL sprints in backlog.md)
 │   │   ├── sprint_plan_N.md
 │   │   ├── dev_sprint_N.md
 │   │   ├── qa_sprint_N.md
-│   │   └── summary_sprint_N.md
+│   │   ├── summary_sprint_N.md
+│   │   └── sprint_dod_checklist_N.md   # Definition of Done verification checklist (NEW)
 │   │
 │   ├── multi-agent.md                  # Agent A (backend) + Agent B (frontend) prompts
 │   ├── finops.md                       # Model selection optimizer (haiku/sonnet/opus)
@@ -181,12 +184,14 @@ project/
 │   ├── sprint_0/                       # Sprint 0 results
 │   │   ├── qa_result.md                # QA test results and coverage
 │   │   ├── release_notes.md            # What was delivered
-│   │   └── summary.md                  # Sprint retrospective
+│   │   ├── summary.md                  # Sprint retrospective (includes git tag reference)
+│   │   └── dod_verified.md             # DoD checklist verification results (NEW)
 │   │
 │   └── sprint_N/                       # (Generated after each sprint completes)
 │       ├── qa_result.md
 │       ├── release_notes.md
-│       └── summary.md
+│       ├── summary.md                  # Contains git tag: sprint-N-complete
+│       └── dod_verified.md             # DoD verification with pass/fail per item
 │
 └── viewer/                             # Project monitor website (React app)
     └── (see Section 7 for full spec)
@@ -1127,6 +1132,30 @@ Create the following files in sprints/sprint_X/:
 ```
 [List of commit messages from this sprint]
 ```
+
+## Git Tag (CRITICAL FOR TRACEABILITY)
+
+**Tag Name:** `sprint-[X]-complete`
+**Tag Command:**
+```bash
+git tag -a sprint-[X]-complete -m "Sprint [X] Complete: [Sprint Name]"
+git push origin sprint-[X]-complete
+```
+
+**Why This Matters:**
+- Creates a permanent reference point in the repository
+- Allows tracing all commits that built this sprint
+- Enables rollback to sprint completion state
+- Provides clear audit trail for project history
+
+**To view commits in this sprint:**
+```bash
+# If this is Sprint 0:
+git log sprint-0-complete
+
+# If this is Sprint 1+:
+git log sprint-[X-1]-complete..sprint-[X]-complete
+```
 ```
 
 ---
@@ -1134,17 +1163,199 @@ Create the following files in sprints/sprint_X/:
 ## After Generating Summary
 
 1. Create the sprints/sprint_X/ folder if it doesn't exist
-2. Generate all three files with actual data
+2. Generate all four files with actual data (qa_result.md, release_notes.md, summary.md, dod_verified.md)
 3. Commit the sprint documentation:
    ```bash
    git add sprints/sprint_X/
-   git commit -m "Add Sprint [X] documentation"
+   git commit -m "Complete Sprint [X]: [Sprint Name]"
    ```
-4. Update specs/backlog.md sprint status to COMPLETE
+4. **CREATE GIT TAG** to mark this sprint's completion (CRITICAL for traceability):
+   ```bash
+   git tag -a sprint-[X]-complete -m "Sprint [X] Complete: [Sprint Name]
+
+   Goal: [Sprint goal]
+   Tickets completed: [count]
+   Story points: [sum]
+   QA Status: PASS
+
+   See sprints/sprint_X/summary.md for details"
+   ```
+5. Push the tag to remote:
+   ```bash
+   git push origin sprint-[X]-complete
+   ```
+6. Update specs/backlog.md sprint status to COMPLETE
+7. Record the git tag in summary.md under "## Git Tag" section
+
+**IMPORTANT:** The git tag creates a permanent reference point in the repository history.
+This allows future developers to:
+- Easily find all commits that built this sprint
+- Trace back what work was done
+- Compare changes between sprints
+- Roll back to a specific sprint's state if needed
 ```
 
 ══════════════════════════════════════════════════════════════
-SECTION 5.5 — SHARED PROMPTS
+SECTION 5.5 — SPRINT DOD CHECKLIST (sprint_dod_checklist_X.md)
+══════════════════════════════════════════════════════════════
+
+For each sprint, generate prompts/sprint_X/sprint_dod_checklist_X.md:
+
+```markdown
+# Sprint [X] Definition of Done Checklist: [Sprint Name]
+
+## Purpose
+
+This checklist MUST be completed before marking the sprint as COMPLETE.
+Run through each item and verify it passes. This creates the dod_verified.md file.
+
+---
+
+## Pre-Completion Verification
+
+Execute these commands and verify they pass:
+
+### Code Quality
+```bash
+# Lint check - must exit 0
+npm run lint
+echo "Lint: $([[ $? -eq 0 ]] && echo 'PASS ✅' || echo 'FAIL ❌')"
+
+# Type check - must exit 0
+npm run typecheck
+echo "Typecheck: $([[ $? -eq 0 ]] && echo 'PASS ✅' || echo 'FAIL ❌')"
+
+# Build - must exit 0
+npm run build
+echo "Build: $([[ $? -eq 0 ]] && echo 'PASS ✅' || echo 'FAIL ❌')"
+```
+
+### Tests
+```bash
+# Unit tests - must pass
+npm run test:unit
+echo "Unit Tests: $([[ $? -eq 0 ]] && echo 'PASS ✅' || echo 'FAIL ❌')"
+
+# Integration tests - must pass
+npm run test:integration
+echo "Integration Tests: $([[ $? -eq 0 ]] && echo 'PASS ✅' || echo 'FAIL ❌')"
+
+# Coverage check - must meet threshold
+npm run test:coverage
+echo "Coverage: $([[ $? -eq 0 ]] && echo 'PASS ✅' || echo 'FAIL ❌')"
+```
+
+### API Tests (with server running)
+```bash
+# Start server and run curl tests from qa_sprint_X.md
+# Document results below
+```
+
+---
+
+## Checklist Items
+
+Mark each item as PASS or FAIL:
+
+### Ticket Completion
+| Ticket | Title | Tests Pass | Code Quality | Status |
+|--------|-------|------------|--------------|--------|
+[For each ticket in sprint - verify individually]
+
+### Sprint-Level Verification
+- [ ] All tickets show ✅ Done in backlog.md
+- [ ] No tickets left in 🔄 or 🧪 status
+- [ ] All dependencies resolved
+- [ ] No merge conflicts
+
+### Code Quality Verification
+- [ ] `npm run lint` exits 0
+- [ ] `npm run typecheck` exits 0
+- [ ] `npm run build` exits 0
+- [ ] No console.log statements in production code
+- [ ] No hardcoded secrets or API keys
+- [ ] All new code follows coding-standards.md
+
+### Test Verification
+- [ ] `npm test` exits 0
+- [ ] Unit test coverage ≥ 70%
+- [ ] Integration tests pass
+- [ ] All API endpoints tested with curl
+- [ ] No skipped tests without justification
+
+### Documentation Verification
+- [ ] All new code has appropriate comments
+- [ ] API changes documented in docs/api/reference.md
+- [ ] Database changes documented in docs/architecture/database.md
+- [ ] Environment variables documented in docs/environments/environment-variables.md
+
+### Security Verification
+- [ ] No new security vulnerabilities introduced
+- [ ] Input validation on all new endpoints
+- [ ] Auth/authz enforced where required
+- [ ] No SQL injection, XSS, or CSRF vulnerabilities
+
+### Git Verification
+- [ ] All changes committed
+- [ ] Commit messages follow convention
+- [ ] No untracked files that should be committed
+- [ ] Branch is up to date with main
+
+---
+
+## Final Actions
+
+After all items pass:
+
+1. **Generate sprint documentation:**
+   ```bash
+   # Run summary_sprint_X.md prompt to create:
+   # - sprints/sprint_X/qa_result.md
+   # - sprints/sprint_X/release_notes.md
+   # - sprints/sprint_X/summary.md
+   # - sprints/sprint_X/dod_verified.md
+   ```
+
+2. **Create final commit:**
+   ```bash
+   git add .
+   git commit -m "Complete Sprint [X]: [Sprint Name]
+
+   - All tickets completed and verified
+   - Tests passing with X% coverage
+   - QA review passed
+   - DoD checklist verified
+
+   See sprints/sprint_X/ for full documentation"
+   ```
+
+3. **Create git tag (CRITICAL):**
+   ```bash
+   git tag -a sprint-[X]-complete -m "Sprint [X] Complete: [Sprint Name]"
+   git push origin sprint-[X]-complete
+   ```
+
+4. **Verify tag creation:**
+   ```bash
+   git tag -l "sprint-*"
+   # Should show: sprint-[X]-complete
+   ```
+
+---
+
+## DoD Verification Result
+
+**Overall Status:** [PASS/FAIL]
+**Verified By:** [Agent/Human]
+**Date:** [Date]
+**Git Tag:** `sprint-[X]-complete`
+
+**Notes:**
+[Any observations or exceptions]
+```
+
+══════════════════════════════════════════════════════════════
+SECTION 5.6 — SHARED PROMPTS
 ══════════════════════════════════════════════════════════════
 
 ### prompts/multi-agent.md

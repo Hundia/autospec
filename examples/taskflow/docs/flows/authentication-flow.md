@@ -1,384 +1,367 @@
 # TaskFlow Authentication Flow
 
-**Version:** 1.0
-**Last Updated:** 2026-01-29
+## Overview
 
----
+TaskFlow uses JWT-based authentication with access tokens (1 hour) and refresh tokens (7 days).
 
-## 1. Authentication Overview
+## Registration Flow
 
-TaskFlow uses JWT-based authentication with HTTP-only cookies for secure token storage.
+### Flow Diagram
 
-| Property | Value |
-|----------|-------|
-| Access Token Expiry | 15 minutes |
-| Refresh Token Expiry | 7 days |
-| Token Storage | HTTP-only cookies |
-| Password Hashing | bcrypt (cost factor 12) |
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant F as Frontend
+    participant A as API
+    participant DB as Database
 
----
+    U->>F: Fill registration form
+    F->>F: Client-side validation
+    F->>A: POST /api/v1/auth/register
+    Note over A: {email, password, name}
 
-## 2. Registration Flow
+    A->>A: Validate with Zod schema
+    A->>DB: Check email exists
+    DB-->>A: Not found
 
-### Sequence Diagram
+    A->>A: Hash password (bcrypt, 12 rounds)
+    A->>DB: INSERT INTO users
 
-```
-    ┌────────┐          ┌────────┐          ┌────────┐          ┌────────┐
-    │ Client │          │  API   │          │Service │          │   DB   │
-    └───┬────┘          └───┬────┘          └───┬────┘          └───┬────┘
-        │                   │                   │                   │
-        │ POST /auth/register                   │                   │
-        │ {email, password, name}               │                   │
-        │──────────────────►│                   │                   │
-        │                   │                   │                   │
-        │                   │ Validate schema   │                   │
-        │                   │──────────────────►│                   │
-        │                   │                   │                   │
-        │                   │                   │ Check email exists│
-        │                   │                   │──────────────────►│
-        │                   │                   │                   │
-        │                   │                   │◄──────────────────│
-        │                   │                   │ null (not found)  │
-        │                   │                   │                   │
-        │                   │                   │ Hash password     │
-        │                   │                   │ (bcrypt)          │
-        │                   │                   │                   │
-        │                   │                   │ INSERT user       │
-        │                   │                   │──────────────────►│
-        │                   │                   │                   │
-        │                   │                   │◄──────────────────│
-        │                   │                   │ user record       │
-        │                   │                   │                   │
-        │                   │                   │ Generate tokens   │
-        │                   │                   │                   │
-        │                   │◄──────────────────│                   │
-        │                   │ {user, tokens}    │                   │
-        │                   │                   │                   │
-        │ Set-Cookie: accessToken (HttpOnly)    │                   │
-        │ Set-Cookie: refreshToken (HttpOnly)   │                   │
-        │ 201 {data: user}  │                   │                   │
-        │◄──────────────────│                   │                   │
-        │                   │                   │                   │
-        │ Redirect to /dashboard                │                   │
-        │                   │                   │                   │
+    DB-->>A: User record created
+    A->>A: Generate access token (1h)
+    A->>A: Generate refresh token (7d)
+
+    A-->>F: 201 Created
+    Note over F: {user, accessToken, refreshToken}
+
+    F->>F: Store tokens
+    F->>F: Update auth state
+    F->>U: Redirect to Dashboard
 ```
 
-### Request/Response
+### ASCII Flow
 
-**Request:**
-```http
-POST /api/v1/auth/register
-Content-Type: application/json
-
-{
-  "email": "alex@example.com",
-  "password": "SecurePass123!",
-  "name": "Alex Developer"
-}
 ```
+REGISTRATION FLOW
+═════════════════
 
-**Response (201 Created):**
-```http
-HTTP/1.1 201 Created
-Set-Cookie: accessToken=eyJ...; HttpOnly; Secure; SameSite=Strict; Max-Age=900
-Set-Cookie: refreshToken=eyJ...; HttpOnly; Secure; SameSite=Strict; Path=/api/v1/auth; Max-Age=604800
-Content-Type: application/json
-
-{
-  "data": {
-    "id": "550e8400-e29b-41d4-a716-446655440000",
-    "email": "alex@example.com",
-    "name": "Alex Developer",
-    "createdAt": "2026-01-29T10:00:00.000Z"
-  }
-}
+User                   Frontend                  API                    Database
+ │                        │                       │                        │
+ │  Fill form             │                       │                        │
+ │───────────────────────>│                       │                        │
+ │                        │                       │                        │
+ │                        │  Validate locally     │                        │
+ │                        │  ─────────────────    │                        │
+ │                        │                       │                        │
+ │                        │  POST /auth/register  │                        │
+ │                        │──────────────────────>│                        │
+ │                        │                       │                        │
+ │                        │                       │  Check email unique    │
+ │                        │                       │───────────────────────>│
+ │                        │                       │<───────────────────────│
+ │                        │                       │                        │
+ │                        │                       │  Hash password         │
+ │                        │                       │  ───────────────       │
+ │                        │                       │                        │
+ │                        │                       │  INSERT user           │
+ │                        │                       │───────────────────────>│
+ │                        │                       │<───────────────────────│
+ │                        │                       │                        │
+ │                        │                       │  Generate tokens       │
+ │                        │                       │  ────────────────      │
+ │                        │                       │                        │
+ │                        │  201 {user, tokens}   │                        │
+ │                        │<──────────────────────│                        │
+ │                        │                       │                        │
+ │                        │  Store tokens         │                        │
+ │                        │  Update auth state    │                        │
+ │                        │  ─────────────────    │                        │
+ │                        │                       │                        │
+ │  Redirect to Dashboard │                       │                        │
+ │<───────────────────────│                       │                        │
 ```
 
 ---
 
-## 3. Login Flow
+## Login Flow
 
-### Sequence Diagram
+### Flow Diagram
 
-```
-    ┌────────┐          ┌────────┐          ┌────────┐          ┌────────┐
-    │ Client │          │  API   │          │Service │          │   DB   │
-    └───┬────┘          └───┬────┘          └───┬────┘          └───┬────┘
-        │                   │                   │                   │
-        │ POST /auth/login  │                   │                   │
-        │ {email, password} │                   │                   │
-        │──────────────────►│                   │                   │
-        │                   │                   │                   │
-        │                   │ Validate schema   │                   │
-        │                   │──────────────────►│                   │
-        │                   │                   │                   │
-        │                   │                   │ Find user by email│
-        │                   │                   │──────────────────►│
-        │                   │                   │                   │
-        │                   │                   │◄──────────────────│
-        │                   │                   │ user record       │
-        │                   │                   │                   │
-        │                   │                   │ Compare password  │
-        │                   │                   │ bcrypt.compare()  │
-        │                   │                   │                   │
-        │                   │                   │ ✓ Password match  │
-        │                   │                   │                   │
-        │                   │                   │ Generate tokens   │
-        │                   │                   │                   │
-        │                   │                   │ Store refresh hash│
-        │                   │                   │──────────────────►│
-        │                   │                   │                   │
-        │                   │◄──────────────────│                   │
-        │                   │ {user, tokens}    │                   │
-        │                   │                   │                   │
-        │ Set-Cookie: accessToken               │                   │
-        │ Set-Cookie: refreshToken              │                   │
-        │ 200 {data: user}  │                   │                   │
-        │◄──────────────────│                   │                   │
-```
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant F as Frontend
+    participant A as API
+    participant DB as Database
 
-### Error Cases
+    U->>F: Enter email & password
+    F->>F: Client-side validation
+    F->>A: POST /api/v1/auth/login
+    Note over A: {email, password}
 
-**Invalid Credentials (401):**
-```json
-{
-  "error": {
-    "code": "INVALID_CREDENTIALS",
-    "message": "Invalid email or password"
-  }
-}
-```
+    A->>A: Validate with Zod schema
+    A->>DB: SELECT user WHERE email
+    DB-->>A: User record
 
-**Rate Limited (429):**
-```json
-{
-  "error": {
-    "code": "RATE_LIMITED",
-    "message": "Too many login attempts. Try again in 60 seconds."
-  }
-}
+    alt User not found
+        A-->>F: 401 Invalid credentials
+        F->>U: Show error message
+    else User found
+        A->>A: Compare password (bcrypt)
+        alt Password incorrect
+            A-->>F: 401 Invalid credentials
+            F->>U: Show error message
+        else Password correct
+            A->>A: Generate access token (1h)
+            A->>A: Generate refresh token (7d)
+            A-->>F: 200 OK
+            Note over F: {user, accessToken, refreshToken}
+            F->>F: Store tokens
+            F->>F: Update auth state
+            F->>U: Redirect to Dashboard
+        end
+    end
 ```
 
 ---
 
-## 4. Token Refresh Flow
+## Token Refresh Flow
 
-### Sequence Diagram
+### Flow Diagram
 
-```
-    ┌────────┐          ┌────────┐          ┌────────┐          ┌────────┐
-    │ Client │          │  API   │          │Service │          │   DB   │
-    └───┬────┘          └───┬────┘          └───┬────┘          └───┬────┘
-        │                   │                   │                   │
-        │ POST /auth/refresh│                   │                   │
-        │ Cookie: refreshToken                  │                   │
-        │──────────────────►│                   │                   │
-        │                   │                   │                   │
-        │                   │ Extract refresh   │                   │
-        │                   │ token from cookie │                   │
-        │                   │──────────────────►│                   │
-        │                   │                   │                   │
-        │                   │                   │ Verify JWT        │
-        │                   │                   │                   │
-        │                   │                   │ Hash token        │
-        │                   │                   │                   │
-        │                   │                   │ Find in DB        │
-        │                   │                   │──────────────────►│
-        │                   │                   │                   │
-        │                   │                   │◄──────────────────│
-        │                   │                   │ token record      │
-        │                   │                   │                   │
-        │                   │                   │ Delete old token  │
-        │                   │                   │──────────────────►│
-        │                   │                   │                   │
-        │                   │                   │ Generate new pair │
-        │                   │                   │                   │
-        │                   │                   │ Store new refresh │
-        │                   │                   │──────────────────►│
-        │                   │                   │                   │
-        │                   │◄──────────────────│                   │
-        │                   │ new tokens        │                   │
-        │                   │                   │                   │
-        │ Set-Cookie: accessToken (new)         │                   │
-        │ Set-Cookie: refreshToken (new)        │                   │
-        │ 200 OK            │                   │                   │
-        │◄──────────────────│                   │                   │
+```mermaid
+sequenceDiagram
+    participant F as Frontend
+    participant A as API
+
+    Note over F: Access token expired
+
+    F->>A: POST /api/v1/auth/refresh
+    Note over A: {refreshToken}
+
+    A->>A: Verify refresh token signature
+    A->>A: Check token expiry
+    A->>A: Extract userId from token
+
+    alt Refresh token valid
+        A->>A: Generate new access token
+        A-->>F: 200 OK {accessToken}
+        F->>F: Store new access token
+        F->>F: Retry failed request
+    else Refresh token invalid/expired
+        A-->>F: 401 Unauthorized
+        F->>F: Clear tokens
+        F->>F: Redirect to login
+    end
 ```
 
-### Token Rotation
-
-Each refresh request:
-1. Invalidates the old refresh token
-2. Issues a new access token
-3. Issues a new refresh token
-4. This prevents token reuse attacks
-
----
-
-## 5. Logout Flow
-
-### Sequence Diagram
+### ASCII Flow
 
 ```
-    ┌────────┐          ┌────────┐          ┌────────┐          ┌────────┐
-    │ Client │          │  API   │          │Service │          │   DB   │
-    └───┬────┘          └───┬────┘          └───┬────┘          └───┬────┘
-        │                   │                   │                   │
-        │ POST /auth/logout │                   │                   │
-        │ Cookie: refreshToken                  │                   │
-        │──────────────────►│                   │                   │
-        │                   │                   │                   │
-        │                   │ Extract user ID   │                   │
-        │                   │──────────────────►│                   │
-        │                   │                   │                   │
-        │                   │                   │ Delete refresh    │
-        │                   │                   │ tokens for user   │
-        │                   │                   │──────────────────►│
-        │                   │                   │                   │
-        │                   │◄──────────────────│                   │
-        │                   │                   │                   │
-        │ Set-Cookie: accessToken=; Max-Age=0   │                   │
-        │ Set-Cookie: refreshToken=; Max-Age=0  │                   │
-        │ 200 OK            │                   │                   │
-        │◄──────────────────│                   │                   │
-        │                   │                   │                   │
-        │ Redirect to /login│                   │                   │
+TOKEN REFRESH FLOW
+══════════════════
+
+Frontend                              API
+   │                                   │
+   │  Access token expired (401)       │
+   │  ─────────────────────────        │
+   │                                   │
+   │  POST /auth/refresh               │
+   │  {refreshToken: "xxx"}            │
+   │──────────────────────────────────>│
+   │                                   │
+   │                                   │  Verify signature
+   │                                   │  Check expiry
+   │                                   │  Extract userId
+   │                                   │  ────────────────
+   │                                   │
+   │          ┌────────────────────────┤
+   │          │ VALID                  │
+   │          │                        │
+   │          │  Generate new token    │
+   │          │  ──────────────────    │
+   │          │                        │
+   │  200 {accessToken: "new"}         │
+   │<─────────┴────────────────────────│
+   │                                   │
+   │  Store new token                  │
+   │  Retry failed request             │
+   │  ────────────────────             │
+   │                                   │
+   │          ┌────────────────────────┤
+   │          │ INVALID/EXPIRED        │
+   │          │                        │
+   │  401 Unauthorized                 │
+   │<─────────┴────────────────────────│
+   │                                   │
+   │  Clear all tokens                 │
+   │  Redirect to /login               │
+   │  ─────────────────────            │
 ```
 
 ---
 
-## 6. Protected Route Access
+## Logout Flow
 
-### Middleware Flow
+### Flow Diagram
 
-```
-    ┌────────┐          ┌────────┐          ┌────────┐
-    │ Client │          │  Auth  │          │  Route │
-    │        │          │Middleware          │Handler │
-    └───┬────┘          └───┬────┘          └───┬────┘
-        │                   │                   │
-        │ GET /api/v1/tasks │                   │
-        │ Cookie: accessToken                   │
-        │──────────────────►│                   │
-        │                   │                   │
-        │                   │ Extract token     │
-        │                   │ from cookie       │
-        │                   │                   │
-        │                   │ Verify JWT        │
-        │                   │ signature         │
-        │                   │                   │
-        │                   │ Check expiry      │
-        │                   │                   │
-        │                   │ Attach user to    │
-        │                   │ req.user          │
-        │                   │                   │
-        │                   │ next()            │
-        │                   │──────────────────►│
-        │                   │                   │
-        │                   │                   │ Process request
-        │                   │                   │
-        │◄──────────────────────────────────────│
-        │ 200 {data: tasks} │                   │
-```
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant F as Frontend
+    participant A as API
 
-### Access Token Expired
+    U->>F: Click Logout button
+    F->>A: POST /api/v1/auth/logout
+    Note over A: Authorization: Bearer xxx
 
-```
-    ┌────────┐          ┌────────┐          ┌────────┐
-    │ Client │          │  Auth  │          │ Axios  │
-    │        │          │Middleware          │Intercept│
-    └───┬────┘          └───┬────┘          └───┬────┘
-        │                   │                   │
-        │ GET /api/v1/tasks │                   │
-        │ Cookie: accessToken (expired)         │
-        │──────────────────►│                   │
-        │                   │                   │
-        │                   │ Verify JWT        │
-        │                   │ ✗ Expired         │
-        │                   │                   │
-        │ 401 Unauthorized  │                   │
-        │◄──────────────────│                   │
-        │                   │                   │
-        │ Interceptor catches 401               │
-        │──────────────────────────────────────►│
-        │                   │                   │
-        │                   │                   │ POST /auth/refresh
-        │                   │◄──────────────────│
-        │                   │                   │
-        │                   │ New tokens set    │
-        │                   │──────────────────►│
-        │                   │                   │
-        │                   │                   │ Retry original
-        │                   │                   │ request
-        │                   │◄──────────────────│
-        │                   │                   │
-        │ 200 {data: tasks} │                   │
-        │◄──────────────────────────────────────│
+    A->>A: (Optional) Invalidate refresh token
+    A-->>F: 200 OK {message: "Logged out"}
+
+    F->>F: Clear access token
+    F->>F: Clear refresh token
+    F->>F: Clear auth state
+    F->>F: Clear React Query cache
+    F->>U: Redirect to landing page
 ```
 
 ---
 
-## 7. Token Payload Structure
+## Password Reset Flow
 
-### Access Token
+### Flow Diagram
 
-```typescript
-interface AccessTokenPayload {
-  sub: string;        // User ID (UUID)
-  email: string;      // User email
-  iat: number;        // Issued at (Unix timestamp)
-  exp: number;        // Expires at (Unix timestamp)
-}
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant F as Frontend
+    participant A as API
+    participant E as Email Service
+    participant DB as Database
+
+    U->>F: Click "Forgot Password"
+    F->>U: Show email input form
+    U->>F: Enter email
+    F->>A: POST /api/v1/auth/forgot-password
+    Note over A: {email}
+
+    A->>DB: Find user by email
+
+    alt User not found
+        A-->>F: 200 OK (silent fail for security)
+        F->>U: "If email exists, check inbox"
+    else User found
+        A->>A: Generate reset token (1 hour)
+        A->>DB: Store reset token hash
+        A->>E: Send reset email with link
+        A-->>F: 200 OK
+        F->>U: "If email exists, check inbox"
+    end
+
+    Note over U: User clicks email link
+
+    U->>F: Visit /reset-password?token=xxx
+    F->>U: Show new password form
+    U->>F: Enter new password
+    F->>A: POST /api/v1/auth/reset-password
+    Note over A: {token, password}
+
+    A->>DB: Find user by token hash
+    A->>A: Verify token not expired
+    A->>A: Hash new password
+    A->>DB: Update password, clear token
+    A-->>F: 200 OK
+    F->>U: "Password reset. Please login."
 ```
 
-### Refresh Token
+---
 
-```typescript
-interface RefreshTokenPayload {
-  sub: string;        // User ID (UUID)
-  jti: string;        // JWT ID (for token lookup)
-  iat: number;        // Issued at
-  exp: number;        // Expires at
-}
+## Session Management
+
+### Token Storage Strategy
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        TOKEN STORAGE                                     │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  Access Token                      │  Refresh Token                      │
+│  ────────────                      │  ─────────────                      │
+│                                    │                                     │
+│  Storage: Memory (Zustand)         │  Storage: localStorage              │
+│  Lifetime: 1 hour                  │  Lifetime: 7 days                   │
+│  Sent: Authorization header        │  Sent: Refresh endpoint body        │
+│                                    │                                     │
+│  ┌─────────────────────────────────────────────────────────────────┐   │
+│  │                                                                  │   │
+│  │  Why memory for access token?                                    │   │
+│  │  - More secure (no XSS access)                                   │   │
+│  │  - Cleared on tab close                                          │   │
+│  │  - Refresh token restores session                                │   │
+│  │                                                                  │   │
+│  └─────────────────────────────────────────────────────────────────┘   │
+│                                                                          │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Auto-Refresh Logic
+
+```mermaid
+flowchart TB
+    A[API Request] --> B{Token Expired?}
+    B -->|No| C[Add to Header]
+    B -->|Yes| D[Token Refresh]
+    D --> E{Refresh OK?}
+    E -->|Yes| F[Store New Token]
+    F --> C
+    E -->|No| G[Logout User]
+    C --> H[Send Request]
+    H --> I{Response OK?}
+    I -->|Yes| J[Return Data]
+    I -->|401| K[Token Invalid]
+    K --> D
+    I -->|Other Error| L[Handle Error]
+
+    style J fill:#10b981
+    style G fill:#ef4444
 ```
 
 ---
 
-## 8. Security Considerations
+## Auth State Machine
 
-### Cookie Settings
+```mermaid
+stateDiagram-v2
+    [*] --> Unknown: App Start
 
-| Setting | Value | Purpose |
-|---------|-------|---------|
-| HttpOnly | true | Prevent XSS access |
-| Secure | true (prod) | HTTPS only |
-| SameSite | Strict | Prevent CSRF |
-| Path | / (access), /api/v1/auth (refresh) | Limit scope |
+    Unknown --> Loading: Check stored token
+    Loading --> Authenticated: Valid refresh token
+    Loading --> Unauthenticated: No/invalid token
 
-### Rate Limiting
+    Unauthenticated --> Authenticating: Login/Register
+    Authenticating --> Authenticated: Success
+    Authenticating --> Unauthenticated: Failure
 
-| Endpoint | Limit | Window |
-|----------|-------|--------|
-| POST /auth/register | 5 | 1 minute |
-| POST /auth/login | 5 | 1 minute |
-| POST /auth/refresh | 10 | 1 minute |
+    Authenticated --> Refreshing: Access token expired
+    Refreshing --> Authenticated: New token
+    Refreshing --> Unauthenticated: Refresh failed
 
-### Password Requirements
-
-- Minimum 8 characters
-- At least one uppercase letter
-- At least one number
-- Validated with Zod schema
+    Authenticated --> Unauthenticated: Logout
+```
 
 ---
 
-## 9. Cross-References
+## Security Considerations
 
-- **Backend Implementation:** See `specs/02_backend_lead.md`
-- **API Endpoints:** See `docs/api/reference.md`
-- **Security Architecture:** See `docs/architecture/security.md` (future)
-- **Curl Examples:** See `docs/api/curl-examples.md`
+### Checklist
 
----
-
-*This document is maintained by the Security team. Last updated: 2026-01-29*
+| Item | Status | Implementation |
+|------|--------|----------------|
+| Password hashing | Required | bcrypt, 12 rounds |
+| JWT signing | Required | HS256 with secret |
+| Token expiry | Required | 1h access, 7d refresh |
+| Rate limiting | Required | 10 attempts / 15 min |
+| HTTPS only | Required | TLS 1.3 |
+| Secure headers | Required | helmet middleware |
+| Input validation | Required | Zod schemas |
+| Error messages | Required | Generic (no user enumeration) |

@@ -1,755 +1,473 @@
 # ShopFlow Database Architecture
 
-## Document Control
-- **Version:** 1.0.0
-- **Last Updated:** 2024-01-15
-- **Status:** Approved
-- **Owner:** Database Engineering
+## Technology Stack
 
----
+- **Database**: PostgreSQL 15
+- **ORM**: Prisma 5.x
+- **Migrations**: Prisma Migrate
+- **Connection Pooling**: PgBouncer
 
-## 1. Entity-Relationship Diagram
+## Entity Relationship Diagram
 
-### 1.1 Complete ERD
+### ASCII ERD
 
 ```
-                                 USERS DOMAIN
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                                                                             │
-│  ┌──────────────┐        ┌─────────────────┐        ┌─────────────────┐   │
-│  │    users     │───────<│ user_addresses  │        │  user_sessions  │   │
-│  ├──────────────┤  1:N   ├─────────────────┤        ├─────────────────┤   │
-│  │ id (PK)      │        │ id (PK)         │        │ id (PK)         │   │
-│  │ email        │        │ user_id (FK)    │        │ user_id (FK)    │   │
-│  │ password_hash│        │ address_type    │        │ refresh_token   │   │
-│  │ first_name   │        │ first_name      │        │ expires_at      │   │
-│  │ last_name    │        │ last_name       │        │ created_at      │   │
-│  │ role         │        │ address_line_1  │        └─────────────────┘   │
-│  │ created_at   │        │ city, state     │                              │
-│  └──────┬───────┘        │ postal_code     │        ┌─────────────────┐   │
-│         │                │ country_code    │        │ password_resets │   │
-│         │                └─────────────────┘        ├─────────────────┤   │
-│         │                                           │ id (PK)         │   │
-│         └──────────────────────────────────────────>│ user_id (FK)    │   │
-│                                               1:N   │ token_hash      │   │
-│                                                     │ expires_at      │   │
-│                                                     └─────────────────┘   │
+│                        SHOPFLOW DATABASE SCHEMA                              │
 └─────────────────────────────────────────────────────────────────────────────┘
 
-                               PRODUCTS DOMAIN
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                                                                             │
-│  ┌──────────────┐                              ┌──────────────┐            │
-│  │  categories  │                              │    brands    │            │
-│  ├──────────────┤                              ├──────────────┤            │
-│  │ id (PK)      │<─┐                           │ id (PK)      │            │
-│  │ parent_id(FK)│──┘ (self-ref)                │ name         │            │
-│  │ name         │                              │ slug         │            │
-│  │ slug         │                              │ logo_url     │            │
-│  │ sort_order   │                              │ is_active    │            │
-│  └──────┬───────┘                              └──────┬───────┘            │
-│         │                                             │                    │
-│         │ 1:N                                    1:N  │                    │
-│         │         ┌──────────────────────┐           │                    │
-│         └────────>│      products        │<──────────┘                    │
-│                   ├──────────────────────┤                                │
-│                   │ id (PK)              │                                │
-│                   │ category_id (FK)     │                                │
-│                   │ brand_id (FK)        │                                │
-│                   │ name, slug, sku      │                                │
-│                   │ price, compare_price │                                │
-│                   │ stock_quantity       │                                │
-│                   │ attributes (JSONB)   │                                │
-│                   │ is_active, is_featured│                               │
-│                   └──────────┬───────────┘                                │
-│                              │                                             │
-│         ┌────────────────────┼────────────────────┐                       │
-│         │                    │                    │                       │
-│         v 1:N                v 1:N                v 1:N                   │
-│  ┌──────────────┐     ┌──────────────┐     ┌──────────────┐              │
-│  │product_variants│    │product_images│    │product_reviews│              │
-│  ├──────────────┤     ├──────────────┤     ├──────────────┤              │
-│  │ id (PK)      │     │ id (PK)      │     │ id (PK)      │              │
-│  │ product_id   │     │ product_id   │     │ product_id   │              │
-│  │ name, sku    │     │ url, alt_text│     │ user_id      │              │
-│  │ price        │     │ sort_order   │     │ rating       │              │
-│  │ stock_qty    │     │ is_primary   │     │ title,content│              │
-│  │ option_values│     └──────────────┘     │ is_approved  │              │
-│  └──────────────┘                          └──────────────┘              │
-│                                                                           │
-└─────────────────────────────────────────────────────────────────────────────┘
+┌──────────────────────┐         ┌──────────────────────┐
+│        users         │         │       addresses      │
+├──────────────────────┤         ├──────────────────────┤
+│ id (PK)              │────┐    │ id (PK)              │
+│ email                │    │    │ user_id (FK)         │◀───┐
+│ password_hash        │    │    │ type (billing/ship)  │    │
+│ first_name           │    │    │ street               │    │
+│ last_name            │    │    │ city                 │    │
+│ phone                │    │    │ state                │    │
+│ role                 │    │    │ postal_code          │    │
+│ created_at           │    │    │ country              │    │
+│ updated_at           │    │    │ is_default           │    │
+└──────────────────────┘    │    │ created_at           │    │
+         │                  │    └──────────────────────┘    │
+         │                  │                                │
+         │                  └────────────────────────────────┘
+         │
+         │    ┌──────────────────────┐         ┌──────────────────────┐
+         │    │       orders         │         │     order_items      │
+         │    ├──────────────────────┤         ├──────────────────────┤
+         └───▶│ id (PK)              │────┐    │ id (PK)              │
+              │ user_id (FK)         │    │    │ order_id (FK)        │◀───┐
+              │ status               │    │    │ product_id (FK)      │    │
+              │ subtotal             │    │    │ quantity             │    │
+              │ tax                  │    │    │ unit_price           │    │
+              │ shipping_cost        │    │    │ total_price          │    │
+              │ total                │    │    └──────────────────────┘    │
+              │ shipping_address_id  │    │                                │
+              │ billing_address_id   │    └────────────────────────────────┘
+              │ created_at           │
+              │ updated_at           │
+              └──────────────────────┘
+                       │
+                       ▼
+         ┌──────────────────────┐         ┌──────────────────────┐
+         │      payments        │         │      products        │
+         ├──────────────────────┤         ├──────────────────────┤
+         │ id (PK)              │         │ id (PK)              │
+         │ order_id (FK)        │         │ sku                  │
+         │ stripe_payment_id    │         │ name                 │
+         │ amount               │         │ slug                 │
+         │ currency             │         │ description          │
+         │ status               │         │ price                │
+         │ method               │         │ compare_at_price     │
+         │ created_at           │         │ category_id (FK)     │
+         └──────────────────────┘         │ brand_id (FK)        │
+                                          │ stock_quantity       │
+                                          │ is_active            │
+                                          │ created_at           │
+                                          │ updated_at           │
+                                          └──────────────────────┘
+                                                    │
+         ┌──────────────────────┐                   │
+         │     categories       │                   │
+         ├──────────────────────┤                   │
+         │ id (PK)              │◀──────────────────┘
+         │ name                 │
+         │ slug                 │
+         │ parent_id (FK)       │───┐ (self-referential)
+         │ description          │   │
+         │ image_url            │◀──┘
+         │ sort_order           │
+         └──────────────────────┘
 
-                                 CART DOMAIN
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                                                                             │
-│       ┌──────────────┐                                                     │
-│       │    carts     │                                                     │
-│       ├──────────────┤                                                     │
-│       │ id (PK)      │                                                     │
-│       │ user_id (FK) │ (nullable - for logged in users)                   │
-│       │ session_id   │ (for guest carts)                                  │
-│       │ coupon_id(FK)│                                                     │
-│       │ updated_at   │                                                     │
-│       └──────┬───────┘                                                     │
-│              │                                                              │
-│              │ 1:N                                                          │
-│              v                                                              │
-│       ┌──────────────┐                                                     │
-│       │  cart_items  │                                                     │
-│       ├──────────────┤                                                     │
-│       │ id (PK)      │                                                     │
-│       │ cart_id (FK) │                                                     │
-│       │ product_id   │ ────────> products                                  │
-│       │ variant_id   │ ────────> product_variants                          │
-│       │ quantity     │                                                     │
-│       │ unit_price   │                                                     │
-│       └──────────────┘                                                     │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
+         ┌──────────────────────┐         ┌──────────────────────┐
+         │    product_images    │         │    product_variants  │
+         ├──────────────────────┤         ├──────────────────────┤
+         │ id (PK)              │         │ id (PK)              │
+         │ product_id (FK)      │         │ product_id (FK)      │
+         │ url                  │         │ sku                  │
+         │ alt_text             │         │ name                 │
+         │ sort_order           │         │ price                │
+         │ is_primary           │         │ stock_quantity       │
+         └──────────────────────┘         │ attributes (JSONB)   │
+                                          └──────────────────────┘
 
-                                ORDERS DOMAIN
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                                                                             │
-│       ┌──────────────────┐                                                 │
-│       │      orders      │                                                 │
-│       ├──────────────────┤                                                 │
-│       │ id (PK)          │                                                 │
-│       │ user_id (FK)     │ ────────> users                                 │
-│       │ order_number     │                                                 │
-│       │ status           │                                                 │
-│       │ subtotal, tax    │                                                 │
-│       │ shipping, total  │                                                 │
-│       │ customer_email   │                                                 │
-│       │ coupon_code      │                                                 │
-│       │ placed_at        │                                                 │
-│       └────────┬─────────┘                                                 │
-│                │                                                            │
-│     ┌──────────┼──────────┬──────────────┬──────────────┐                  │
-│     │          │          │              │              │                  │
-│     v 1:N      v 1:N      v 1:2          v 1:N          v 1:N             │
-│  ┌─────────┐┌─────────┐┌───────────┐┌───────────┐┌──────────────┐         │
-│  │ order_  ││ order_  ││  order_   ││  order_   ││order_status_ │         │
-│  │ items   ││shipments││ addresses ││ payments  ││   history    │         │
-│  ├─────────┤├─────────┤├───────────┤├───────────┤├──────────────┤         │
-│  │ id (PK) ││ id (PK) ││ id (PK)   ││ id (PK)   ││ id (PK)      │         │
-│  │order_id ││order_id ││ order_id  ││ order_id  ││ order_id     │         │
-│  │product_id│|carrier ││ type      ││ amount    ││ status       │         │
-│  │quantity ││tracking ││ first_name││ status    ││ notes        │         │
-│  │price    ││status   ││ city,state││ card_last4││ created_by   │         │
-│  │subtotal ││delivered││ postal    ││ captured  ││ created_at   │         │
-│  └─────────┘└─────────┘└───────────┘└───────────┘└──────────────┘         │
-│                                            │                               │
-│                                            │ 1:N                           │
-│                                            v                               │
-│                                     ┌───────────┐                          │
-│                                     │  refunds  │                          │
-│                                     ├───────────┤                          │
-│                                     │ id (PK)   │                          │
-│                                     │payment_id │                          │
-│                                     │ amount    │                          │
-│                                     │ status    │                          │
-│                                     │ reason    │                          │
-│                                     └───────────┘                          │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-                              PROMOTIONS DOMAIN
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                                                                             │
-│       ┌──────────────┐                      ┌──────────────┐               │
-│       │   coupons    │──────────────────────│ coupon_usage │               │
-│       ├──────────────┤          1:N         ├──────────────┤               │
-│       │ id (PK)      │                      │ id (PK)      │               │
-│       │ code         │                      │ coupon_id(FK)│               │
-│       │ discount_type│                      │ user_id      │               │
-│       │ discount_val │                      │ order_id     │               │
-│       │ min_order    │                      │ discount_amt │               │
-│       │ max_discount │                      │ created_at   │               │
-│       │ usage_limit  │                      └──────────────┘               │
-│       │ starts_at    │                                                     │
-│       │ expires_at   │                                                     │
-│       └──────────────┘                                                     │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-                               SHIPPING DOMAIN
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                                                                             │
-│       ┌────────────────┐                    ┌─────────────────┐            │
-│       │ shipping_zones │────────────────────│shipping_methods │            │
-│       ├────────────────┤        1:N         ├─────────────────┤            │
-│       │ id (PK)        │                    │ id (PK)         │            │
-│       │ name           │                    │ zone_id (FK)    │            │
-│       │ countries[]    │                    │ name            │            │
-│       │ states[]       │                    │ carrier         │            │
-│       │ is_active      │                    │ price           │            │
-│       └────────────────┘                    │ estimated_days  │            │
-│                                             │ free_above      │            │
-│                                             └─────────────────┘            │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
+         ┌──────────────────────┐         ┌──────────────────────┐
+         │       reviews        │         │       carts          │
+         ├──────────────────────┤         ├──────────────────────┤
+         │ id (PK)              │         │ id (PK)              │
+         │ product_id (FK)      │         │ user_id (FK)         │
+         │ user_id (FK)         │         │ session_id           │
+         │ rating               │         │ expires_at           │
+         │ title                │         │ created_at           │
+         │ content              │         │ updated_at           │
+         │ is_verified          │         └──────────────────────┘
+         │ created_at           │                   │
+         └──────────────────────┘                   ▼
+                                          ┌──────────────────────┐
+                                          │     cart_items       │
+                                          ├──────────────────────┤
+                                          │ id (PK)              │
+                                          │ cart_id (FK)         │
+                                          │ product_id (FK)      │
+                                          │ variant_id (FK)      │
+                                          │ quantity             │
+                                          │ created_at           │
+                                          └──────────────────────┘
 ```
 
----
+### Mermaid ERD
 
-## 2. Table Catalog
+```mermaid
+erDiagram
+    users ||--o{ orders : places
+    users ||--o{ addresses : has
+    users ||--o{ reviews : writes
+    users ||--o{ carts : owns
 
-### 2.1 Users Domain Tables
+    orders ||--|{ order_items : contains
+    orders ||--|| payments : has
+    orders }o--|| addresses : ships_to
+    orders }o--|| addresses : bills_to
 
-| Table | Purpose | Key Columns | Relationships |
-|-------|---------|-------------|---------------|
-| `users` | Customer, merchant, admin accounts | id, email, password_hash, role | Has many: addresses, sessions, orders, reviews |
-| `user_addresses` | Saved shipping/billing addresses | id, user_id, address_type, is_default | Belongs to: users |
-| `user_sessions` | Active refresh tokens | id, user_id, refresh_token_hash, expires_at | Belongs to: users |
-| `password_resets` | Password reset tokens | id, user_id, token_hash, expires_at | Belongs to: users |
+    products ||--o{ order_items : includes
+    products ||--o{ product_images : has
+    products ||--o{ product_variants : has
+    products ||--o{ reviews : receives
+    products ||--o{ cart_items : in
+    products }o--|| categories : belongs_to
+    products }o--|| brands : made_by
 
-### 2.2 Products Domain Tables
+    categories ||--o{ categories : parent_of
 
-| Table | Purpose | Key Columns | Relationships |
-|-------|---------|-------------|---------------|
-| `categories` | Product categories (hierarchical) | id, parent_id, name, slug | Self-referential, has many: products |
-| `brands` | Product brands/manufacturers | id, name, slug, logo_url | Has many: products |
-| `products` | Main product catalog | id, name, sku, price, stock_quantity | Belongs to: category, brand; Has many: variants, images, reviews |
-| `product_variants` | Size/color combinations | id, product_id, name, sku, price, stock_quantity | Belongs to: products |
-| `product_images` | Product media | id, product_id, url, alt_text, is_primary | Belongs to: products, variants |
-| `product_reviews` | Customer reviews | id, product_id, user_id, rating, content | Belongs to: products, users |
+    carts ||--|{ cart_items : contains
+    cart_items }o--|| product_variants : references
 
-### 2.3 Cart Domain Tables
+    users {
+        uuid id PK
+        string email UK
+        string password_hash
+        string first_name
+        string last_name
+        string phone
+        enum role
+        timestamp created_at
+        timestamp updated_at
+    }
 
-| Table | Purpose | Key Columns | Relationships |
-|-------|---------|-------------|---------------|
-| `carts` | Shopping carts | id, user_id, session_id, coupon_id | Belongs to: users (optional), coupons; Has many: cart_items |
-| `cart_items` | Cart line items | id, cart_id, product_id, variant_id, quantity | Belongs to: carts, products, variants |
+    products {
+        uuid id PK
+        string sku UK
+        string name
+        string slug UK
+        text description
+        decimal price
+        decimal compare_at_price
+        uuid category_id FK
+        uuid brand_id FK
+        int stock_quantity
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
 
-### 2.4 Orders Domain Tables
+    orders {
+        uuid id PK
+        string order_number UK
+        uuid user_id FK
+        enum status
+        decimal subtotal
+        decimal tax
+        decimal shipping_cost
+        decimal total
+        uuid shipping_address_id FK
+        uuid billing_address_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
 
-| Table | Purpose | Key Columns | Relationships |
-|-------|---------|-------------|---------------|
-| `orders` | Customer orders | id, order_number, user_id, status, total_amount | Belongs to: users; Has many: items, addresses, shipments, payments |
-| `order_items` | Order line items | id, order_id, product_id, quantity, price | Belongs to: orders, products |
-| `order_addresses` | Shipping/billing addresses (snapshot) | id, order_id, address_type | Belongs to: orders |
-| `order_shipments` | Shipment tracking | id, order_id, carrier, tracking_number, status | Belongs to: orders |
-| `order_status_history` | Order status audit trail | id, order_id, status, created_by | Belongs to: orders |
-| `payments` | Payment transactions | id, order_id, amount, status, card_last_four | Belongs to: orders; Has many: refunds |
-| `refunds` | Refund transactions | id, payment_id, amount, status, reason | Belongs to: payments |
+    order_items {
+        uuid id PK
+        uuid order_id FK
+        uuid product_id FK
+        uuid variant_id FK
+        int quantity
+        decimal unit_price
+        decimal total_price
+    }
 
-### 2.5 Promotions Domain Tables
+    carts {
+        uuid id PK
+        uuid user_id FK
+        string session_id
+        timestamp expires_at
+        timestamp created_at
+        timestamp updated_at
+    }
 
-| Table | Purpose | Key Columns | Relationships |
-|-------|---------|-------------|---------------|
-| `coupons` | Discount codes | id, code, discount_type, discount_value, expires_at | Has many: usage records |
-| `coupon_usage` | Coupon usage tracking | id, coupon_id, user_id, order_id | Belongs to: coupons, users, orders |
+    cart_items {
+        uuid id PK
+        uuid cart_id FK
+        uuid product_id FK
+        uuid variant_id FK
+        int quantity
+        timestamp created_at
+    }
 
-### 2.6 Shipping Domain Tables
+    categories {
+        uuid id PK
+        string name
+        string slug UK
+        uuid parent_id FK
+        text description
+        string image_url
+        int sort_order
+    }
 
-| Table | Purpose | Key Columns | Relationships |
-|-------|---------|-------------|---------------|
-| `shipping_zones` | Geographic regions | id, name, countries[], states[] | Has many: shipping_methods |
-| `shipping_methods` | Available shipping options | id, zone_id, name, price, estimated_days | Belongs to: shipping_zones |
+    addresses {
+        uuid id PK
+        uuid user_id FK
+        enum type
+        string street
+        string city
+        string state
+        string postal_code
+        string country
+        boolean is_default
+        timestamp created_at
+    }
 
----
+    payments {
+        uuid id PK
+        uuid order_id FK
+        string stripe_payment_id
+        decimal amount
+        string currency
+        enum status
+        string method
+        timestamp created_at
+    }
 
-## 3. Index Strategy
+    reviews {
+        uuid id PK
+        uuid product_id FK
+        uuid user_id FK
+        int rating
+        string title
+        text content
+        boolean is_verified
+        timestamp created_at
+    }
 
-### 3.1 Primary Indexes (Automatic)
+    product_images {
+        uuid id PK
+        uuid product_id FK
+        string url
+        string alt_text
+        int sort_order
+        boolean is_primary
+    }
 
-All tables have primary key indexes on their `id` columns (UUID).
+    product_variants {
+        uuid id PK
+        uuid product_id FK
+        string sku UK
+        string name
+        decimal price
+        int stock_quantity
+        jsonb attributes
+    }
 
-### 3.2 Performance Indexes
-
-```sql
--- Users
-CREATE INDEX idx_users_email ON users(email) WHERE deleted_at IS NULL;
-CREATE INDEX idx_users_role ON users(role) WHERE deleted_at IS NULL;
-
--- Products
-CREATE INDEX idx_products_slug ON products(slug);
-CREATE INDEX idx_products_sku ON products(sku);
-CREATE INDEX idx_products_category_id ON products(category_id);
-CREATE INDEX idx_products_brand_id ON products(brand_id);
-CREATE INDEX idx_products_active ON products(is_active, deleted_at)
-  WHERE is_active = TRUE AND deleted_at IS NULL;
-CREATE INDEX idx_products_featured ON products(is_featured)
-  WHERE is_featured = TRUE AND is_active = TRUE;
-CREATE INDEX idx_products_price ON products(price);
-CREATE INDEX idx_products_stock ON products(stock_quantity)
-  WHERE track_inventory = TRUE;
-
--- Full-text search
-CREATE INDEX idx_products_search ON products USING GIN (
-  to_tsvector('english', coalesce(name, '') || ' ' || coalesce(description, ''))
-);
-
--- JSONB indexes
-CREATE INDEX idx_products_attributes ON products USING GIN (attributes);
-CREATE INDEX idx_products_tags ON products USING GIN (tags);
-
--- Categories
-CREATE INDEX idx_categories_slug ON categories(slug);
-CREATE INDEX idx_categories_parent ON categories(parent_id);
-
--- Cart
-CREATE INDEX idx_carts_user_id ON carts(user_id);
-CREATE INDEX idx_carts_session_id ON carts(session_id);
-CREATE INDEX idx_cart_items_cart_id ON cart_items(cart_id);
-
--- Orders
-CREATE INDEX idx_orders_user_id ON orders(user_id);
-CREATE INDEX idx_orders_order_number ON orders(order_number);
-CREATE INDEX idx_orders_status ON orders(status);
-CREATE INDEX idx_orders_placed_at ON orders(placed_at);
-CREATE INDEX idx_order_items_order_id ON order_items(order_id);
-
--- Reviews
-CREATE INDEX idx_reviews_product_id ON product_reviews(product_id);
-CREATE INDEX idx_reviews_approved ON product_reviews(product_id, is_approved)
-  WHERE is_approved = TRUE;
+    brands {
+        uuid id PK
+        string name
+        string slug UK
+        string logo_url
+        text description
+    }
 ```
 
-### 3.3 Composite Indexes for Common Queries
+## Prisma Schema
 
-```sql
--- Product listing with filters
-CREATE INDEX idx_products_category_price ON products(category_id, price)
-  WHERE is_active = TRUE AND deleted_at IS NULL;
-
--- User orders lookup
-CREATE INDEX idx_orders_user_status_date ON orders(user_id, status, placed_at DESC);
-
--- Cart item lookup
-CREATE INDEX idx_cart_items_product_variant ON cart_items(cart_id, product_id, variant_id);
-```
-
----
-
-## 4. Query Patterns
-
-### 4.1 Product Listing with Filters
-
-```sql
--- Get products with category, pagination, and filters
-SELECT
-  p.id,
-  p.name,
-  p.slug,
-  p.price,
-  p.compare_at_price,
-  p.stock_quantity,
-  c.name as category_name,
-  b.name as brand_name,
-  (SELECT url FROM product_images pi
-   WHERE pi.product_id = p.id AND pi.is_primary = TRUE
-   LIMIT 1) as primary_image,
-  (SELECT AVG(rating) FROM product_reviews pr
-   WHERE pr.product_id = p.id AND pr.is_approved = TRUE) as avg_rating,
-  (SELECT COUNT(*) FROM product_reviews pr
-   WHERE pr.product_id = p.id AND pr.is_approved = TRUE) as review_count
-FROM products p
-LEFT JOIN categories c ON p.category_id = c.id
-LEFT JOIN brands b ON p.brand_id = b.id
-WHERE
-  p.is_active = TRUE
-  AND p.deleted_at IS NULL
-  AND ($1::uuid IS NULL OR p.category_id = $1)
-  AND ($2::numeric IS NULL OR p.price >= $2)
-  AND ($3::numeric IS NULL OR p.price <= $3)
-  AND ($4::uuid IS NULL OR p.brand_id = $4)
-  AND ($5::boolean IS NULL OR ($5 = TRUE AND p.stock_quantity > 0))
-ORDER BY
-  CASE WHEN $6 = 'price_asc' THEN p.price END ASC,
-  CASE WHEN $6 = 'price_desc' THEN p.price END DESC,
-  CASE WHEN $6 = 'newest' THEN p.created_at END DESC,
-  p.created_at DESC
-LIMIT $7 OFFSET $8;
-```
-
-### 4.2 Product Detail with All Relations
-
-```sql
--- Get full product details
-SELECT
-  p.*,
-  json_build_object(
-    'id', c.id,
-    'name', c.name,
-    'slug', c.slug
-  ) as category,
-  json_build_object(
-    'id', b.id,
-    'name', b.name
-  ) as brand,
-  (
-    SELECT json_agg(json_build_object(
-      'id', pi.id,
-      'url', pi.url,
-      'alt_text', pi.alt_text,
-      'is_primary', pi.is_primary
-    ) ORDER BY pi.sort_order)
-    FROM product_images pi
-    WHERE pi.product_id = p.id
-  ) as images,
-  (
-    SELECT json_agg(json_build_object(
-      'id', pv.id,
-      'name', pv.name,
-      'sku', pv.sku,
-      'price', pv.price,
-      'stock_quantity', pv.stock_quantity,
-      'option_values', pv.option_values
-    ) ORDER BY pv.sort_order)
-    FROM product_variants pv
-    WHERE pv.product_id = p.id AND pv.is_active = TRUE
-  ) as variants
-FROM products p
-LEFT JOIN categories c ON p.category_id = c.id
-LEFT JOIN brands b ON p.brand_id = b.id
-WHERE (p.id = $1 OR p.slug = $1)
-  AND p.deleted_at IS NULL;
-```
-
-### 4.3 Cart with Items
-
-```sql
--- Get cart with enriched item data
-SELECT
-  c.id,
-  c.user_id,
-  c.session_id,
-  c.coupon_id,
-  c.updated_at,
-  COALESCE(
-    json_agg(
-      json_build_object(
-        'id', ci.id,
-        'product_id', ci.product_id,
-        'variant_id', ci.variant_id,
-        'quantity', ci.quantity,
-        'unit_price', ci.unit_price,
-        'name', p.name,
-        'slug', p.slug,
-        'variant_name', pv.name,
-        'image', (SELECT url FROM product_images WHERE product_id = p.id AND is_primary = TRUE LIMIT 1),
-        'in_stock', COALESCE(pv.stock_quantity, p.stock_quantity) >= ci.quantity,
-        'max_quantity', COALESCE(pv.stock_quantity, p.stock_quantity)
-      )
-    ) FILTER (WHERE ci.id IS NOT NULL),
-    '[]'
-  ) as items,
-  COALESCE(SUM(ci.quantity), 0) as item_count,
-  COALESCE(SUM(ci.quantity * ci.unit_price), 0) as subtotal
-FROM carts c
-LEFT JOIN cart_items ci ON c.id = ci.cart_id
-LEFT JOIN products p ON ci.product_id = p.id
-LEFT JOIN product_variants pv ON ci.variant_id = pv.id
-WHERE c.id = $1 OR c.user_id = $2 OR c.session_id = $3
-GROUP BY c.id;
-```
-
-### 4.4 Order with All Details
-
-```sql
--- Get complete order information
-SELECT
-  o.*,
-  json_build_object(
-    'id', u.id,
-    'email', u.email,
-    'first_name', u.first_name,
-    'last_name', u.last_name
-  ) as customer,
-  (
-    SELECT json_agg(json_build_object(
-      'id', oi.id,
-      'product_id', oi.product_id,
-      'product_name', oi.product_name,
-      'variant_name', oi.variant_name,
-      'sku', oi.sku,
-      'quantity', oi.quantity,
-      'unit_price', oi.unit_price,
-      'subtotal', oi.subtotal,
-      'image_url', oi.image_url
-    ))
-    FROM order_items oi
-    WHERE oi.order_id = o.id
-  ) as items,
-  (
-    SELECT json_agg(json_build_object(
-      'id', oa.id,
-      'type', oa.address_type,
-      'first_name', oa.first_name,
-      'last_name', oa.last_name,
-      'address_line_1', oa.address_line_1,
-      'city', oa.city,
-      'state', oa.state,
-      'postal_code', oa.postal_code,
-      'country_code', oa.country_code
-    ))
-    FROM order_addresses oa
-    WHERE oa.order_id = o.id
-  ) as addresses,
-  (
-    SELECT json_build_object(
-      'id', os.id,
-      'carrier', os.carrier,
-      'tracking_number', os.tracking_number,
-      'status', os.status,
-      'estimated_delivery', os.estimated_delivery
-    )
-    FROM order_shipments os
-    WHERE os.order_id = o.id
-    LIMIT 1
-  ) as shipment,
-  (
-    SELECT json_build_object(
-      'id', pay.id,
-      'method', pay.payment_method,
-      'status', pay.status,
-      'card_brand', pay.card_brand,
-      'card_last_four', pay.card_last_four
-    )
-    FROM payments pay
-    WHERE pay.order_id = o.id
-    LIMIT 1
-  ) as payment,
-  (
-    SELECT json_agg(json_build_object(
-      'status', osh.status,
-      'notes', osh.notes,
-      'created_at', osh.created_at
-    ) ORDER BY osh.created_at)
-    FROM order_status_history osh
-    WHERE osh.order_id = o.id
-  ) as status_history
-FROM orders o
-LEFT JOIN users u ON o.user_id = u.id
-WHERE o.id = $1;
-```
-
----
-
-## 5. Connection Pooling
-
-### 5.1 Configuration
-
-```typescript
-// config/database.ts
-
-const poolConfig = {
-  connectionString: process.env.DATABASE_URL,
-  max: 20,                    // Maximum connections
-  idleTimeoutMillis: 30000,   // Close idle connections after 30s
-  connectionTimeoutMillis: 2000, // Timeout for new connections
-  maxUses: 7500,              // Close connection after N uses
-};
-
-// For Prisma
-// prisma/schema.prisma
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  relationMode = "prisma"
-}
-
+```prisma
+// schema.prisma
 generator client {
   provider = "prisma-client-js"
 }
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  firstName    String    @map("first_name")
+  lastName     String    @map("last_name")
+  phone        String?
+  role         UserRole  @default(CUSTOMER)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  addresses    Address[]
+  orders       Order[]
+  reviews      Review[]
+  carts        Cart[]
+
+  @@map("users")
+}
+
+enum UserRole {
+  CUSTOMER
+  ADMIN
+  STAFF
+}
+
+model Product {
+  id              String   @id @default(uuid())
+  sku             String   @unique
+  name            String
+  slug            String   @unique
+  description     String?
+  price           Decimal  @db.Decimal(10, 2)
+  compareAtPrice  Decimal? @map("compare_at_price") @db.Decimal(10, 2)
+  categoryId      String   @map("category_id")
+  brandId         String?  @map("brand_id")
+  stockQuantity   Int      @default(0) @map("stock_quantity")
+  isActive        Boolean  @default(true) @map("is_active")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  category        Category        @relation(fields: [categoryId], references: [id])
+  brand           Brand?          @relation(fields: [brandId], references: [id])
+  images          ProductImage[]
+  variants        ProductVariant[]
+  orderItems      OrderItem[]
+  reviews         Review[]
+  cartItems       CartItem[]
+
+  @@index([categoryId])
+  @@index([brandId])
+  @@index([isActive, createdAt])
+  @@map("products")
+}
+
+model Order {
+  id                String      @id @default(uuid())
+  orderNumber       String      @unique @map("order_number")
+  userId            String      @map("user_id")
+  status            OrderStatus @default(PENDING)
+  subtotal          Decimal     @db.Decimal(10, 2)
+  tax               Decimal     @db.Decimal(10, 2)
+  shippingCost      Decimal     @map("shipping_cost") @db.Decimal(10, 2)
+  total             Decimal     @db.Decimal(10, 2)
+  shippingAddressId String      @map("shipping_address_id")
+  billingAddressId  String      @map("billing_address_id")
+  createdAt         DateTime    @default(now()) @map("created_at")
+  updatedAt         DateTime    @updatedAt @map("updated_at")
+
+  user              User        @relation(fields: [userId], references: [id])
+  shippingAddress   Address     @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
+  billingAddress    Address     @relation("BillingAddress", fields: [billingAddressId], references: [id])
+  items             OrderItem[]
+  payment           Payment?
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("orders")
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+model Cart {
+  id        String     @id @default(uuid())
+  userId    String?    @map("user_id")
+  sessionId String?    @map("session_id")
+  expiresAt DateTime   @map("expires_at")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  user      User?      @relation(fields: [userId], references: [id])
+  items     CartItem[]
+
+  @@index([userId])
+  @@index([sessionId])
+  @@index([expiresAt])
+  @@map("carts")
+}
 ```
 
-### 5.2 Connection Limits by Environment
-
-| Environment | Max Connections | Idle Timeout |
-|-------------|----------------|--------------|
-| Development | 5 | 10s |
-| Staging | 10 | 30s |
-| Production | 20 | 30s |
-
----
-
-## 6. Migration Strategy
-
-### 6.1 Migration Naming Convention
-
-```
-YYYYMMDDHHMMSS_description.ts
-
-Examples:
-20240115100000_create_users_table.ts
-20240115100100_create_products_table.ts
-20240115100200_add_products_search_index.ts
-20240120150000_add_coupon_max_discount_column.ts
-```
-
-### 6.2 Migration Best Practices
-
-1. **Always reversible**: Include both `up` and `down` migrations
-2. **Small and focused**: One logical change per migration
-3. **No data loss**: Use additive changes, avoid destructive changes
-4. **Test in staging**: Always run migrations in staging first
-5. **Backup before**: Take database backup before production migrations
-
-### 6.3 Migration Template
-
-```typescript
-// prisma/migrations/20240115100000_create_users_table/migration.sql
-
--- CreateTable
-CREATE TABLE "users" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "email" VARCHAR(255) NOT NULL,
-    "password_hash" VARCHAR(255) NOT NULL,
-    "first_name" VARCHAR(100) NOT NULL,
-    "last_name" VARCHAR(100) NOT NULL,
-    "role" VARCHAR(20) NOT NULL DEFAULT 'customer',
-    "email_verified" BOOLEAN NOT NULL DEFAULT false,
-    "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    "deleted_at" TIMESTAMPTZ,
-
-    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
-);
-
--- CreateIndex
-CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
-CREATE INDEX "idx_users_email" ON "users"("email") WHERE "deleted_at" IS NULL;
-CREATE INDEX "idx_users_role" ON "users"("role") WHERE "deleted_at" IS NULL;
-
--- Add Comment
-COMMENT ON TABLE "users" IS 'User accounts for customers, merchants, and administrators';
-```
-
----
-
-## 7. Backup and Recovery
-
-### 7.1 Backup Schedule
-
-| Type | Frequency | Retention | Storage |
-|------|-----------|-----------|---------|
-| Full backup | Daily at 02:00 UTC | 30 days | S3 |
-| Point-in-time | Continuous | 7 days | WAL |
-| Weekly archive | Sunday 00:00 UTC | 1 year | Glacier |
-
-### 7.2 Recovery Procedures
-
-```bash
-# Restore from latest full backup
-pg_restore --dbname=shopflow_restore --clean latest_backup.dump
-
-# Point-in-time recovery to specific timestamp
-pg_restore --dbname=shopflow_restore \
-  --target-time="2024-01-15 14:30:00" \
-  base_backup.tar
-
-# Verify restored data
-psql -d shopflow_restore -c "SELECT COUNT(*) FROM orders;"
-```
-
-### 7.3 RTO/RPO Targets
-
-| Metric | Target |
-|--------|--------|
-| Recovery Point Objective (RPO) | < 1 hour |
-| Recovery Time Objective (RTO) | < 4 hours |
-
----
-
-## 8. Data Integrity Rules
-
-### 8.1 Foreign Key Constraints
-
-| Relationship | On Delete | On Update |
-|--------------|-----------|-----------|
-| user_addresses -> users | CASCADE | CASCADE |
-| products -> categories | SET NULL | CASCADE |
-| products -> brands | SET NULL | CASCADE |
-| product_variants -> products | CASCADE | CASCADE |
-| cart_items -> carts | CASCADE | CASCADE |
-| cart_items -> products | CASCADE | CASCADE |
-| orders -> users | SET NULL | CASCADE |
-| order_items -> orders | CASCADE | CASCADE |
-| order_items -> products | RESTRICT | CASCADE |
-| payments -> orders | RESTRICT | CASCADE |
-
-### 8.2 Check Constraints
+## Indexes Strategy
 
 ```sql
--- Prices must be non-negative
-CONSTRAINT products_price_positive CHECK (price >= 0)
-CONSTRAINT products_compare_price CHECK (compare_at_price IS NULL OR compare_at_price > price)
+-- Performance indexes
+CREATE INDEX idx_products_category_active ON products(category_id, is_active);
+CREATE INDEX idx_products_price ON products(price) WHERE is_active = true;
+CREATE INDEX idx_products_search ON products USING gin(to_tsvector('english', name || ' ' || description));
 
--- Stock must be non-negative
-CONSTRAINT products_stock_non_negative CHECK (stock_quantity >= 0)
+CREATE INDEX idx_orders_user_status ON orders(user_id, status);
+CREATE INDEX idx_orders_created ON orders(created_at DESC);
 
--- Quantity must be positive
-CONSTRAINT cart_items_quantity_positive CHECK (quantity > 0)
+CREATE INDEX idx_order_items_order ON order_items(order_id);
+CREATE INDEX idx_order_items_product ON order_items(product_id);
 
--- Valid order status
-CONSTRAINT orders_status_check CHECK (status IN (
-  'pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded'
-))
-
--- Valid user roles
-CONSTRAINT users_role_check CHECK (role IN ('customer', 'merchant', 'admin'))
-
--- Rating range
-CONSTRAINT reviews_rating_check CHECK (rating BETWEEN 1 AND 5)
+CREATE INDEX idx_cart_items_cart ON cart_items(cart_id);
+CREATE INDEX idx_reviews_product ON reviews(product_id, created_at DESC);
 ```
 
----
+## Query Examples
 
-## 9. Soft Delete Policy
-
-### 9.1 Tables with Soft Delete
-
-| Table | Soft Delete Column | Reason |
-|-------|-------------------|--------|
-| `users` | `deleted_at` | Preserve order history, audit trail |
-| `products` | `deleted_at` | Preserve order item references |
-
-### 9.2 Tables with Hard Delete
-
-| Table | Reason |
-|-------|--------|
-| `cart_items` | Ephemeral data, no audit requirement |
-| `user_sessions` | Security - expired sessions should be removed |
-| `password_resets` | Security - used tokens should be removed |
-
-### 9.3 Cascade Delete Rules
+### Product Search with Filters
 
 ```sql
--- When a user is deleted (soft), their cart is cleared
--- but orders are preserved (user_id set to NULL)
-
--- When a product is deleted (soft), it remains in:
--- - Existing orders (order_items reference preserved)
--- - But removed from:
---   - Active carts (cart_items deleted)
---   - Search results (filtered by deleted_at)
+SELECT p.*,
+       AVG(r.rating) as avg_rating,
+       COUNT(r.id) as review_count
+FROM products p
+LEFT JOIN reviews r ON r.product_id = p.id
+WHERE p.is_active = true
+  AND p.category_id = $1
+  AND p.price BETWEEN $2 AND $3
+  AND to_tsvector('english', p.name || ' ' || p.description) @@ plainto_tsquery($4)
+GROUP BY p.id
+ORDER BY p.created_at DESC
+LIMIT 20 OFFSET 0;
 ```
 
----
-
-## 10. Performance Monitoring
-
-### 10.1 Key Metrics to Monitor
-
-| Metric | Warning | Critical |
-|--------|---------|----------|
-| Query time (p95) | > 200ms | > 500ms |
-| Connection pool usage | > 70% | > 90% |
-| Dead tuples ratio | > 10% | > 20% |
-| Index hit ratio | < 95% | < 90% |
-| Disk usage | > 70% | > 85% |
-
-### 10.2 Slow Query Logging
+### Order with Items
 
 ```sql
--- Enable slow query logging
-ALTER SYSTEM SET log_min_duration_statement = 200; -- Log queries > 200ms
-ALTER SYSTEM SET log_statement = 'ddl'; -- Log DDL statements
-SELECT pg_reload_conf();
+SELECT o.*,
+       json_agg(json_build_object(
+         'id', oi.id,
+         'product_name', p.name,
+         'quantity', oi.quantity,
+         'unit_price', oi.unit_price
+       )) as items
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.id
+JOIN products p ON p.id = oi.product_id
+WHERE o.id = $1
+GROUP BY o.id;
 ```
 
----
+## Database Statistics
 
-*Document End - Database Architecture*
+| Table | Estimated Rows | Index Size | Table Size |
+|-------|---------------|------------|------------|
+| products | 50,000 | 12 MB | 45 MB |
+| orders | 500,000 | 85 MB | 320 MB |
+| order_items | 2,000,000 | 180 MB | 450 MB |
+| users | 100,000 | 15 MB | 35 MB |
+| reviews | 200,000 | 25 MB | 120 MB |

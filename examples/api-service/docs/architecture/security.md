@@ -2,414 +2,561 @@
 
 ## Overview
 
-This document describes the security architecture for DataHub API Gateway, including authentication, authorization, data protection, and security best practices.
+This document details the security architecture of DataHub API Gateway, including authentication flows, authorization mechanisms, and security best practices implemented throughout the system.
 
 ---
 
-## Authentication Flow
+## Authentication Architecture
 
-### API Key Authentication
+### ASCII Authentication Flow
 
 ```
-+--------+                                      +----------+
-| Client |                                      | DataHub  |
-+---+----+                                      +----+-----+
-    |                                                |
-    | 1. Request with API Key                        |
-    |  X-API-Key: dh_live_abc123...                  |
-    |----------------------------------------------->|
-    |                                                |
-    |                              2. Extract Key    |
-    |                              from header       |
-    |                                                |
-    |                              3. Hash Key       |
-    |                              SHA-256           |
-    |                                                |
-    |                              4. Lookup in      |
-    |                              Cache/Database    |
-    |                                                |
-    |                              5. Validate:      |
-    |                              - Status = active |
-    |                              - Not expired     |
-    |                              - Has scopes      |
-    |                                                |
-    |      6a. Success: Continue to handler          |
-    |<-----------------------------------------------|
-    |                                                |
-    |      6b. Failure: 401 Unauthorized             |
-    |<-----------------------------------------------|
-    |                                                |
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                       DataHub Authentication Flow                            │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────┐                                              ┌──────────────────┐
+│  Client  │                                              │   DataHub API    │
+└────┬─────┘                                              └────────┬─────────┘
+     │                                                             │
+     │  ══════════════════ USER AUTHENTICATION ══════════════════  │
+     │                                                             │
+     │  1. POST /api/v1/auth/login                                 │
+     │     { email, password }                                     │
+     │  ─────────────────────────────────────────────────────────► │
+     │                                                             │
+     │                              ┌─────────────────────────────┐│
+     │                              │ Validate credentials        ││
+     │                              │ bcrypt.compare(password)    ││
+     │                              └─────────────────────────────┘│
+     │                                                             │
+     │  2. Return JWT tokens                                       │
+     │     { accessToken, refreshToken }                           │
+     │  ◄───────────────────────────────────────────────────────── │
+     │                                                             │
+     │  ══════════════════ API KEY AUTHENTICATION ═══════════════  │
+     │                                                             │
+     │  3. GET /api/v1/resource                                    │
+     │     Header: X-API-Key: dh_live_xxx                          │
+     │  ─────────────────────────────────────────────────────────► │
+     │                                                             │
+     │                              ┌─────────────────────────────┐│
+     │                              │ Hash API key                ││
+     │                              │ Lookup in Redis/PostgreSQL  ││
+     │                              │ Verify not revoked/expired  ││
+     │                              └─────────────────────────────┘│
+     │                                                             │
+     │  4. Return resource data                                    │
+     │     { data: {...} }                                         │
+     │  ◄───────────────────────────────────────────────────────── │
+     │                                                             │
 ```
 
-### Key Extraction
+### Mermaid JWT Authentication Sequence
 
-API keys can be provided via:
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant G as Gateway
+    participant A as Auth Service
+    participant R as Redis
+    participant DB as PostgreSQL
 
-1. **X-API-Key Header** (Recommended)
-   ```
-   X-API-Key: dh_live_abc123xyz789def456uvw012
-   ```
+    Note over C,DB: User Login Flow
 
-2. **Authorization Bearer Header**
-   ```
-   Authorization: Bearer dh_live_abc123xyz789def456uvw012
-   ```
+    C->>G: POST /auth/login {email, password}
+    G->>A: Validate credentials
+    A->>DB: SELECT user WHERE email = ?
+    DB-->>A: User record
+    A->>A: bcrypt.compare(password, hash)
+
+    alt Password Valid
+        A->>A: Generate JWT (15min expiry)
+        A->>A: Generate Refresh Token (7d expiry)
+        A->>DB: Store refresh_token hash
+        A->>R: Cache user session
+        A-->>G: {accessToken, refreshToken}
+        G-->>C: 200 OK + tokens
+    else Password Invalid
+        A-->>G: Authentication failed
+        G-->>C: 401 Unauthorized
+    end
+
+    Note over C,DB: Token Refresh Flow
+
+    C->>G: POST /auth/refresh {refreshToken}
+    G->>A: Validate refresh token
+    A->>DB: Find token by hash
+
+    alt Token Valid & Not Revoked
+        A->>A: Generate new access token
+        A->>A: Rotate refresh token
+        A->>DB: Revoke old, store new
+        A-->>G: {accessToken, refreshToken}
+        G-->>C: 200 OK + new tokens
+    else Token Invalid
+        G-->>C: 401 Unauthorized
+    end
+```
+
+---
+
+## JWT Token Structure
+
+### Token Anatomy
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          JWT Token Structure                                 │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+    Access Token (JWT)
+    ═══════════════════════════════════════════════════════════════════════
+
+    eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyXzEyMzQ1Ni...
+
+    ┌─────────────────────────────────────────────────────────────────────┐
+    │  HEADER (Base64)                                                     │
+    │  {                                                                   │
+    │    "alg": "RS256",        // RSA SHA-256 signature                  │
+    │    "typ": "JWT",          // Token type                              │
+    │    "kid": "key-2024-01"   // Key ID for rotation                    │
+    │  }                                                                   │
+    └─────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+    ┌─────────────────────────────────────────────────────────────────────┐
+    │  PAYLOAD (Base64)                                                    │
+    │  {                                                                   │
+    │    "sub": "user_123456",           // Subject (user ID)             │
+    │    "email": "user@example.com",    // User email                    │
+    │    "role": "developer",            // User role                     │
+    │    "iat": 1706500000,              // Issued at                     │
+    │    "exp": 1706500900,              // Expires (15 min)              │
+    │    "iss": "datahub-api",           // Issuer                        │
+    │    "aud": "datahub-clients"        // Audience                      │
+    │  }                                                                   │
+    └─────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+    ┌─────────────────────────────────────────────────────────────────────┐
+    │  SIGNATURE                                                           │
+    │                                                                      │
+    │  RSASHA256(                                                          │
+    │    base64UrlEncode(header) + "." +                                  │
+    │    base64UrlEncode(payload),                                        │
+    │    privateKey                                                        │
+    │  )                                                                   │
+    └─────────────────────────────────────────────────────────────────────┘
+```
+
+### Token Lifecycle
+
+```mermaid
+stateDiagram-v2
+    [*] --> Issued: Login/Refresh
+
+    Issued --> Active: Token in use
+    Active --> Active: Valid request
+    Active --> Expired: TTL exceeded
+    Active --> Revoked: Manual revocation
+    Active --> Blacklisted: Logout
+
+    Expired --> [*]: Requires refresh
+    Revoked --> [*]: Cannot be renewed
+    Blacklisted --> [*]: Must re-login
+```
 
 ---
 
 ## API Key Security
 
-### Key Format
+### API Key Generation Flow
 
 ```
-dh_{environment}_{random_string}
+┌─────────────────────────────────────────────────────────────┐
+│                  API Key Generation                          │
+└─────────────────────────────────────────────────────────────┘
 
-Examples:
-- dh_live_abc123xyz789def456uvw012  (Production)
-- dh_test_xyz789abc123def456uvw012  (Testing)
+    Step 1: Generate Cryptographically Secure Key
+    ───────────────────────────────────────────────
 
-Components:
-- Prefix: dh_ (DataHub identifier)
-- Environment: live_ or test_
-- Random: 32 characters, cryptographically random
+    crypto.randomBytes(32).toString('base64url')
+    │
+    ▼
+    ┌────────────────────────────────────────────────┐
+    │  Raw Key: dh_live_Kj8mN2pL9qR4sT6vW8xY0zA3bC5 │
+    │                                                │
+    │  Format: {prefix}_{env}_{random_32_bytes}     │
+    │  • prefix: "dh" (DataHub)                     │
+    │  • env: "live" or "test"                      │
+    │  • random: 32 bytes, base64url encoded        │
+    └────────────────────────────────────────────────┘
+    │
+    ▼
+    Step 2: Hash for Storage
+    ────────────────────────────
+
+    SHA-256(raw_key)
+    │
+    ▼
+    ┌────────────────────────────────────────────────┐
+    │  Stored Hash: a1b2c3d4e5f6...                  │
+    │  (Never store raw key!)                        │
+    └────────────────────────────────────────────────┘
+    │
+    ▼
+    Step 3: Return to User Once
+    ────────────────────────────
+
+    ┌────────────────────────────────────────────────┐
+    │  Response:                                      │
+    │  {                                              │
+    │    "id": "key_uuid",                           │
+    │    "name": "Production Key",                   │
+    │    "key": "dh_live_Kj8m...",  // SHOWN ONCE   │
+    │    "created_at": "2024-01-29T..."             │
+    │  }                                              │
+    │                                                │
+    │  WARNING: Store this key securely.            │
+    │  It will not be shown again.                  │
+    └────────────────────────────────────────────────┘
 ```
 
-### Key Generation
+### Mermaid API Key Validation Flow
 
-```typescript
-import crypto from 'crypto';
+```mermaid
+flowchart TD
+    A[Request with X-API-Key header] --> B{Key prefix valid?}
 
-function generateApiKey(environment: 'live' | 'test'): string {
-  // Generate 24 bytes of random data, encode as base64url (32 chars)
-  const randomPart = crypto.randomBytes(24).toString('base64url');
-  return `dh_${environment}_${randomPart}`;
-}
-```
+    B -->|No| C[401: Invalid API key format]
+    B -->|Yes| D[Hash the key]
 
-### Key Storage
+    D --> E{In Redis cache?}
 
-**Keys are NEVER stored in plaintext.**
+    E -->|Yes| F[Get cached key data]
+    E -->|No| G[Query PostgreSQL]
 
-```typescript
-function hashApiKey(apiKey: string): string {
-  return crypto
-    .createHash('sha256')
-    .update(apiKey)
-    .digest('hex');
-}
+    G --> H{Key exists?}
+    H -->|No| I[401: API key not found]
+    H -->|Yes| J[Cache in Redis]
+    J --> F
 
-// Storage in database:
-// key_hash: 64-character hex string
-// key_prefix: First 12 characters for display (e.g., "dh_live_abc1...")
-```
+    F --> K{Key revoked?}
+    K -->|Yes| L[401: API key revoked]
+    K -->|No| M{Key expired?}
 
-### Key Lifecycle
+    M -->|Yes| N[401: API key expired]
+    M -->|No| O{Has permission?}
 
-```
-+----------+     +------------+     +-----------+     +---------+
-|  Create  | --> |   Active   | --> | Deprecated| --> | Revoked |
-+----------+     +------------+     +-----------+     +---------+
-                       |                  |
-                       |   (rotation)     |  (auto after
-                       +------------------+   deprecation period)
+    O -->|No| P[403: Insufficient permissions]
+    O -->|Yes| Q[Allow request]
 
-                 +------------+
-                 |  Expired   |  (after expires_at)
-                 +------------+
-```
-
----
-
-## Authorization (Scope System)
-
-### Available Scopes
-
-| Scope | Description |
-|-------|-------------|
-| `admin` | Full administrative access |
-| `read:keys` | View API keys |
-| `write:keys` | Create/update/delete API keys |
-| `read:requests` | View request logs |
-| `read:webhooks` | View webhooks |
-| `write:webhooks` | Create/update/delete webhooks |
-| `read:rate-limits` | View rate limit status |
-| `write:rate-limits` | Modify rate limits |
-
-### Scope Inheritance
-
-The `admin` scope grants access to all endpoints:
-
-```typescript
-function hasRequiredScope(keyScopes: string[], required: string): boolean {
-  if (keyScopes.includes('admin')) {
-    return true;
-  }
-  return keyScopes.includes(required);
-}
-```
-
-### Endpoint Scope Requirements
-
-| Endpoint | Required Scope |
-|----------|---------------|
-| `POST /api/v1/keys` | `write:keys` |
-| `GET /api/v1/keys` | `read:keys` |
-| `GET /api/v1/requests` | `read:requests` |
-| `POST /api/v1/webhooks` | `write:webhooks` |
-| `GET /api/v1/rate-limits/status` | (any valid key) |
-| `PUT /api/v1/rate-limits/keys/:id` | `admin` |
-
----
-
-## Rate Limiting Security
-
-### Protection Against Abuse
-
-```
-Per-Key Limits:
-- requestsPerMinute: 100 (default)
-- requestsPerHour: 5000 (default)
-- requestsPerDay: 100000 (default)
-
-Per-IP Limits (unauthenticated):
-- 60 requests per minute
-
-Global Limits:
-- 10,000 requests per minute (total)
-```
-
-### Rate Limit Headers
-
-```http
-HTTP/1.1 200 OK
-X-RateLimit-Limit: 100
-X-RateLimit-Remaining: 85
-X-RateLimit-Reset: 1705315860
-X-RateLimit-Window: minute
-
-# On limit exceeded:
-HTTP/1.1 429 Too Many Requests
-Retry-After: 45
-X-RateLimit-Limit: 100
-X-RateLimit-Remaining: 0
-X-RateLimit-Reset: 1705315860
+    Q --> R[Update last_used_at]
+    R --> S[Continue to handler]
 ```
 
 ---
 
-## Data Protection
+## Authorization Model
 
-### Encryption at Rest
+### Role-Based Access Control (RBAC)
 
-| Data | Encryption Method |
-|------|-------------------|
-| API Keys | SHA-256 hashed before storage |
-| Webhook Secrets | Stored encrypted (AES-256) |
-| Request Bodies | Stored in JSONB (DB encryption) |
-| Database | PostgreSQL with disk encryption |
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          RBAC Permission Matrix                              │
+└─────────────────────────────────────────────────────────────────────────────┘
 
-### Encryption in Transit
+    ┌─────────────────────────────────────────────────────────────────────────┐
+    │                              Roles                                       │
+    │  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐                 │
+    │  │    Admin    │    │  Developer  │    │   Viewer    │                 │
+    │  │             │    │             │    │             │                 │
+    │  │  Full       │    │  API Keys   │    │  Read-only  │                 │
+    │  │  Access     │    │  Analytics  │    │  Access     │                 │
+    │  └─────────────┘    └─────────────┘    └─────────────┘                 │
+    └─────────────────────────────────────────────────────────────────────────┘
 
-- All external communication over TLS 1.3
-- Internal services communicate over encrypted channels
-- Redis connections use TLS in production
-
-### Sensitive Data Handling
-
-```typescript
-// Headers that are redacted in logs
-const SENSITIVE_HEADERS = [
-  'authorization',
-  'x-api-key',
-  'cookie',
-  'set-cookie',
-];
-
-// Request body fields that are redacted
-const SENSITIVE_FIELDS = [
-  'password',
-  'secret',
-  'apiKey',
-  'token',
-];
-
-function sanitizeForLogging(data: any): any {
-  // Recursively replace sensitive values with [REDACTED]
-}
+    Permission Table:
+    ┌────────────────────┬───────────┬───────────┬───────────┐
+    │ Resource           │   Admin   │ Developer │  Viewer   │
+    ├────────────────────┼───────────┼───────────┼───────────┤
+    │ Users - Read       │     ✓     │     -     │     -     │
+    │ Users - Write      │     ✓     │     -     │     -     │
+    │ Users - Delete     │     ✓     │     -     │     -     │
+    ├────────────────────┼───────────┼───────────┼───────────┤
+    │ API Keys - Read    │     ✓     │  Own only │  Own only │
+    │ API Keys - Create  │     ✓     │     ✓     │     -     │
+    │ API Keys - Revoke  │     ✓     │  Own only │     -     │
+    ├────────────────────┼───────────┼───────────┼───────────┤
+    │ APIs - Read        │     ✓     │     ✓     │     ✓     │
+    │ APIs - Write       │     ✓     │     -     │     -     │
+    │ APIs - Delete      │     ✓     │     -     │     -     │
+    ├────────────────────┼───────────┼───────────┼───────────┤
+    │ Analytics - Read   │     ✓     │  Own only │  Own only │
+    │ Analytics - Export │     ✓     │     ✓     │     -     │
+    ├────────────────────┼───────────┼───────────┼───────────┤
+    │ Rate Limits - Read │     ✓     │     ✓     │     ✓     │
+    │ Rate Limits - Write│     ✓     │     -     │     -     │
+    └────────────────────┴───────────┴───────────┴───────────┘
 ```
 
----
+### Mermaid RBAC Diagram
 
-## Input Validation
+```mermaid
+graph TD
+    subgraph Roles
+        A[Admin]
+        D[Developer]
+        V[Viewer]
+    end
 
-### Request Validation
+    subgraph Permissions
+        P1[users:read]
+        P2[users:write]
+        P3[keys:read]
+        P4[keys:write]
+        P5[keys:revoke]
+        P6[apis:read]
+        P7[apis:write]
+        P8[analytics:read]
+        P9[analytics:export]
+        P10[rate-limits:write]
+    end
 
-All requests are validated using Zod schemas:
+    A --> P1 & P2 & P3 & P4 & P5 & P6 & P7 & P8 & P9 & P10
+    D --> P3 & P4 & P6 & P8 & P9
+    V --> P3 & P6 & P8
 
-```typescript
-const createKeySchema = z.object({
-  name: z.string().min(3).max(100),
-  scopes: z.array(z.enum(VALID_SCOPES)).min(1),
-  rateLimit: z.object({
-    requestsPerMinute: z.number().min(1).max(100000).optional(),
-    requestsPerHour: z.number().min(1).max(10000000).optional(),
-  }).optional(),
-  expiresAt: z.string().datetime().optional()
-    .refine(date => !date || new Date(date) > new Date(), {
-      message: 'Expiration must be in the future'
-    }),
-});
-```
-
-### SQL Injection Prevention
-
-All database queries use parameterized statements:
-
-```typescript
-// SAFE - Parameterized query
-const result = await db.query(
-  'SELECT * FROM api_keys WHERE key_hash = $1',
-  [keyHash]
-);
-
-// NEVER do this:
-// const result = await db.query(`SELECT * FROM api_keys WHERE key_hash = '${keyHash}'`);
+    style A fill:#ff6b6b
+    style D fill:#4ecdc4
+    style V fill:#95a5a6
 ```
 
 ---
 
 ## Security Headers
 
-Applied via Helmet middleware:
+### HTTP Security Headers Configuration
 
-```typescript
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", "data:"],
-      scriptSrc: ["'self'"],
-    },
-  },
-  hsts: {
-    maxAge: 31536000,
-    includeSubDomains: true,
-    preload: true,
-  },
-  frameguard: { action: 'deny' },
-  noSniff: true,
-  xssFilter: true,
-}));
+```
+┌─────────────────────────────────────────────────────────────┐
+│              Security Headers Configuration                  │
+└─────────────────────────────────────────────────────────────┘
+
+Response Headers:
+═════════════════
+
+┌─────────────────────────────────────────────────────────────┐
+│ Strict-Transport-Security: max-age=31536000; includeSubDomains │
+│ ───────────────────────────────────────────────────────────  │
+│ Enforces HTTPS for 1 year, including subdomains              │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ X-Content-Type-Options: nosniff                              │
+│ ───────────────────────────────────────────────────────────  │
+│ Prevents MIME type sniffing                                  │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ X-Frame-Options: DENY                                        │
+│ ───────────────────────────────────────────────────────────  │
+│ Prevents clickjacking by denying framing                     │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ Content-Security-Policy: default-src 'none'                  │
+│ ───────────────────────────────────────────────────────────  │
+│ API responses should not execute scripts                     │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ X-Request-ID: uuid-v4                                        │
+│ ───────────────────────────────────────────────────────────  │
+│ Request tracing for debugging and audit                      │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### CORS Configuration
+---
 
-```typescript
-const corsConfig = {
-  origin: process.env.ALLOWED_ORIGINS?.split(',') || '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key'],
-  exposedHeaders: [
-    'X-RateLimit-Limit',
-    'X-RateLimit-Remaining',
-    'X-RateLimit-Reset',
-    'Retry-After',
-  ],
-  maxAge: 86400,
-};
+## Rate Limiting Security
+
+### Rate Limit Headers
+
+```
+Rate Limit Response Headers:
+═══════════════════════════
+
+┌─────────────────────────────────────────────────────────────┐
+│ X-RateLimit-Limit: 1000                                      │
+│ ───────────────────────────────────────────────────────────  │
+│ Maximum requests allowed in the window                       │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ X-RateLimit-Remaining: 950                                   │
+│ ───────────────────────────────────────────────────────────  │
+│ Requests remaining in current window                         │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ X-RateLimit-Reset: 1706500000                                │
+│ ───────────────────────────────────────────────────────────  │
+│ Unix timestamp when the window resets                        │
+└─────────────────────────────────────────────────────────────┘
+
+When Rate Limited (429):
+┌─────────────────────────────────────────────────────────────┐
+│ Retry-After: 30                                              │
+│ ───────────────────────────────────────────────────────────  │
+│ Seconds to wait before retrying                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Mermaid Rate Limit Flow
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant G as Gateway
+    participant R as Redis
+    participant U as Upstream
+
+    C->>G: Request with API Key
+    G->>R: INCR ratelimit:{key}:{window}
+    R-->>G: Current count: 950
+
+    alt Under Limit
+        G->>G: Add rate limit headers
+        G->>U: Forward request
+        U-->>G: Response
+        G-->>C: 200 OK + Rate Headers
+    else Over Limit
+        G-->>C: 429 Too Many Requests + Retry-After
+    end
+
+    Note over G,R: Rate limit check adds ~1ms latency
+```
+
+---
+
+## Data Encryption
+
+### Encryption at Rest and in Transit
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         Encryption Architecture                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+    In Transit (TLS 1.3)
+    ════════════════════
+
+    ┌──────────┐         TLS 1.3          ┌──────────┐
+    │  Client  │ ◄═══════════════════════► │ Gateway  │
+    └──────────┘                           └──────────┘
+                    • ECDHE key exchange
+                    • AES-256-GCM encryption
+                    • SHA-384 integrity
+
+    At Rest (AES-256)
+    ═════════════════
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │  PostgreSQL                                                  │
+    │  ─────────────────────────────────────────────────────────  │
+    │  • Transparent Data Encryption (TDE)                         │
+    │  • AWS RDS encryption enabled                                │
+    │  • KMS-managed encryption keys                               │
+    └─────────────────────────────────────────────────────────────┘
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │  Redis                                                       │
+    │  ─────────────────────────────────────────────────────────  │
+    │  • TLS for in-transit                                        │
+    │  • Elasticache encryption at-rest                           │
+    └─────────────────────────────────────────────────────────────┘
+
+    Sensitive Data Handling
+    ═══════════════════════
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │  Passwords                                                   │
+    │  ─────────────────────────────────────────────────────────  │
+    │  • bcrypt with cost factor 12                               │
+    │  • Never stored in plain text                               │
+    │  • Compared using timing-safe comparison                    │
+    └─────────────────────────────────────────────────────────────┘
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │  API Keys                                                    │
+    │  ─────────────────────────────────────────────────────────  │
+    │  • SHA-256 hash stored                                      │
+    │  • Raw key shown once, never stored                         │
+    │  • Key prefix (dh_live_) not included in hash              │
+    └─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
 ## Audit Logging
 
-### Audited Actions
+### Security Audit Events
 
-| Action | Description |
-|--------|-------------|
-| `key.create` | New API key created |
-| `key.update` | Key properties modified |
-| `key.rotate` | Key rotated |
-| `key.revoke` | Key revoked |
-| `webhook.create` | Webhook created |
-| `webhook.update` | Webhook modified |
-| `webhook.delete` | Webhook deleted |
-| `rate_limit.update` | Rate limits changed |
+```mermaid
+flowchart LR
+    subgraph Events["Security Events"]
+        E1[Login Success]
+        E2[Login Failure]
+        E3[Token Refresh]
+        E4[API Key Created]
+        E5[API Key Revoked]
+        E6[Permission Change]
+        E7[Rate Limit Hit]
+    end
 
-### Audit Log Format
+    subgraph Processing["Event Processing"]
+        P1[Add Metadata]
+        P2[Timestamp]
+        P3[User Context]
+        P4[IP Address]
+    end
 
-```json
+    subgraph Storage["Audit Storage"]
+        S1[(TimescaleDB)]
+        S2[CloudWatch Logs]
+        S3[SIEM Integration]
+    end
+
+    E1 & E2 & E3 & E4 & E5 & E6 & E7 --> P1
+    P1 --> P2 --> P3 --> P4
+    P4 --> S1 & S2
+    S1 --> S3
+```
+
+### Audit Log Schema
+
+```sql
+-- Audit log entry structure
 {
-  "id": "aud_01H5X4Y6Z8A9B0C1D2E3F4G5H6",
-  "actor_type": "api_key",
-  "actor_id": "key_01H5X4Y6Z8A9B0C1D2E3F4G5H6",
-  "actor_ip": "192.168.1.100",
-  "action": "key.revoke",
-  "resource_type": "api_key",
-  "resource_id": "key_02I6Y5Z7A9B0C1D2E3F4G5H6I7",
-  "old_values": { "status": "active" },
-  "new_values": { "status": "revoked" },
-  "created_at": "2024-01-15T10:30:00Z"
-}
-```
-
----
-
-## Webhook Security
-
-### Signature Verification
-
-Webhooks are signed using HMAC-SHA256:
-
-```typescript
-function signWebhookPayload(
-  payload: object,
-  secret: string,
-  timestamp: number
-): string {
-  const body = JSON.stringify(payload);
-  const signature = crypto
-    .createHmac('sha256', secret)
-    .update(`${timestamp}.${body}`)
-    .digest('hex');
-
-  return `t=${timestamp},v1=${signature}`;
-}
-
-// Header sent with webhook:
-// X-Webhook-Signature: t=1705315200,v1=abc123...
-```
-
-### Verification on Receiver Side
-
-```typescript
-function verifyWebhookSignature(
-  payload: string,
-  signature: string,
-  secret: string,
-  tolerance: number = 300
-): boolean {
-  const parts = Object.fromEntries(
-    signature.split(',').map(p => p.split('='))
-  );
-
-  const timestamp = parseInt(parts.t);
-  const expectedSignature = crypto
-    .createHmac('sha256', secret)
-    .update(`${timestamp}.${payload}`)
-    .digest('hex');
-
-  // Check timestamp is within tolerance
-  const now = Math.floor(Date.now() / 1000);
-  if (Math.abs(now - timestamp) > tolerance) {
-    return false;
+  "event_id": "uuid",
+  "event_type": "AUTH_LOGIN_SUCCESS",
+  "timestamp": "2024-01-29T12:00:00Z",
+  "actor": {
+    "user_id": "user_123",
+    "email": "user@example.com",
+    "role": "developer",
+    "ip_address": "192.168.1.1"
+  },
+  "resource": {
+    "type": "session",
+    "id": "session_456"
+  },
+  "metadata": {
+    "user_agent": "DataHub-SDK/1.0.0",
+    "request_id": "req_789"
   }
-
-  return crypto.timingSafeEqual(
-    Buffer.from(parts.v1),
-    Buffer.from(expectedSignature)
-  );
 }
 ```
 
@@ -417,37 +564,25 @@ function verifyWebhookSignature(
 
 ## Security Checklist
 
-### Development
-
-- [ ] All API keys hashed before storage
-- [ ] Parameterized queries only
-- [ ] Input validation on all endpoints
-- [ ] Sensitive data redacted in logs
-- [ ] HTTPS enforced in production
-
-### Deployment
-
-- [ ] TLS 1.3 configured
-- [ ] Security headers enabled
-- [ ] CORS properly configured
-- [ ] Rate limiting active
-- [ ] Audit logging enabled
-
-### Operations
-
-- [ ] Regular security audits
-- [ ] Dependency vulnerability scanning
-- [ ] Key rotation procedures documented
-- [ ] Incident response plan in place
+| Category | Control | Status |
+|----------|---------|--------|
+| Authentication | JWT with RS256 signing | Implemented |
+| Authentication | API key with SHA-256 hashing | Implemented |
+| Authentication | Refresh token rotation | Implemented |
+| Authorization | Role-based access control | Implemented |
+| Authorization | Resource-level permissions | Implemented |
+| Encryption | TLS 1.3 in transit | Implemented |
+| Encryption | AES-256 at rest | Implemented |
+| Rate Limiting | Per-key rate limits | Implemented |
+| Rate Limiting | Sliding window algorithm | Implemented |
+| Logging | Security audit trail | Implemented |
+| Headers | HSTS, CSP, X-Frame-Options | Implemented |
 
 ---
 
 ## Related Documentation
 
-- [Backend Architecture](./backend.md) - Middleware implementation
-- [API Reference](../api/reference.md) - Authentication details
-- [DevOps Spec](../../specs/06_devops_lead.md) - Security deployment
-
----
-
-_This document describes the security architecture for DataHub API Gateway._
+- [Authentication Flow](../flows/authentication-flow.md) - Detailed auth flows
+- [API Authentication](../api/authentication.md) - API auth documentation
+- [Error Codes](../api/error-codes.md) - Security error codes
+- [Environment Variables](../environments/environment-variables.md) - Security configuration

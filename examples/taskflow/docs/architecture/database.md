@@ -1,325 +1,456 @@
 # TaskFlow Database Architecture
 
-**Version:** 1.0
-**Last Updated:** 2026-01-29
+## Database Technology
 
----
+- **Database:** PostgreSQL 15.x
+- **ORM:** Prisma 5.x
+- **Connection Pooling:** PgBouncer (production)
 
-## 1. Database Overview
+## Entity-Relationship Diagram
 
-| Property | Value |
-|----------|-------|
-| Database | PostgreSQL |
-| Version | 15+ |
-| ORM | Drizzle ORM |
-| Connection | pg (node-postgres) |
-| Pool Size | 10 connections |
-
----
-
-## 2. Entity-Relationship Diagram
+### ASCII ERD
 
 ```
-    ┌─────────────────────────────────────────────────────────────────────────────────┐
-    │                           TASKFLOW DATABASE SCHEMA                               │
-    └─────────────────────────────────────────────────────────────────────────────────┘
+                              TASKFLOW DATABASE ERD
+    ========================================================================
+
+    +------------------+          +------------------+
+    |      users       |          |     projects     |
+    +------------------+          +------------------+
+    | PK id            |<----+    | PK id            |
+    |    email         |     |    |    name          |
+    |    password_hash |     |    |    description   |
+    |    name          |     |    |    color         |
+    |    created_at    |     |    |    is_archived   |
+    |    updated_at    |     +----| FK user_id       |
+    +------------------+          |    created_at    |
+             |                    |    updated_at    |
+             |                    +------------------+
+             |                            |
+             |                            |
+             v                            v
+    +------------------+          +------------------+
+    |      tasks       |          |      tags        |
+    +------------------+          +------------------+
+    | PK id            |          | PK id            |
+    |    title         |          |    name          |
+    |    description   |          |    color         |
+    |    status        |<---------| FK user_id       |-----+
+    |    priority      |          |    created_at    |     |
+    |    due_date      |          +------------------+     |
+    | FK user_id       |-----+            |                |
+    | FK project_id    |-----|            |                |
+    |    created_at    |     |            v                |
+    |    updated_at    |     |    +------------------+     |
+    |    completed_at  |     |    |    task_tags     |     |
+    +------------------+     |    +------------------+     |
+             |               |    | PK task_id       |-----+
+             |               |    | PK tag_id        |
+             |               |    +------------------+
+             |               |
+             |               +---> users
+             +-------------------> projects
 
 
-    ┌───────────────────────────────────────────────────────────────────────────────┐
-    │                                   users                                        │
-    ├───────────────────────────────────────────────────────────────────────────────┤
-    │  PK   id              UUID        NOT NULL  DEFAULT gen_random_uuid()         │
-    │       email           VARCHAR(255) NOT NULL  UNIQUE                            │
-    │       password_hash   VARCHAR(255) NOT NULL                                    │
-    │       name            VARCHAR(100) NOT NULL                                    │
-    │       created_at      TIMESTAMPTZ  NOT NULL  DEFAULT NOW()                     │
-    │       updated_at      TIMESTAMPTZ  NOT NULL  DEFAULT NOW()                     │
-    ├───────────────────────────────────────────────────────────────────────────────┤
-    │  INDEX idx_users_email ON email                                                │
-    └───────────────────────────────────┬───────────────────────────────────────────┘
-                                        │
-                                        │ 1
-                                        │
-                                        ├───────────────────────────────────────────┐
-                                        │                                           │
-                                        │ *                                         │ *
-    ┌───────────────────────────────────▼───────────────────────────────────────────┐
-    │                                  tasks                                         │
-    ├────────────────────────────────────────────────────────────────────────────────┤
-    │  PK   id              UUID        NOT NULL  DEFAULT gen_random_uuid()          │
-    │  FK   user_id         UUID        NOT NULL  REFERENCES users(id) ON DELETE CASCADE
-    │  FK   project_id      UUID        NULL      REFERENCES projects(id) ON DELETE SET NULL
-    │       title           VARCHAR(255) NOT NULL                                     │
-    │       description     TEXT        NULL                                          │
-    │       status          VARCHAR(20)  NOT NULL  DEFAULT 'pending'                  │
-    │       priority        VARCHAR(20)  NOT NULL  DEFAULT 'medium'                   │
-    │       due_date        TIMESTAMPTZ  NULL                                         │
-    │       completed_at    TIMESTAMPTZ  NULL                                         │
-    │       created_at      TIMESTAMPTZ  NOT NULL  DEFAULT NOW()                      │
-    │       updated_at      TIMESTAMPTZ  NOT NULL  DEFAULT NOW()                      │
-    ├────────────────────────────────────────────────────────────────────────────────┤
-    │  INDEX idx_tasks_user_id ON user_id                                             │
-    │  INDEX idx_tasks_project_id ON project_id                                       │
-    │  INDEX idx_tasks_status ON status                                               │
-    │  INDEX idx_tasks_due_date ON due_date                                           │
-    │  INDEX idx_tasks_user_status ON (user_id, status)                               │
-    └────────────────────────────────────────────────────────────────────────────────┘
-                                        ▲
-                                        │ *
-                                        │
-                                        │ 1
-    ┌───────────────────────────────────┴───────────────────────────────────────────┐
-    │                                 projects                                       │
-    ├────────────────────────────────────────────────────────────────────────────────┤
-    │  PK   id              UUID        NOT NULL  DEFAULT gen_random_uuid()          │
-    │  FK   user_id         UUID        NOT NULL  REFERENCES users(id) ON DELETE CASCADE
-    │       name            VARCHAR(100) NOT NULL                                     │
-    │       description     TEXT        NULL                                          │
-    │       color           VARCHAR(7)   NULL      DEFAULT '#3B82F6'                  │
-    │       archived_at     TIMESTAMPTZ  NULL                                         │
-    │       created_at      TIMESTAMPTZ  NOT NULL  DEFAULT NOW()                      │
-    │       updated_at      TIMESTAMPTZ  NOT NULL  DEFAULT NOW()                      │
-    ├────────────────────────────────────────────────────────────────────────────────┤
-    │  INDEX idx_projects_user_id ON user_id                                          │
-    └────────────────────────────────────────────────────────────────────────────────┘
+    RELATIONSHIP LEGEND:
+    ─────────────────────
+    PK = Primary Key
+    FK = Foreign Key
+    ─── = One-to-Many
+    ═══ = Many-to-Many (via junction table)
 
-
-    ┌────────────────────────────────────────────────────────────────────────────────┐
-    │                              refresh_tokens                                     │
-    ├────────────────────────────────────────────────────────────────────────────────┤
-    │  PK   id              UUID        NOT NULL  DEFAULT gen_random_uuid()          │
-    │  FK   user_id         UUID        NOT NULL  REFERENCES users(id) ON DELETE CASCADE
-    │       token_hash      VARCHAR(255) NOT NULL                                     │
-    │       expires_at      TIMESTAMPTZ  NOT NULL                                     │
-    │       created_at      TIMESTAMPTZ  NOT NULL  DEFAULT NOW()                      │
-    ├────────────────────────────────────────────────────────────────────────────────┤
-    │  INDEX idx_refresh_tokens_user_id ON user_id                                    │
-    │  INDEX idx_refresh_tokens_expires ON expires_at                                 │
-    └────────────────────────────────────────────────────────────────────────────────┘
+    CARDINALITY:
+    ─────────────
+    users      1 ──< tasks        (One user has many tasks)
+    users      1 ──< projects     (One user has many projects)
+    users      1 ──< tags         (One user has many tags)
+    projects   1 ──< tasks        (One project has many tasks)
+    tasks      >──< tags          (Many-to-many via task_tags)
 ```
 
----
+### Mermaid ERD
 
-## 3. Table Catalog
+```mermaid
+erDiagram
+    users {
+        uuid id PK
+        varchar email UK
+        varchar password_hash
+        varchar name
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    projects {
+        uuid id PK
+        uuid user_id FK
+        varchar name
+        text description
+        varchar color
+        boolean is_archived
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    tasks {
+        uuid id PK
+        uuid user_id FK
+        uuid project_id FK
+        varchar title
+        text description
+        enum status
+        enum priority
+        date due_date
+        timestamp created_at
+        timestamp updated_at
+        timestamp completed_at
+    }
+
+    tags {
+        uuid id PK
+        uuid user_id FK
+        varchar name
+        varchar color
+        timestamp created_at
+    }
+
+    task_tags {
+        uuid task_id PK,FK
+        uuid tag_id PK,FK
+    }
+
+    users ||--o{ projects : "owns"
+    users ||--o{ tasks : "owns"
+    users ||--o{ tags : "owns"
+    projects ||--o{ tasks : "contains"
+    tasks ||--o{ task_tags : "has"
+    tags ||--o{ task_tags : "has"
+```
+
+## Table Definitions
 
 ### users
 
-Stores user account information.
+```sql
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
 
-| Column | Type | Nullable | Default | Description |
-|--------|------|----------|---------|-------------|
-| id | UUID | NO | gen_random_uuid() | Primary key |
-| email | VARCHAR(255) | NO | - | Unique email address |
-| password_hash | VARCHAR(255) | NO | - | Bcrypt password hash |
-| name | VARCHAR(100) | NO | - | Display name |
-| created_at | TIMESTAMPTZ | NO | NOW() | Account creation time |
-| updated_at | TIMESTAMPTZ | NO | NOW() | Last modification time |
-
-### tasks
-
-Stores user tasks with metadata.
-
-| Column | Type | Nullable | Default | Description |
-|--------|------|----------|---------|-------------|
-| id | UUID | NO | gen_random_uuid() | Primary key |
-| user_id | UUID | NO | - | Owner reference |
-| project_id | UUID | YES | NULL | Optional project reference |
-| title | VARCHAR(255) | NO | - | Task title |
-| description | TEXT | YES | NULL | Task description |
-| status | VARCHAR(20) | NO | 'pending' | pending, in_progress, completed |
-| priority | VARCHAR(20) | NO | 'medium' | low, medium, high, urgent |
-| due_date | TIMESTAMPTZ | YES | NULL | Optional due date |
-| completed_at | TIMESTAMPTZ | YES | NULL | Completion timestamp |
-| created_at | TIMESTAMPTZ | NO | NOW() | Creation time |
-| updated_at | TIMESTAMPTZ | NO | NOW() | Last modification time |
+CREATE INDEX idx_users_email ON users(email);
+```
 
 ### projects
 
-Stores project containers for tasks.
-
-| Column | Type | Nullable | Default | Description |
-|--------|------|----------|---------|-------------|
-| id | UUID | NO | gen_random_uuid() | Primary key |
-| user_id | UUID | NO | - | Owner reference |
-| name | VARCHAR(100) | NO | - | Project name |
-| description | TEXT | YES | NULL | Project description |
-| color | VARCHAR(7) | YES | '#3B82F6' | Hex color code |
-| archived_at | TIMESTAMPTZ | YES | NULL | Archive timestamp |
-| created_at | TIMESTAMPTZ | NO | NOW() | Creation time |
-| updated_at | TIMESTAMPTZ | NO | NOW() | Last modification time |
-
-### refresh_tokens
-
-Stores JWT refresh token hashes for token rotation.
-
-| Column | Type | Nullable | Default | Description |
-|--------|------|----------|---------|-------------|
-| id | UUID | NO | gen_random_uuid() | Primary key |
-| user_id | UUID | NO | - | User reference |
-| token_hash | VARCHAR(255) | NO | - | SHA-256 token hash |
-| expires_at | TIMESTAMPTZ | NO | - | Expiration time |
-| created_at | TIMESTAMPTZ | NO | NOW() | Creation time |
-
----
-
-## 4. Index Strategy
-
-### Primary Indexes
-
-| Table | Index Name | Columns | Purpose |
-|-------|------------|---------|---------|
-| users | idx_users_email | email | Fast email lookup for login |
-| tasks | idx_tasks_user_id | user_id | Filter tasks by user |
-| tasks | idx_tasks_project_id | project_id | Filter tasks by project |
-| tasks | idx_tasks_status | status | Filter by status |
-| tasks | idx_tasks_due_date | due_date | Sort by due date |
-| tasks | idx_tasks_user_status | (user_id, status) | Combined filter |
-| projects | idx_projects_user_id | user_id | Filter projects by user |
-| refresh_tokens | idx_refresh_tokens_user_id | user_id | Find user tokens |
-| refresh_tokens | idx_refresh_tokens_expires | expires_at | Cleanup expired |
-
-### Query-to-Index Mapping
-
-| Query Pattern | Index Used |
-|---------------|------------|
-| `SELECT * FROM users WHERE email = ?` | idx_users_email |
-| `SELECT * FROM tasks WHERE user_id = ?` | idx_tasks_user_id |
-| `SELECT * FROM tasks WHERE user_id = ? AND status = ?` | idx_tasks_user_status |
-| `SELECT * FROM tasks WHERE user_id = ? ORDER BY due_date` | idx_tasks_user_id + idx_tasks_due_date |
-
----
-
-## 5. Common Queries
-
-### Get User's Tasks with Filters
-
 ```sql
-SELECT
-  t.id, t.title, t.description, t.status, t.priority,
-  t.due_date, t.completed_at, t.created_at, t.updated_at,
-  p.name as project_name, p.color as project_color
-FROM tasks t
-LEFT JOIN projects p ON t.project_id = p.id
-WHERE t.user_id = $1
-  AND ($2::varchar IS NULL OR t.status = $2)
-  AND ($3::varchar IS NULL OR t.priority = $3)
-  AND ($4::uuid IS NULL OR t.project_id = $4)
-  AND ($5::text IS NULL OR t.title ILIKE '%' || $5 || '%')
-ORDER BY
-  CASE WHEN $6 = 'due_date' THEN t.due_date END ASC NULLS LAST,
-  CASE WHEN $6 = 'priority' THEN
-    CASE t.priority
-      WHEN 'urgent' THEN 1
-      WHEN 'high' THEN 2
-      WHEN 'medium' THEN 3
-      WHEN 'low' THEN 4
-    END
-  END ASC,
-  CASE WHEN $6 = 'created_at' OR $6 IS NULL THEN t.created_at END DESC
-LIMIT $7 OFFSET $8;
+CREATE TABLE projects (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    color VARCHAR(7) DEFAULT '#3b82f6',
+    is_archived BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_projects_user_id ON projects(user_id);
+CREATE INDEX idx_projects_archived ON projects(user_id, is_archived);
 ```
 
-### Get Task Statistics for User
+### tasks
+
+```sql
+CREATE TABLE tasks (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    project_id UUID REFERENCES projects(id) ON DELETE SET NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    status VARCHAR(20) NOT NULL DEFAULT 'todo'
+        CHECK (status IN ('todo', 'in_progress', 'done')),
+    priority VARCHAR(10) NOT NULL DEFAULT 'medium'
+        CHECK (priority IN ('low', 'medium', 'high', 'urgent')),
+    due_date DATE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    completed_at TIMESTAMP WITH TIME ZONE
+);
+
+CREATE INDEX idx_tasks_user_id ON tasks(user_id);
+CREATE INDEX idx_tasks_project_id ON tasks(project_id);
+CREATE INDEX idx_tasks_status ON tasks(user_id, status);
+CREATE INDEX idx_tasks_due_date ON tasks(user_id, due_date);
+CREATE INDEX idx_tasks_priority ON tasks(user_id, priority);
+```
+
+### tags
+
+```sql
+CREATE TABLE tags (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    name VARCHAR(50) NOT NULL,
+    color VARCHAR(7) DEFAULT '#6b7280',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id, name)
+);
+
+CREATE INDEX idx_tags_user_id ON tags(user_id);
+```
+
+### task_tags (Junction Table)
+
+```sql
+CREATE TABLE task_tags (
+    task_id UUID NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
+    tag_id UUID NOT NULL REFERENCES tags(id) ON DELETE CASCADE,
+    PRIMARY KEY (task_id, tag_id)
+);
+
+CREATE INDEX idx_task_tags_tag_id ON task_tags(tag_id);
+```
+
+## Prisma Schema
+
+```prisma
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  name         String
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  tasks        Task[]
+  projects     Project[]
+  tags         Tag[]
+
+  @@map("users")
+}
+
+model Project {
+  id          String    @id @default(uuid())
+  userId      String    @map("user_id")
+  name        String
+  description String?
+  color       String    @default("#3b82f6")
+  isArchived  Boolean   @default(false) @map("is_archived")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks       Task[]
+
+  @@index([userId])
+  @@map("projects")
+}
+
+enum TaskStatus {
+  todo
+  in_progress
+  done
+}
+
+enum TaskPriority {
+  low
+  medium
+  high
+  urgent
+}
+
+model Task {
+  id          String       @id @default(uuid())
+  userId      String       @map("user_id")
+  projectId   String?      @map("project_id")
+  title       String
+  description String?
+  status      TaskStatus   @default(todo)
+  priority    TaskPriority @default(medium)
+  dueDate     DateTime?    @map("due_date") @db.Date
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+  completedAt DateTime?    @map("completed_at")
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project     Project?     @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  tags        TaskTag[]
+
+  @@index([userId])
+  @@index([projectId])
+  @@index([userId, status])
+  @@index([userId, dueDate])
+  @@map("tasks")
+}
+
+model Tag {
+  id        String    @id @default(uuid())
+  userId    String    @map("user_id")
+  name      String
+  color     String    @default("#6b7280")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks     TaskTag[]
+
+  @@unique([userId, name])
+  @@index([userId])
+  @@map("tags")
+}
+
+model TaskTag {
+  taskId String @map("task_id")
+  tagId  String @map("tag_id")
+
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([taskId, tagId])
+  @@index([tagId])
+  @@map("task_tags")
+}
+```
+
+## Index Definitions
+
+| Table | Index | Columns | Purpose |
+|-------|-------|---------|---------|
+| users | idx_users_email | email | Fast login lookup |
+| projects | idx_projects_user_id | user_id | List user's projects |
+| projects | idx_projects_archived | user_id, is_archived | Filter archived |
+| tasks | idx_tasks_user_id | user_id | List user's tasks |
+| tasks | idx_tasks_project_id | project_id | Tasks by project |
+| tasks | idx_tasks_status | user_id, status | Filter by status |
+| tasks | idx_tasks_due_date | user_id, due_date | Sort by due date |
+| tasks | idx_tasks_priority | user_id, priority | Filter by priority |
+| tags | idx_tags_user_id | user_id | List user's tags |
+| task_tags | idx_task_tags_tag_id | tag_id | Find tasks by tag |
+
+## Common Query Patterns
+
+### List Tasks with Filters
+
+```sql
+SELECT t.*,
+       p.name as project_name,
+       array_agg(tg.name) as tag_names
+FROM tasks t
+LEFT JOIN projects p ON t.project_id = p.id
+LEFT JOIN task_tags tt ON t.id = tt.task_id
+LEFT JOIN tags tg ON tt.tag_id = tg.id
+WHERE t.user_id = $1
+  AND ($2::text IS NULL OR t.status = $2)
+  AND ($3::text IS NULL OR t.priority = $3)
+  AND ($4::uuid IS NULL OR t.project_id = $4)
+GROUP BY t.id, p.name
+ORDER BY t.due_date ASC NULLS LAST, t.created_at DESC
+LIMIT $5 OFFSET $6;
+```
+
+### Dashboard Statistics
 
 ```sql
 SELECT
-  COUNT(*) as total,
-  COUNT(*) FILTER (WHERE status = 'completed') as completed,
-  COUNT(*) FILTER (WHERE status = 'pending') as pending,
-  COUNT(*) FILTER (WHERE status = 'in_progress') as in_progress,
-  COUNT(*) FILTER (WHERE due_date < NOW() AND status != 'completed') as overdue
+    COUNT(*) as total,
+    COUNT(*) FILTER (WHERE status = 'done') as completed,
+    COUNT(*) FILTER (WHERE status = 'in_progress') as in_progress,
+    COUNT(*) FILTER (WHERE due_date < CURRENT_DATE AND status != 'done') as overdue
 FROM tasks
 WHERE user_id = $1;
 ```
 
-### Get Project with Task Count
+### Project Progress
 
 ```sql
 SELECT
-  p.*,
-  COUNT(t.id) as task_count,
-  COUNT(t.id) FILTER (WHERE t.status = 'completed') as completed_count
+    p.id,
+    p.name,
+    COUNT(t.id) as total_tasks,
+    COUNT(t.id) FILTER (WHERE t.status = 'done') as completed_tasks,
+    ROUND(
+        COUNT(t.id) FILTER (WHERE t.status = 'done')::numeric /
+        NULLIF(COUNT(t.id), 0) * 100
+    ) as progress_percent
 FROM projects p
-LEFT JOIN tasks t ON t.project_id = p.id
-WHERE p.user_id = $1 AND p.archived_at IS NULL
+LEFT JOIN tasks t ON p.id = t.project_id
+WHERE p.user_id = $1 AND p.is_archived = false
 GROUP BY p.id
-ORDER BY p.created_at DESC;
+ORDER BY p.name;
 ```
 
----
-
-## 6. Connection Pooling
-
-```typescript
-// config/database.ts
-import { Pool } from 'pg';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import * as schema from './schema';
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  max: 10,                // Maximum connections
-  idleTimeoutMillis: 30000, // Close idle connections after 30s
-  connectionTimeoutMillis: 5000, // Fail after 5s if no connection
-});
-
-export const db = drizzle(pool, { schema });
-```
-
----
-
-## 7. Migration Strategy
+## Migration Strategy
 
 ### Naming Convention
 
 ```
 YYYYMMDDHHMMSS_description.sql
+```
 
 Examples:
-20260129100000_create_users.sql
-20260129100100_create_tasks.sql
-20260129100200_create_projects.sql
-20260129100300_add_project_id_to_tasks.sql
-```
+- `20260129100000_create_users_table.sql`
+- `20260129100001_create_projects_table.sql`
+- `20260129100002_create_tasks_table.sql`
+- `20260129100003_create_tags_table.sql`
+- `20260129100004_create_task_tags_table.sql`
 
 ### Migration Commands
 
 ```bash
-# Generate migration from schema changes
-npm run db:generate
+# Create migration
+npx prisma migrate dev --name create_users_table
 
-# Run pending migrations
-npm run db:migrate
+# Apply migrations
+npx prisma migrate deploy
 
-# Drop all tables and re-run migrations
-npm run db:reset
-
-# Open Drizzle Studio
-npm run db:studio
+# Reset database (development only)
+npx prisma migrate reset
 ```
 
----
+## Seed Data Plan
 
-## 8. Soft Delete Policy
+| Table | Rows | Data |
+|-------|------|------|
+| users | 3 | Test users with different task counts |
+| projects | 6 | 2 per user (1 active, 1 archived) |
+| tasks | 30 | 10 per user across statuses |
+| tags | 9 | 3 per user (work, personal, urgent) |
+| task_tags | 45 | ~1.5 tags per task average |
 
-TaskFlow uses **soft delete** for projects (archived_at) but **hard delete** for tasks.
+## Soft Delete Policy
 
-| Entity | Delete Type | Reason |
-|--------|------------|--------|
-| users | Hard delete | GDPR compliance, cascade to tasks |
-| tasks | Hard delete | User expectation, no recovery needed |
-| projects | Soft delete | Archive for historical reference |
-| refresh_tokens | Hard delete | No recovery needed |
+TaskFlow uses **hard delete** for most entities with cascading deletes:
 
----
+- Deleting a user deletes all their projects, tasks, and tags
+- Deleting a project sets tasks' project_id to NULL (preserves tasks)
+- Deleting a tag removes task_tag associations
+- Deleting a task removes task_tag associations
 
-## 9. Cross-References
+**Exception:** Projects support archiving (soft delete) via `is_archived` flag.
 
-- **Schema Definition:** See `specs/04_db_architect.md`
-- **Backend Queries:** See `docs/architecture/backend.md`
-- **API Endpoints:** See `docs/api/reference.md`
-- **Migration Files:** See `api/src/db/migrations/`
+## Connection Pooling
 
----
+```
+Production:
+- PgBouncer pool_mode: transaction
+- Max connections: 100
+- Default pool size: 20
 
-*This document is maintained by the Database team. Last updated: 2026-01-29*
+Development:
+- Direct Prisma connection
+- Pool size: 5
+```

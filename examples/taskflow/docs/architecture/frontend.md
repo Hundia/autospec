@@ -1,362 +1,372 @@
 # TaskFlow Frontend Architecture
 
-**Version:** 1.0
-**Last Updated:** 2026-01-29
+## Component Hierarchy
 
----
+The TaskFlow frontend follows atomic design principles, organizing components from smallest (atoms) to largest (pages).
 
-## 1. Component Architecture
-
-TaskFlow frontend follows a hierarchical component structure from atomic elements to full pages.
-
-### Component Tree
+### ASCII Component Tree
 
 ```
-    ┌─────────────────────────────────────────────────────────────────────────────────┐
-    │                                   App.tsx                                        │
-    │                              (Root component)                                    │
-    └───────────────────────────────────┬─────────────────────────────────────────────┘
-                                        │
-    ┌───────────────────────────────────▼─────────────────────────────────────────────┐
-    │                              RouterProvider                                      │
-    │                           (React Router v6)                                      │
-    └───────────────────────────────────┬─────────────────────────────────────────────┘
-                                        │
-              ┌─────────────────────────┼─────────────────────────────┐
-              │                         │                             │
-    ┌─────────▼─────────┐   ┌──────────▼──────────┐   ┌──────────────▼──────────────┐
-    │    Layout.tsx     │   │    Layout.tsx       │   │       Layout.tsx            │
-    │   (Public)        │   │   (Authenticated)   │   │      (Minimal)              │
-    └─────────┬─────────┘   └──────────┬──────────┘   └──────────────┬──────────────┘
-              │                        │                              │
-    ┌─────────▼─────────┐   ┌──────────▼──────────┐   ┌──────────────▼──────────────┐
-    │     Header        │   │     Header          │   │                             │
-    │   (with nav)      │   │  (with user menu)   │   │      Login/Register         │
-    └───────────────────┘   ├─────────────────────┤   │         Pages               │
-                            │     Sidebar         │   │                             │
-    ┌───────────────────┐   │  (project list)     │   └─────────────────────────────┘
-    │      Home         │   ├─────────────────────┤
-    │      Page         │   │    Main Content     │
-    └───────────────────┘   │   ┌─────────────┐   │
-                            │   │  Dashboard  │   │
-                            │   │   Page      │   │
-                            │   └─────────────┘   │
-                            └─────────────────────┘
+                           TASKFLOW COMPONENT HIERARCHY
+    ========================================================================
+
+    App
+    ├── AuthProvider (Context)
+    │   └── QueryClientProvider (React Query)
+    │       └── RouterProvider (React Router)
+    │           │
+    │           ├── PublicLayout
+    │           │   ├── Header (Logo only)
+    │           │   └── Routes:
+    │           │       ├── LandingPage
+    │           │       ├── LoginPage
+    │           │       │   └── LoginForm
+    │           │       │       ├── Input (email)
+    │           │       │       ├── Input (password)
+    │           │       │       └── Button (submit)
+    │           │       └── RegisterPage
+    │           │           └── RegisterForm
+    │           │               ├── Input (email)
+    │           │               ├── Input (password)
+    │           │               ├── Input (confirmPassword)
+    │           │               └── Button (submit)
+    │           │
+    │           └── ProtectedLayout
+    │               ├── Sidebar
+    │               │   ├── Logo
+    │               │   ├── NavLink (Dashboard)
+    │               │   ├── NavLink (Tasks)
+    │               │   ├── NavLink (Projects)
+    │               │   ├── NavLink (Settings)
+    │               │   └── UserMenu
+    │               │       ├── Avatar
+    │               │       └── Dropdown
+    │               │
+    │               ├── Header
+    │               │   ├── SearchBar
+    │               │   ├── NotificationBell
+    │               │   └── QuickAddButton
+    │               │
+    │               └── Main (Outlet)
+    │                   │
+    │                   ├── DashboardPage
+    │                   │   ├── StatsGrid
+    │                   │   │   ├── StatCard (Total Tasks)
+    │                   │   │   ├── StatCard (Completed)
+    │                   │   │   ├── StatCard (In Progress)
+    │                   │   │   └── StatCard (Overdue)
+    │                   │   ├── TasksDueToday
+    │                   │   │   └── TaskCard[]
+    │                   │   └── RecentActivity
+    │                   │       └── ActivityItem[]
+    │                   │
+    │                   ├── TasksPage
+    │                   │   ├── FilterBar
+    │                   │   │   ├── StatusFilter
+    │                   │   │   ├── PriorityFilter
+    │                   │   │   ├── ProjectFilter
+    │                   │   │   └── TagFilter
+    │                   │   ├── TaskList
+    │                   │   │   └── TaskCard[]
+    │                   │   │       ├── Checkbox
+    │                   │   │       ├── TaskTitle
+    │                   │   │       ├── DueDate
+    │                   │   │       ├── PriorityBadge
+    │                   │   │       └── TagBadge[]
+    │                   │   └── TaskModal (on click)
+    │                   │       ├── TaskForm
+    │                   │       └── DeleteConfirmation
+    │                   │
+    │                   ├── ProjectsPage
+    │                   │   ├── ProjectGrid
+    │                   │   │   └── ProjectCard[]
+    │                   │   │       ├── ProjectName
+    │                   │   │       ├── ProgressBar
+    │                   │   │       └── TaskCount
+    │                   │   └── CreateProjectModal
+    │                   │
+    │                   ├── ProjectDetailPage
+    │                   │   ├── ProjectHeader
+    │                   │   ├── ProjectTasks
+    │                   │   │   └── TaskCard[]
+    │                   │   └── ProjectSettings
+    │                   │
+    │                   └── SettingsPage
+    │                       ├── ProfileSection
+    │                       ├── PreferencesSection
+    │                       └── DangerZone
 ```
 
-### Component Hierarchy
+### Mermaid Component Diagram
 
+```mermaid
+graph TB
+    subgraph App["App Root"]
+        AP[AuthProvider]
+        QP[QueryClientProvider]
+        RP[RouterProvider]
+    end
+
+    subgraph Layouts["Layouts"]
+        PL[PublicLayout]
+        PRL[ProtectedLayout]
+    end
+
+    subgraph Public["Public Pages"]
+        LP[LandingPage]
+        LIP[LoginPage]
+        REP[RegisterPage]
+    end
+
+    subgraph Protected["Protected Pages"]
+        DP[DashboardPage]
+        TP[TasksPage]
+        PP[ProjectsPage]
+        PDP[ProjectDetailPage]
+        SP[SettingsPage]
+    end
+
+    subgraph Organisms["Organisms"]
+        SB[Sidebar]
+        HD[Header]
+        TL[TaskList]
+        FB[FilterBar]
+        TM[TaskModal]
+        PG[ProjectGrid]
+    end
+
+    subgraph Molecules["Molecules"]
+        TC[TaskCard]
+        PC[ProjectCard]
+        SC[StatCard]
+        NL[NavLink]
+        SF[SearchForm]
+    end
+
+    subgraph Atoms["Atoms"]
+        BTN[Button]
+        INP[Input]
+        BDG[Badge]
+        CHK[Checkbox]
+        AVT[Avatar]
+    end
+
+    AP --> QP --> RP
+    RP --> PL
+    RP --> PRL
+
+    PL --> LP
+    PL --> LIP
+    PL --> REP
+
+    PRL --> SB
+    PRL --> HD
+    PRL --> DP
+    PRL --> TP
+    PRL --> PP
+    PRL --> PDP
+    PRL --> SP
+
+    DP --> SC
+    TP --> TL
+    TP --> FB
+    TP --> TM
+    TL --> TC
+    PP --> PG
+    PG --> PC
+
+    TC --> BTN
+    TC --> CHK
+    TC --> BDG
+    PC --> BTN
+    PC --> BDG
 ```
-Atoms (ui/)
-├── Button.tsx
-├── Input.tsx
-├── Badge.tsx
-├── Checkbox.tsx
-├── Spinner.tsx
-└── Icon.tsx
 
-Molecules (forms/, tasks/)
-├── TaskCard.tsx
-├── TaskForm.tsx
-├── LoginForm.tsx
-├── RegisterForm.tsx
-├── SearchInput.tsx
-└── FilterDropdown.tsx
+## State Management
 
-Organisms (layout/, lists/)
-├── Header.tsx
-├── Sidebar.tsx
-├── TaskList.tsx
-├── ProjectList.tsx
-├── TaskFilters.tsx
-└── Modal.tsx
+### Global State (Zustand)
 
-Templates (layout/)
-├── Layout.tsx
-├── AuthLayout.tsx
-└── DashboardLayout.tsx
+```typescript
+// src/store/authStore.ts
+interface AuthState {
+  user: User | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => void;
+  refreshToken: () => Promise<void>;
+}
 
-Pages (pages/)
-├── Home.tsx
-├── Login.tsx
-├── Register.tsx
-├── Dashboard.tsx
-└── TaskDetail.tsx
+// src/store/uiStore.ts
+interface UIState {
+  sidebarOpen: boolean;
+  theme: 'light' | 'dark';
+  taskModalOpen: boolean;
+  selectedTaskId: string | null;
+  toggleSidebar: () => void;
+  setTheme: (theme: 'light' | 'dark') => void;
+  openTaskModal: (taskId?: string) => void;
+  closeTaskModal: () => void;
+}
 ```
 
----
+### Server State (React Query)
 
-## 2. State Management
+```typescript
+// src/hooks/useTasks.ts
+export function useTasks(filters: TaskFilters) {
+  return useQuery({
+    queryKey: ['tasks', filters],
+    queryFn: () => taskApi.getTasks(filters),
+    staleTime: 1000 * 60, // 1 minute
+  });
+}
 
-TaskFlow uses Zustand for state management with a clear separation between global and local state.
+export function useCreateTask() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: taskApi.createTask,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks'] });
+    },
+  });
+}
+```
 
 ### State Flow Diagram
 
-```
-    ┌─────────────────────────────────────────────────────────────────────────────────┐
-    │                              GLOBAL STATE (Zustand)                              │
-    │  ┌─────────────────────────────────────────────────────────────────────────┐    │
-    │  │                           AuthStore                                      │    │
-    │  │  - user: User | null                                                     │    │
-    │  │  - isAuthenticated: boolean                                              │    │
-    │  │  - isLoading: boolean                                                    │    │
-    │  │  - login(), register(), logout(), checkAuth()                            │    │
-    │  └─────────────────────────────────────────────────────────────────────────┘    │
-    │                                                                                  │
-    │  ┌─────────────────────────────────────────────────────────────────────────┐    │
-    │  │                           TaskStore                                      │    │
-    │  │  - tasks: Task[]                                                         │    │
-    │  │  - isLoading: boolean                                                    │    │
-    │  │  - filters: TaskFilters                                                  │    │
-    │  │  - fetchTasks(), createTask(), updateTask(), deleteTask()                │    │
-    │  └─────────────────────────────────────────────────────────────────────────┘    │
-    │                                                                                  │
-    │  ┌─────────────────────────────────────────────────────────────────────────┐    │
-    │  │                         ProjectStore (v1.1)                              │    │
-    │  │  - projects: Project[]                                                   │    │
-    │  │  - selectedProject: string | null                                        │    │
-    │  │  - fetchProjects(), createProject(), selectProject()                     │    │
-    │  └─────────────────────────────────────────────────────────────────────────┘    │
-    └──────────────────────────────────────┬──────────────────────────────────────────┘
-                                           │
-                                    Zustand hooks
-                                           │
-    ┌──────────────────────────────────────▼──────────────────────────────────────────┐
-    │                             LOCAL STATE (React)                                  │
-    │  ┌─────────────────────┐  ┌─────────────────────┐  ┌─────────────────────┐     │
-    │  │   Form State        │  │   UI State          │  │   Derived State     │     │
-    │  │  - useState         │  │  - isModalOpen      │  │  - useMemo          │     │
-    │  │  - useForm (RHF)    │  │  - isDropdownOpen   │  │  - computed values  │     │
-    │  │  - validation       │  │  - activeTab        │  │  - filtered lists   │     │
-    │  └─────────────────────┘  └─────────────────────┘  └─────────────────────┘     │
-    └─────────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Global["Global State (Zustand)"]
+        Auth[Auth Store]
+        UI[UI Store]
+    end
+
+    subgraph Server["Server State (React Query)"]
+        Tasks[Tasks Cache]
+        Projects[Projects Cache]
+        User[User Cache]
+    end
+
+    subgraph Local["Local State (useState)"]
+        Form[Form State]
+        Modal[Modal State]
+        Filter[Filter State]
+    end
+
+    subgraph Derived["Derived State"]
+        Filtered[Filtered Tasks]
+        Stats[Dashboard Stats]
+    end
+
+    Auth --> |isAuthenticated| Server
+    Tasks --> Filtered
+    Tasks --> Stats
+    Filter --> Filtered
+    UI --> Modal
+
+    style Auth fill:#3b82f6
+    style Tasks fill:#10b981
+    style Form fill:#f59e0b
 ```
 
-### Store Definitions
+## Routing
+
+### Route Configuration
 
 ```typescript
-// store/auth.store.ts
-interface AuthState {
-  user: User | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  error: string | null;
-  login: (email: string, password: string) => Promise<void>;
-  register: (data: RegisterInput) => Promise<void>;
-  logout: () => void;
-  checkAuth: () => Promise<void>;
-}
-
-export const useAuthStore = create<AuthState>((set) => ({
-  user: null,
-  isAuthenticated: false,
-  isLoading: true,
-  error: null,
-  // ... implementations
-}));
-
-// store/task.store.ts
-interface TaskState {
-  tasks: Task[];
-  isLoading: boolean;
-  error: string | null;
-  filters: TaskFilters;
-  fetchTasks: () => Promise<void>;
-  createTask: (data: CreateTaskInput) => Promise<Task>;
-  updateTask: (id: string, data: UpdateTaskInput) => Promise<void>;
-  deleteTask: (id: string) => Promise<void>;
-  toggleComplete: (id: string) => Promise<void>;
-  setFilters: (filters: Partial<TaskFilters>) => void;
-}
-```
-
-### What Goes Where
-
-| State Type | Where | Examples |
-|------------|-------|----------|
-| User session | AuthStore (global) | user, isAuthenticated |
-| Entity lists | Domain stores (global) | tasks, projects |
-| Filters | Domain stores (global) | status, priority, search |
-| Form input | Local useState / useForm | title, description |
-| UI toggles | Local useState | isModalOpen, activeTab |
-| Derived data | useMemo | filteredTasks, stats |
-
----
-
-## 3. Data Fetching Strategy
-
-TaskFlow uses a service layer pattern for API calls with Axios.
-
-### API Client Setup
-
-```typescript
-// services/api.ts
-import axios from 'axios';
-
-export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true, // Include cookies
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// Response interceptor for error handling
-api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    if (error.response?.status === 401) {
-      // Token expired, redirect to login
-      window.location.href = '/login';
-    }
-    return Promise.reject(error);
-  }
-);
-```
-
-### Service Layer
-
-```typescript
-// services/task.service.ts
-export const taskService = {
-  getAll: (params?: TaskFilters) =>
-    api.get<ApiResponse<Task[]>>('/tasks', { params }),
-
-  getById: (id: string) =>
-    api.get<ApiResponse<Task>>(`/tasks/${id}`),
-
-  create: (data: CreateTaskInput) =>
-    api.post<ApiResponse<Task>>('/tasks', data),
-
-  update: (id: string, data: UpdateTaskInput) =>
-    api.patch<ApiResponse<Task>>(`/tasks/${id}`, data),
-
-  delete: (id: string) =>
-    api.delete(`/tasks/${id}`),
-
-  toggleComplete: (id: string) =>
-    api.patch<ApiResponse<Task>>(`/tasks/${id}/complete`),
-};
-```
-
----
-
-## 4. Routing Configuration
-
-```typescript
-// router.tsx
-import { createBrowserRouter } from 'react-router-dom';
-
-export const router = createBrowserRouter([
+// src/routes/index.tsx
+const router = createBrowserRouter([
   {
-    path: '/',
-    element: <RootLayout />,
+    element: <PublicLayout />,
     children: [
-      // Public routes
-      { index: true, element: <Home /> },
-      { path: 'login', element: <Login /> },
-      { path: 'register', element: <Register /> },
-
-      // Protected routes
-      {
-        element: <ProtectedRoute />,
-        children: [
-          { path: 'dashboard', element: <Dashboard /> },
-          { path: 'tasks/:id', element: <TaskDetail /> },
-          { path: 'projects', element: <ProjectList /> },
-          { path: 'projects/:id', element: <ProjectDetail /> },
-          { path: 'settings', element: <Settings /> },
-        ],
-      },
+      { path: '/', element: <LandingPage /> },
+      { path: '/login', element: <LoginPage /> },
+      { path: '/register', element: <RegisterPage /> },
+      { path: '/forgot-password', element: <ForgotPasswordPage /> },
+    ],
+  },
+  {
+    element: <ProtectedLayout />,
+    children: [
+      { path: '/dashboard', element: <DashboardPage /> },
+      { path: '/tasks', element: <TasksPage /> },
+      { path: '/tasks/:taskId', element: <TaskDetailPage /> },
+      { path: '/projects', element: <ProjectsPage /> },
+      { path: '/projects/:projectId', element: <ProjectDetailPage /> },
+      { path: '/settings', element: <SettingsPage /> },
     ],
   },
 ]);
 ```
 
-### Route Guards
+### Route Table
 
-```typescript
-// components/ProtectedRoute.tsx
-export const ProtectedRoute = () => {
-  const { isAuthenticated, isLoading } = useAuthStore();
-  const location = useLocation();
+| Path | Component | Auth | Lazy Load |
+|------|-----------|------|-----------|
+| `/` | LandingPage | No | No |
+| `/login` | LoginPage | No | No |
+| `/register` | RegisterPage | No | No |
+| `/forgot-password` | ForgotPasswordPage | No | Yes |
+| `/dashboard` | DashboardPage | Yes | No |
+| `/tasks` | TasksPage | Yes | No |
+| `/tasks/:taskId` | TaskDetailPage | Yes | Yes |
+| `/projects` | ProjectsPage | Yes | Yes |
+| `/projects/:projectId` | ProjectDetailPage | Yes | Yes |
+| `/settings` | SettingsPage | Yes | Yes |
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
+## Data Fetching Strategy
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
+```mermaid
+sequenceDiagram
+    participant C as Component
+    participant RQ as React Query
+    participant API as API Client
+    participant BE as Backend
 
-  return <Outlet />;
-};
+    C->>RQ: useQuery(['tasks'])
+
+    alt Cache Hit (Fresh)
+        RQ-->>C: Return cached data
+    else Cache Miss or Stale
+        RQ->>API: fetchTasks()
+        API->>BE: GET /api/v1/tasks
+        BE-->>API: Task[]
+        API-->>RQ: Task[]
+        RQ->>RQ: Update cache
+        RQ-->>C: Return data
+    end
+
+    Note over C,RQ: Background refetch on window focus
 ```
 
----
-
-## 5. Code Splitting
-
-TaskFlow uses React lazy loading for route-based code splitting.
+## Code Splitting
 
 ```typescript
-// Lazy load page components
-const Dashboard = lazy(() => import('./pages/Dashboard'));
-const TaskDetail = lazy(() => import('./pages/TaskDetail'));
-const Settings = lazy(() => import('./pages/Settings'));
+// Lazy loaded routes
+const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
+const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 
-// Wrap routes with Suspense
+// With loading fallback
 <Suspense fallback={<PageSkeleton />}>
-  <RouterProvider router={router} />
+  <ProjectsPage />
 </Suspense>
 ```
 
----
+## Asset Pipeline
 
-## 6. Asset Pipeline
+| Asset Type | Location | Optimization |
+|------------|----------|--------------|
+| Icons | lucide-react | Tree-shaken, SVG |
+| Images | public/images | WebP, lazy loading |
+| Fonts | Google Fonts (Inter) | Font-display: swap |
+| CSS | Tailwind (JIT) | Purged unused styles |
 
-### Images
+## Performance Targets
 
-- Format: WebP with PNG fallback
-- Loading: Native lazy loading
-- Optimization: Vite imagetools plugin
-
-### Fonts
-
-- Primary: Inter (headings, body)
-- Monospace: JetBrains Mono (code blocks)
-- Loading: Font-display: swap
-
-### Icons
-
-- Library: Lucide React
-- Usage: Tree-shaken imports
-
-```typescript
-import { CheckCircle, Plus, Trash2 } from 'lucide-react';
-```
-
----
-
-## 7. Performance Targets
-
-| Metric | Target | Tool |
-|--------|--------|------|
-| Largest Contentful Paint (LCP) | < 2.5s | Lighthouse |
-| First Input Delay (FID) | < 100ms | Lighthouse |
-| Cumulative Layout Shift (CLS) | < 0.1 | Lighthouse |
-| Time to Interactive (TTI) | < 3.5s | Lighthouse |
-| Bundle Size (gzipped) | < 150KB | Vite build |
-
----
-
-## 8. Cross-References
-
-- **Design System:** See `specs/03_frontend_lead.md`
-- **Component Specs:** See `docs/ui-design-system/components.md` (future)
-- **User Journeys:** See `docs/flows/user-journeys.md`
-- **API Integration:** See `docs/api/reference.md`
-
----
-
-*This document is maintained by the Frontend team. Last updated: 2026-01-29*
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| LCP | < 2.5s | Largest Contentful Paint |
+| FID | < 100ms | First Input Delay |
+| CLS | < 0.1 | Cumulative Layout Shift |
+| Bundle Size | < 200KB | Initial JS bundle (gzipped) |

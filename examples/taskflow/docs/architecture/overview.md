@@ -1,240 +1,267 @@
-# TaskFlow Architecture Overview
+# TaskFlow System Architecture Overview
 
-**Version:** 1.0
-**Last Updated:** 2026-01-29
+## High-Level Architecture
 
----
+TaskFlow follows a modern three-tier architecture with a React Single Page Application (SPA) frontend, Express.js REST API backend, and PostgreSQL database.
 
-## 1. System Architecture
-
-TaskFlow follows a three-tier architecture pattern with clear separation between presentation, business logic, and data layers.
-
-### High-Level System Diagram
+### ASCII Architecture Diagram
 
 ```
                                     TASKFLOW SYSTEM ARCHITECTURE
+    ====================================================================================
 
-    ┌─────────────────────────────────────────────────────────────────────────────────┐
-    │                                   CLIENTS                                        │
-    │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐                 │
-    │  │  Web Browser    │  │  Mobile Browser │  │  Future: Apps   │                 │
-    │  │  (React SPA)    │  │  (Responsive)   │  │  (iOS/Android)  │                 │
-    │  └────────┬────────┘  └────────┬────────┘  └────────┬────────┘                 │
-    │           │                    │                    │                           │
-    │           └────────────────────┴────────────────────┘                           │
-    │                                │                                                │
-    │                         HTTPS (TLS 1.3)                                         │
-    │                                │                                                │
-    └────────────────────────────────┼────────────────────────────────────────────────┘
-                                     │
-    ┌────────────────────────────────┼────────────────────────────────────────────────┐
-    │                         API GATEWAY                                              │
-    │                                │                                                │
-    │  ┌─────────────────────────────▼─────────────────────────────────────────────┐  │
-    │  │                        Express.js Server                                   │  │
-    │  │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │  │
-    │  │  │   Helmet     │  │    CORS      │  │ Rate Limiter │  │  Body Parser │  │  │
-    │  │  │  (Security)  │  │  (Origins)   │  │ (DDoS Prot.) │  │   (JSON)     │  │  │
-    │  │  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘  │  │
-    │  └───────────────────────────────────────────────────────────────────────────┘  │
-    │                                │                                                │
-    └────────────────────────────────┼────────────────────────────────────────────────┘
-                                     │
-    ┌────────────────────────────────┼────────────────────────────────────────────────┐
-    │                         APPLICATION LAYER                                        │
-    │                                │                                                │
-    │  ┌─────────────────────────────▼─────────────────────────────────────────────┐  │
-    │  │                           Routes                                           │  │
-    │  │  /api/v1/auth/*    /api/v1/tasks/*    /api/v1/projects/*    /health       │  │
-    │  └─────────────────────────────┬─────────────────────────────────────────────┘  │
-    │                                │                                                │
-    │  ┌─────────────────────────────▼─────────────────────────────────────────────┐  │
-    │  │                        Controllers                                         │  │
-    │  │  AuthController         TaskController         ProjectController           │  │
-    │  │  - register()           - list()               - list()                    │  │
-    │  │  - login()              - create()             - create()                  │  │
-    │  │  - logout()             - update()             - update()                  │  │
-    │  │  - me()                 - delete()             - delete()                  │  │
-    │  └─────────────────────────────┬─────────────────────────────────────────────┘  │
-    │                                │                                                │
-    │  ┌─────────────────────────────▼─────────────────────────────────────────────┐  │
-    │  │                          Services                                          │  │
-    │  │  AuthService            TaskService            ProjectService              │  │
-    │  │  - validateCredentials  - createTask           - createProject             │  │
-    │  │  - generateTokens       - updateTask           - getProjectStats           │  │
-    │  │  - refreshToken         - toggleComplete       - archiveProject            │  │
-    │  └─────────────────────────────┬─────────────────────────────────────────────┘  │
-    │                                │                                                │
-    │  ┌─────────────────────────────▼─────────────────────────────────────────────┐  │
-    │  │                        Repositories                                        │  │
-    │  │  UserRepository         TaskRepository         ProjectRepository           │  │
-    │  │  - findByEmail          - findByUserId         - findByUserId              │  │
-    │  │  - create               - create               - create                    │  │
-    │  │  - update               - update               - update                    │  │
-    │  └─────────────────────────────┬─────────────────────────────────────────────┘  │
-    │                                │                                                │
-    └────────────────────────────────┼────────────────────────────────────────────────┘
-                                     │
-    ┌────────────────────────────────┼────────────────────────────────────────────────┐
-    │                           DATA LAYER                                             │
-    │                                │                                                │
-    │  ┌─────────────────────────────▼─────────────────────────────────────────────┐  │
-    │  │                         Drizzle ORM                                        │  │
-    │  │  - Type-safe queries    - Migration management    - Connection pooling     │  │
-    │  └─────────────────────────────┬─────────────────────────────────────────────┘  │
-    │                                │                                                │
-    │  ┌─────────────────────────────▼─────────────────────────────────────────────┐  │
-    │  │                        PostgreSQL 15+                                      │  │
-    │  │  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐          │  │
-    │  │  │   users    │  │   tasks    │  │  projects  │  │  tokens    │          │  │
-    │  │  └────────────┘  └────────────┘  └────────────┘  └────────────┘          │  │
-    │  └───────────────────────────────────────────────────────────────────────────┘  │
-    │                                                                                 │
-    └─────────────────────────────────────────────────────────────────────────────────┘
+                                         [INTERNET]
+                                              |
+                                              v
+    +-----------------------------------------------------------------------------------+
+    |                                    NGINX                                          |
+    |                              (Reverse Proxy / SSL)                                |
+    +-----------------------------------------------------------------------------------+
+                                              |
+                    +-------------------------+-------------------------+
+                    |                                                   |
+                    v                                                   v
+    +-------------------------------+                   +-------------------------------+
+    |        REACT SPA              |                   |        EXPRESS API            |
+    |       (Frontend)              |                   |         (Backend)             |
+    |                               |                   |                               |
+    |  +-------------------------+  |                   |  +-------------------------+  |
+    |  |    App Component        |  |    REST/JSON      |  |       Routes            |  |
+    |  +-------------------------+  | <---------------> |  +-------------------------+  |
+    |  |    React Router         |  |    HTTP/HTTPS     |  |       Middleware        |  |
+    |  +-------------------------+  |                   |  +-------------------------+  |
+    |  |    React Query          |  |                   |  |       Controllers       |  |
+    |  +-------------------------+  |                   |  +-------------------------+  |
+    |  |    Zustand Store        |  |                   |  |       Services          |  |
+    |  +-------------------------+  |                   |  +-------------------------+  |
+    |  |    Tailwind CSS         |  |                   |  |       Repositories      |  |
+    |  +-------------------------+  |                   |  +-------------------------+  |
+    |                               |                   |               |               |
+    +-------------------------------+                   +---------------+---------------+
+           |                                                            |
+           |  Static Assets                                             |  Prisma ORM
+           v                                                            v
+    +-------------------------------+                   +-------------------------------+
+    |           CDN                 |                   |        POSTGRESQL             |
+    |    (JS, CSS, Images)          |                   |         Database              |
+    +-------------------------------+                   |                               |
+                                                        |  +-------------------------+  |
+                                                        |  |  users                  |  |
+                                                        |  +-------------------------+  |
+                                                        |  |  tasks                  |  |
+                                                        |  +-------------------------+  |
+                                                        |  |  projects               |  |
+                                                        |  +-------------------------+  |
+                                                        |  |  tags                   |  |
+                                                        |  +-------------------------+  |
+                                                        |  |  task_tags              |  |
+                                                        |  +-------------------------+  |
+                                                        +-------------------------------+
 ```
 
----
+### Mermaid System Diagram
 
-## 2. Tech Stack Summary
+```mermaid
+graph TB
+    subgraph Client["Client Layer"]
+        Browser[Web Browser]
+        SPA[React SPA]
+    end
 
-| Layer | Technology | Version | Purpose |
-|-------|------------|---------|---------|
-| Frontend Framework | React | 18.x | UI component library |
-| Frontend Build | Vite | 5.x | Fast development and bundling |
-| Frontend Language | TypeScript | 5.x | Type safety |
+    subgraph Gateway["Gateway Layer"]
+        NGINX[NGINX Reverse Proxy]
+    end
+
+    subgraph API["API Layer"]
+        Express[Express.js Server]
+        Routes[Routes]
+        Middleware[Middleware]
+        Controllers[Controllers]
+        Services[Services]
+        Repositories[Repositories]
+    end
+
+    subgraph Data["Data Layer"]
+        Prisma[Prisma ORM]
+        PostgreSQL[(PostgreSQL)]
+    end
+
+    Browser --> SPA
+    SPA --> NGINX
+    NGINX --> Express
+    Express --> Routes
+    Routes --> Middleware
+    Middleware --> Controllers
+    Controllers --> Services
+    Services --> Repositories
+    Repositories --> Prisma
+    Prisma --> PostgreSQL
+
+    style Browser fill:#3b82f6
+    style PostgreSQL fill:#10b981
+    style Express fill:#f59e0b
+```
+
+## Tech Stack Summary
+
+| Component | Technology | Version | Purpose |
+|-----------|------------|---------|---------|
+| Frontend | React | 18.x | UI Framework |
+| Build Tool | Vite | 5.x | Fast bundling |
 | Styling | Tailwind CSS | 3.x | Utility-first CSS |
-| State Management | Zustand | 4.x | Lightweight state management |
-| Backend Runtime | Node.js | 20.x LTS | JavaScript runtime |
-| Backend Framework | Express | 4.x | HTTP server framework |
-| Database | PostgreSQL | 15+ | Relational database |
-| ORM | Drizzle | 0.29+ | Type-safe database queries |
-| Validation | Zod | 3.x | Schema validation |
-| Testing | Vitest | 1.x | Unit and integration testing |
-| E2E Testing | Playwright | Latest | End-to-end testing |
+| State | Zustand | 4.x | Global state management |
+| Data Fetching | React Query | 5.x | Server state management |
+| Backend | Express.js | 4.x | REST API framework |
+| Runtime | Node.js | 20.x LTS | JavaScript runtime |
+| Database | PostgreSQL | 15.x | Relational database |
+| ORM | Prisma | 5.x | Type-safe database access |
+| Auth | JWT | - | Token-based authentication |
+| Testing | Vitest/Playwright | - | Unit/E2E testing |
+| Containerization | Docker | - | Deployment |
 
----
-
-## 3. Request Lifecycle
-
-A typical authenticated request flows through the system as follows:
+## Request Lifecycle
 
 ```
-1. CLIENT REQUEST
-   │
-   ▼
-2. TLS TERMINATION (HTTPS)
-   │
-   ▼
-3. MIDDLEWARE CHAIN
-   ├── helmet() - Security headers
-   ├── cors() - Origin validation
-   ├── rateLimit() - Request throttling
-   ├── express.json() - Body parsing
-   └── authMiddleware() - JWT verification
-   │
-   ▼
-4. ROUTER
-   └── Match path to controller method
-   │
-   ▼
-5. CONTROLLER
-   ├── Validate request body with Zod
-   ├── Extract user from req.user
-   └── Call service method
-   │
-   ▼
-6. SERVICE
-   ├── Execute business logic
-   ├── Call repository methods
-   └── Handle errors
-   │
-   ▼
-7. REPOSITORY
-   ├── Build Drizzle query
-   └── Execute against PostgreSQL
-   │
-   ▼
-8. DATABASE
-   └── Return query result
-   │
-   ▼
-9. RESPONSE
-   ├── Service transforms data
-   ├── Controller formats response
-   └── Express sends JSON
+1. User Action (Click/Submit)
+         |
+         v
+2. React Component Event Handler
+         |
+         v
+3. React Query Mutation/Query
+         |
+         v
+4. API Client (Axios) with JWT Header
+         |
+         v
+5. NGINX (SSL Termination, Load Balancing)
+         |
+         v
+6. Express Router (Route Matching)
+         |
+         v
+7. Auth Middleware (JWT Validation)
+         |
+         v
+8. Validation Middleware (Zod Schema)
+         |
+         v
+9. Controller (Request Handling)
+         |
+         v
+10. Service Layer (Business Logic)
+         |
+         v
+11. Repository Layer (Data Access)
+         |
+         v
+12. Prisma ORM (Query Building)
+         |
+         v
+13. PostgreSQL (Data Storage)
+         |
+         v
+14. Response flows back up the chain
 ```
 
----
+### Request Flow Mermaid Diagram
 
-## 4. Non-Functional Requirements
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant R as React SPA
+    participant RQ as React Query
+    participant A as Axios Client
+    participant N as NGINX
+    participant E as Express Router
+    participant M as Middleware
+    participant C as Controller
+    participant S as Service
+    participant P as Prisma
+    participant DB as PostgreSQL
+
+    U->>R: Click Button
+    R->>RQ: Trigger Query/Mutation
+    RQ->>A: HTTP Request
+    A->>N: HTTPS Request + JWT
+    N->>E: Forward to Backend
+    E->>M: Route Match
+    M->>M: Auth + Validation
+    M->>C: Validated Request
+    C->>S: Business Logic
+    S->>P: Data Operation
+    P->>DB: SQL Query
+    DB-->>P: Result Set
+    P-->>S: Typed Data
+    S-->>C: Response Data
+    C-->>E: HTTP Response
+    E-->>N: JSON Response
+    N-->>A: HTTPS Response
+    A-->>RQ: Update Cache
+    RQ-->>R: Re-render
+    R-->>U: UI Update
+```
+
+## Non-Functional Requirements Summary
 
 | Requirement | Target | Measurement |
 |-------------|--------|-------------|
-| Page Load Time | < 2 seconds | Lighthouse FCP |
-| API Response Time (P95) | < 300ms | APM metrics |
-| API Response Time (P50) | < 100ms | APM metrics |
+| Page Load Time | < 2 seconds | Lighthouse Performance |
+| API Response (p95) | < 300ms | Application metrics |
 | Concurrent Users | 1000 | Load testing |
-| Availability | 99.9% | Uptime monitoring |
-| Test Coverage | > 70% | Coverage reports |
+| Uptime | 99.9% | Monitoring alerts |
+| Test Coverage | > 70% | CI coverage report |
 
----
+## Key Architectural Decisions
 
-## 5. Key Architectural Decisions
+### 1. Single Page Application (SPA)
 
-### Decision 1: Drizzle ORM over Prisma
-
-**Options Considered:**
-- Prisma: Full-featured ORM with schema-first approach
-- Drizzle: Lightweight, SQL-like syntax with better performance
-- Raw SQL: Maximum control but no type safety
-
-**Chosen:** Drizzle ORM
+**Decision:** Build frontend as React SPA rather than server-rendered.
 
 **Rationale:**
-- Better TypeScript inference without code generation
-- SQL-like syntax reduces learning curve
-- Smaller bundle size and faster cold starts
-- Better performance for complex queries
+- Task management requires highly interactive UI
+- Real-time updates without page refreshes
+- Better perceived performance for frequent actions
+- Simpler deployment (static files)
 
-### Decision 2: Zustand over Redux
+### 2. REST API over GraphQL
 
-**Options Considered:**
-- Redux Toolkit: Industry standard, powerful but verbose
-- Zustand: Minimal boilerplate, intuitive API
-- Context API: Built-in but limited for complex state
-
-**Chosen:** Zustand
+**Decision:** Use REST API rather than GraphQL.
 
 **Rationale:**
-- TaskFlow has simple state requirements
-- Zustand requires 80% less boilerplate than Redux
-- Built-in devtools support
-- No provider wrapper needed
+- Simpler to implement and debug
+- Well-understood caching patterns
+- No over-fetching concerns for our data model
+- Team familiarity with REST patterns
 
-### Decision 3: HTTP-only Cookies for JWT
+### 3. PostgreSQL over NoSQL
 
-**Options Considered:**
-- localStorage: Simple but vulnerable to XSS
-- HTTP-only cookies: Secure against XSS, requires CORS setup
-- sessionStorage: Cleared on tab close
-
-**Chosen:** HTTP-only Cookies
+**Decision:** Use PostgreSQL rather than MongoDB or similar.
 
 **Rationale:**
-- Immune to XSS attacks (JavaScript cannot read cookies)
-- Automatic inclusion in requests with credentials
-- Server-side token rotation possible
+- Tasks and projects have clear relational structure
+- Need for ACID transactions (task completion)
+- Complex queries (filtering, sorting, aggregations)
+- Prisma provides excellent PostgreSQL support
 
----
+### 4. JWT Authentication
 
-## 6. Cross-References
+**Decision:** Use JWT tokens rather than session-based auth.
 
-- **Backend Details:** See `docs/architecture/backend.md`
-- **Frontend Details:** See `docs/architecture/frontend.md`
-- **Database Schema:** See `docs/architecture/database.md`
-- **API Reference:** See `docs/api/reference.md`
-- **Security Flow:** See `docs/flows/authentication-flow.md`
+**Rationale:**
+- Stateless authentication scales well
+- Simple to implement with Express
+- Works seamlessly with SPA frontend
+- Easy to invalidate via short expiry + refresh tokens
 
----
+### 5. Zustand for State Management
 
-*This document is maintained by the Architecture team. Last updated: 2026-01-29*
+**Decision:** Use Zustand rather than Redux or Context.
+
+**Rationale:**
+- Minimal boilerplate for our scope
+- TypeScript-first design
+- Simple mental model (stores as hooks)
+- Easy to test and debug
+
+See `docs/architecture/deep-dive.md` for detailed decision analysis.

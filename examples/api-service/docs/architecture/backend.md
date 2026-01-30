@@ -1,47 +1,155 @@
 # DataHub API Gateway - Backend Architecture
 
+## Overview
+
+The DataHub backend follows a layered architecture pattern that promotes separation of concerns, testability, and maintainability. This document details the internal structure of the Node.js/Express application.
+
+---
+
 ## Layered Architecture
 
-DataHub follows a layered architecture pattern that separates concerns and promotes maintainability.
+### ASCII Layer Diagram
 
 ```
-+------------------------------------------------------------------+
-|                        Routes Layer                               |
-|  - Endpoint definitions                                           |
-|  - Request/response mapping                                       |
-|  - Swagger annotations                                            |
-+------------------------------------------------------------------+
-                               |
-                               v
-+------------------------------------------------------------------+
-|                      Middleware Layer                             |
-|  - Authentication       - Rate Limiting                           |
-|  - Authorization        - Request Logging                         |
-|  - Validation           - Error Handling                          |
-+------------------------------------------------------------------+
-                               |
-                               v
-+------------------------------------------------------------------+
-|                       Service Layer                               |
-|  - Business logic                                                 |
-|  - Orchestration                                                  |
-|  - Transaction management                                         |
-+------------------------------------------------------------------+
-                               |
-                               v
-+------------------------------------------------------------------+
-|                      Repository Layer                             |
-|  - Database operations                                            |
-|  - Query building                                                 |
-|  - Data mapping                                                   |
-+------------------------------------------------------------------+
-                               |
-                               v
-+------------------------------------------------------------------+
-|                        Data Layer                                 |
-|  - PostgreSQL          - Redis                                    |
-|  - Connection pools    - Queue (BullMQ)                          |
-+------------------------------------------------------------------+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              HTTP Request                                    │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                             ROUTES LAYER                                     │
+│                                                                              │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐    │
+│  │  /api/auth   │  │  /api/keys   │  │  /api/admin  │  │  /gateway/*  │    │
+│  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘    │
+│                                                                              │
+│  Responsibility: URL mapping, request validation, response formatting        │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           MIDDLEWARE LAYER                                   │
+│                                                                              │
+│  ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌───────────┐ │
+│  │   Auth     │ │ Rate Limit │ │  Logging   │ │  Metrics   │ │  Error    │ │
+│  │ Middleware │ │ Middleware │ │ Middleware │ │ Middleware │ │  Handler  │ │
+│  └────────────┘ └────────────┘ └────────────┘ └────────────┘ └───────────┘ │
+│                                                                              │
+│  Responsibility: Cross-cutting concerns, request/response interception       │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          CONTROLLERS LAYER                                   │
+│                                                                              │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐    │
+│  │    Auth      │  │   API Key    │  │   Gateway    │  │   Admin      │    │
+│  │  Controller  │  │  Controller  │  │  Controller  │  │  Controller  │    │
+│  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘    │
+│                                                                              │
+│  Responsibility: Request handling, input extraction, response building       │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           SERVICES LAYER                                     │
+│                                                                              │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐    │
+│  │    Auth      │  │   API Key    │  │   Gateway    │  │  Analytics   │    │
+│  │   Service    │  │   Service    │  │   Service    │  │   Service    │    │
+│  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘    │
+│                                                                              │
+│  Responsibility: Business logic, orchestration, domain rules                 │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         REPOSITORIES LAYER                                   │
+│                                                                              │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐    │
+│  │    User      │  │   API Key    │  │    API       │  │  Request     │    │
+│  │ Repository   │  │ Repository   │  │ Repository   │  │ Log Repo     │    │
+│  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘    │
+│                                                                              │
+│  Responsibility: Data access, query building, ORM interaction                │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           DATA SOURCES                                       │
+│                                                                              │
+│         ┌──────────────┐    ┌──────────────┐    ┌──────────────┐           │
+│         │  PostgreSQL  │    │    Redis     │    │ TimescaleDB  │           │
+│         └──────────────┘    └──────────────┘    └──────────────┘           │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Mermaid Layer Flow
+
+```mermaid
+flowchart TB
+    subgraph Routes["Routes Layer"]
+        R1["/api/v1/auth/*"]
+        R2["/api/v1/keys/*"]
+        R3["/api/v1/admin/*"]
+        R4["/api/v1/analytics/*"]
+        R5["/gateway/*"]
+    end
+
+    subgraph Middleware["Middleware Stack"]
+        M1[CORS]
+        M2[Body Parser]
+        M3[Auth Middleware]
+        M4[Rate Limiter]
+        M5[Request Logger]
+        M6[Error Handler]
+    end
+
+    subgraph Controllers["Controllers"]
+        C1[AuthController]
+        C2[ApiKeyController]
+        C3[AdminController]
+        C4[AnalyticsController]
+        C5[GatewayController]
+    end
+
+    subgraph Services["Services"]
+        S1[AuthService]
+        S2[ApiKeyService]
+        S3[UserService]
+        S4[AnalyticsService]
+        S5[GatewayService]
+        S6[RateLimitService]
+    end
+
+    subgraph Repositories["Repositories"]
+        RP1[UserRepository]
+        RP2[ApiKeyRepository]
+        RP3[ApiRepository]
+        RP4[RequestLogRepository]
+    end
+
+    subgraph DataSources["Data Sources"]
+        DB1[(PostgreSQL)]
+        DB2[(Redis)]
+        DB3[(TimescaleDB)]
+    end
+
+    R1 & R2 & R3 & R4 & R5 --> M1
+    M1 --> M2 --> M3 --> M4 --> M5
+    M5 --> C1 & C2 & C3 & C4 & C5
+    C1 --> S1
+    C2 --> S2
+    C3 --> S3
+    C4 --> S4
+    C5 --> S5 & S6
+    S1 & S2 & S3 --> RP1 & RP2 & RP3
+    S4 --> RP4
+    S6 --> DB2
+    RP1 & RP2 & RP3 --> DB1
+    RP4 --> DB3
+    M5 --> M6
 ```
 
 ---
@@ -50,322 +158,475 @@ DataHub follows a layered architecture pattern that separates concerns and promo
 
 ```
 src/
-├── index.ts                 # Application entry point
-├── app.ts                   # Express app configuration
-│
 ├── config/
-│   ├── index.ts             # Configuration loader
-│   ├── database.ts          # Database connection config
-│   ├── redis.ts             # Redis connection config
-│   └── validation.ts        # Config validation schemas
-│
-├── middleware/
-│   ├── auth.ts              # API key authentication
-│   ├── authorize.ts         # Scope-based authorization
-│   ├── rateLimit.ts         # Rate limiting middleware
-│   ├── requestLogger.ts     # Request/response logging
-│   ├── requestId.ts         # Request ID generation
-│   ├── errorHandler.ts      # Global error handler
-│   └── validate.ts          # Request validation wrapper
+│   ├── index.ts              # Configuration aggregator
+│   ├── database.ts           # Database configuration
+│   ├── redis.ts              # Redis configuration
+│   └── app.ts                # Application settings
 │
 ├── routes/
-│   ├── index.ts             # Route aggregator
-│   ├── health.ts            # Health check routes
-│   ├── keys.ts              # API key management routes
-│   ├── requests.ts          # Request log routes
-│   ├── webhooks.ts          # Webhook management routes
-│   └── rateLimits.ts        # Rate limit configuration routes
+│   ├── index.ts              # Route aggregator
+│   ├── auth.routes.ts        # Authentication routes
+│   ├── keys.routes.ts        # API key routes
+│   ├── admin.routes.ts       # Admin routes
+│   ├── analytics.routes.ts   # Analytics routes
+│   └── gateway.routes.ts     # Gateway proxy routes
+│
+├── middleware/
+│   ├── auth.middleware.ts    # JWT/API key validation
+│   ├── rateLimiter.middleware.ts
+│   ├── logger.middleware.ts
+│   ├── metrics.middleware.ts
+│   ├── validation.middleware.ts
+│   └── errorHandler.middleware.ts
+│
+├── controllers/
+│   ├── auth.controller.ts
+│   ├── apiKey.controller.ts
+│   ├── admin.controller.ts
+│   ├── analytics.controller.ts
+│   └── gateway.controller.ts
 │
 ├── services/
-│   ├── keyService.ts        # API key business logic
-│   ├── requestService.ts    # Request logging logic
-│   ├── webhookService.ts    # Webhook management logic
-│   ├── rateLimitService.ts  # Rate limiting logic
-│   └── auditService.ts      # Audit logging logic
+│   ├── auth.service.ts
+│   ├── apiKey.service.ts
+│   ├── user.service.ts
+│   ├── gateway.service.ts
+│   ├── rateLimit.service.ts
+│   └── analytics.service.ts
 │
 ├── repositories/
-│   ├── keyRepository.ts     # API key database operations
-│   ├── requestRepository.ts # Request log operations
-│   ├── webhookRepository.ts # Webhook database operations
-│   └── auditRepository.ts   # Audit log operations
+│   ├── user.repository.ts
+│   ├── apiKey.repository.ts
+│   ├── api.repository.ts
+│   └── requestLog.repository.ts
 │
-├── queue/
-│   ├── webhookQueue.ts      # Webhook delivery queue
-│   └── processor.ts         # Queue job processor
+├── models/
+│   ├── user.model.ts
+│   ├── apiKey.model.ts
+│   ├── api.model.ts
+│   └── requestLog.model.ts
+│
+├── types/
+│   ├── express.d.ts          # Express type extensions
+│   ├── api.types.ts
+│   └── common.types.ts
 │
 ├── utils/
-│   ├── crypto.ts            # Cryptographic utilities
-│   ├── logger.ts            # Logging configuration
-│   └── errors.ts            # Custom error classes
+│   ├── crypto.ts             # Hashing utilities
+│   ├── jwt.ts                # JWT utilities
+│   ├── logger.ts             # Winston logger
+│   └── errors.ts             # Custom error classes
 │
-├── validation/
-│   ├── keySchemas.ts        # API key validation schemas
-│   ├── webhookSchemas.ts    # Webhook validation schemas
-│   └── common.ts            # Shared validation utilities
+├── validators/
+│   ├── auth.validator.ts
+│   ├── apiKey.validator.ts
+│   └── common.validator.ts
 │
-└── types/
-    ├── index.ts             # Type exports
-    ├── api.ts               # API request/response types
-    ├── models.ts            # Domain model types
-    └── middleware.ts        # Middleware types
+└── app.ts                    # Application entry point
 ```
 
 ---
 
-## Middleware Chain
+## Layer Responsibilities
 
-Middleware executes in a specific order for each request:
+### 1. Routes Layer
+
+Routes define URL patterns and map them to controllers.
 
 ```typescript
-// app.ts - Middleware registration order
+// src/routes/auth.routes.ts
+import { Router } from 'express';
+import { AuthController } from '../controllers/auth.controller';
+import { validateBody } from '../middleware/validation.middleware';
+import { loginSchema, registerSchema } from '../validators/auth.validator';
 
-// 1. Security headers (no dependencies)
-app.use(helmet());
+const router = Router();
+const authController = new AuthController();
 
-// 2. CORS handling (before routing)
-app.use(cors(corsConfig));
+router.post('/register', validateBody(registerSchema), authController.register);
+router.post('/login', validateBody(loginSchema), authController.login);
+router.post('/refresh', authController.refreshToken);
+router.post('/logout', authController.logout);
 
-// 3. Body parsing (needed for auth and validation)
-app.use(express.json({ limit: '10mb' }));
+export default router;
+```
 
-// 4. Request ID generation (before logging)
-app.use(requestIdMiddleware);
+### 2. Middleware Layer
 
-// 5. Request timing start (before processing)
-app.use(requestTimingMiddleware);
+Middleware handles cross-cutting concerns.
 
-// 6. Health checks (no auth required)
-app.use('/health', healthRouter);
+```
+Request Flow Through Middleware
+───────────────────────────────
 
-// 7. Authentication (required for API routes)
-app.use('/api', authenticationMiddleware);
+  Request
+     │
+     ▼
+┌─────────────┐
+│    CORS     │ ──► Sets CORS headers
+└─────────────┘
+     │
+     ▼
+┌─────────────┐
+│ Body Parser │ ──► Parses JSON/form data
+└─────────────┘
+     │
+     ▼
+┌─────────────┐
+│ Rate Limit  │ ──► Checks request rate ──► 429 if exceeded
+└─────────────┘
+     │
+     ▼
+┌─────────────┐
+│    Auth     │ ──► Validates JWT/API key ──► 401 if invalid
+└─────────────┘
+     │
+     ▼
+┌─────────────┐
+│   Logger    │ ──► Logs request details
+└─────────────┘
+     │
+     ▼
+  Controller
+     │
+     ▼
+┌─────────────┐
+│   Error     │ ──► Catches and formats errors
+│   Handler   │
+└─────────────┘
+     │
+     ▼
+  Response
+```
 
-// 8. Rate limiting (after auth, uses key info)
-app.use('/api', rateLimitMiddleware);
+### 3. Controllers Layer
 
-// 9. API routes
-app.use('/api/v1/keys', keysRouter);
-app.use('/api/v1/requests', requestsRouter);
-app.use('/api/v1/webhooks', webhooksRouter);
-app.use('/api/v1/rate-limits', rateLimitsRouter);
+Controllers handle HTTP request/response logic.
 
-// 10. 404 handler
-app.use(notFoundHandler);
+```typescript
+// src/controllers/apiKey.controller.ts
+import { Request, Response, NextFunction } from 'express';
+import { ApiKeyService } from '../services/apiKey.service';
+import { ApiResponse } from '../types/api.types';
 
-// 11. Global error handler (must be last)
-app.use(errorHandler);
+export class ApiKeyController {
+  private apiKeyService: ApiKeyService;
+
+  constructor() {
+    this.apiKeyService = new ApiKeyService();
+  }
+
+  createKey = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.user!.id;
+      const { name, permissions, expiresAt } = req.body;
+
+      const apiKey = await this.apiKeyService.createKey({
+        userId,
+        name,
+        permissions,
+        expiresAt
+      });
+
+      const response: ApiResponse = {
+        success: true,
+        data: apiKey,
+        message: 'API key created successfully'
+      };
+
+      res.status(201).json(response);
+    } catch (error) {
+      next(error);
+    }
+  };
+}
+```
+
+### 4. Services Layer
+
+Services contain business logic and domain rules.
+
+```typescript
+// src/services/apiKey.service.ts
+import { ApiKeyRepository } from '../repositories/apiKey.repository';
+import { generateApiKey, hashApiKey } from '../utils/crypto';
+import { CreateApiKeyDTO, ApiKey } from '../types/api.types';
+
+export class ApiKeyService {
+  private apiKeyRepository: ApiKeyRepository;
+
+  constructor() {
+    this.apiKeyRepository = new ApiKeyRepository();
+  }
+
+  async createKey(dto: CreateApiKeyDTO): Promise<ApiKey & { rawKey: string }> {
+    // Generate unique key
+    const rawKey = generateApiKey();
+    const keyHash = await hashApiKey(rawKey);
+
+    // Business rule: max 10 keys per user
+    const existingKeys = await this.apiKeyRepository.countByUserId(dto.userId);
+    if (existingKeys >= 10) {
+      throw new BusinessError('Maximum API key limit reached');
+    }
+
+    // Create key in database
+    const apiKey = await this.apiKeyRepository.create({
+      userId: dto.userId,
+      keyHash,
+      name: dto.name,
+      permissions: dto.permissions,
+      expiresAt: dto.expiresAt
+    });
+
+    // Return with raw key (only shown once)
+    return { ...apiKey, rawKey };
+  }
+}
+```
+
+### 5. Repositories Layer
+
+Repositories handle data access.
+
+```typescript
+// src/repositories/apiKey.repository.ts
+import { Pool } from 'pg';
+import { getPool } from '../config/database';
+import { ApiKey, CreateApiKeyData } from '../types/api.types';
+
+export class ApiKeyRepository {
+  private pool: Pool;
+
+  constructor() {
+    this.pool = getPool();
+  }
+
+  async create(data: CreateApiKeyData): Promise<ApiKey> {
+    const query = `
+      INSERT INTO api_keys (user_id, key_hash, name, permissions, expires_at)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING id, user_id, name, permissions, expires_at, created_at
+    `;
+
+    const result = await this.pool.query(query, [
+      data.userId,
+      data.keyHash,
+      data.name,
+      JSON.stringify(data.permissions),
+      data.expiresAt
+    ]);
+
+    return result.rows[0];
+  }
+
+  async findByHash(keyHash: string): Promise<ApiKey | null> {
+    const query = `
+      SELECT * FROM api_keys
+      WHERE key_hash = $1 AND revoked_at IS NULL
+    `;
+    const result = await this.pool.query(query, [keyHash]);
+    return result.rows[0] || null;
+  }
+}
 ```
 
 ---
 
-## Service Layer Design
+## Middleware Pipeline
 
-### Service Responsibilities
+### Mermaid Middleware Flow
 
-| Service | Responsibility |
-|---------|---------------|
-| KeyService | API key CRUD, rotation, validation |
-| RateLimitService | Rate limit checking, counter updates |
-| RequestService | Request log storage, querying, stats |
-| WebhookService | Webhook CRUD, signature generation |
-| AuditService | Audit log recording, querying |
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant CORS as CORS
+    participant BP as Body Parser
+    participant RL as Rate Limiter
+    participant AU as Auth
+    participant LG as Logger
+    participant CT as Controller
+    participant EH as Error Handler
 
-### Service Interaction Pattern
+    C->>CORS: HTTP Request
+    CORS->>BP: Add CORS Headers
+    BP->>RL: Parse Body
 
-```
-Controller/Route
-      |
-      | (DTO)
-      v
-   Service
-      |
-      | (Domain Model)
-      v
-  Repository
-      |
-      | (SQL/Commands)
-      v
-   Database
-```
+    alt Rate Limit Exceeded
+        RL-->>C: 429 Too Many Requests
+    else
+        RL->>AU: Check Rate
+        alt Auth Failed
+            AU-->>C: 401 Unauthorized
+        else
+            AU->>LG: Validate Token
+            LG->>CT: Log Request
+            CT->>LG: Process Request
+            LG->>EH: Return Response
 
-### Example: Key Creation Flow
-
-```typescript
-// routes/keys.ts
-router.post('/', authorize(['admin', 'write:keys']), async (req, res) => {
-  const result = await keyService.createKey(req.body, req.apiKey);
-  res.status(201).json({ success: true, data: result });
-});
-
-// services/keyService.ts
-async createKey(input: CreateKeyInput, actor: ApiKeyRecord): Promise<KeyResponse> {
-  // 1. Validate input
-  const validated = createKeySchema.parse(input);
-
-  // 2. Generate secure key
-  const apiKey = this.generateApiKey(validated.environment);
-  const keyHash = this.hashApiKey(apiKey);
-
-  // 3. Persist to database
-  const record = await this.keyRepository.create({
-    ...validated,
-    keyHash,
-    keyPrefix: apiKey.substring(0, 12),
-  });
-
-  // 4. Audit the action
-  await this.auditService.log({
-    action: 'key.create',
-    actorId: actor.id,
-    resourceId: record.id,
-    newValues: { name: record.name, scopes: record.scopes },
-  });
-
-  // 5. Return response (include key only on creation)
-  return { ...record, apiKey };
-}
-```
-
----
-
-## Error Handling Strategy
-
-### Error Class Hierarchy
-
-```typescript
-// utils/errors.ts
-
-class ApiError extends Error {
-  constructor(
-    public code: string,
-    public message: string,
-    public statusCode: number,
-    public details?: unknown
-  ) {
-    super(message);
-  }
-}
-
-// Specific error types
-class ValidationError extends ApiError {
-  constructor(details: ZodError) {
-    super('VALIDATION_ERROR', 'Request validation failed', 400, details.errors);
-  }
-}
-
-class AuthenticationError extends ApiError {
-  constructor(message = 'Invalid or missing API key') {
-    super('AUTHENTICATION_ERROR', message, 401);
-  }
-}
-
-class AuthorizationError extends ApiError {
-  constructor(requiredScope: string) {
-    super('INSUFFICIENT_SCOPE', `Missing required scope: ${requiredScope}`, 403);
-  }
-}
-
-class RateLimitError extends ApiError {
-  constructor(retryAfter: number) {
-    super('RATE_LIMIT_EXCEEDED', 'Rate limit exceeded', 429, { retryAfter });
-  }
-}
-
-class NotFoundError extends ApiError {
-  constructor(resource: string) {
-    super('NOT_FOUND', `${resource} not found`, 404);
-  }
-}
-```
-
-### Error Propagation
-
-```
-Route Handler
-      |
-      | throws ApiError
-      v
-Error Handler Middleware
-      |
-      | formats response
-      v
-{
-  "success": false,
-  "error": {
-    "code": "RATE_LIMIT_EXCEEDED",
-    "message": "Rate limit exceeded",
-    "details": { "retryAfter": 45 }
-  },
-  "meta": {
-    "requestId": "req_abc123",
-    "timestamp": "2024-01-15T10:30:00Z"
-  }
-}
+            alt Error Occurred
+                EH-->>C: Error Response
+            else
+                EH-->>C: Success Response
+            end
+        end
+    end
 ```
 
 ---
 
 ## Dependency Injection Pattern
 
-DataHub uses manual constructor injection for testability:
-
-```typescript
-// services/keyService.ts
-export class KeyService {
-  constructor(
-    private keyRepository: KeyRepository,
-    private auditService: AuditService,
-    private cache: RedisClient
-  ) {}
-}
-
-// Composition root (index.ts)
-const redis = createRedisClient(config.redis);
-const db = createDatabasePool(config.database);
-
-const keyRepository = new KeyRepository(db);
-const auditService = new AuditService(new AuditRepository(db));
-const keyService = new KeyService(keyRepository, auditService, redis);
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    Dependency Container                          │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  ┌────────────┐    ┌────────────┐    ┌────────────┐            │
+│  │   Logger   │    │   Config   │    │  Database  │            │
+│  │  (shared)  │    │  (shared)  │    │   Pool     │            │
+│  └────────────┘    └────────────┘    └────────────┘            │
+│         │                │                  │                   │
+│         └────────────────┼──────────────────┘                   │
+│                          │                                      │
+│                          ▼                                      │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │                    Repositories                           │  │
+│  │  UserRepo │ ApiKeyRepo │ ApiRepo │ RequestLogRepo        │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                          │                                      │
+│                          ▼                                      │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │                      Services                             │  │
+│  │  AuthService │ ApiKeyService │ GatewayService            │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                          │                                      │
+│                          ▼                                      │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │                     Controllers                           │  │
+│  │  AuthController │ ApiKeyController │ GatewayController   │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Logging Strategy
+## Error Handling Architecture
 
-### Log Levels
+### Custom Error Classes
 
-| Level | Usage |
-|-------|-------|
-| error | Unrecoverable errors, exceptions |
-| warn | Recoverable issues, deprecations |
-| info | Business events, request completion |
-| debug | Detailed debugging information |
-
-### Structured Log Format
-
-```json
-{
-  "level": "info",
-  "time": "2024-01-15T10:30:00.000Z",
-  "service": "datahub-api",
-  "requestId": "req_01H5X4Y6Z8A9B0C1D2E3F4G5H6",
-  "method": "POST",
-  "path": "/api/v1/keys",
-  "statusCode": 201,
-  "duration": 45,
-  "keyId": "key_01H5X4Y6Z8A9B0C1D2E3F4G5H6",
-  "msg": "Request completed"
+```typescript
+// src/utils/errors.ts
+export class AppError extends Error {
+  constructor(
+    public statusCode: number,
+    public code: string,
+    message: string,
+    public details?: Record<string, any>
+  ) {
+    super(message);
+    this.name = 'AppError';
+  }
 }
+
+export class ValidationError extends AppError {
+  constructor(message: string, details?: Record<string, any>) {
+    super(400, 'VALIDATION_ERROR', message, details);
+  }
+}
+
+export class AuthenticationError extends AppError {
+  constructor(message: string = 'Authentication failed') {
+    super(401, 'AUTHENTICATION_ERROR', message);
+  }
+}
+
+export class RateLimitError extends AppError {
+  constructor(retryAfter: number) {
+    super(429, 'RATE_LIMIT_EXCEEDED', 'Too many requests', { retryAfter });
+  }
+}
+```
+
+### Error Handler Middleware
+
+```mermaid
+flowchart TD
+    E[Error Thrown] --> T{Error Type?}
+
+    T -->|ValidationError| V[400 Bad Request]
+    T -->|AuthenticationError| A[401 Unauthorized]
+    T -->|ForbiddenError| F[403 Forbidden]
+    T -->|NotFoundError| N[404 Not Found]
+    T -->|RateLimitError| R[429 Too Many Requests]
+    T -->|Unknown| U[500 Internal Server Error]
+
+    V & A & F & N & R --> L[Log Error]
+    U --> LS[Log Stack Trace]
+
+    L & LS --> RES[Return JSON Response]
+
+    RES --> FORMAT["
+    {
+      success: false,
+      error: {
+        code: 'ERROR_CODE',
+        message: 'User message',
+        details: {...}
+      }
+    }
+    "]
+```
+
+---
+
+## Request Validation
+
+### Validation Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     Request Validation                       │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+                    ┌─────────────────┐
+                    │  Parse Request  │
+                    │  (body, query,  │
+                    │   params)       │
+                    └────────┬────────┘
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │  Zod Schema     │
+                    │  Validation     │
+                    └────────┬────────┘
+                             │
+              ┌──────────────┼──────────────┐
+              │              │              │
+              ▼              ▼              ▼
+        ┌──────────┐  ┌──────────┐  ┌──────────┐
+        │  Valid   │  │ Invalid  │  │ Missing  │
+        │          │  │  Format  │  │  Fields  │
+        └────┬─────┘  └────┬─────┘  └────┬─────┘
+             │             │             │
+             │             └──────┬──────┘
+             │                    │
+             ▼                    ▼
+      ┌────────────┐       ┌────────────┐
+      │  Continue  │       │  Return    │
+      │  to        │       │  400 Error │
+      │ Controller │       │  + Details │
+      └────────────┘       └────────────┘
 ```
 
 ---
 
 ## Related Documentation
 
-- [Database Architecture](./database.md) - Data layer details
-- [Security Architecture](./security.md) - Authentication implementation
+- [System Overview](./overview.md) - High-level architecture
+- [Database Design](./database.md) - Data layer details
+- [Security](./security.md) - Authentication implementation
 - [API Reference](../api/reference.md) - Endpoint documentation
-
----
-
-_This document describes the backend architectural patterns for DataHub API Gateway._

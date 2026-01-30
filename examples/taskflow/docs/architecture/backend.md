@@ -1,364 +1,381 @@
 # TaskFlow Backend Architecture
 
-**Version:** 1.0
-**Last Updated:** 2026-01-29
+## Layered Architecture Overview
 
----
+The TaskFlow backend follows a clean layered architecture pattern, separating concerns across distinct layers for maintainability and testability.
 
-## 1. Layered Architecture
-
-TaskFlow backend follows a strict layered architecture pattern to ensure separation of concerns and testability.
+### ASCII Layer Diagram
 
 ```
-    ┌─────────────────────────────────────────────────────────────────┐
-    │                          Routes Layer                            │
-    │  - HTTP method + path matching                                   │
-    │  - Middleware chain setup                                        │
-    │  - Delegates to controllers                                      │
-    └───────────────────────────────┬─────────────────────────────────┘
-                                    │
-    ┌───────────────────────────────▼─────────────────────────────────┐
-    │                        Middleware Layer                          │
-    │  - Authentication (JWT verification)                             │
-    │  - Validation (Zod schema validation)                            │
-    │  - Error handling (centralized error responses)                  │
-    │  - Logging (request/response logging)                            │
-    └───────────────────────────────┬─────────────────────────────────┘
-                                    │
-    ┌───────────────────────────────▼─────────────────────────────────┐
-    │                       Controllers Layer                          │
-    │  - Request parsing and response formatting                       │
-    │  - Input validation orchestration                                │
-    │  - HTTP status code selection                                    │
-    │  - Delegates business logic to services                          │
-    └───────────────────────────────┬─────────────────────────────────┘
-                                    │
-    ┌───────────────────────────────▼─────────────────────────────────┐
-    │                        Services Layer                            │
-    │  - Business logic implementation                                 │
-    │  - Transaction management                                        │
-    │  - Cross-repository operations                                   │
-    │  - Domain validation and rules                                   │
-    └───────────────────────────────┬─────────────────────────────────┘
-                                    │
-    ┌───────────────────────────────▼─────────────────────────────────┐
-    │                      Repositories Layer                          │
-    │  - Database queries via Drizzle ORM                              │
-    │  - CRUD operations                                               │
-    │  - Query building and optimization                               │
-    │  - Data mapping to domain entities                               │
-    └───────────────────────────────┬─────────────────────────────────┘
-                                    │
-    ┌───────────────────────────────▼─────────────────────────────────┐
-    │                        Database Layer                            │
-    │  - PostgreSQL connection pool                                    │
-    │  - Migrations and schema                                         │
-    │  - Indexes and constraints                                       │
-    └─────────────────────────────────────────────────────────────────┘
+                         TASKFLOW BACKEND LAYERS
+    =====================================================================
+
+    +-------------------------------------------------------------------+
+    |                         HTTP REQUEST                               |
+    +-------------------------------------------------------------------+
+                                    |
+                                    v
+    +-------------------------------------------------------------------+
+    |                          ROUTES LAYER                              |
+    |                     (src/routes/*.ts)                              |
+    |                                                                    |
+    |    authRoutes.ts  |  taskRoutes.ts  |  projectRoutes.ts  |  ...   |
+    |                                                                    |
+    |    - URL path mapping                                              |
+    |    - HTTP method binding                                           |
+    |    - Middleware attachment                                         |
+    +-------------------------------------------------------------------+
+                                    |
+                                    v
+    +-------------------------------------------------------------------+
+    |                       MIDDLEWARE LAYER                             |
+    |                    (src/middleware/*.ts)                           |
+    |                                                                    |
+    |    authenticate.ts  |  validate.ts  |  errorHandler.ts  |  ...    |
+    |                                                                    |
+    |    - Authentication (JWT verification)                             |
+    |    - Request validation (Zod schemas)                              |
+    |    - Rate limiting                                                 |
+    |    - Error handling                                                |
+    |    - Logging                                                       |
+    +-------------------------------------------------------------------+
+                                    |
+                                    v
+    +-------------------------------------------------------------------+
+    |                      CONTROLLERS LAYER                             |
+    |                   (src/controllers/*.ts)                           |
+    |                                                                    |
+    |   AuthController  |  TaskController  |  ProjectController  |  ... |
+    |                                                                    |
+    |    - Extract request data                                          |
+    |    - Call service methods                                          |
+    |    - Format HTTP responses                                         |
+    |    - Handle HTTP status codes                                      |
+    +-------------------------------------------------------------------+
+                                    |
+                                    v
+    +-------------------------------------------------------------------+
+    |                       SERVICES LAYER                               |
+    |                    (src/services/*.ts)                             |
+    |                                                                    |
+    |    AuthService  |  TaskService  |  ProjectService  |  TagService  |
+    |                                                                    |
+    |    - Business logic                                                |
+    |    - Data transformation                                           |
+    |    - Cross-entity operations                                       |
+    |    - Validation rules                                              |
+    +-------------------------------------------------------------------+
+                                    |
+                                    v
+    +-------------------------------------------------------------------+
+    |                     REPOSITORIES LAYER                             |
+    |                  (src/repositories/*.ts)                           |
+    |                                                                    |
+    |   UserRepository | TaskRepository | ProjectRepository | TagRepository
+    |                                                                    |
+    |    - Prisma operations                                             |
+    |    - Query building                                                |
+    |    - Data access abstraction                                       |
+    +-------------------------------------------------------------------+
+                                    |
+                                    v
+    +-------------------------------------------------------------------+
+    |                        PRISMA ORM                                  |
+    |                    (prisma/schema.prisma)                          |
+    |                                                                    |
+    |    - Type-safe queries                                             |
+    |    - Connection pooling                                            |
+    |    - Migration management                                          |
+    +-------------------------------------------------------------------+
+                                    |
+                                    v
+    +-------------------------------------------------------------------+
+    |                       POSTGRESQL                                   |
+    +-------------------------------------------------------------------+
 ```
 
----
+### Mermaid Architecture Diagram
 
-## 2. Directory Structure
+```mermaid
+graph TB
+    subgraph Routes["Routes Layer"]
+        R1[authRoutes.ts]
+        R2[taskRoutes.ts]
+        R3[projectRoutes.ts]
+        R4[tagRoutes.ts]
+    end
+
+    subgraph Middleware["Middleware Layer"]
+        M1[authenticate.ts]
+        M2[validate.ts]
+        M3[errorHandler.ts]
+        M4[rateLimiter.ts]
+    end
+
+    subgraph Controllers["Controllers Layer"]
+        C1[AuthController]
+        C2[TaskController]
+        C3[ProjectController]
+        C4[TagController]
+    end
+
+    subgraph Services["Services Layer"]
+        S1[AuthService]
+        S2[TaskService]
+        S3[ProjectService]
+        S4[TagService]
+    end
+
+    subgraph Repositories["Repositories Layer"]
+        RP1[UserRepository]
+        RP2[TaskRepository]
+        RP3[ProjectRepository]
+        RP4[TagRepository]
+    end
+
+    subgraph ORM["Prisma ORM"]
+        P[PrismaClient]
+    end
+
+    subgraph Database["PostgreSQL"]
+        DB[(Database)]
+    end
+
+    R1 --> M1
+    R2 --> M1
+    R3 --> M1
+    R4 --> M1
+
+    M1 --> M2
+    M2 --> C1
+    M2 --> C2
+    M2 --> C3
+    M2 --> C4
+
+    C1 --> S1
+    C2 --> S2
+    C3 --> S3
+    C4 --> S4
+
+    S1 --> RP1
+    S2 --> RP2
+    S3 --> RP3
+    S4 --> RP4
+
+    RP1 --> P
+    RP2 --> P
+    RP3 --> P
+    RP4 --> P
+
+    P --> DB
+```
+
+## Directory Structure
 
 ```
-api/
+backend/
 ├── src/
+│   ├── index.ts                 # Application entry point
+│   ├── app.ts                   # Express app configuration
 │   ├── config/
-│   │   ├── database.ts         # Drizzle database connection and pool
-│   │   └── env.ts              # Environment variable validation with Zod
-│   │
-│   ├── controllers/
-│   │   ├── auth.controller.ts  # Authentication request handlers
-│   │   ├── task.controller.ts  # Task CRUD request handlers
-│   │   └── project.controller.ts # Project CRUD request handlers
-│   │
-│   ├── services/
-│   │   ├── auth.service.ts     # Authentication business logic
-│   │   ├── task.service.ts     # Task management business logic
-│   │   └── project.service.ts  # Project management business logic
-│   │
-│   ├── repositories/
-│   │   ├── user.repository.ts  # User database operations
-│   │   ├── task.repository.ts  # Task database operations
-│   │   └── project.repository.ts # Project database operations
+│   │   ├── index.ts             # Configuration loader
+│   │   ├── database.ts          # Database configuration
+│   │   └── auth.ts              # JWT/auth configuration
 │   │
 │   ├── routes/
-│   │   ├── index.ts            # Route aggregation
-│   │   ├── auth.routes.ts      # /api/v1/auth/* routes
-│   │   ├── task.routes.ts      # /api/v1/tasks/* routes
-│   │   └── project.routes.ts   # /api/v1/projects/* routes
-│   │
-│   ├── schemas/
-│   │   ├── auth.schema.ts      # Auth request validation schemas
-│   │   ├── task.schema.ts      # Task request validation schemas
-│   │   └── project.schema.ts   # Project request validation schemas
+│   │   ├── index.ts             # Route aggregator
+│   │   ├── authRoutes.ts        # /api/v1/auth/*
+│   │   ├── taskRoutes.ts        # /api/v1/tasks/*
+│   │   ├── projectRoutes.ts     # /api/v1/projects/*
+│   │   ├── tagRoutes.ts         # /api/v1/tags/*
+│   │   └── userRoutes.ts        # /api/v1/users/*
 │   │
 │   ├── middleware/
-│   │   ├── auth.middleware.ts  # JWT verification middleware
-│   │   ├── error.middleware.ts # Global error handler
-│   │   └── validation.middleware.ts # Zod validation wrapper
+│   │   ├── authenticate.ts      # JWT verification
+│   │   ├── validate.ts          # Zod validation wrapper
+│   │   ├── errorHandler.ts      # Global error handler
+│   │   ├── rateLimiter.ts       # Rate limiting
+│   │   └── requestLogger.ts     # Request logging
 │   │
-│   ├── db/
-│   │   ├── schema.ts           # Drizzle schema definitions
-│   │   └── migrations/         # SQL migration files
-│   │       ├── 001_create_users.sql
-│   │       ├── 002_create_tasks.sql
-│   │       └── 003_create_projects.sql
+│   ├── controllers/
+│   │   ├── AuthController.ts    # Authentication endpoints
+│   │   ├── TaskController.ts    # Task CRUD operations
+│   │   ├── ProjectController.ts # Project management
+│   │   ├── TagController.ts     # Tag management
+│   │   └── UserController.ts    # User profile
+│   │
+│   ├── services/
+│   │   ├── AuthService.ts       # Auth business logic
+│   │   ├── TaskService.ts       # Task business logic
+│   │   ├── ProjectService.ts    # Project business logic
+│   │   ├── TagService.ts        # Tag business logic
+│   │   └── EmailService.ts      # Email notifications
+│   │
+│   ├── repositories/
+│   │   ├── UserRepository.ts    # User data access
+│   │   ├── TaskRepository.ts    # Task data access
+│   │   ├── ProjectRepository.ts # Project data access
+│   │   └── TagRepository.ts     # Tag data access
+│   │
+│   ├── schemas/
+│   │   ├── authSchemas.ts       # Auth validation schemas
+│   │   ├── taskSchemas.ts       # Task validation schemas
+│   │   ├── projectSchemas.ts    # Project validation schemas
+│   │   └── commonSchemas.ts     # Shared schemas
 │   │
 │   ├── types/
-│   │   └── index.ts            # TypeScript type definitions
+│   │   ├── index.ts             # Type exports
+│   │   ├── express.d.ts         # Express type extensions
+│   │   └── api.ts               # API response types
 │   │
 │   ├── utils/
-│   │   ├── hash.ts             # Password hashing with bcrypt
-│   │   ├── jwt.ts              # JWT sign/verify utilities
-│   │   └── errors.ts           # Custom error classes
+│   │   ├── jwt.ts               # JWT helpers
+│   │   ├── password.ts          # Password hashing
+│   │   ├── errors.ts            # Custom error classes
+│   │   └── logger.ts            # Winston logger setup
 │   │
-│   ├── app.ts                  # Express app configuration
-│   └── server.ts               # Server entry point
+│   └── __tests__/
+│       ├── unit/
+│       │   └── services/        # Service unit tests
+│       └── integration/
+│           └── routes/          # API integration tests
 │
-├── tests/
-│   ├── unit/                   # Unit tests for services
-│   │   ├── auth.service.test.ts
-│   │   └── task.service.test.ts
-│   └── integration/            # Integration tests for routes
-│       ├── auth.routes.test.ts
-│       └── task.routes.test.ts
+├── prisma/
+│   ├── schema.prisma            # Database schema
+│   ├── migrations/              # Migration files
+│   └── seed.ts                  # Seed data script
 │
-├── drizzle.config.ts           # Drizzle migration configuration
 ├── package.json
 ├── tsconfig.json
 └── vitest.config.ts
 ```
 
----
+## Dependency Injection Pattern
 
-## 3. Dependency Flow
-
-Dependencies flow downward only. Upper layers depend on lower layers.
-
-```
-Routes → Controllers → Services → Repositories → Database
-
-Rules:
-- Routes NEVER import Services directly
-- Controllers NEVER import Repositories directly
-- Services NEVER import from Controllers or Routes
-- Repositories NEVER contain business logic
-```
-
-### Dependency Injection Pattern
+TaskFlow uses a simple factory pattern for dependency injection:
 
 ```typescript
-// repositories/task.repository.ts
-export const createTaskRepository = (db: DrizzleDB) => ({
-  findByUserId: async (userId: string) => {
-    return db.select().from(tasks).where(eq(tasks.userId, userId));
-  },
-  // ... other methods
-});
+// src/container.ts
+import { PrismaClient } from '@prisma/client';
+import { UserRepository } from './repositories/UserRepository';
+import { TaskRepository } from './repositories/TaskRepository';
+import { AuthService } from './services/AuthService';
+import { TaskService } from './services/TaskService';
 
-// services/task.service.ts
-export const createTaskService = (taskRepo: TaskRepository) => ({
-  getUserTasks: async (userId: string, filters: TaskFilters) => {
-    const tasks = await taskRepo.findByUserId(userId);
-    // Business logic here
-    return tasks;
-  },
-  // ... other methods
-});
+const prisma = new PrismaClient();
 
-// controllers/task.controller.ts
-export const createTaskController = (taskService: TaskService) => ({
-  list: async (req: Request, res: Response) => {
-    const tasks = await taskService.getUserTasks(req.user.id, req.query);
-    res.json({ data: tasks });
-  },
-  // ... other methods
-});
+// Repositories
+const userRepository = new UserRepository(prisma);
+const taskRepository = new TaskRepository(prisma);
+
+// Services
+export const authService = new AuthService(userRepository);
+export const taskService = new TaskService(taskRepository, userRepository);
+
+// Export for testing
+export { prisma };
 ```
 
----
+## Error Propagation
 
-## 4. Error Propagation
+```
+Layer                Error Type                  Action
+--------------------------------------------------------------------------------
+Repository      →    Prisma Error           →   Wrap in RepositoryError
+Service         →    Business Rule Error    →   Throw ServiceError
+Controller      →    Format Error           →   Create ApiError
+ErrorHandler    →    Any Error              →   Convert to HTTP Response
+```
 
-Errors propagate up through the layers and are caught by the global error handler.
-
-### Custom Error Classes
+### Error Classes
 
 ```typescript
-// utils/errors.ts
+// src/utils/errors.ts
 export class AppError extends Error {
   constructor(
-    public code: string,
     public message: string,
-    public statusCode: number = 400,
-    public details?: unknown
+    public statusCode: number,
+    public code: string
   ) {
     super(message);
-    this.name = 'AppError';
   }
 }
 
 export class ValidationError extends AppError {
-  constructor(message: string, details?: unknown) {
-    super('VALIDATION_ERROR', message, 400, details);
+  constructor(message: string, public details: any[]) {
+    super(message, 400, 'VALIDATION_ERROR');
+  }
+}
+
+export class AuthenticationError extends AppError {
+  constructor(message = 'Authentication required') {
+    super(message, 401, 'AUTHENTICATION_ERROR');
   }
 }
 
 export class NotFoundError extends AppError {
   constructor(resource: string) {
-    super('NOT_FOUND', `${resource} not found`, 404);
-  }
-}
-
-export class UnauthorizedError extends AppError {
-  constructor(message = 'Unauthorized') {
-    super('UNAUTHORIZED', message, 401);
-  }
-}
-
-export class ForbiddenError extends AppError {
-  constructor(message = 'Forbidden') {
-    super('FORBIDDEN', message, 403);
+    super(`${resource} not found`, 404, 'NOT_FOUND');
   }
 }
 ```
 
-### Error Middleware
+## Logging Strategy
+
+Each layer logs at appropriate levels:
+
+| Layer | Log Level | What to Log |
+|-------|-----------|-------------|
+| Routes | DEBUG | Request received, path, method |
+| Middleware | INFO | Auth success/failure, validation errors |
+| Controller | INFO | Operation started, completed |
+| Service | DEBUG | Business logic steps |
+| Repository | DEBUG | Queries executed |
+| Error Handler | ERROR | All errors with stack traces |
+
+### Logger Configuration
 
 ```typescript
-// middleware/error.middleware.ts
-export const errorHandler = (
-  err: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  if (err instanceof AppError) {
-    return res.status(err.statusCode).json({
-      error: {
-        code: err.code,
-        message: err.message,
-        details: err.details,
-      },
-    });
-  }
+// src/utils/logger.ts
+import winston from 'winston';
 
-  // Log unexpected errors
-  console.error('Unexpected error:', err);
-
-  return res.status(500).json({
-    error: {
-      code: 'INTERNAL_ERROR',
-      message: 'An unexpected error occurred',
-    },
-  });
-};
+export const logger = winston.createLogger({
+  level: process.env.LOG_LEVEL || 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json()
+  ),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
+    new winston.transports.File({ filename: 'logs/combined.log' })
+  ]
+});
 ```
 
----
+## Middleware Chain Order
 
-## 5. Logging Strategy
+```mermaid
+graph LR
+    A[Request] --> B[requestLogger]
+    B --> C[cors]
+    C --> D[helmet]
+    D --> E[rateLimiter]
+    E --> F[bodyParser]
+    F --> G[authenticate]
+    G --> H[validate]
+    H --> I[Controller]
+    I --> J[Response]
 
-### Log Levels
-
-| Level | Usage |
-|-------|-------|
-| ERROR | Unhandled exceptions, failed operations |
-| WARN | Deprecated usage, rate limit hits |
-| INFO | Request/response, business events |
-| DEBUG | Detailed debugging (dev only) |
-
-### Structured Logging Format
-
-```json
-{
-  "timestamp": "2026-01-29T10:00:00.000Z",
-  "level": "INFO",
-  "message": "Request completed",
-  "requestId": "abc-123",
-  "method": "POST",
-  "path": "/api/v1/tasks",
-  "statusCode": 201,
-  "duration": 45,
-  "userId": "user-uuid"
-}
+    style A fill:#3b82f6
+    style J fill:#10b981
 ```
 
-### Logging at Each Layer
-
-```typescript
-// Routes: Request received
-logger.info({ method: req.method, path: req.path }, 'Request received');
-
-// Controllers: Business operation
-logger.info({ userId, action: 'createTask' }, 'Creating task');
-
-// Services: Business event
-logger.info({ taskId, status: 'completed' }, 'Task marked complete');
-
-// Repositories: Database operation
-logger.debug({ query: 'SELECT * FROM tasks' }, 'Database query');
-
-// Error middleware: Error occurred
-logger.error({ err, requestId }, 'Request failed');
-```
-
----
-
-## 6. Middleware Chain Order
-
-The middleware chain executes in the following order:
-
-```typescript
-// app.ts
-const app = express();
-
-// 1. Trust proxy (for rate limiting behind reverse proxy)
-app.set('trust proxy', 1);
-
-// 2. Security headers (Helmet)
-app.use(helmet());
-
-// 3. CORS (before routes)
-app.use(cors({
-  origin: env.ALLOWED_ORIGINS.split(','),
-  credentials: true,
-}));
-
-// 4. Rate limiting (before body parsing)
-app.use('/api/', rateLimit({
-  windowMs: 60 * 1000, // 1 minute
-  max: 100, // 100 requests per minute
-}));
-
-// 5. Body parsing
-app.use(express.json({ limit: '10kb' }));
-
-// 6. Request logging
-app.use(requestLogger);
-
-// 7. Routes (includes auth middleware per-route)
-app.use('/api/v1', routes);
-
-// 8. 404 handler (after routes)
-app.use(notFoundHandler);
-
-// 9. Global error handler (must be last)
-app.use(errorHandler);
-```
-
----
-
-## 7. Cross-References
-
-- **Database Schema:** See `docs/architecture/database.md`
-- **API Endpoints:** See `docs/api/reference.md`
-- **Authentication Flow:** See `docs/flows/authentication-flow.md`
-- **Error Codes:** See `docs/api/error-codes.md` (future)
-- **Backend Spec:** See `specs/02_backend_lead.md`
-
----
-
-*This document is maintained by the Backend team. Last updated: 2026-01-29*
+1. **requestLogger** - Log all incoming requests
+2. **cors** - Handle CORS headers
+3. **helmet** - Security headers
+4. **rateLimiter** - Rate limiting by IP
+5. **bodyParser** - Parse JSON body
+6. **authenticate** - Verify JWT token (on protected routes)
+7. **validate** - Validate request body/params
+8. **Controller** - Handle business logic
