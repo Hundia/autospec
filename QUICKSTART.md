@@ -7,9 +7,32 @@
 ## How To Use
 
 1. Place your SRS, PRD, or requirements documents in a folder.
-2. Copy the **Generation Prompt** below into your AI assistant.
-3. Replace `{{INPUT_FOLDER}}` with the path to your documents folder.
-4. The AI generates the complete output structure in one pass.
+2. **Specify your development environment** (see Environment Options below).
+3. Copy the **Generation Prompt** below into your AI assistant.
+4. Replace `{{INPUT_FOLDER}}` with the path to your documents folder.
+5. Replace `{{ENVIRONMENT}}` with your chosen environment.
+6. The AI generates the complete output structure in one pass.
+
+---
+
+## Environment Options
+
+Choose the environment that matches your AI-assisted development setup:
+
+| Environment | Description | Recommended Model | Prompt Style |
+|-------------|-------------|-------------------|--------------|
+| `claude-code` | Claude Code CLI (terminal-based) | Claude Sonnet/Opus | Conversational, file-focused |
+| `vscode-copilot` | VS Code with GitHub Copilot | GPT-4/Copilot | IDE-integrated, inline suggestions |
+| `cursor` | Cursor IDE with AI | Claude/GPT-4 | Composer-style, multi-file edits |
+| `windsurf` | Windsurf/Codeium IDE | Various | Flow-based, context-aware |
+| `jetbrains-ai` | JetBrains IDEs with AI Assistant | Various | IDE-native, refactoring-focused |
+| `aider` | Aider CLI tool | Claude/GPT-4 | Git-integrated, diff-based |
+
+**Environment affects:**
+- Sprint prompt formatting (how instructions are structured)
+- Model recommendations in backlog (optimized for your environment's strengths)
+- Multi-agent coordination patterns (parallel sessions vs split windows)
+- QA testing commands (environment-specific execution)
 
 ---
 
@@ -28,6 +51,9 @@ Read ALL documents in the input folder. Use them as the single source of truth.
 
 Read every file in: {{INPUT_FOLDER}}
 These are the project's SRS, PRD, and/or requirements documents.
+
+Development Environment: {{ENVIRONMENT}}
+(Options: claude-code, vscode-copilot, cursor, windsurf, jetbrains-ai, aider)
 
 Extract from them:
   - Project name and description
@@ -64,13 +90,22 @@ project/
 │
 ├── docs/                               # Comprehensive project documentation
 │   ├── architecture/
-│   │   ├── overview.md                 # High-level system architecture
+│   │   ├── overview.md                 # High-level system architecture with ASCII diagrams
 │   │   ├── backend.md                  # Backend layers, patterns, structure
 │   │   ├── frontend.md                 # Component architecture, state, routing
 │   │   ├── database.md                 # ERD, schemas, migrations, queries
 │   │   ├── security.md                 # Auth flow, encryption, OWASP checklist
 │   │   ├── cloud.md                    # Cloud provider architecture (AWS/GCP/Azure)
-│   │   └── deep-dive.md               # Detailed technical decisions and trade-offs
+│   │   ├── deep-dive.md                # Detailed technical decisions and trade-offs
+│   │   └── diagrams.md                 # Mermaid/PlantUML diagram definitions for visualization
+│   │
+│   ├── flows/                          # User and system flow documentation (NEW)
+│   │   ├── user-journeys.md            # Complete user journey maps with steps
+│   │   ├── authentication-flow.md      # Login/register/logout/refresh flow diagrams
+│   │   ├── core-features-flow.md       # Main feature flows (extracted from SRS)
+│   │   ├── data-flow.md                # How data moves through the system
+│   │   ├── error-handling-flow.md      # Error propagation and recovery flows
+│   │   └── state-transitions.md        # State machine definitions for key entities
 │   │
 │   ├── workflows/
 │   │   ├── development.md              # Feature development step-by-step
@@ -80,7 +115,7 @@ project/
 │   │   ├── bug-fix.md                  # Triage → reproduce → fix → verify flow
 │   │   ├── deployment.md               # Dev → staging → production deployment
 │   │   ├── multi-agent.md              # Parallel agent execution rules
-│   │   └── qa-review.md               # QA checklist and review process
+│   │   └── qa-review.md                # QA checklist and review process
 │   │
 │   ├── environments/
 │   │   ├── development.md              # Local setup guide with prerequisites
@@ -93,37 +128,70 @@ project/
 │   │   ├── reference.md                # Full REST API reference (all endpoints)
 │   │   ├── authentication.md           # Auth endpoints, token flow, refresh
 │   │   ├── error-codes.md              # Error code catalog with HTTP mappings
-│   │   └── rate-limiting.md            # Rate limit rules per endpoint
+│   │   ├── rate-limiting.md            # Rate limit rules per endpoint
+│   │   └── curl-examples.md            # Ready-to-run curl commands for all endpoints (NEW)
 │   │
 │   ├── testing/
 │   │   ├── strategy.md                 # Test pyramid, coverage targets
 │   │   ├── unit-tests.md               # Unit test patterns with examples
 │   │   ├── integration-tests.md        # API integration test patterns
 │   │   ├── e2e-tests.md                # End-to-end test scenarios
-│   │   └── test-data.md                # Seed data, fixtures, factories
+│   │   ├── test-data.md                # Seed data, fixtures, factories
+│   │   └── api-test-suite.md           # Complete API test scenarios with curl (NEW)
 │   │
 │   ├── ui-design-system/
 │   │   ├── tokens.md                   # Colors, typography, spacing, radii, shadows
 │   │   ├── components.md               # Component inventory with states
 │   │   ├── layouts.md                  # Page layouts, grid system, breakpoints
 │   │   ├── accessibility.md            # WCAG 2.1 AA checklist, screen reader notes
-│   │   └── icons-assets.md             # Icon set, image guidelines, loading strategy
+│   │   ├── icons-assets.md             # Icon set, image guidelines, loading strategy
+│   │   └── screens.md                  # Screen inventory with wireframe descriptions (NEW)
 │   │
 │   └── project/
 │       ├── setup.md                    # Repo structure, configs, IDE setup
 │       ├── coding-standards.md         # Naming, patterns, linting rules
-│       └── glossary.md                 # Project-specific terms defined
+│       ├── glossary.md                 # Project-specific terms defined
+│       └── dependencies.md             # Package dependencies and rationale (NEW)
 │
-├── sprint_prompts/                     # Ready-to-paste sprint execution prompts
-│   ├── sprint-0-foundation.md          # Foundation sprint with phase breakdown
-│   ├── sprint-N-template.md            # Feature sprint template (replace N)
+├── prompts/                            # Sprint execution prompts (organized by sprint)
+│   ├── sprint_0/                       # Foundation sprint folder
+│   │   ├── sprint_plan_0.md            # Sprint 0 planning guide & definition of done
+│   │   ├── dev_sprint_0.md             # Development execution prompt
+│   │   ├── qa_sprint_0.md              # QA testing prompt with curl/API tests
+│   │   ├── summary_sprint_0.md         # Sprint summary generation prompt
+│   │   └── sprint_dod_checklist_0.md   # Definition of Done verification checklist (NEW)
+│   │
+│   ├── sprint_1/                       # Feature sprint 1 folder
+│   │   ├── sprint_plan_1.md            # Sprint 1 planning guide
+│   │   ├── dev_sprint_1.md             # Development execution prompt
+│   │   ├── qa_sprint_1.md              # QA testing prompt
+│   │   ├── summary_sprint_1.md         # Sprint summary generation prompt
+│   │   └── sprint_dod_checklist_1.md   # Definition of Done verification checklist (NEW)
+│   │
+│   ├── sprint_N/                       # (Repeat for ALL sprints in backlog.md)
+│   │   ├── sprint_plan_N.md
+│   │   ├── dev_sprint_N.md
+│   │   ├── qa_sprint_N.md
+│   │   ├── summary_sprint_N.md
+│   │   └── sprint_dod_checklist_N.md   # Definition of Done verification checklist (NEW)
+│   │
 │   ├── multi-agent.md                  # Agent A (backend) + Agent B (frontend) prompts
-│   ├── qa-review.md                    # QA review checklist prompt
-│   └── finops.md                       # Model selection optimizer (haiku/sonnet/opus)
-│
-├── prompts/                            # Additional generation prompts
+│   ├── finops.md                       # Model selection optimizer (haiku/sonnet/opus)
 │   ├── gemini-diagram-prompts.md       # Prompts for Gemini to generate architecture diagrams
 │   └── remotion-video-prompt.md        # Prompt for Remotion video generation
+│
+├── sprints/                            # Sprint execution results (generated after each sprint)
+│   ├── sprint_0/                       # Sprint 0 results
+│   │   ├── qa_result.md                # QA test results and coverage
+│   │   ├── release_notes.md            # What was delivered
+│   │   ├── summary.md                  # Sprint retrospective (includes git tag reference)
+│   │   └── dod_verified.md             # DoD checklist verification results (NEW)
+│   │
+│   └── sprint_N/                       # (Generated after each sprint completes)
+│       ├── qa_result.md
+│       ├── release_notes.md
+│       ├── summary.md                  # Contains git tag: sprint-N-complete
+│       └── dod_verified.md             # DoD verification with pass/fail per item
 │
 └── viewer/                             # Project monitor website (React app)
     └── (see Section 7 for full spec)
@@ -390,151 +458,1061 @@ Each file should be 100–300 lines, specific to THIS project.
 - glossary.md: Every project-specific term defined (domain language)
 
 ══════════════════════════════════════════════════════════════
-SECTION 5 — SPRINT PROMPTS
+SECTION 5 — SPRINT PROMPTS (Per-Sprint Folder Structure)
 ══════════════════════════════════════════════════════════════
 
-Generate every file in sprint_prompts/. Each prompt must be COMPLETE and
-READY TO PASTE into an AI assistant — the user should not need to add context.
+Generate prompts for EVERY sprint defined in specs/backlog.md. Each sprint
+gets its own folder with 4 prompt files. This ensures complete coverage
+of the entire project backlog, not just the first sprint.
 
-CRITICAL: Every sprint prompt must begin with an instruction block that tells
-the AI to read ALL relevant project files before executing. This is how the AI
-gets full context. Each prompt must list the exact files to read.
+CRITICAL RULES:
+1. Generate prompts for ALL sprints (Sprint 0, 1, 2, ... N) found in backlog.md
+2. Each prompt must be COMPLETE and READY TO PASTE — no placeholders
+3. Every prompt must begin with files to read for full context
+4. Include environment-specific instructions based on {{ENVIRONMENT}}
+5. QA prompts must include ACTUAL runnable tests (curl, API calls, etc.)
 
-### sprint_prompts/sprint-0-foundation.md
+══════════════════════════════════════════════════════════════
+SECTION 5.1 — SPRINT PLAN PROMPT (sprint_plan_X.md)
+══════════════════════════════════════════════════════════════
 
-A complete, ready-to-paste prompt for executing Sprint 0. Structure:
+For each sprint, generate prompts/sprint_X/sprint_plan_X.md:
 
+```markdown
+# Sprint [X] Planning Guide: [Sprint Name]
+
+## Environment: {{ENVIRONMENT}}
+
+## Sprint Overview
+- **Goal:** [One sentence from backlog.md]
+- **Duration:** [Estimated based on total story points]
+- **Total Tickets:** [Count]
+- **Total Story Points:** [Sum]
+- **Dependencies:** [List any sprint dependencies]
+
+## Pre-Sprint Checklist
+- [ ] Previous sprint(s) complete (if applicable)
+- [ ] All spec files reviewed and understood
+- [ ] Development environment ready
+- [ ] Database running and accessible
+- [ ] All team members (or AI agents) briefed
+
+## Tickets Overview
+[Table from backlog.md for this sprint]
+
+## Execution Order
+Based on dependencies, execute in this order:
+1. [Ticket X.1] - No dependencies, start here
+2. [Ticket X.2] - Depends on X.1
+3. ...
+
+## Definition of Done
+
+### Per-Ticket DoD
+Each ticket is DONE when:
+- [ ] Implementation complete per spec
+- [ ] Unit tests written and passing
+- [ ] Integration tests (if applicable)
+- [ ] Code follows coding-standards.md
+- [ ] No TypeScript errors
+- [ ] No ESLint warnings
+- [ ] Committed with message: "Complete X.Y: [description]"
+- [ ] Backlog status updated to ✅
+
+### Sprint DoD
+Sprint is COMPLETE when:
+- [ ] All tickets show ✅ Done status
+- [ ] All tests pass: `npm test` exits 0
+- [ ] Lint passes: `npm run lint` exits 0
+- [ ] Type check passes: `npm run typecheck` exits 0
+- [ ] Build succeeds: `npm run build` exits 0
+- [ ] QA review complete (see qa_sprint_X.md)
+- [ ] Sprint summary created (see summary_sprint_X.md)
+- [ ] All changes committed and pushed
+
+## Model Selection Guide (FinOps)
+Based on ticket complexity:
+
+| Ticket | Recommended Model | Rationale |
+|--------|-------------------|-----------|
+[Generate based on ticket content - haiku for simple, sonnet for standard, opus for complex]
+
+## Risk Assessment
+- **Blockers:** [Potential blockers identified from dependencies]
+- **Complexity:** [High/Medium/Low areas]
+- **Integration Points:** [Where different components connect]
+
+## Next Steps
+1. Run `dev_sprint_X.md` prompt to execute development
+2. After development, run `qa_sprint_X.md` for QA testing
+3. Finally, run `summary_sprint_X.md` to generate sprint documentation
 ```
+
+══════════════════════════════════════════════════════════════
+SECTION 5.2 — DEVELOPMENT SPRINT PROMPT (dev_sprint_X.md)
+══════════════════════════════════════════════════════════════
+
+For each sprint, generate prompts/sprint_X/dev_sprint_X.md:
+
+```markdown
+# Sprint [X] Development Execution: [Sprint Name]
+
+## Environment: {{ENVIRONMENT}}
+
 ## Context — Read These Files First
 
-Read the following files to understand the full project:
+**MANDATORY:** Read ALL these files before writing any code:
 
-SPECS (read all):
-  specs/01_product_manager.md   — requirements, personas, user flows
-  specs/02_backend_lead.md      — API design, service layer, error handling
-  specs/03_frontend_lead.md     — components, state, routing, design tokens
-  specs/04_db_architect.md      — database schema, migrations, queries
-  specs/05_qa_lead.md           — test strategy, coverage targets
-  specs/06_devops_lead.md       — infrastructure, CI/CD, Docker
-  specs/10_ui_designer.md       — screens, wireframes, responsive design
+### Specs (Read ALL):
+- specs/01_product_manager.md   — requirements, personas, user flows
+- specs/02_backend_lead.md      — API design, service layer, error handling
+- specs/03_frontend_lead.md     — components, state, routing, design tokens
+- specs/04_db_architect.md      — database schema, migrations, queries
+- specs/05_qa_lead.md           — test strategy, coverage targets
+- specs/06_devops_lead.md       — infrastructure, CI/CD, Docker
+- specs/10_ui_designer.md       — screens, wireframes, responsive design
+- specs/backlog.md              — Sprint [X] tickets (your work items)
 
-BACKLOG:
-  specs/backlog.md              — Sprint 0 tickets (your work items)
+### Docs (Read ALL relevant):
+- docs/architecture/overview.md     — system architecture
+- docs/architecture/backend.md      — backend layer design
+- docs/architecture/frontend.md     — frontend component architecture
+- docs/architecture/database.md     — ERD, tables, relationships
+- docs/architecture/security.md     — auth flow, security rules
+- docs/flows/user-journeys.md       — user flow diagrams
+- docs/flows/data-flow.md           — data movement patterns
+- docs/environments/development.md  — local setup prerequisites
+- docs/environments/docker.md       — Docker setup
+- docs/environments/environment-variables.md — all env vars
+- docs/api/reference.md             — endpoint contracts
+- docs/api/curl-examples.md         — curl command examples
+- docs/testing/strategy.md          — test pyramid, tooling
+- docs/testing/unit-tests.md        — unit test patterns
+- docs/testing/integration-tests.md — integration test patterns
+- docs/ui-design-system/tokens.md   — design tokens
+- docs/project/setup.md             — repo structure, config files
+- docs/project/coding-standards.md  — naming conventions, patterns
 
-DOCS (read all relevant):
-  docs/architecture/overview.md     — system architecture
-  docs/architecture/backend.md      — backend layer design
-  docs/architecture/frontend.md     — frontend component architecture
-  docs/architecture/database.md     — ERD, tables, relationships
-  docs/architecture/security.md     — auth flow, security rules
-  docs/environments/development.md  — local setup prerequisites
-  docs/environments/docker.md       — Docker setup
-  docs/environments/environment-variables.md — all env vars
-  docs/project/setup.md             — repo structure, config files
-  docs/project/coding-standards.md  — naming conventions, patterns
-  docs/workflows/development.md     — development workflow
-  docs/workflows/git-workflow.md    — branching, commit format
-  docs/testing/strategy.md          — test pyramid, tooling
-  docs/ui-design-system/tokens.md   — design tokens
+---
+
+## Your Mission
+
+Execute Sprint [X]: [Sprint Name]
+
+**Goal:** [Sprint goal from backlog.md]
+
+---
+
+## Tickets to Complete
+
+[Full ticket table from backlog.md for this sprint]
+
+---
+
+## Execution Instructions
+
+### For Each Ticket:
+
+1. **Update Status:** Change ticket from 🔲 to 🔄 in specs/backlog.md
+2. **Read Relevant Spec:** Find the specific section in the appropriate spec file
+3. **Implement:** Write code following patterns in docs/
+4. **Test:** Write tests per docs/testing/ patterns
+5. **Verify:** Run `npm test`, `npm run lint`, `npm run typecheck`
+6. **Commit:** `git commit -m "Complete X.Y: [ticket description]"`
+7. **Update Status:** Change ticket from 🔄 to 🧪 in specs/backlog.md
+
+### Ticket-by-Ticket Breakdown:
+
+[For each ticket in this sprint, generate:]
+
+#### Ticket X.Y: [Title]
+**Owner:** [Role]  |  **Model:** [haiku/sonnet/opus]  |  **Points:** [N]
+
+**Spec Reference:** specs/[XX]_[role].md, Section: [relevant section]
+
+**Implementation Steps:**
+1. [Specific step based on ticket type]
+2. [Next step]
+3. [...]
+
+**Files to Create/Modify:**
+- `src/[path]/[file].ts` — [purpose]
+- `src/[path]/[file].test.ts` — [test file]
+
+**Verification:**
+```bash
+npm test -- [specific test file]
+npm run lint
 ```
 
-Then:
-- Phase breakdown: Infrastructure → Database → Backend setup → Frontend setup → Quality gates
-- Per-ticket instructions referencing the exact spec file and section
-- Definition of done checklist per ticket
-- Commands to verify each phase (health check, lint, typecheck, test)
-- Backlog update: mark each ticket "done" in specs/backlog.md after completion
+**Dependencies:** [List or "None"]
 
-### sprint_prompts/sprint-N-template.md
+---
 
-A template prompt for any feature sprint with [N] placeholder. Structure:
+## After All Tickets Complete
 
+1. Run full verification:
+   ```bash
+   npm run lint
+   npm run typecheck
+   npm test
+   npm run build
+   ```
+
+2. Update all ticket statuses to 🧪 QA Review
+
+3. Commit all changes:
+   ```bash
+   git add -A
+   git commit -m "Complete Sprint [X]: [Sprint Name]"
+   ```
+
+4. Proceed to QA: Run prompts/sprint_X/qa_sprint_X.md
 ```
+
+══════════════════════════════════════════════════════════════
+SECTION 5.3 — QA SPRINT PROMPT (qa_sprint_X.md)
+══════════════════════════════════════════════════════════════
+
+CRITICAL: QA prompts must include ACTUAL runnable tests, not just static analysis.
+Include curl commands, API tests with the server running, and real validation.
+
+For each sprint, generate prompts/sprint_X/qa_sprint_X.md:
+
+```markdown
+# Sprint [X] QA Review: [Sprint Name]
+
+## Environment: {{ENVIRONMENT}}
+
 ## Context — Read These Files First
 
-Read the following files:
-  specs/backlog.md                          — find Sprint [N] tickets
-  specs/01_product_manager.md               — requirements for this sprint's features
-  specs/02_backend_lead.md                  — API contracts for endpoints in this sprint
-  specs/03_frontend_lead.md                 — component specs for UI in this sprint
-  specs/04_db_architect.md                  — database changes needed
-  specs/05_qa_lead.md                       — test requirements
-  docs/architecture/overview.md             — ensure changes fit architecture
-  docs/architecture/backend.md              — follow backend patterns
-  docs/architecture/frontend.md             — follow frontend patterns
-  docs/architecture/database.md             — follow DB conventions
-  docs/api/reference.md                     — endpoint contracts
-  docs/api/authentication.md                — auth patterns (if auth-related)
-  docs/api/error-codes.md                   — error handling patterns
-  docs/testing/unit-tests.md                — unit test patterns
-  docs/testing/integration-tests.md         — integration test patterns
-  docs/workflows/development.md             — development workflow to follow
-  docs/workflows/git-workflow.md            — branch + commit conventions
-  docs/ui-design-system/tokens.md           — design tokens for UI work
-  docs/ui-design-system/components.md       — component patterns
-  docs/project/coding-standards.md          — naming + patterns
+**MANDATORY:** Read ALL these files to understand what should be tested:
+
+- specs/* (all 10 specs + backlog.md)
+- docs/testing/* (strategy, unit, integration, e2e, test-data)
+- docs/api/reference.md — endpoint contracts to verify
+- docs/api/curl-examples.md — curl commands to run
+- docs/api/error-codes.md — error responses to verify
+- docs/architecture/security.md — security requirements
+- docs/ui-design-system/accessibility.md — a11y requirements
+- docs/workflows/qa-review.md — QA process
+
+---
+
+## QA Mission
+
+Review and test ALL tickets completed in Sprint [X].
+
+**Sprint Goal:** [Sprint goal]
+**Tickets to Review:** [Count]
+
+---
+
+## Pre-QA Setup
+
+Before running tests, ensure the environment is ready:
+
+```bash
+# 1. Start the database
+docker-compose up -d db
+
+# 2. Run migrations
+npm run db:migrate
+
+# 3. Seed test data
+npm run db:seed
+
+# 4. Start the server (in background or separate terminal)
+npm run dev &
+# Wait for server to be ready
+sleep 5
+
+# 5. Verify server is running
+curl http://localhost:3000/health
+# Expected: {"status":"ok"}
 ```
 
-Then:
-- Backend ticket pattern: migration → schema → repo → service → controller → routes → tests
-- Frontend ticket pattern: types → API service → components → page → routes → tests
-- After EVERY ticket: update specs/backlog.md (status → "done", add notes)
-- Sprint completion checklist: all tests pass, lint clean, typecheck clean
+---
 
-### sprint_prompts/multi-agent.md
+## Automated Test Suite
 
-Two separate prompts (Agent A and Agent B) that can be pasted into parallel AI sessions:
+Run the full automated test suite:
 
-Agent A (Backend) prompt must start with:
-```
-Read these files:
-  specs/02_backend_lead.md, specs/04_db_architect.md, specs/05_qa_lead.md
-  specs/backlog.md (your tickets: Owner = "Backend" or "DB")
-  docs/architecture/backend.md, docs/architecture/database.md, docs/architecture/security.md
-  docs/api/reference.md, docs/api/authentication.md, docs/api/error-codes.md
-  docs/environments/environment-variables.md
-  docs/testing/unit-tests.md, docs/testing/integration-tests.md
-  docs/project/coding-standards.md
-```
+```bash
+# Unit tests
+npm run test:unit
+# Expected: All tests pass, coverage > 70%
 
-Agent B (Frontend) prompt must start with:
-```
-Read these files:
-  specs/03_frontend_lead.md, specs/10_ui_designer.md, specs/05_qa_lead.md
-  specs/backlog.md (your tickets: Owner = "Frontend")
-  docs/architecture/frontend.md
-  docs/ui-design-system/tokens.md, docs/ui-design-system/components.md,
-  docs/ui-design-system/layouts.md, docs/ui-design-system/accessibility.md
-  docs/testing/unit-tests.md, docs/testing/e2e-tests.md
-  docs/project/coding-standards.md
+# Integration tests
+npm run test:integration
+# Expected: All tests pass
+
+# E2E tests (if applicable)
+npm run test:e2e
+# Expected: All critical paths pass
+
+# Full test with coverage
+npm run test:coverage
+# Expected: Coverage report shows > 70% overall
 ```
 
-Integration phase prompt: merge branches, connect APIs, run full test suite, fix issues
-Rules: no cross-directory work, shared backlog, dependency order respected
+---
 
-### sprint_prompts/qa-review.md
+## API Testing with Curl (MANDATORY)
 
-Prompt for QA review after a sprint. Must start with:
+**IMPORTANT:** These tests MUST be run with the server running.
+Do not skip this section — it validates real API behavior.
+
+[For each API endpoint added/modified in this sprint, generate:]
+
+### Test: [Endpoint Name]
+
+**Endpoint:** [METHOD] [PATH]
+**Spec Reference:** specs/02_backend_lead.md, Section: [section]
+
+#### Happy Path Test
+```bash
+# [Description of what this tests]
+curl -X [METHOD] http://localhost:3000/api/v1/[path] \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{
+    "field1": "value1",
+    "field2": "value2"
+  }'
+
+# Expected Response (HTTP [STATUS]):
+# {
+#   "id": "...",
+#   "field1": "value1",
+#   ...
+# }
 ```
-Read ALL specs and docs to understand the full project:
-  specs/* (all 10 specs + backlog.md)
-  docs/testing/* (strategy, unit, integration, e2e, test-data)
-  docs/architecture/security.md
-  docs/api/reference.md, docs/api/error-codes.md
-  docs/ui-design-system/accessibility.md
-  docs/workflows/qa-review.md
+
+#### Validation Error Test
+```bash
+# Test missing required fields
+curl -X [METHOD] http://localhost:3000/api/v1/[path] \
+  -H "Content-Type: application/json" \
+  -d '{}'
+
+# Expected Response (HTTP 400):
+# {
+#   "error": "Validation failed",
+#   "details": [...]
+# }
 ```
 
-Then:
-- Checklist sections: code quality, test coverage, security, functional, performance, accessibility
-- Per-ticket output format: status (PASS/FAIL), issues found, verdict
-- Final actions: mark tickets done in backlog, add bugs to Bug Backlog
+#### Authentication Test
+```bash
+# Test without auth token
+curl -X [METHOD] http://localhost:3000/api/v1/[path] \
+  -H "Content-Type: application/json"
 
-### sprint_prompts/finops.md
-- Model selection guide: haiku (40%), sonnet (45%), opus (15%)
-- Per-task-type recommendations (haiku: boilerplate/CRUD, sonnet: features/tests, opus: architecture/complex)
-- Cost comparison table
-- Sprint cost forecast template
+# Expected Response (HTTP 401):
+# {
+#   "error": "Unauthorized"
+# }
+```
+
+#### Edge Case Tests
+```bash
+# [Specific edge case for this endpoint]
+curl -X [METHOD] http://localhost:3000/api/v1/[path] \
+  -H "Content-Type: application/json" \
+  -d '{ ... }'
+
+# Expected: [Expected behavior]
+```
+
+---
+
+## Frontend Testing (if applicable)
+
+### Component Tests
+```bash
+# Run component tests
+npm run test:components
+
+# Expected: All component tests pass
+```
+
+### Visual Verification Checklist
+- [ ] Page renders without errors
+- [ ] All components display correctly
+- [ ] Responsive design works (mobile/tablet/desktop)
+- [ ] Loading states display properly
+- [ ] Error states handled gracefully
+- [ ] Forms validate correctly
+- [ ] Navigation works as expected
+
+### Accessibility Tests
+```bash
+# Run accessibility audit
+npm run test:a11y
+
+# Or manually with axe-core in browser
+```
+
+- [ ] Color contrast meets WCAG AA
+- [ ] All interactive elements focusable
+- [ ] Screen reader compatible
+- [ ] Keyboard navigation works
+
+---
+
+## Per-Ticket QA Review
+
+[For each ticket in this sprint, generate:]
+
+### Ticket X.Y: [Title]
+
+#### Code Quality Checklist
+- [ ] Follows coding standards (docs/project/coding-standards.md)
+- [ ] No console.log/print in production code
+- [ ] Error handling implemented
+- [ ] No hardcoded values (uses constants/env)
+- [ ] TypeScript types correct (no `any`)
+- [ ] No obvious security issues
+
+#### Testing Checklist
+- [ ] Unit tests written and pass
+- [ ] Integration tests (if API endpoint)
+- [ ] Edge cases covered
+- [ ] Test coverage adequate
+
+#### Functionality Checklist
+- [ ] Works as specified in spec
+- [ ] Handles error states gracefully
+- [ ] No regressions to existing features
+
+#### Security Checklist (if applicable)
+- [ ] Input validation present
+- [ ] Auth/authz enforced
+- [ ] No injection vulnerabilities
+- [ ] Sensitive data protected
+
+#### QA Result
+- **Status:** [PASS/FAIL]
+- **Issues Found:** [List or "None"]
+- **Notes:** [Any observations]
+
+---
+
+## QA Summary
+
+### Test Results
+| Category | Passed | Failed | Coverage |
+|----------|--------|--------|----------|
+| Unit Tests | X/X | 0 | XX% |
+| Integration Tests | X/X | 0 | XX% |
+| API Curl Tests | X/X | 0 | N/A |
+| E2E Tests | X/X | 0 | N/A |
+
+### Issues Found
+| Ticket | Issue | Severity | Action |
+|--------|-------|----------|--------|
+[List any issues or "No issues found"]
+
+### Overall Verdict
+- [ ] **PASS** — All tests pass, ready for release
+- [ ] **FAIL** — Issues found, needs fixes
+
+---
+
+## Post-QA Actions
+
+### If PASS:
+1. Update all ticket statuses from 🧪 to ✅ in specs/backlog.md
+2. Run summary_sprint_X.md to generate sprint documentation
+3. Merge to main branch
+
+### If FAIL:
+1. Document issues in Bug Backlog section of specs/backlog.md
+2. Keep tickets in 🧪 status
+3. Fix issues and re-run QA
+
+---
+
+## Cleanup
+
+```bash
+# Stop the server
+pkill -f "npm run dev" || true
+
+# Stop Docker services
+docker-compose down
+```
+```
+
+══════════════════════════════════════════════════════════════
+SECTION 5.4 — SPRINT SUMMARY PROMPT (summary_sprint_X.md)
+══════════════════════════════════════════════════════════════
+
+For each sprint, generate prompts/sprint_X/summary_sprint_X.md:
+
+```markdown
+# Sprint [X] Summary Generation: [Sprint Name]
+
+## Context
+
+Read these files to generate the sprint summary:
+- specs/backlog.md — ticket statuses and details
+- All commit messages from this sprint
+- QA results from qa_sprint_X.md execution
+
+---
+
+## Generate Sprint Documentation
+
+Create the following files in sprints/sprint_X/:
+
+### 1. sprints/sprint_X/qa_result.md
+
+```markdown
+# Sprint [X] QA Results
+
+**Sprint:** [X] - [Sprint Name]
+**QA Date:** [Date]
+**QA Status:** [PASS/FAIL]
+
+## Test Summary
+
+| Category | Passed | Failed | Skipped | Coverage |
+|----------|--------|--------|---------|----------|
+| Unit Tests | [X] | [X] | [X] | [XX]% |
+| Integration Tests | [X] | [X] | [X] | [XX]% |
+| E2E Tests | [X] | [X] | [X] | N/A |
+| API Tests (curl) | [X] | [X] | [X] | N/A |
+
+## Per-Ticket Results
+
+| Ticket | Title | QA Status | Issues |
+|--------|-------|-----------|--------|
+[For each ticket in sprint]
+
+## Issues Found
+
+[List any issues discovered during QA]
+
+## Security Review
+
+- [ ] No vulnerabilities found
+- [ ] Auth/authz working correctly
+- [ ] Input validation in place
+- [ ] No sensitive data exposed
+
+## Performance Notes
+
+[Any performance observations]
+
+## Recommendations
+
+[Any recommendations for future sprints]
+```
+
+### 2. sprints/sprint_X/release_notes.md
+
+```markdown
+# Release Notes: Sprint [X] - [Sprint Name]
+
+**Version:** [X].0.0
+**Release Date:** [Date]
+
+## 🎉 What's New
+
+### Features
+[List new features implemented in this sprint]
+- **[Feature Name]:** [Description]
+
+### Improvements
+[List improvements]
+- [Improvement description]
+
+### Bug Fixes
+[List any bugs fixed]
+- Fixed: [Bug description]
+
+## 📊 Sprint Statistics
+
+- **Tickets Completed:** [X]/[X]
+- **Story Points Delivered:** [X]
+- **Test Coverage:** [XX]%
+
+## 🔧 Technical Changes
+
+### Database
+[List any schema changes]
+
+### API
+[List new or modified endpoints]
+
+### Frontend
+[List new pages/components]
+
+## ⚠️ Known Issues
+
+[List any known issues or limitations]
+
+## 📋 Upgrade Notes
+
+[Any notes for upgrading from previous version]
+
+## 🙏 Contributors
+
+[List contributors or agents that worked on this sprint]
+```
+
+### 3. sprints/sprint_X/summary.md
+
+```markdown
+# Sprint [X] Summary: [Sprint Name]
+
+**Sprint Duration:** [Start Date] - [End Date]
+**Status:** COMPLETE
+
+## Sprint Goal
+
+[Sprint goal from backlog.md]
+
+**Goal Achieved:** [Yes/No/Partial]
+
+## Completed Tickets
+
+| # | Ticket | Owner | Model | Points | Status |
+|---|--------|-------|-------|--------|--------|
+[All tickets from this sprint with final status]
+
+## Metrics
+
+- **Velocity:** [X] story points
+- **Completion Rate:** [X]%
+- **QA Pass Rate:** [X]%
+- **Bugs Found:** [X]
+- **Bugs Fixed:** [X]
+
+## What Went Well
+
+1. [Positive observation]
+2. [Positive observation]
+3. [Positive observation]
+
+## What Could Be Improved
+
+1. [Improvement area]
+2. [Improvement area]
+
+## Blockers Encountered
+
+[List any blockers and how they were resolved]
+
+## Technical Debt Added
+
+[List any shortcuts or debt introduced]
+
+## Lessons Learned
+
+1. [Lesson]
+2. [Lesson]
+
+## Next Sprint Preparation
+
+- **Next Sprint:** [X+1] - [Name]
+- **Dependencies Resolved:** [Yes/No]
+- **Ready to Start:** [Yes/No]
+
+## Files Changed
+
+```
+[List of files created/modified in this sprint]
+```
+
+## Commits
+
+```
+[List of commit messages from this sprint]
+```
+
+## Git Tag (CRITICAL FOR TRACEABILITY)
+
+**Tag Name:** `sprint-[X]-complete`
+**Tag Command:**
+```bash
+git tag -a sprint-[X]-complete -m "Sprint [X] Complete: [Sprint Name]"
+git push origin sprint-[X]-complete
+```
+
+**Why This Matters:**
+- Creates a permanent reference point in the repository
+- Allows tracing all commits that built this sprint
+- Enables rollback to sprint completion state
+- Provides clear audit trail for project history
+
+**To view commits in this sprint:**
+```bash
+# If this is Sprint 0:
+git log sprint-0-complete
+
+# If this is Sprint 1+:
+git log sprint-[X-1]-complete..sprint-[X]-complete
+```
+```
+
+---
+
+## After Generating Summary
+
+1. Create the sprints/sprint_X/ folder if it doesn't exist
+2. Generate all four files with actual data (qa_result.md, release_notes.md, summary.md, dod_verified.md)
+3. Commit the sprint documentation:
+   ```bash
+   git add sprints/sprint_X/
+   git commit -m "Complete Sprint [X]: [Sprint Name]"
+   ```
+4. **CREATE GIT TAG** to mark this sprint's completion (CRITICAL for traceability):
+   ```bash
+   git tag -a sprint-[X]-complete -m "Sprint [X] Complete: [Sprint Name]
+
+   Goal: [Sprint goal]
+   Tickets completed: [count]
+   Story points: [sum]
+   QA Status: PASS
+
+   See sprints/sprint_X/summary.md for details"
+   ```
+5. Push the tag to remote:
+   ```bash
+   git push origin sprint-[X]-complete
+   ```
+6. Update specs/backlog.md sprint status to COMPLETE
+7. Record the git tag in summary.md under "## Git Tag" section
+
+**IMPORTANT:** The git tag creates a permanent reference point in the repository history.
+This allows future developers to:
+- Easily find all commits that built this sprint
+- Trace back what work was done
+- Compare changes between sprints
+- Roll back to a specific sprint's state if needed
+```
+
+══════════════════════════════════════════════════════════════
+SECTION 5.5 — SPRINT DOD CHECKLIST (sprint_dod_checklist_X.md)
+══════════════════════════════════════════════════════════════
+
+For each sprint, generate prompts/sprint_X/sprint_dod_checklist_X.md:
+
+```markdown
+# Sprint [X] Definition of Done Checklist: [Sprint Name]
+
+## Purpose
+
+This checklist MUST be completed before marking the sprint as COMPLETE.
+Run through each item and verify it passes. This creates the dod_verified.md file.
+
+---
+
+## Pre-Completion Verification
+
+Execute these commands and verify they pass:
+
+### Code Quality
+```bash
+# Lint check - must exit 0
+npm run lint
+echo "Lint: $([[ $? -eq 0 ]] && echo 'PASS ✅' || echo 'FAIL ❌')"
+
+# Type check - must exit 0
+npm run typecheck
+echo "Typecheck: $([[ $? -eq 0 ]] && echo 'PASS ✅' || echo 'FAIL ❌')"
+
+# Build - must exit 0
+npm run build
+echo "Build: $([[ $? -eq 0 ]] && echo 'PASS ✅' || echo 'FAIL ❌')"
+```
+
+### Tests
+```bash
+# Unit tests - must pass
+npm run test:unit
+echo "Unit Tests: $([[ $? -eq 0 ]] && echo 'PASS ✅' || echo 'FAIL ❌')"
+
+# Integration tests - must pass
+npm run test:integration
+echo "Integration Tests: $([[ $? -eq 0 ]] && echo 'PASS ✅' || echo 'FAIL ❌')"
+
+# Coverage check - must meet threshold
+npm run test:coverage
+echo "Coverage: $([[ $? -eq 0 ]] && echo 'PASS ✅' || echo 'FAIL ❌')"
+```
+
+### API Tests (with server running)
+```bash
+# Start server and run curl tests from qa_sprint_X.md
+# Document results below
+```
+
+---
+
+## Checklist Items
+
+Mark each item as PASS or FAIL:
+
+### Ticket Completion
+| Ticket | Title | Tests Pass | Code Quality | Status |
+|--------|-------|------------|--------------|--------|
+[For each ticket in sprint - verify individually]
+
+### Sprint-Level Verification
+- [ ] All tickets show ✅ Done in backlog.md
+- [ ] No tickets left in 🔄 or 🧪 status
+- [ ] All dependencies resolved
+- [ ] No merge conflicts
+
+### Code Quality Verification
+- [ ] `npm run lint` exits 0
+- [ ] `npm run typecheck` exits 0
+- [ ] `npm run build` exits 0
+- [ ] No console.log statements in production code
+- [ ] No hardcoded secrets or API keys
+- [ ] All new code follows coding-standards.md
+
+### Test Verification
+- [ ] `npm test` exits 0
+- [ ] Unit test coverage ≥ 70%
+- [ ] Integration tests pass
+- [ ] All API endpoints tested with curl
+- [ ] No skipped tests without justification
+
+### Documentation Verification
+- [ ] All new code has appropriate comments
+- [ ] API changes documented in docs/api/reference.md
+- [ ] Database changes documented in docs/architecture/database.md
+- [ ] Environment variables documented in docs/environments/environment-variables.md
+
+### Security Verification
+- [ ] No new security vulnerabilities introduced
+- [ ] Input validation on all new endpoints
+- [ ] Auth/authz enforced where required
+- [ ] No SQL injection, XSS, or CSRF vulnerabilities
+
+### Git Verification
+- [ ] All changes committed
+- [ ] Commit messages follow convention
+- [ ] No untracked files that should be committed
+- [ ] Branch is up to date with main
+
+---
+
+## Final Actions
+
+After all items pass:
+
+1. **Generate sprint documentation:**
+   ```bash
+   # Run summary_sprint_X.md prompt to create:
+   # - sprints/sprint_X/qa_result.md
+   # - sprints/sprint_X/release_notes.md
+   # - sprints/sprint_X/summary.md
+   # - sprints/sprint_X/dod_verified.md
+   ```
+
+2. **Create final commit:**
+   ```bash
+   git add .
+   git commit -m "Complete Sprint [X]: [Sprint Name]
+
+   - All tickets completed and verified
+   - Tests passing with X% coverage
+   - QA review passed
+   - DoD checklist verified
+
+   See sprints/sprint_X/ for full documentation"
+   ```
+
+3. **Create git tag (CRITICAL):**
+   ```bash
+   git tag -a sprint-[X]-complete -m "Sprint [X] Complete: [Sprint Name]"
+   git push origin sprint-[X]-complete
+   ```
+
+4. **Verify tag creation:**
+   ```bash
+   git tag -l "sprint-*"
+   # Should show: sprint-[X]-complete
+   ```
+
+---
+
+## DoD Verification Result
+
+**Overall Status:** [PASS/FAIL]
+**Verified By:** [Agent/Human]
+**Date:** [Date]
+**Git Tag:** `sprint-[X]-complete`
+
+**Notes:**
+[Any observations or exceptions]
+```
+
+══════════════════════════════════════════════════════════════
+SECTION 5.6 — SHARED PROMPTS
+══════════════════════════════════════════════════════════════
+
+### prompts/multi-agent.md
+
+Two separate prompts (Agent A and Agent B) for parallel execution:
+
+**Agent A (Backend) Prompt:**
+```markdown
+# Agent A: Backend Development - Sprint [X]
+
+## Your Role
+You are Agent A - Backend Lead. You handle:
+- Database migrations and schemas
+- API endpoints and services
+- Backend tests
+
+## Read These Files First
+- specs/02_backend_lead.md
+- specs/04_db_architect.md
+- specs/05_qa_lead.md
+- specs/backlog.md (your tickets: Owner = "Backend" or "DB")
+- docs/architecture/backend.md
+- docs/architecture/database.md
+- docs/architecture/security.md
+- docs/api/reference.md
+- docs/api/authentication.md
+- docs/api/error-codes.md
+- docs/api/curl-examples.md
+- docs/testing/unit-tests.md
+- docs/testing/integration-tests.md
+- docs/project/coding-standards.md
+
+## Your Tickets
+[Filter backlog for Backend/DB owner tickets]
+
+## Rules
+1. Update backlog status as you work (🔲 → 🔄 → 🧪)
+2. Run tests after each ticket
+3. Commit after each ticket
+4. Do NOT touch frontend code (src/components, src/pages)
+5. Notify when API endpoints are ready for Agent B
+
+## Sync Points
+[List dependencies where Agent B needs your output]
+```
+
+**Agent B (Frontend) Prompt:**
+```markdown
+# Agent B: Frontend Development - Sprint [X]
+
+## Your Role
+You are Agent B - Frontend Lead. You handle:
+- React components and pages
+- State management
+- Frontend tests
+
+## Read These Files First
+- specs/03_frontend_lead.md
+- specs/10_ui_designer.md
+- specs/05_qa_lead.md
+- specs/backlog.md (your tickets: Owner = "Frontend")
+- docs/architecture/frontend.md
+- docs/flows/user-journeys.md
+- docs/ui-design-system/tokens.md
+- docs/ui-design-system/components.md
+- docs/ui-design-system/layouts.md
+- docs/ui-design-system/accessibility.md
+- docs/testing/unit-tests.md
+- docs/testing/e2e-tests.md
+- docs/project/coding-standards.md
+
+## Your Tickets
+[Filter backlog for Frontend owner tickets]
+
+## Rules
+1. Update backlog status as you work (🔲 → 🔄 → 🧪)
+2. Run tests after each ticket
+3. Commit after each ticket
+4. Do NOT touch backend code (src/services, src/routes, migrations)
+5. Check backlog before starting tickets that depend on Agent A
+
+## Sync Points
+[List dependencies on Agent A's outputs]
+```
+
+**Integration Phase Prompt:**
+```markdown
+# Integration Phase: Sprint [X]
+
+After both agents complete their tickets:
+
+1. Merge branches if using separate branches
+2. Run full test suite: `npm test`
+3. Start server and test API integration
+4. Run E2E tests: `npm run test:e2e`
+5. Fix any integration issues
+6. Run QA review: prompts/sprint_X/qa_sprint_X.md
+```
+
+### prompts/finops.md
+
+```markdown
+# Model Selection Guide (FinOps)
+
+## Model Distribution Target
+- **Haiku (40%):** Simple, repetitive tasks
+- **Sonnet (45%):** Standard complexity features
+- **Opus (15%):** Complex architecture, security, novel algorithms
+
+## Task-to-Model Mapping
+
+### Use Haiku For:
+- Database migrations (CREATE TABLE statements)
+- Configuration files (tsconfig, eslint, docker)
+- Simple CRUD endpoints (no business logic)
+- Seed data generation
+- Boilerplate code
+- Documentation updates
+- Simple component shells
+
+### Use Sonnet For:
+- Services with business logic
+- React components with state
+- API endpoints with validation
+- Unit and integration tests
+- Standard authentication flows
+- Form handling
+- State management
+
+### Use Opus For:
+- System architecture decisions
+- Security-critical code (auth, encryption)
+- Complex algorithms
+- Performance optimization
+- Novel problem solving
+- Multi-step debugging
+- Code review and refactoring
+
+## Cost Estimation
+
+| Model | Cost per 1K tokens | Typical Sprint Usage |
+|-------|-------------------|---------------------|
+| Haiku | $0.25 | 40% of tokens |
+| Sonnet | $3.00 | 45% of tokens |
+| Opus | $15.00 | 15% of tokens |
+
+## Sprint Cost Forecast
+
+For a 12-ticket sprint:
+- 4 tickets × Haiku = ~$X
+- 6 tickets × Sonnet = ~$Y
+- 2 tickets × Opus = ~$Z
+- **Total:** ~$[X+Y+Z]
+
+**Savings vs all-Opus:** ~60%
+**Savings vs all-Sonnet:** ~30%
+```
 
 ══════════════════════════════════════════════════════════════
 SECTION 6 — GENERATION PROMPTS (GEMINI DIAGRAMS + REMOTION VIDEO)
@@ -686,6 +1664,7 @@ backlog, workflows).
 
 viewer/
 ├── public/
+│   └── icons/                       # Role and status icons
 ├── src/
 │   ├── App.tsx
 │   ├── main.tsx
@@ -694,18 +1673,32 @@ viewer/
 │   ├── data/                        # Static artefacts (import at build time)
 │   │   ├── specs/                   # All 10 spec .md files
 │   │   ├── docs/                    # All docs .md files (mirrored structure)
+│   │   │   ├── architecture/        # 8 files including diagrams.md
+│   │   │   ├── flows/               # 6 flow definition files (NEW)
+│   │   │   ├── workflows/           # 8 files
+│   │   │   ├── environments/        # 5 files
+│   │   │   ├── api/                 # 5 files including curl-examples.md
+│   │   │   ├── testing/             # 6 files including api-test-suite.md
+│   │   │   ├── ui-design-system/    # 6 files including screens.md
+│   │   │   └── project/             # 4 files including dependencies.md
+│   │   ├── sprints/                 # Sprint result folders (NEW)
+│   │   │   └── sprint_X/            # qa_result.md, release_notes.md, summary.md
 │   │   ├── backlog.json             # Parsed backlog (sprints + tickets)
 │   │   ├── workflows.json           # Graph definitions (nodes + edges)
+│   │   ├── architecture.json        # Parsed architecture diagrams (NEW)
+│   │   ├── flows.json               # Parsed flow definitions (NEW)
 │   │   └── requirements.md          # Original SRS
 │   │
 │   ├── pages/
-│   │   ├── DashboardPage.tsx        # "/"
+│   │   ├── DashboardPage.tsx        # "/" — with visual charts
 │   │   ├── SpecsPage.tsx            # "/specs" + "/specs/:slug"
 │   │   ├── DocsPage.tsx             # "/docs" + "/docs/:section/:slug"
-│   │   ├── BacklogPage.tsx          # "/backlog"
-│   │   ├── WorkflowsPage.tsx        # "/workflows"
-│   │   ├── ArchitecturePage.tsx     # "/architecture"
-│   │   └── RequirementsPage.tsx     # "/requirements"
+│   │   ├── BacklogPage.tsx          # "/backlog" — kanban + charts
+│   │   ├── WorkflowsPage.tsx        # "/workflows" — animated flows
+│   │   ├── FlowsPage.tsx            # "/flows" — user/system flows (NEW)
+│   │   ├── ArchitecturePage.tsx     # "/architecture" — interactive diagrams
+│   │   ├── SprintsPage.tsx          # "/sprints" — sprint results (NEW)
+│   │   └── RequirementsPage.tsx     # "/requirements" — traceability matrix
 │   │
 │   ├── components/
 │   │   ├── layout/
@@ -716,17 +1709,22 @@ viewer/
 │   │   │
 │   │   ├── specs/
 │   │   │   ├── SpecViewer.tsx       # Markdown renderer + sticky TOC
-│   │   │   └── SpecCard.tsx         # Grid card for spec list
+│   │   │   ├── SpecCard.tsx         # Grid card for spec list
+│   │   │   └── MermaidRenderer.tsx  # Mermaid diagram rendering (NEW)
 │   │   │
 │   │   ├── docs/
 │   │   │   ├── DocViewer.tsx        # Markdown renderer for docs
 │   │   │   ├── DocTree.tsx          # Nested folder tree navigation
-│   │   │   └── DocCard.tsx          # Card for doc section
+│   │   │   ├── DocCard.tsx          # Card with visual preview
+│   │   │   └── CodeBlock.tsx        # Syntax highlighted code (NEW)
 │   │   │
 │   │   ├── backlog/
 │   │   │   ├── BacklogBoard.tsx     # Tab per sprint + table
+│   │   │   ├── KanbanBoard.tsx      # Visual kanban view (NEW)
+│   │   │   ├── BurndownChart.tsx    # Sprint burndown (NEW)
 │   │   │   ├── SprintTab.tsx
-│   │   │   └── TicketRow.tsx
+│   │   │   ├── TicketRow.tsx
+│   │   │   └── TicketCard.tsx       # Kanban card (NEW)
 │   │   │
 │   │   ├── workflows/
 │   │   │   ├── WorkflowCanvas.tsx   # React Flow wrapper
@@ -735,29 +1733,72 @@ viewer/
 │   │   │   ├── AnimationController.tsx  # Play/Pause/Speed/Focus toolbar
 │   │   │   ├── WorkflowLegend.tsx   # Collapsible legend overlay
 │   │   │   ├── WorkflowSearch.tsx   # Search + filter bar
+│   │   │   ├── WorkflowSelector.tsx # Dropdown to select flow (NEW)
 │   │   │   └── PlayTour.tsx         # Auto-walk critical path
 │   │   │
+│   │   ├── flows/                   # NEW — Flow visualization components
+│   │   │   ├── UserJourneyDiagram.tsx    # Swimlane user journey
+│   │   │   ├── SequenceDiagram.tsx       # Request/response sequence
+│   │   │   ├── DataFlowDiagram.tsx       # Data movement visualization
+│   │   │   ├── StateMachine.tsx          # State transition diagram
+│   │   │   └── FlowSelector.tsx          # Flow type selector
+│   │   │
+│   │   ├── architecture/            # NEW — Architecture visualization
+│   │   │   ├── SystemDiagram.tsx         # Main architecture view
+│   │   │   ├── ERDiagram.tsx             # Database ERD
+│   │   │   ├── ComponentTree.tsx         # Frontend component hierarchy
+│   │   │   ├── LayerDiagram.tsx          # Backend layer visualization
+│   │   │   ├── SecurityFlowDiagram.tsx   # Auth/security flow
+│   │   │   ├── CloudDiagram.tsx          # Infrastructure visualization
+│   │   │   └── DiagramExport.tsx         # Export as PNG/SVG
+│   │   │
+│   │   ├── sprints/                 # NEW — Sprint results components
+│   │   │   ├── SprintSummaryCard.tsx     # Sprint overview card
+│   │   │   ├── SprintCompletionChart.tsx # Pie chart completion
+│   │   │   ├── QAResultsViewer.tsx       # Test results with badges
+│   │   │   ├── ReleaseNotesViewer.tsx    # Feature highlights
+│   │   │   └── VelocityChart.tsx         # Velocity over sprints
+│   │   │
 │   │   ├── dashboard/
-│   │   │   ├── OverviewCards.tsx
-│   │   │   ├── ProgressRing.tsx
+│   │   │   ├── OverviewCards.tsx         # Stat cards with animations
+│   │   │   ├── ProgressRing.tsx          # SVG animated ring
+│   │   │   ├── SprintTimeline.tsx        # Timeline chart (NEW)
+│   │   │   ├── ModelDistribution.tsx     # Pie chart (NEW)
+│   │   │   ├── VelocityMini.tsx          # Mini velocity chart (NEW)
+│   │   │   ├── MiniArchitecture.tsx      # Clickable mini diagram (NEW)
 │   │   │   └── RecentTickets.tsx
+│   │   │
+│   │   ├── charts/                  # NEW — Reusable chart components
+│   │   │   ├── PieChart.tsx
+│   │   │   ├── BarChart.tsx
+│   │   │   ├── LineChart.tsx
+│   │   │   ├── ProgressBar.tsx
+│   │   │   └── AnimatedCounter.tsx
 │   │   │
 │   │   └── ui/
 │   │       ├── Button.tsx
 │   │       ├── Badge.tsx
 │   │       ├── Card.tsx
 │   │       ├── Toggle.tsx
-│   │       └── Tooltip.tsx
+│   │       ├── Tooltip.tsx
+│   │       ├── Tabs.tsx             # Tab navigation (NEW)
+│   │       ├── Dropdown.tsx         # Selector dropdown (NEW)
+│   │       └── ExportButton.tsx     # Export functionality (NEW)
 │   │
 │   ├── hooks/
 │   │   ├── useAnimationEngine.ts    # Central animation state
 │   │   ├── useAnimationSettings.ts  # localStorage persistence
-│   │   └── useReducedMotion.ts      # prefers-reduced-motion
+│   │   ├── useReducedMotion.ts      # prefers-reduced-motion
+│   │   ├── useBacklogData.ts        # Parse and filter backlog (NEW)
+│   │   └── useDiagramExport.ts      # Export diagrams (NEW)
 │   │
 │   └── lib/
 │       ├── animation.ts             # Constants, easing, helpers
 │       ├── graph.ts                 # BFS, critical path, subgraph
-│       └── theme.ts                 # Design tokens
+│       ├── theme.ts                 # Design tokens
+│       ├── mermaid.ts               # Mermaid parsing helpers (NEW)
+│       ├── markdown.ts              # Markdown parsing with diagrams (NEW)
+│       └── export.ts                # PNG/SVG export utilities (NEW)
 │
 ├── tailwind.config.js
 ├── vite.config.ts
@@ -787,78 +1828,200 @@ Radii: sm 6, md 10, lg 16, full 9999
 
 ### 7.4 Pages
 
+**CRITICAL: The viewer must VISUALIZE data, not just render markdown. Each page
+should include interactive diagrams, charts, and animations where applicable.**
+
 Dashboard ("/"):
-  - Project name, description, tech stack badges
-  - Sprint progress ring (% done calculated from backlog.json)
-  - Stat cards: total tickets, done, in-progress, blocked (from backlog.json)
-  - Top 5 in-progress tickets table (from backlog.json)
-  - Quick-links grid to ALL 10 specs (01_product_manager → 10_ui_designer)
-  - Quick-links grid to ALL doc folders (architecture, workflows, environments, api, testing, ui-design-system, project)
-  - "View Workflows" CTA
-  - "View Backlog" CTA with total ticket count
+  - Project name, description, tech stack badges with icons
+  - **VISUAL: Animated sprint progress ring** (SVG ring that fills based on completion %)
+  - **VISUAL: Sprint timeline chart** showing all sprints with status colours
+  - Stat cards with animated counters: total tickets, done, in-progress, blocked
+  - **VISUAL: Velocity chart** (if multiple sprints completed)
+  - **VISUAL: Model distribution pie chart** (haiku/sonnet/opus usage)
+  - Top 5 in-progress tickets with progress indicators
+  - Quick-links grid to ALL 10 specs with role icons
+  - Quick-links grid to ALL doc folders with folder icons
+  - **VISUAL: Mini architecture diagram** (clickable, links to /architecture)
+  - "View Workflows" and "View Backlog" CTAs with ticket counts
 
 Specs ("/specs"):
   - 10 spec cards in responsive grid (2 col md, 3 col lg)
-  - Card: role icon, title, excerpt (first 150 chars), word count badge
-  - Must render ALL 10 specs:
-    01_product_manager.md  │  02_backend_lead.md    │  03_frontend_lead.md
-    04_db_architect.md     │  05_qa_lead.md         │  06_devops_lead.md
-    07_marketing_lead.md   │  08_finance_lead.md    │  09_business_lead.md
-    10_ui_designer.md
-  - Detail ("/specs/:slug"): full Markdown rendered with react-markdown + remark-gfm
-  - Sticky TOC auto-generated from ## headings
+  - Card: animated role icon, title, excerpt, word count badge, reading time
+  - **VISUAL: Spec completion indicator** (sections covered vs total)
+  - Must render ALL 10 specs with consistent styling
+  - Detail ("/specs/:slug"): full Markdown with:
+    - Sticky TOC auto-generated from ## headings
+    - **VISUAL: Mermaid diagram rendering** (if spec contains ```mermaid blocks)
+    - **VISUAL: ASCII diagrams in styled <pre>** with syntax highlighting
+    - **VISUAL: JSON/code blocks** with copy button and syntax highlighting
+    - Reading progress bar at top
   - "Back to all specs" breadcrumb
 
 Docs ("/docs"):
-  - Nested tree navigation mirroring the EXACT docs/ folder structure
-  - Top-level cards per folder with file count badge:
-    📁 architecture/ (7 files)  — overview, backend, frontend, database, security, cloud, deep-dive
-    📁 workflows/ (8 files)     — development, sprint-execution, git-workflow, ci-cd-pipeline, bug-fix, deployment, multi-agent, qa-review
-    📁 environments/ (5 files)  — development, docker, staging, production, environment-variables
-    📁 api/ (4 files)           — reference, authentication, error-codes, rate-limiting
-    📁 testing/ (5 files)       — strategy, unit-tests, integration-tests, e2e-tests, test-data
-    📁 ui-design-system/ (5 files) — tokens, components, layouts, accessibility, icons-assets
-    📁 project/ (3 files)       — setup, coding-standards, glossary
-  - Clicking a folder shows all files inside as cards
-  - Detail ("/docs/:section/:slug"): full Markdown with TOC
-  - Breadcrumb: Docs > Architecture > Security
-  - EVERY .md file from ALL 37 doc files must be accessible and rendered
+  - Nested tree navigation with expand/collapse animations
+  - Top-level cards per folder with file count badge and preview icons:
+    📁 architecture/ (8 files)  — WITH mini diagram preview
+    📁 flows/ (6 files)         — WITH animated flow preview (NEW)
+    📁 workflows/ (8 files)     — WITH process preview
+    📁 environments/ (5 files)  — WITH env comparison table preview
+    📁 api/ (5 files)           — WITH endpoint count badge
+    📁 testing/ (6 files)       — WITH test pyramid preview
+    📁 ui-design-system/ (6 files) — WITH colour swatch preview
+    📁 project/ (4 files)       — WITH structure preview
+  - **VISUAL: Each doc card shows a mini visual preview** (not just text)
+  - Detail ("/docs/:section/:slug"): full Markdown with:
+    - **VISUAL: Mermaid diagrams rendered** (flowcharts, sequence diagrams, ERD)
+    - **VISUAL: Tables styled** with alternating rows and sorting
+    - **VISUAL: Code blocks** with syntax highlighting and copy
+    - Breadcrumb: Docs > Architecture > Security
+
+Flows ("/flows") — **NEW VISUAL PAGE**:
+  **This page visualizes ALL user and system flows as interactive diagrams.**
+
+  - **VISUAL: User Journey Visualizer**
+    - Parse docs/flows/user-journeys.md
+    - Render as horizontal swimlane diagram
+    - Each step is a clickable node
+    - Animate user movement through journey on hover/play
+    - Show persona icon at start
+
+  - **VISUAL: Authentication Flow Diagram**
+    - Parse docs/flows/authentication-flow.md
+    - Render as animated sequence diagram
+    - Show request/response arrows between Client, API, DB
+    - Token lifecycle visualization
+    - Animate on play button
+
+  - **VISUAL: Core Features Flow**
+    - Parse docs/flows/core-features-flow.md
+    - Render as multi-lane process flow diagram
+    - Show main feature workflows extracted from SRS
+    - Clickable nodes link to relevant specs
+
+  - **VISUAL: Data Flow Diagram**
+    - Parse docs/flows/data-flow.md
+    - Render as React Flow graph
+    - Show data moving between components
+    - Colour-coded by data type
+
+  - **VISUAL: Error Handling Flow**
+    - Parse docs/flows/error-handling-flow.md
+    - Render as decision tree diagram
+    - Show error types, propagation paths, recovery actions
+    - Colour-coded by severity (warning=yellow, error=red, fatal=dark red)
+
+  - **VISUAL: State Transition Diagrams**
+    - Parse docs/flows/state-transitions.md
+    - Render as state machine diagrams
+    - Highlight current state on click
+    - Show valid transitions as animated edges
+
+  Flow selector dropdown to switch between flows
+  Play/Pause controls for animations
+  Export as PNG/SVG button
 
 Backlog ("/backlog"):
-  THIS IS THE MOST CRITICAL DATA PAGE — it renders specs/backlog.md as a fully
-  interactive board.
+  THIS IS THE MOST CRITICAL DATA PAGE — fully interactive board with visuals.
 
-  - Parse backlog.md into structured data: sprints, tickets, stats
-  - Tab per sprint (Sprint 0, 1, 2, …)
-  - Per-sprint header: sprint goal, total points, progress bar (done/total)
-  - Table with columns: ID | Title | Description | Points | Status | Owner | Model | Dependencies
-  - Status badges colour-coded:
-    todo = slate, in-progress = blue, done = emerald, blocked = red
-  - Filters: status dropdown, owner dropdown, model dropdown (haiku/sonnet/opus)
-  - Search: free-text across ticket titles and descriptions
-  - Sprint summary stats: total tickets, total points, points completed, % done
-  - Overall project stats header: total sprints, total tickets, total story points
-  - Bug Backlog tab at the end with severity badges
-  - Click any ticket row → DetailsPanel slides in with full description,
-    dependencies (linked to their tickets), and owner info
+  - **VISUAL: Kanban Board View** (drag-disabled, display only)
+    - Columns: Todo | In Progress | QA Review | Done | Blocked
+    - Cards show ticket summary, owner badge, model badge
+    - Column headers show count and total points
+
+  - **VISUAL: Sprint Burndown Chart** (per sprint tab)
+    - X-axis: time/tickets, Y-axis: remaining points
+    - Ideal line vs actual progress
+
+  - **VISUAL: Sprint Progress Bar** (animated fill)
+
+  - Tab per sprint (Sprint 0, 1, 2, …) with visual indicators
+  - Per-sprint header: goal, points, animated progress bar
+  - Table view with:
+    - Status badges colour-coded with icons:
+      🔲 todo = slate, 🔄 in-progress = blue pulse, 🧪 qa = purple, ✅ done = emerald, ⏸️ blocked = red
+    - Owner badges with role icons
+    - Model badges (haiku=green, sonnet=blue, opus=purple)
+    - Dependency links (clickable to jump to ticket)
+  - Filters: status, owner, model (with badge previews)
+  - Search: instant filter with highlight
+  - Overall stats: animated counters
+  - Bug Backlog tab with severity colour badges
+  - Click ticket → DetailsPanel with full info + dependency graph
 
 Workflows ("/workflows"):
   - Full-screen React Flow canvas (see Section 7.5)
-  - Top toolbar: animation controls + search + filters
+  - **VISUAL: Multiple workflow graphs** selectable via dropdown:
+    1. Feature Development Flow
+    2. Sprint Execution Flow
+    3. System Request Lifecycle
+    4. CI/CD Pipeline (with parallel lanes)
+    5. Authentication Flow
+    6. Project-specific user flows
+  - Top toolbar: animation controls + search + workflow selector
+  - **VISUAL: Animated edges** showing data/process flow
+  - **VISUAL: Node highlighting** on hover with info tooltip
   - Bottom-right: legend overlay (collapsible)
-  - Sidebar auto-collapses on this page
+  - Export graph as PNG/SVG
 
-Architecture ("/architecture"):
-  - Renders ALL 7 docs/architecture/ files:
-    overview.md | backend.md | frontend.md | database.md | security.md | cloud.md | deep-dive.md
-  - Tab or accordion per file
-  - ASCII diagrams rendered in styled <pre> blocks with monospace font
-  - Cross-links between architecture docs (e.g., "See security.md" becomes a click)
+Architecture ("/architecture") — **ENHANCED WITH VISUALS**:
+  **Must show diagrams, not just markdown text.**
+
+  - **VISUAL: System Architecture Diagram** (main view)
+    - Interactive diagram from docs/architecture/overview.md
+    - Components: Client, API Gateway, Services, Database, Cache, Queue
+    - Click component → show details panel
+    - Animated connection lines
+
+  - **VISUAL: Database ERD**
+    - Parse docs/architecture/database.md
+    - Render actual ERD diagram (not just ASCII)
+    - Tables as boxes with columns
+    - Relationship lines with cardinality labels
+    - Click table → show schema details
+
+  - **VISUAL: Frontend Component Tree**
+    - Parse docs/architecture/frontend.md
+    - Render as collapsible tree diagram
+    - Show: App → Layouts → Pages → Components
+    - Click component → show props/state info
+
+  - **VISUAL: Backend Layer Diagram**
+    - Parse docs/architecture/backend.md
+    - Show: Routes → Middleware → Controllers → Services → Repositories → DB
+    - Animated request flow on play
+
+  - **VISUAL: Security Flow Diagram**
+    - Parse docs/architecture/security.md
+    - Show auth flow, token lifecycle, permission checks
+
+  - **VISUAL: Cloud Infrastructure Diagram**
+    - Parse docs/architecture/cloud.md
+    - Show: VPC, subnets, services, load balancer
+    - Cloud provider icons (AWS/GCP/Azure)
+
+  - Tab navigation between diagrams
+  - Each tab also has "View Source" to see the markdown
+  - Export diagrams as PNG/SVG
+
+Sprints ("/sprints") — **NEW PAGE FOR SPRINT RESULTS**:
+  View completed sprint documentation from sprints/ folder.
+
+  - List of completed sprints with status badges
+  - Per-sprint view shows:
+    - **VISUAL: Sprint Summary Card** with key metrics
+    - **VISUAL: Completion Chart** (pie: completed vs remaining)
+    - qa_result.md rendered with test result badges
+    - release_notes.md rendered with feature highlights
+    - summary.md rendered with retrospective insights
+  - Compare sprints view (velocity over time)
 
 Requirements ("/requirements"):
   - Renders original SRS/PRD as Markdown
+  - **VISUAL: Requirements Traceability Matrix**
+    - Table mapping requirements → specs → tickets
+    - Colour-coded by implementation status
   - Functional vs non-functional sections with colour badges
-  - Highlight extracted requirements that map to spec tickets
+  - **VISUAL: Coverage indicator** (% of requirements with tickets)
 
 ### 7.5 Workflow Animation Engine
 
@@ -998,6 +2161,8 @@ PERFORMANCE (>50 nodes or >80 edges):
 Generate these inside viewer/src/data/. The viewer must have access to
 EVERY SINGLE generated .md file so it can render them all.
 
+**CRITICAL: Include structured JSON files for visual rendering, not just markdown.**
+
 viewer/src/data/
 ├── specs/
 │   ├── 01_product_manager.md
@@ -1019,7 +2184,17 @@ viewer/src/data/
 │   │   ├── database.md
 │   │   ├── security.md
 │   │   ├── cloud.md
-│   │   └── deep-dive.md
+│   │   ├── deep-dive.md
+│   │   └── diagrams.md           # Mermaid/PlantUML definitions (NEW)
+│   │
+│   ├── flows/                    # NEW — Flow documentation
+│   │   ├── user-journeys.md      # User journey descriptions
+│   │   ├── authentication-flow.md # Auth flow steps
+│   │   ├── core-features-flow.md  # Main feature flows
+│   │   ├── data-flow.md          # Data movement descriptions
+│   │   ├── error-handling-flow.md # Error flows
+│   │   └── state-transitions.md   # State machine definitions
+│   │
 │   ├── workflows/
 │   │   ├── development.md
 │   │   ├── sprint-execution.md
@@ -1029,44 +2204,111 @@ viewer/src/data/
 │   │   ├── deployment.md
 │   │   ├── multi-agent.md
 │   │   └── qa-review.md
+│   │
 │   ├── environments/
 │   │   ├── development.md
 │   │   ├── docker.md
 │   │   ├── staging.md
 │   │   ├── production.md
 │   │   └── environment-variables.md
+│   │
 │   ├── api/
 │   │   ├── reference.md
 │   │   ├── authentication.md
 │   │   ├── error-codes.md
-│   │   └── rate-limiting.md
+│   │   ├── rate-limiting.md
+│   │   └── curl-examples.md      # Ready-to-run curl commands (NEW)
+│   │
 │   ├── testing/
 │   │   ├── strategy.md
 │   │   ├── unit-tests.md
 │   │   ├── integration-tests.md
 │   │   ├── e2e-tests.md
-│   │   └── test-data.md
+│   │   ├── test-data.md
+│   │   └── api-test-suite.md     # Complete API test scenarios (NEW)
+│   │
 │   ├── ui-design-system/
 │   │   ├── tokens.md
 │   │   ├── components.md
 │   │   ├── layouts.md
 │   │   ├── accessibility.md
-│   │   └── icons-assets.md
+│   │   ├── icons-assets.md
+│   │   └── screens.md            # Screen inventory (NEW)
+│   │
 │   └── project/
 │       ├── setup.md
 │       ├── coding-standards.md
-│       └── glossary.md
+│       ├── glossary.md
+│       └── dependencies.md       # Package dependencies (NEW)
 │
-├── backlog.json              # Parsed from specs/backlog.md into structured JSON:
-│                             #   { sprints: [{ id, name, goal, tickets: [{ id, title,
-│                             #     description, points, status, owner, model, deps }] }],
-│                             #     bugs: [{ id, title, severity, status, sprint, notes }] }
+├── sprints/                      # NEW — Sprint execution results
+│   ├── sprint_0/
+│   │   ├── qa_result.md
+│   │   ├── release_notes.md
+│   │   └── summary.md
+│   └── sprint_N/                 # (One folder per completed sprint)
+│       ├── qa_result.md
+│       ├── release_notes.md
+│       └── summary.md
 │
-├── workflows.json            # Graph definitions (per Section 7.5)
-└── requirements.md           # Original SRS/PRD input documents
+├── backlog.json                  # Parsed from specs/backlog.md into structured JSON:
+│                                 #   {
+│                                 #     project: { name, description, totalSprints, totalTickets, totalPoints },
+│                                 #     sprints: [{
+│                                 #       id, name, goal, status, totalPoints, completedPoints,
+│                                 #       tickets: [{ id, title, description, points, status,
+│                                 #                   owner, model, dependencies, notes }]
+│                                 #     }],
+│                                 #     bugs: [{ id, title, severity, status, sprint, notes }],
+│                                 #     stats: { todo, inProgress, qaReview, done, blocked }
+│                                 #   }
+│
+├── workflows.json                # Graph definitions for workflow visualization:
+│                                 #   [{
+│                                 #     id, name, description,
+│                                 #     nodes: [{ id, label, type, position, metadata }],
+│                                 #     edges: [{ id, source, target, label, animated, priority }]
+│                                 #   }]
+│
+├── architecture.json             # NEW — Structured architecture data:
+│                                 #   {
+│                                 #     system: { components: [...], connections: [...] },
+│                                 #     database: { tables: [...], relationships: [...] },
+│                                 #     frontend: { components: [...], hierarchy: [...] },
+│                                 #     backend: { layers: [...], flow: [...] },
+│                                 #     security: { authFlow: [...], permissions: [...] },
+│                                 #     cloud: { services: [...], network: [...] }
+│                                 #   }
+│
+├── flows.json                    # NEW — Structured flow data:
+│                                 #   {
+│                                 #     userJourneys: [{ persona, steps: [...] }],
+│                                 #     authFlow: { steps: [...], tokens: [...] },
+│                                 #     dataFlow: { sources: [...], transforms: [...], sinks: [...] },
+│                                 #     stateMachines: [{ entity, states: [...], transitions: [...] }]
+│                                 #   }
+│
+├── metrics.json                  # NEW — Project metrics for dashboard:
+│                                 #   {
+│                                 #     velocity: [{ sprint, points }],
+│                                 #     modelDistribution: { haiku: N, sonnet: N, opus: N },
+│                                 #     coverage: { unit: N, integration: N, e2e: N },
+│                                 #     burndown: [{ date, remaining }]
+│                                 #   }
+│
+└── requirements.md               # Original SRS/PRD input documents
 
-Import strategy: Use Vite's ?raw import for .md files so they are embedded
-at build time. For .json files, use standard import.
+Import strategy:
+- Use Vite's ?raw import for .md files so they are embedded at build time
+- For .json files, use standard import
+- Generate architecture.json and flows.json by parsing the markdown files
+- These JSON files enable the visual diagram rendering (not just text)
+
+JSON Generation Rules:
+- Parse Mermaid blocks from markdown and convert to node/edge format
+- Extract tables and convert to structured data
+- Parse ASCII diagrams and infer component relationships
+- All JSON must be valid and complete — no placeholders
 
 ══════════════════════════════════════════════════════════════
 SECTION 8 — QUALITY GATES
@@ -1103,23 +2345,30 @@ Once the AI has generated everything, your project folder contains:
 | Folder | Contents | Files |
 |--------|----------|-------|
 | `specs/` | 10 role specs + backlog | 11 |
-| `docs/architecture/` | System design, cloud, security, deep-dive | 7 |
+| `docs/architecture/` | System design, cloud, security, deep-dive, diagrams | 8 |
+| `docs/flows/` | User journeys, auth flow, data flow, state transitions | 6 |
 | `docs/workflows/` | Dev, sprint, git, CI/CD, deploy, bug, multi-agent, QA | 8 |
 | `docs/environments/` | Dev, Docker, staging, prod, env vars | 5 |
-| `docs/api/` | Reference, auth, errors, rate limits | 4 |
-| `docs/testing/` | Strategy, unit, integration, e2e, test data | 5 |
-| `docs/ui-design-system/` | Tokens, components, layouts, a11y, assets | 5 |
-| `docs/project/` | Setup, coding standards, glossary | 3 |
-| `sprint_prompts/` | Sprint 0, sprint N, multi-agent, QA, finops | 5 |
-| `prompts/` | Gemini diagram prompts, Remotion video prompt | 2 |
-| `viewer/` | React monitor app | Full project |
+| `docs/api/` | Reference, auth, errors, rate limits, curl examples | 5 |
+| `docs/testing/` | Strategy, unit, integration, e2e, test data, API suite | 6 |
+| `docs/ui-design-system/` | Tokens, components, layouts, a11y, assets, screens | 6 |
+| `docs/project/` | Setup, coding standards, glossary, dependencies | 4 |
+| `prompts/sprint_X/` | Per-sprint: plan, dev, qa, summary prompts | 4 per sprint |
+| `prompts/` | Multi-agent, finops, Gemini diagrams, Remotion video | 4 |
+| `sprints/sprint_X/` | Per-sprint results: qa_result, release_notes, summary | 3 per sprint |
+| `viewer/` | React monitor app with visual dashboards | Full project |
+
+**Total: 10 specs + ~50 docs + prompts for ALL sprints + viewer**
 
 **Next steps:**
 
 1. **Review specs** — Skim for accuracy, correct any assumptions.
-2. **Open the viewer** — `cd viewer && npm install && npm run dev` — see everything visually.
-3. **Start Sprint 0** — Paste `sprint_prompts/sprint-0-foundation.md` into your AI.
-4. **Execute sprints** — Repeat with `sprint_prompts/sprint-N-template.md`.
+2. **Open the viewer** — `cd viewer && npm install && npm run dev` — see everything visually with diagrams and charts.
+3. **Review sprint plan** — Read `prompts/sprint_0/sprint_plan_0.md` for Definition of Done.
+4. **Execute Sprint 0** — Paste `prompts/sprint_0/dev_sprint_0.md` into your AI.
+5. **Run QA** — Paste `prompts/sprint_0/qa_sprint_0.md` to test with curl commands.
+6. **Generate summary** — Paste `prompts/sprint_0/summary_sprint_0.md` to create sprint docs.
+7. **Repeat for all sprints** — Each sprint has its own folder with 4 prompts.
 
 ---
 
@@ -1127,19 +2376,23 @@ Once the AI has generated everything, your project folder contains:
 
 ```
 # Sprint 0 (Foundation)
-Paste sprint_prompts/sprint-0-foundation.md into AI.
+1. Review: prompts/sprint_0/sprint_plan_0.md
+2. Execute: prompts/sprint_0/dev_sprint_0.md
+3. Test: prompts/sprint_0/qa_sprint_0.md (includes curl API tests!)
+4. Document: prompts/sprint_0/summary_sprint_0.md
+   → Creates sprints/sprint_0/ with qa_result.md, release_notes.md, summary.md
 
-# Sprint 1+ (Features)
-Copy sprint_prompts/sprint-N-template.md, replace [N], paste into AI.
+# Sprint N (Features) — prompts exist for ALL sprints in backlog!
+1. Review: prompts/sprint_N/sprint_plan_N.md
+2. Execute: prompts/sprint_N/dev_sprint_N.md
+3. Test: prompts/sprint_N/qa_sprint_N.md
+4. Document: prompts/sprint_N/summary_sprint_N.md
 
-# Parallel execution
-Paste sprint_prompts/multi-agent.md — run two AI sessions.
-
-# QA Review
-Paste sprint_prompts/qa-review.md after a sprint completes.
+# Parallel execution (Multi-Agent)
+Paste prompts/multi-agent.md — run two AI sessions (Backend + Frontend).
 
 # Cost optimisation
-Read sprint_prompts/finops.md before each sprint.
+Read prompts/finops.md before each sprint for model selection.
 ```
 
 ---
