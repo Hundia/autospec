@@ -444,34 +444,106 @@ Detail view: Same rendering as Specs detail (Markdown + code + diagrams)
   - Export as PNG/SVG button
   - Left sidebar collapses automatically to maximise canvas
 
-### 3.7 Flows  ("/flows")  — VISUAL FLOW DIAGRAMS
+### 3.7 Flows  ("/flows")  — REACT FLOW DIAGRAMS (NEVER TEXT)
 
-  - Flow selector (shadcn/ui Tabs or Select) to switch between:
-    1. User Journey — horizontal swimlane diagram
-    2. Authentication Flow — animated sequence diagram
-    3. Core Features Flow — multi-lane process diagram
-    4. Data Flow — React Flow graph with colour-coded data types
-    5. Error Handling — decision tree with severity colours
-    6. State Transitions — state machine diagram
-  - Each flow: interactive, clickable nodes, animated on play
-  - Play/Pause controls
-  - Export as PNG/SVG
+╔══════════════════════════════════════════════════════════════════╗
+║  CRITICAL: Every flow MUST render as <ReactFlow> with nodes     ║
+║  and edges from flows.json. NEVER render as markdown text,      ║
+║  bullet lists, ASCII art, or numbered steps.                    ║
+║                                                                 ║
+║  WRONG: "1. User visits app  2. User clicks login  3. ..."     ║
+║  RIGHT: <ReactFlow nodes={flow.nodes} edges={flow.edges} />    ║
+╚══════════════════════════════════════════════════════════════════╝
 
-### 3.8 Architecture  ("/architecture")  — INTERACTIVE DIAGRAMS
+  Data source: flows.json (each flow has nodes[] with positions + edges[])
 
-  NOT just markdown. Must render actual visual diagrams.
+  shadcn/ui Tabs to switch between flow diagrams.
+  Each tab renders a full React Flow canvas:
 
-  - Tab navigation (shadcn/ui Tabs) between:
-    1. **System Architecture** — React Flow graph showing components,
-       services, databases, and their connections
-    2. **Database ERD** — Tables as Card components with columns listed,
-       relationship lines with cardinality labels
-    3. **Frontend Component Tree** — Collapsible tree diagram
-    4. **Backend Layers** — Layered diagram: Routes → Middleware →
-       Controllers → Services → Repositories → DB
-    5. **Security Flow** — Auth flow, token lifecycle, permission checks
-  - Each tab: "View Source" toggle to show underlying markdown
-  - Export diagrams as PNG/SVG
+  - **User Journey** (type: "swimlane")
+    - React Flow graph with horizontal swim lane background rows
+    - Lane headers: "User", "Frontend", "API", "Database"
+    - Custom SwimLaneNode positioned within lane Y ranges
+    - Animated edges showing request/response between lanes
+    - Click node → Sheet with step details
+
+  - **Authentication Flow** (type: "sequence")
+    - React Flow graph with participant columns
+    - Nodes arranged vertically in time order within columns
+    - Animated request (→) and response (←) edges
+    - Edge labels: "POST /login", "200 OK + JWT"
+
+  - **Data Flow** (type: "dataflow")
+    - React Flow graph with colour-coded data type nodes
+    - Edge labels show data transformations
+    - Animated flow direction
+
+  - **State Transitions** (type: "state-machine")
+    - React Flow graph with state nodes (rounded rectangles)
+    - Transition edges with event labels: "submit()", "approve()"
+    - Click state → highlight valid transitions
+
+  - **Error Handling** (type: "decision-tree")
+    - React Flow decision tree with Yes/No branches
+    - Colour-coded: warning=amber, error=red, fatal=dark red
+
+  - **Core Features Flow** (type: "process")
+    - React Flow process graph with decision diamonds
+    - Clickable nodes link to relevant specs
+
+  Each tab: Play/Pause for animations, Export PNG/SVG
+  Custom node component per flow type (SwimLaneNode, SequenceNode, etc.)
+  All nodes wrapped in React.memo
+
+### 3.8 Architecture  ("/architecture")  — REACT FLOW DIAGRAMS (NEVER TEXT)
+
+╔══════════════════════════════════════════════════════════════════╗
+║  CRITICAL: Every architecture diagram MUST render as <ReactFlow>║
+║  with nodes and edges from architecture.json. NEVER render as   ║
+║  markdown text, ASCII boxes (┌──┐), bullet hierarchies, or      ║
+║  <pre> blocks. Every tab = a React Flow canvas users can        ║
+║  zoom, pan, and click.                                          ║
+║                                                                 ║
+║  WRONG: "- Client (React SPA)  - API Gateway  - DB"            ║
+║  WRONG: ┌──────┐───▶┌──────┐───▶┌──────┐                      ║
+║  RIGHT: <ReactFlow nodes={diagram.nodes} edges={diagram.edges}  ║
+║           nodeTypes={customNodeTypes} fitView />                 ║
+╚══════════════════════════════════════════════════════════════════╝
+
+  Data source: architecture.json (each diagram has nodes[] with positions + edges[])
+
+  shadcn/ui Tabs navigation. Each tab renders a React Flow canvas:
+
+  **Tab 1: System Architecture** (id: "system-architecture")
+    - Custom node components per type:
+      "frontend" → blue, Monitor icon | "backend" → purple, Server icon
+      "database" → green, Database icon | "cache" → amber, Zap icon
+      "queue" → cyan, List icon | "external" → grey dashed, Globe icon
+    - Each node: rounded Card with icon + label + tech Badge
+    - Click node → Sheet with tech stack, description, endpoints
+    - Animated edges with protocol labels ("HTTP", "SQL", "Redis")
+
+  **Tab 2: Database ERD** (id: "database-erd")
+    - Custom ERD node: Card header = table name, body = column list
+      with type Badges, PK key icon, FK link icon
+    - Edges = relationships with "1:N", "N:M", "1:1" labels
+    - Click table → Sheet with full schema + indexes
+
+  **Tab 3: Frontend Component Tree** (id: "frontend-tree")
+    - Tree layout (top-down): App → Layouts → Pages → Components
+    - Nodes as rounded Cards, edges as parent→child arrows
+
+  **Tab 4: Backend Layers** (id: "backend-layers")
+    - Layered layout: Routes → Middleware → Controllers → Services → DB
+    - Animated request flow top → bottom on play
+    - Layer background colours for visual grouping
+
+  **Tab 5: Security Flow** (id: "security-flow")
+    - Auth flow graph: login → validation → token → storage → verify
+    - Nodes colour-coded: auth=blue, token=green, permission=amber
+
+  Each tab: "View Source" toggle, Export PNG/SVG
+  All custom nodes wrapped in React.memo, fitView on load
 
 ### 3.9 Sprints  ("/sprints")  — SPRINT RESULTS
 
@@ -702,7 +774,8 @@ The generated viewer code MUST:
   ✓ Have at least 3 different Recharts chart types across the app.
   ✓ Dashboard page has at least 5 visual components (charts + cards + ring).
   ✓ Backlog page has both kanban AND table views with charts.
-  ✓ Architecture page has interactive diagrams, not just markdown text.
+  ✓ Architecture page renders React Flow graphs, NOT markdown/text/ASCII.
+  ✓ Flows page renders React Flow graphs, NOT markdown/text/ASCII.
   ✓ Every page has at least one non-text visual element.
   ✓ Respect prefers-reduced-motion (tested).
   ✓ Render on mobile (responsive, no horizontal scroll).
@@ -710,6 +783,15 @@ The generated viewer code MUST:
   ✓ Use React.memo on every node and edge component.
   ✓ Use zero setInterval / setTimeout for animation (CSS only).
   ✓ Look like a premium, polished SaaS dashboard — NOT a markdown reader.
+
+DIAGRAM RENDERING RULES (Architecture, Flows, Workflows):
+  ✗ NEVER render diagrams as markdown text, ASCII boxes, bullet lists,
+    numbered steps, or <pre> blocks. These are ALL wrong.
+  ✓ ALWAYS use <ReactFlow nodes={data.nodes} edges={data.edges} />
+  ✓ ALWAYS define custom nodeTypes for each diagram type.
+  ✓ ALWAYS ensure every node in JSON has position: { x, y }.
+  ✓ ALWAYS enable zoom, pan, fitView on every graph.
+  ✓ ALWAYS open a detail Sheet/panel when user clicks a node.
 
 ────────────────────────────────────────────────────────
 8. FILES TO GENERATE
@@ -731,11 +813,33 @@ For data files (src/data/), generate COMPLETE realistic content:
       4. "CI/CD Pipeline" (8-10 nodes)
       5. "User Authentication Flow" (8-10 nodes)
       6. One project-specific user flow (8-10 nodes)
-  - architecture.json: parsed from docs/architecture/ with:
-    { system: { components, connections }, database: { tables, relationships },
-      frontend: { components, hierarchy }, backend: { layers, flow } }
-  - flows.json: parsed from docs/flows/ with:
-    { userJourneys, authFlow, dataFlow, stateMachines }
+  - architecture.json: REACT FLOW GRAPH DATA parsed from docs/architecture/:
+    { diagrams: [
+      { id: "system-architecture", name, description,
+        nodes: [{ id, label, type, icon, metadata, position: { x, y } }],
+        edges: [{ id, source, target, label, animated }] },
+      { id: "database-erd", name, nodes (table nodes with columns in metadata), edges },
+      { id: "backend-layers", name, nodes, edges },
+      { id: "frontend-tree", name, nodes, edges },
+      { id: "security-flow", name, nodes, edges }
+    ] }
+    Node types: "frontend"|"backend"|"database"|"cache"|"queue"|"external"|
+                "table"|"service"|"middleware"
+    EVERY node MUST have position: { x, y } — React Flow requires this.
+
+  - flows.json: REACT FLOW GRAPH DATA parsed from docs/flows/:
+    { flows: [
+      { id: "user-journey", name, type: "swimlane", lanes: [...],
+        nodes: [{ id, label, lane, type, position: { x, y } }],
+        edges: [{ id, source, target, label, animated }] },
+      { id: "auth-flow", name, type: "sequence", participants: [...], nodes, edges },
+      { id: "data-flow", name, type: "dataflow", nodes, edges },
+      { id: "state-machine-*", name, type: "state-machine", nodes, edges },
+      { id: "error-flow", name, type: "decision-tree", nodes, edges },
+      { id: "core-features", name, type: "process", nodes, edges }
+    ] }
+    Flow types: "swimlane"|"sequence"|"dataflow"|"state-machine"|"decision-tree"|"process"
+    EVERY node MUST have position: { x, y } — React Flow requires this.
   - metrics.json: computed from backlog.json with:
     { velocity, modelDistribution, coverage, burndown }
   - design-system.json: parsed from specs/10_ui_designer.md +
@@ -792,7 +896,11 @@ Before considering the viewer complete, verify:
   ✓ Backlog has BOTH kanban board view AND table view
   ✓ Backlog has at least 2 charts (status distribution, burndown)
   ✓ Workflows page renders React Flow graphs with animated edges
-  ✓ Architecture page has interactive diagrams (not just markdown)
+  ✓ Architecture page renders React Flow graphs from architecture.json
+    (NOT markdown text, NOT ASCII boxes, NOT bullet lists)
+  ✓ Flows page renders React Flow graphs from flows.json
+    (NOT markdown text, NOT numbered steps, NOT bullet lists)
+  ✓ All diagram pages (Architecture, Flows, Workflows) use <ReactFlow>
   ✓ All pages use shadcn/ui components (Card, Badge, Tabs, Table, etc.)
   ✓ Every page has at least one interactive/visual element beyond text
   ✓ Dark theme is the default with proper contrast
