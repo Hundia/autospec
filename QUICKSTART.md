@@ -1709,13 +1709,14 @@ viewer/
 │   │
 │   ├── pages/
 │   │   ├── DashboardPage.tsx        # "/" — with visual charts
+│   │   ├── DesignSystemPage.tsx     # "/design-system" — FULL design system showcase
 │   │   ├── SpecsPage.tsx            # "/specs" + "/specs/:slug"
 │   │   ├── DocsPage.tsx             # "/docs" + "/docs/:section/:slug"
 │   │   ├── BacklogPage.tsx          # "/backlog" — kanban + charts
 │   │   ├── WorkflowsPage.tsx        # "/workflows" — animated flows
-│   │   ├── FlowsPage.tsx            # "/flows" — user/system flows (NEW)
+│   │   ├── FlowsPage.tsx            # "/flows" — user/system flows
 │   │   ├── ArchitecturePage.tsx     # "/architecture" — interactive diagrams
-│   │   ├── SprintsPage.tsx          # "/sprints" — sprint results (NEW)
+│   │   ├── SprintsPage.tsx          # "/sprints" — sprint results
 │   │   └── RequirementsPage.tsx     # "/requirements" — traceability matrix
 │   │
 │   ├── components/
@@ -1770,12 +1771,22 @@ viewer/
 │   │   │   ├── CloudDiagram.tsx          # Infrastructure visualization
 │   │   │   └── DiagramExport.tsx         # Export as PNG/SVG
 │   │   │
-│   │   ├── sprints/                 # NEW — Sprint results components
+│   │   ├── sprints/                 # Sprint results components
 │   │   │   ├── SprintSummaryCard.tsx     # Sprint overview card
 │   │   │   ├── SprintCompletionChart.tsx # Pie chart completion
 │   │   │   ├── QAResultsViewer.tsx       # Test results with badges
 │   │   │   ├── ReleaseNotesViewer.tsx    # Feature highlights
 │   │   │   └── VelocityChart.tsx         # Velocity over sprints
+│   │   │
+│   │   ├── design-system/          # Design System showcase components
+│   │   │   ├── ColorPalette.tsx         # Interactive colour swatch grid
+│   │   │   ├── TypographyScale.tsx      # Font scale + weight showcase
+│   │   │   ├── SpacingScale.tsx         # Visual spacing/sizing reference
+│   │   │   ├── ComponentGallery.tsx     # Live rendered component examples
+│   │   │   ├── ScreenInventory.tsx      # Screen wireframes / mockups gallery
+│   │   │   ├── IconLibrary.tsx          # Icon grid with search
+│   │   │   ├── ResponsivePreview.tsx    # Breakpoint visualizer
+│   │   │   └── AccessibilityMatrix.tsx  # A11y compliance checklist
 │   │   │
 │   │   ├── dashboard/
 │   │   │   ├── OverviewCards.tsx         # Stat cards with AnimatedCounter
@@ -1887,6 +1898,83 @@ Dashboard ("/"):
   - Quick-links grid: doc folder Cards (folder icon + file count Badge)
   - **MiniArchitecture**: Clickable mini system diagram → links to /architecture
   - CTA Buttons: "View Workflows", "View Backlog" with ticket count Badges
+
+Design System ("/design-system") — **VISUAL DESIGN SHOWCASE**:
+  ╔══════════════════════════════════════════════════════════╗
+  ║  THIS PAGE IS CRITICAL. It must prove to stakeholders   ║
+  ║  that the project's visual identity, components,        ║
+  ║  screens, and UX patterns are fully designed BEFORE     ║
+  ║  development begins. It is an interactive visual        ║
+  ║  catalogue — NOT rendered markdown text.                ║
+  ╚══════════════════════════════════════════════════════════╝
+
+  Data sources: specs/10_ui_designer.md + docs/ui-design-system/ + design-system.json
+
+  shadcn/ui Tabs navigation across 7 sections:
+
+  **Tab 1: Colour Palette** (ColorPalette.tsx)
+    - Every project colour rendered as large interactive swatch Cards
+    - Groups: Primary, Secondary, Success, Warning, Error, Info, Neutrals
+    - Each swatch: hex code, CSS variable name, Tailwind class, copy-on-click
+    - WCAG contrast ratio displayed per colour (against bg and text)
+    - Dark/light mode side-by-side comparison
+    - Semantic usage map: "primary → buttons, links; error → validation, alerts"
+
+  **Tab 2: Typography** (TypographyScale.tsx)
+    - Live rendered type scale: H1 → H2 → H3 → H4 → Body → Small → Caption
+    - Each level: font family, weight, size (px + rem), line height
+    - Rendered with actual project fonts (Inter / JetBrains Mono)
+    - Body paragraph + code block examples for readability preview
+
+  **Tab 3: Components** (ComponentGallery.tsx)
+    - Live interactive gallery of ALL UI components the project uses:
+      - Buttons: all variants × sizes, rendered live
+      - Inputs: text, select, textarea with states (default, focus, error, disabled)
+      - Cards: all variants with example content
+      - Badges: status/role/model badges with all colour options
+      - Modals/Dialogs: example with open button
+      - Tables: sample data with sorting
+      - Toasts: success, error, warning examples
+      - Navigation: sidebar, breadcrumbs, tabs
+      - Loading states: skeleton, spinner, progress bar
+    - Component hierarchy diagram (Atoms → Molecules → Organisms)
+    - Component status matrix: designed/built/planned with Badges
+
+  **Tab 4: Screens** (ScreenInventory.tsx)
+    - Grid of ALL application screens as visual Cards
+    - Each Card: screen name, route, description, wireframe preview
+    - Grouped: Public, Authenticated, Admin, Modal, Error screens
+    - Click → expanded view with:
+      - ASCII wireframe in styled <pre> (monospace)
+      - Screen states: loading, empty, error, populated
+      - User flows involving this screen
+      - Components used on this screen
+    - **Screen navigation map**: visual flow diagram showing screen connections
+      (React Flow or simple graph: screen → screen transitions)
+    - Screen state matrix: shadcn/ui Table with screens × states
+
+  **Tab 5: Spacing & Layout** (SpacingScale.tsx)
+    - Visual spacing scale: 4px → 64px shown as coloured bars with labels
+    - Border radius scale: sm → full with rendered examples
+    - Shadow scale: sm → xl with Card examples
+    - Responsive grid system preview
+    - Breakpoint visualizer: mobile / tablet / desktop layout examples
+
+  **Tab 6: Icons & Assets** (IconLibrary.tsx)
+    - Grid of all project icons (lucide-react) with search
+    - Grouped by: navigation, actions, status, content
+    - Click icon → copy import code
+    - Size comparison: xs → xl side by side
+
+  **Tab 7: Accessibility** (AccessibilityMatrix.tsx)
+    - WCAG 2.1 AA checklist as interactive checkboxes
+    - Contrast ratio checker between any two palette colours
+    - Keyboard navigation map
+    - ARIA label requirements per component
+    - Reduced motion behaviour summary
+
+  Design System MUST be the SECOND item in sidebar navigation (after Dashboard).
+  Stakeholders review design before development starts.
 
 Specs ("/specs"):
   - 10 shadcn/ui Card components in responsive grid (2 col md, 3 col lg)
@@ -2325,7 +2413,7 @@ viewer/src/data/
 │                                 #     stateMachines: [{ entity, states: [...], transitions: [...] }]
 │                                 #   }
 │
-├── metrics.json                  # NEW — Project metrics for dashboard:
+├── metrics.json                  # Project metrics for dashboard:
 │                                 #   {
 │                                 #     velocity: [{ sprint, points }],
 │                                 #     modelDistribution: { haiku: N, sonnet: N, opus: N },
@@ -2333,12 +2421,38 @@ viewer/src/data/
 │                                 #     burndown: [{ date, remaining }]
 │                                 #   }
 │
+├── design-system.json            # Structured design system data for visual rendering:
+│                                 #   {
+│                                 #     colors: {
+│                                 #       primary, secondary, success, warning, error, info,
+│                                 #       neutrals: [{ name, hex, usage }],
+│                                 #       semantic: [{ usage, colorRef }]
+│                                 #     },
+│                                 #     typography: {
+│                                 #       scale: [{ level, family, size, weight, lineHeight }]
+│                                 #     },
+│                                 #     spacing: [{ name, px, rem }],
+│                                 #     radii: [{ name, px }],
+│                                 #     shadows: [{ name, value }],
+│                                 #     components: [{ name, category, variants, status }],
+│                                 #     screens: [{
+│                                 #       name, route, category, description, wireframe,
+│                                 #       states: ['loading','empty','error','populated'],
+│                                 #       componentsUsed: [...]
+│                                 #     }],
+│                                 #     screenFlow: { nodes: [...], edges: [...] },
+│                                 #     breakpoints: [{ name, minWidth, columns, behavior }],
+│                                 #     icons: [{ name, category, usage }],
+│                                 #     accessibility: { wcagLevel, checklist: [{ item, status }] }
+│                                 #   }
+│
 └── requirements.md               # Original SRS/PRD input documents
 
 Import strategy:
 - Use Vite's ?raw import for .md files so they are embedded at build time
 - For .json files, use standard import
-- Generate architecture.json and flows.json by parsing the markdown files
+- Generate architecture.json, flows.json, and design-system.json by parsing markdown
+- design-system.json is parsed from specs/10_ui_designer.md + docs/ui-design-system/
 - These JSON files enable the visual diagram rendering (not just text)
 
 JSON Generation Rules:
@@ -2370,6 +2484,12 @@ VIEWER-SPECIFIC QUALITY GATES (all must pass):
   ✓ Dashboard page has at LEAST 3 different Recharts charts visible
   ✓ Dashboard page has animated stat counter Cards
   ✓ Dashboard page has a clickable mini architecture diagram
+  ✓ Design System page EXISTS with 7 tabs (colours, typography, components,
+    screens, spacing, icons, accessibility)
+  ✓ Design System page renders live colour swatches (not just hex text)
+  ✓ Design System page renders live interactive component examples
+  ✓ Design System page shows screen inventory with wireframe previews
+  ✓ Design System is the SECOND item in sidebar (after Dashboard)
   ✓ Specs page shows a visual Card grid (not a text list)
   ✓ Docs page shows folder Cards with file count Badges
   ✓ Backlog page has BOTH kanban board view AND table view
@@ -2379,7 +2499,7 @@ VIEWER-SPECIFIC QUALITY GATES (all must pass):
   ✓ Flows page has visual diagrams (NOT just markdown text)
   ✓ Every page has at least one interactive/visual element beyond text
   ✓ Dark theme is the default with proper contrast ratios
-  ✓ Sidebar navigation links to all 9 pages and works correctly
+  ✓ Sidebar navigation links to all 10 pages and works correctly
   ✓ The app looks like a premium SaaS dashboard, NOT a markdown reader
 
 ══════════════════════════════════════════════════════════════

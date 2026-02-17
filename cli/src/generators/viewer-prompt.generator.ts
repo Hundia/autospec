@@ -166,12 +166,23 @@ viewer/
 │   │   │   ├── LayerDiagram.tsx         # Backend layer visualization
 │   │   │   └── DiagramExport.tsx        # Export PNG/SVG
 │   │   │
+│   │   ├── design-system/          # Design System showcase components
+│   │   │   ├── ColorPalette.tsx         # Interactive colour swatch grid
+│   │   │   ├── TypographyScale.tsx      # Font scale + weight showcase
+│   │   │   ├── SpacingScale.tsx         # Visual spacing/sizing reference
+│   │   │   ├── ComponentGallery.tsx     # Live rendered component examples
+│   │   │   ├── ScreenInventory.tsx      # Screen wireframes / mockups gallery
+│   │   │   ├── IconLibrary.tsx          # Icon grid with search
+│   │   │   ├── ResponsivePreview.tsx    # Breakpoint visualizer
+│   │   │   └── AccessibilityMatrix.tsx  # A11y compliance checklist
+│   │   │
 │   │   └── ui/                     # shadcn/ui components (auto-generated)
 │   │       # Use: npx shadcn@latest add button card badge tabs ...
 │   │       # All primitives come from shadcn/ui — do NOT build custom ones
 │   │
 │   ├── pages/
 │   │   ├── DashboardPage.tsx       # "/"  — project overview with charts
+│   │   ├── DesignSystemPage.tsx    # "/design-system" — FULL design system showcase
 │   │   ├── SpecsPage.tsx           # "/specs" — card grid + detail viewer
 │   │   ├── DocsPage.tsx            # "/docs" — folder tree + doc viewer
 │   │   ├── BacklogPage.tsx         # "/backlog" — kanban + charts + table
@@ -277,7 +288,95 @@ This is the landing page. It must look like an executive project dashboard.
   - **MiniArchitecture**: Clickable mini system diagram → /architecture
   - CTA buttons: "View Workflows", "View Backlog" with counts
 
-### 3.2 Specs  ("/specs" and "/specs/:slug")
+### 3.2 Design System  ("/design-system")  — VISUAL DESIGN SHOWCASE
+
+╔══════════════════════════════════════════════════════════════════╗
+║  THIS PAGE IS CRITICAL. It must prove to stakeholders that the  ║
+║  entire project's visual identity, components, screens, and     ║
+║  UX patterns are fully designed BEFORE development begins.      ║
+║  It is an interactive, visual catalogue — NOT rendered markdown. ║
+╚══════════════════════════════════════════════════════════════════╝
+
+  Parse data from: specs/10_ui_designer.md + docs/ui-design-system/ files
+  + design-system.json for structured rendering.
+
+  shadcn/ui Tabs navigation across sections:
+
+  **Tab 1: Colour Palette** (ColorPalette.tsx)
+    - Render every project colour as a large interactive swatch card
+    - Primary, Secondary, Success, Warning, Error, Info, Neutral shades
+    - Each swatch: hex code, CSS variable name, Tailwind class, copy-on-click
+    - WCAG contrast ratio displayed next to each colour (against bg and text)
+    - Dark mode and light mode side-by-side comparison
+    - Semantic colour usage map: "which colour is used where" (e.g., primary
+      → buttons, links, focus rings; error → validation, alerts, destructive)
+
+  **Tab 2: Typography** (TypographyScale.tsx)
+    - Live rendered type scale: H1 → H2 → H3 → H4 → Body → Small → Caption
+    - Each level: font family, weight, size (px + rem), line height, letter spacing
+    - Rendered with actual project fonts (Inter / JetBrains Mono)
+    - Example paragraph for body text readability
+    - Code block example with monospace font
+
+  **Tab 3: Components** (ComponentGallery.tsx)
+    - Live interactive gallery of ALL UI components the project will use:
+      - Buttons: all variants (default, outline, ghost, destructive) × sizes
+      - Inputs: text, select, textarea with states (default, focus, error, disabled)
+      - Cards: all card variants with example content
+      - Badges: status badges, role badges, model badges with all colours
+      - Modals/Dialogs: example dialog with open button
+      - Tables: sample data table with sorting headers
+      - Toasts/Notifications: success, error, warning examples
+      - Navigation: sidebar, breadcrumbs, tabs examples
+      - Loading states: skeleton, spinner, progress bar
+    - Component hierarchy diagram (Atoms → Molecules → Organisms)
+    - Component status matrix: designed/in-progress/planned with Badges
+
+  **Tab 4: Screens** (ScreenInventory.tsx)
+    - Grid of ALL application screens as visual cards
+    - Each card: screen name, route path, description, wireframe preview
+    - Group by: Public screens, Authenticated screens, Admin screens,
+      Modal screens, Error screens
+    - Click a card → expanded view showing:
+      - ASCII wireframe (rendered in styled <pre> with monospace font)
+      - Screen states: loading, empty, error, populated
+      - Key interactions / user flows that involve this screen
+      - Which components are used on this screen
+    - Screen navigation map: visual flow diagram showing how screens connect
+      (use React Flow or a simple graph to show screen → screen transitions)
+    - Screen state matrix: shadcn/ui Table with all screens × all states
+
+  **Tab 5: Spacing & Layout** (SpacingScale.tsx)
+    - Visual spacing scale: 4px → 8px → 12px → 16px → 24px → 32px → 48px → 64px
+      shown as coloured bars with pixel/rem labels
+    - Border radius scale: sm → md → lg → full with rendered examples
+    - Shadow scale: sm → md → lg → xl with Card examples
+    - Grid system: responsive column layout preview
+    - Breakpoint visualizer: show layout at mobile / tablet / desktop / large
+      with approximate content rearrangement preview
+
+  **Tab 6: Icons & Assets** (IconLibrary.tsx)
+    - Grid of ALL icons used in the project (from lucide-react)
+    - Grouped by category: navigation, actions, status, content, social
+    - Search/filter functionality
+    - Click icon → copy import code
+    - Icon sizes: xs → sm → md → lg → xl shown side by side
+    - Asset guidelines: image sizes, formats, optimisation rules
+
+  **Tab 7: Accessibility** (AccessibilityMatrix.tsx)
+    - WCAG 2.1 AA compliance checklist rendered as interactive checklist
+    - Contrast ratio checker: test any two colours from the palette
+    - Keyboard navigation map: which keys do what
+    - Focus management rules
+    - ARIA label requirements per component
+    - Screen reader testing checklist
+    - Reduced motion behaviour summary
+
+  Sidebar navigation shows "Design System" as a TOP-LEVEL item (not nested
+  under Docs). It should be the SECOND item after Dashboard, because
+  stakeholders need to review the design system before development.
+
+### 3.3 Specs  ("/specs" and "/specs/:slug")
 
 List view:
   - shadcn/ui Card grid: 2-col md, 3-col lg
@@ -293,7 +392,7 @@ Detail view ("/specs/:slug"):
   - JSON blocks → syntax highlighted with copy button
   - "Back to all specs" breadcrumb with shadcn/ui components
 
-### 3.3 Docs  ("/docs" and "/docs/:section/:slug")
+### 3.4 Docs  ("/docs" and "/docs/:section/:slug")
 
 Top-level view:
   - Card grid showing each doc folder as a visual card
@@ -303,7 +402,7 @@ Top-level view:
 
 Detail view: Same rendering as Specs detail (Markdown + code + diagrams)
 
-### 3.4 Backlog  ("/backlog")  — DATA-RICH INTERACTIVE PAGE
+### 3.5 Backlog  ("/backlog")  — DATA-RICH INTERACTIVE PAGE
 
   THIS PAGE MUST BE HIGHLY VISUAL, not just a text table.
 
@@ -336,7 +435,7 @@ Detail view: Same rendering as Specs detail (Markdown + code + diagrams)
   - Filters bar: status, owner, model (using shadcn/ui Select)
   - Search: instant filter with input highlighting
 
-### 3.5 Workflows  ("/workflows")  ← ANIMATED GRAPH
+### 3.6 Workflows  ("/workflows")  ← ANIMATED GRAPH
 
   - Full-screen React Flow canvas (see Section 4 below)
   - Workflow selector dropdown (shadcn/ui Select) to switch between graphs
@@ -345,7 +444,7 @@ Detail view: Same rendering as Specs detail (Markdown + code + diagrams)
   - Export as PNG/SVG button
   - Left sidebar collapses automatically to maximise canvas
 
-### 3.6 Flows  ("/flows")  — VISUAL FLOW DIAGRAMS
+### 3.7 Flows  ("/flows")  — VISUAL FLOW DIAGRAMS
 
   - Flow selector (shadcn/ui Tabs or Select) to switch between:
     1. User Journey — horizontal swimlane diagram
@@ -358,7 +457,7 @@ Detail view: Same rendering as Specs detail (Markdown + code + diagrams)
   - Play/Pause controls
   - Export as PNG/SVG
 
-### 3.7 Architecture  ("/architecture")  — INTERACTIVE DIAGRAMS
+### 3.8 Architecture  ("/architecture")  — INTERACTIVE DIAGRAMS
 
   NOT just markdown. Must render actual visual diagrams.
 
@@ -374,7 +473,7 @@ Detail view: Same rendering as Specs detail (Markdown + code + diagrams)
   - Each tab: "View Source" toggle to show underlying markdown
   - Export diagrams as PNG/SVG
 
-### 3.8 Sprints  ("/sprints")  — SPRINT RESULTS
+### 3.9 Sprints  ("/sprints")  — SPRINT RESULTS
 
   - Sprint list with summary Cards
   - Per sprint: **Recharts PieChart** (completed vs remaining),
@@ -382,7 +481,7 @@ Detail view: Same rendering as Specs detail (Markdown + code + diagrams)
   - **Recharts LineChart**: Velocity across sprints
   - Compare view
 
-### 3.9 Requirements  ("/requirements")  — TRACEABILITY
+### 3.10 Requirements  ("/requirements")  — TRACEABILITY
 
   - Rendered SRS/PRD markdown
   - **Requirements Traceability Matrix**: shadcn/ui Table mapping
@@ -579,12 +678,16 @@ Workflow page toolbar includes:
   - Sprint filter dropdown (if metadata.sprint exists).
   - "Fit View" button: zooms to fit all nodes.
 
-Global sidebar navigation:
+Global sidebar navigation (in this exact order):
   - Dashboard
+  - Design System ← MUST be second (stakeholders review design before code)
   - Specs (expandable: lists all 10 specs)
+  - Docs (expandable: lists doc folders)
   - Backlog
   - Workflows
+  - Flows
   - Architecture
+  - Sprints
   - Requirements
 
 ────────────────────────────────────────────────────────
@@ -635,6 +738,24 @@ For data files (src/data/), generate COMPLETE realistic content:
     { userJourneys, authFlow, dataFlow, stateMachines }
   - metrics.json: computed from backlog.json with:
     { velocity, modelDistribution, coverage, burndown }
+  - design-system.json: parsed from specs/10_ui_designer.md +
+    docs/ui-design-system/ with:
+    {
+      colors: { primary, secondary, success, warning, error, info,
+                neutrals: [...], semantic: { usage → colour } },
+      typography: { scale: [{ level, family, size, weight, lineHeight }] },
+      spacing: [{ name, px, rem }],
+      radii: [{ name, px }],
+      shadows: [{ name, value }],
+      components: [{ name, category, variants, status }],
+      screens: [{ name, route, category, description, wireframe,
+                  states: ['loading','empty','error','populated'],
+                  componentsUsed: [...] }],
+      screenFlow: { nodes: [...], edges: [...] },
+      breakpoints: [{ name, minWidth, columns, behavior }],
+      icons: [{ name, category, usage }],
+      accessibility: { wcagLevel, checklist: [{ item, status }] }
+    }
   - requirements.md copied from the project root
 
 Setup instructions that MUST be included in package.json scripts:
@@ -660,6 +781,12 @@ Before considering the viewer complete, verify:
   ✓ Dashboard has at LEAST 3 Recharts charts (pie, bar, line or area)
   ✓ Dashboard has animated stat counter cards
   ✓ Dashboard has a clickable mini architecture diagram
+  ✓ Design System page EXISTS and has 7 tabs (colours, typography,
+    components, screens, spacing, icons, accessibility)
+  ✓ Design System page renders live colour swatches (not just text hex codes)
+  ✓ Design System page renders live component examples (buttons, inputs, cards)
+  ✓ Design System page shows screen inventory with wireframe previews
+  ✓ Design System page is the SECOND item in sidebar navigation (after Dashboard)
   ✓ Specs page shows a card grid with role icons (not a text list)
   ✓ Docs page shows folder cards with file count badges
   ✓ Backlog has BOTH kanban board view AND table view
@@ -669,7 +796,7 @@ Before considering the viewer complete, verify:
   ✓ All pages use shadcn/ui components (Card, Badge, Tabs, Table, etc.)
   ✓ Every page has at least one interactive/visual element beyond text
   ✓ Dark theme is the default with proper contrast
-  ✓ Sidebar navigation works for all 9 pages
+  ✓ Sidebar navigation works for all 10 pages
   ✓ Build succeeds with zero TypeScript errors
   ✓ The app is visually impressive — it looks like a premium dashboard
 
