@@ -1648,17 +1648,35 @@ The prompt must instruct the AI to:
 SECTION 7 — VIEWER / PROJECT MONITOR WEBSITE
 ══════════════════════════════════════════════════════════════
 
+╔══════════════════════════════════════════════════════════════════╗
+║  CRITICAL: The viewer is a FULL VISUAL WEBSITE — NOT a simple   ║
+║  markdown file reader. Every page MUST include interactive       ║
+║  charts, diagrams, animated components, and rich UI built with  ║
+║  shadcn/ui + Recharts. Think of it as an executive PRESENTATION ║
+║  of the entire project. If a page only renders raw markdown     ║
+║  text without visualizations, it is WRONG and must be redone.   ║
+╚══════════════════════════════════════════════════════════════════╝
+
 Generate a complete, self-contained React application in viewer/ that
-provides a visual dashboard for ALL generated artefacts (specs, docs,
-backlog, workflows).
+provides a visually impressive dashboard for ALL generated artefacts
+(specs, docs, backlog, workflows, architecture, flows, sprints).
 
 ### 7.1 Tech Stack
 
-  React 18 + TypeScript + Vite + Tailwind CSS + React Router
+  React 18 + TypeScript + Vite + Tailwind CSS v4 + React Router
+  shadcn/ui — complete component library (REQUIRED — do NOT build custom
+              UI primitives). Initialize:
+                npx shadcn@latest init -d
+                npx shadcn@latest add button card badge tabs dialog
+                tooltip table dropdown-menu sheet separator select
+                command popover scroll-area toggle-group avatar
+  recharts — charts and data visualisation (REQUIRED for every data page):
+              PieChart, BarChart, LineChart, AreaChart, RadarChart
   @xyflow/react (React Flow v12) — workflow graph visualisation
   framer-motion — panel transitions ONLY (NOT for mass edge animation)
-  lucide-react — icons
+  lucide-react — icons (used by shadcn/ui)
   react-markdown + remark-gfm — Markdown rendering
+  react-syntax-highlighter — code block highlighting
 
 ### 7.2 Project Structure
 
@@ -1691,13 +1709,14 @@ viewer/
 │   │
 │   ├── pages/
 │   │   ├── DashboardPage.tsx        # "/" — with visual charts
+│   │   ├── DesignSystemPage.tsx     # "/design-system" — FULL design system showcase
 │   │   ├── SpecsPage.tsx            # "/specs" + "/specs/:slug"
 │   │   ├── DocsPage.tsx             # "/docs" + "/docs/:section/:slug"
 │   │   ├── BacklogPage.tsx          # "/backlog" — kanban + charts
 │   │   ├── WorkflowsPage.tsx        # "/workflows" — animated flows
-│   │   ├── FlowsPage.tsx            # "/flows" — user/system flows (NEW)
+│   │   ├── FlowsPage.tsx            # "/flows" — user/system flows
 │   │   ├── ArchitecturePage.tsx     # "/architecture" — interactive diagrams
-│   │   ├── SprintsPage.tsx          # "/sprints" — sprint results (NEW)
+│   │   ├── SprintsPage.tsx          # "/sprints" — sprint results
 │   │   └── RequirementsPage.tsx     # "/requirements" — traceability matrix
 │   │
 │   ├── components/
@@ -1752,38 +1771,45 @@ viewer/
 │   │   │   ├── CloudDiagram.tsx          # Infrastructure visualization
 │   │   │   └── DiagramExport.tsx         # Export as PNG/SVG
 │   │   │
-│   │   ├── sprints/                 # NEW — Sprint results components
+│   │   ├── sprints/                 # Sprint results components
 │   │   │   ├── SprintSummaryCard.tsx     # Sprint overview card
 │   │   │   ├── SprintCompletionChart.tsx # Pie chart completion
 │   │   │   ├── QAResultsViewer.tsx       # Test results with badges
 │   │   │   ├── ReleaseNotesViewer.tsx    # Feature highlights
 │   │   │   └── VelocityChart.tsx         # Velocity over sprints
 │   │   │
+│   │   ├── design-system/          # Design System showcase components
+│   │   │   ├── ColorPalette.tsx         # Interactive colour swatch grid
+│   │   │   ├── TypographyScale.tsx      # Font scale + weight showcase
+│   │   │   ├── SpacingScale.tsx         # Visual spacing/sizing reference
+│   │   │   ├── ComponentGallery.tsx     # Live rendered component examples
+│   │   │   ├── ScreenInventory.tsx      # Screen wireframes / mockups gallery
+│   │   │   ├── IconLibrary.tsx          # Icon grid with search
+│   │   │   ├── ResponsivePreview.tsx    # Breakpoint visualizer
+│   │   │   └── AccessibilityMatrix.tsx  # A11y compliance checklist
+│   │   │
 │   │   ├── dashboard/
-│   │   │   ├── OverviewCards.tsx         # Stat cards with animations
-│   │   │   ├── ProgressRing.tsx          # SVG animated ring
-│   │   │   ├── SprintTimeline.tsx        # Timeline chart (NEW)
-│   │   │   ├── ModelDistribution.tsx     # Pie chart (NEW)
-│   │   │   ├── VelocityMini.tsx          # Mini velocity chart (NEW)
-│   │   │   ├── MiniArchitecture.tsx      # Clickable mini diagram (NEW)
-│   │   │   └── RecentTickets.tsx
+│   │   │   ├── OverviewCards.tsx         # Stat cards with AnimatedCounter
+│   │   │   ├── ProgressRing.tsx          # SVG animated circular progress
+│   │   │   ├── SprintTimeline.tsx        # Recharts BarChart (stacked)
+│   │   │   ├── ModelDistribution.tsx     # Recharts PieChart
+│   │   │   ├── VelocityMini.tsx          # Recharts LineChart
+│   │   │   ├── MiniArchitecture.tsx      # Clickable mini diagram → /arch
+│   │   │   └── RecentTickets.tsx         # shadcn/ui Table with Badges
 │   │   │
-│   │   ├── charts/                  # NEW — Reusable chart components
-│   │   │   ├── PieChart.tsx
-│   │   │   ├── BarChart.tsx
-│   │   │   ├── LineChart.tsx
-│   │   │   ├── ProgressBar.tsx
-│   │   │   └── AnimatedCounter.tsx
+│   │   ├── charts/                  # Reusable Recharts wrappers
+│   │   │   ├── PieChart.tsx              # Recharts PieChart wrapper
+│   │   │   ├── BarChart.tsx              # Recharts BarChart wrapper
+│   │   │   ├── LineChart.tsx             # Recharts LineChart wrapper
+│   │   │   ├── AreaChart.tsx             # Recharts AreaChart wrapper
+│   │   │   ├── ProgressBar.tsx           # Animated progress bar
+│   │   │   └── AnimatedCounter.tsx       # Count-up number animation
 │   │   │
-│   │   └── ui/
-│   │       ├── Button.tsx
-│   │       ├── Badge.tsx
-│   │       ├── Card.tsx
-│   │       ├── Toggle.tsx
-│   │       ├── Tooltip.tsx
-│   │       ├── Tabs.tsx             # Tab navigation (NEW)
-│   │       ├── Dropdown.tsx         # Selector dropdown (NEW)
-│   │       └── ExportButton.tsx     # Export functionality (NEW)
+│   │   └── ui/                      # shadcn/ui components (auto-generated)
+│   │       # Generated by: npx shadcn@latest add button card badge tabs
+│   │       # dialog tooltip table dropdown-menu sheet separator select
+│   │       # command popover scroll-area toggle-group avatar
+│   │       # Do NOT build custom UI primitives — use shadcn/ui
 │   │
 │   ├── hooks/
 │   │   ├── useAnimationEngine.ts    # Central animation state
@@ -1805,9 +1831,11 @@ viewer/
 ├── tsconfig.json
 └── package.json
 
-### 7.3 Design System (Dark Theme)
+### 7.3 Design System (shadcn/ui Dark Theme)
 
-Colours:
+Use shadcn/ui "new-york" style. Configure dark theme as default.
+
+Colours (CSS variables for shadcn/ui):
   --bg:           #0f172a   (slate-950)
   --surface:      #1e293b   (slate-800)
   --surface-2:    #334155   (slate-700)
@@ -1821,207 +1849,297 @@ Colours:
   --error:        #ef4444   (red-500)
   --info:         #06b6d4   (cyan-500)
 
+Recharts theme (use consistently across ALL charts):
+  CHART_COLORS = ['#3b82f6', '#a855f7', '#10b981', '#f59e0b',
+                   '#ef4444', '#06b6d4', '#ec4899', '#8b5cf6']
+
 Typography: Inter (headings 600–700, body 400), JetBrains Mono (code)
 Base: 16 px, scale: 1.25
 Spacing: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 px
 Radii: sm 6, md 10, lg 16, full 9999
 
+Component rules (MANDATORY):
+  - ALL buttons → shadcn/ui <Button> (never custom)
+  - ALL cards → shadcn/ui <Card> with CardHeader, CardContent, CardFooter
+  - ALL badges → shadcn/ui <Badge> (variant: default, secondary, destructive, outline)
+  - ALL tabs → shadcn/ui <Tabs> with TabsList, TabsTrigger, TabsContent
+  - ALL tables → shadcn/ui <Table> with proper header/body/row/cell
+  - ALL tooltips → shadcn/ui <Tooltip>
+  - ALL dropdowns → shadcn/ui <Select> or <DropdownMenu>
+  - ALL charts → Recharts with CHART_COLORS theme
+  - NEVER build custom UI primitives — use shadcn/ui for everything
+
 ### 7.4 Pages
 
-**CRITICAL: The viewer must VISUALIZE data, not just render markdown. Each page
-should include interactive diagrams, charts, and animations where applicable.**
+╔══════════════════════════════════════════════════════════════════╗
+║  VISUAL MANDATE: Every page MUST include at least ONE of:       ║
+║  - A Recharts chart (PieChart, BarChart, LineChart, AreaChart)  ║
+║  - An interactive diagram (React Flow graph / SVG diagram)      ║
+║  - A data-rich shadcn/ui Card grid with Badges + progress bars  ║
+║  - An interactive shadcn/ui Table with filters and sorting      ║
+║  Pages that are ONLY text/markdown rendering are NOT acceptable.║
+║  The viewer must look like a premium SaaS dashboard product.    ║
+╚══════════════════════════════════════════════════════════════════╝
 
 Dashboard ("/"):
-  - Project name, description, tech stack badges with icons
-  - **VISUAL: Animated sprint progress ring** (SVG ring that fills based on completion %)
-  - **VISUAL: Sprint timeline chart** showing all sprints with status colours
-  - Stat cards with animated counters: total tickets, done, in-progress, blocked
-  - **VISUAL: Velocity chart** (if multiple sprints completed)
-  - **VISUAL: Model distribution pie chart** (haiku/sonnet/opus usage)
-  - Top 5 in-progress tickets with progress indicators
-  - Quick-links grid to ALL 10 specs with role icons
-  - Quick-links grid to ALL doc folders with folder icons
-  - **VISUAL: Mini architecture diagram** (clickable, links to /architecture)
-  - "View Workflows" and "View Backlog" CTAs with ticket counts
+  THIS IS THE FIRST PAGE USERS SEE — it must be visually stunning.
+
+  REQUIRED visual components (ALL must be present):
+  - Project name as large heading + description + tech stack shadcn/ui Badges
+  - **Recharts PieChart**: Sprint completion (done vs remaining tickets)
+  - **SVG ProgressRing**: Animated circular progress (% overall completion)
+  - **Recharts BarChart**: Tickets per sprint (stacked by status: done/progress/todo)
+  - **Recharts LineChart**: Velocity trend line (points completed per sprint)
+  - **Recharts PieChart**: Model distribution (haiku=green, sonnet=blue, opus=purple)
+  - **AnimatedCounter** shadcn/ui Cards: Total Tickets, Done, In Progress,
+    QA Review, Blocked — each with icon, count-up animation, and colour
+  - **shadcn/ui Table**: Top 5 in-progress tickets with status Badges
+  - Quick-links grid: 10 shadcn/ui Cards for specs (role icon + title)
+  - Quick-links grid: doc folder Cards (folder icon + file count Badge)
+  - **MiniArchitecture**: Clickable mini system diagram → links to /architecture
+  - CTA Buttons: "View Workflows", "View Backlog" with ticket count Badges
+
+Design System ("/design-system") — **VISUAL DESIGN SHOWCASE**:
+  ╔══════════════════════════════════════════════════════════╗
+  ║  THIS PAGE IS CRITICAL. It must prove to stakeholders   ║
+  ║  that the project's visual identity, components,        ║
+  ║  screens, and UX patterns are fully designed BEFORE     ║
+  ║  development begins. It is an interactive visual        ║
+  ║  catalogue — NOT rendered markdown text.                ║
+  ╚══════════════════════════════════════════════════════════╝
+
+  Data sources: specs/10_ui_designer.md + docs/ui-design-system/ + design-system.json
+
+  shadcn/ui Tabs navigation across 7 sections:
+
+  **Tab 1: Colour Palette** (ColorPalette.tsx)
+    - Every project colour rendered as large interactive swatch Cards
+    - Groups: Primary, Secondary, Success, Warning, Error, Info, Neutrals
+    - Each swatch: hex code, CSS variable name, Tailwind class, copy-on-click
+    - WCAG contrast ratio displayed per colour (against bg and text)
+    - Dark/light mode side-by-side comparison
+    - Semantic usage map: "primary → buttons, links; error → validation, alerts"
+
+  **Tab 2: Typography** (TypographyScale.tsx)
+    - Live rendered type scale: H1 → H2 → H3 → H4 → Body → Small → Caption
+    - Each level: font family, weight, size (px + rem), line height
+    - Rendered with actual project fonts (Inter / JetBrains Mono)
+    - Body paragraph + code block examples for readability preview
+
+  **Tab 3: Components** (ComponentGallery.tsx)
+    - Live interactive gallery of ALL UI components the project uses:
+      - Buttons: all variants × sizes, rendered live
+      - Inputs: text, select, textarea with states (default, focus, error, disabled)
+      - Cards: all variants with example content
+      - Badges: status/role/model badges with all colour options
+      - Modals/Dialogs: example with open button
+      - Tables: sample data with sorting
+      - Toasts: success, error, warning examples
+      - Navigation: sidebar, breadcrumbs, tabs
+      - Loading states: skeleton, spinner, progress bar
+    - Component hierarchy diagram (Atoms → Molecules → Organisms)
+    - Component status matrix: designed/built/planned with Badges
+
+  **Tab 4: Screens** (ScreenInventory.tsx)
+    - Grid of ALL application screens as visual Cards
+    - Each Card: screen name, route, description, wireframe preview
+    - Grouped: Public, Authenticated, Admin, Modal, Error screens
+    - Click → expanded view with:
+      - ASCII wireframe in styled <pre> (monospace)
+      - Screen states: loading, empty, error, populated
+      - User flows involving this screen
+      - Components used on this screen
+    - **Screen navigation map**: visual flow diagram showing screen connections
+      (React Flow or simple graph: screen → screen transitions)
+    - Screen state matrix: shadcn/ui Table with screens × states
+
+  **Tab 5: Spacing & Layout** (SpacingScale.tsx)
+    - Visual spacing scale: 4px → 64px shown as coloured bars with labels
+    - Border radius scale: sm → full with rendered examples
+    - Shadow scale: sm → xl with Card examples
+    - Responsive grid system preview
+    - Breakpoint visualizer: mobile / tablet / desktop layout examples
+
+  **Tab 6: Icons & Assets** (IconLibrary.tsx)
+    - Grid of all project icons (lucide-react) with search
+    - Grouped by: navigation, actions, status, content
+    - Click icon → copy import code
+    - Size comparison: xs → xl side by side
+
+  **Tab 7: Accessibility** (AccessibilityMatrix.tsx)
+    - WCAG 2.1 AA checklist as interactive checkboxes
+    - Contrast ratio checker between any two palette colours
+    - Keyboard navigation map
+    - ARIA label requirements per component
+    - Reduced motion behaviour summary
+
+  Design System MUST be the SECOND item in sidebar navigation (after Dashboard).
+  Stakeholders review design before development starts.
 
 Specs ("/specs"):
-  - 10 spec cards in responsive grid (2 col md, 3 col lg)
-  - Card: animated role icon, title, excerpt, word count badge, reading time
-  - **VISUAL: Spec completion indicator** (sections covered vs total)
+  - 10 shadcn/ui Card components in responsive grid (2 col md, 3 col lg)
+  - Each Card: lucide-react role icon, title, description excerpt,
+    Badge (word count), Badge (reading time), hover animation
+  - **VISUAL: ProgressBar** per spec (sections covered vs total)
   - Must render ALL 10 specs with consistent styling
-  - Detail ("/specs/:slug"): full Markdown with:
-    - Sticky TOC auto-generated from ## headings
-    - **VISUAL: Mermaid diagram rendering** (if spec contains ```mermaid blocks)
-    - **VISUAL: ASCII diagrams in styled <pre>** with syntax highlighting
-    - **VISUAL: JSON/code blocks** with copy button and syntax highlighting
-    - Reading progress bar at top
-  - "Back to all specs" breadcrumb
+  - Detail ("/specs/:slug"): full Markdown rendered with:
+    - Sticky TOC sidebar (auto-generated from ## headings, scrollspy active)
+    - **VISUAL: Reading progress bar** at top (scroll-based)
+    - **VISUAL: Mermaid diagram rendering** (if spec contains mermaid blocks)
+    - **VISUAL: Code blocks** with react-syntax-highlighter + copy Button
+    - Breadcrumb navigation with shadcn/ui components
 
 Docs ("/docs"):
-  - Nested tree navigation with expand/collapse animations
-  - Top-level cards per folder with file count badge and preview icons:
-    📁 architecture/ (8 files)  — WITH mini diagram preview
-    📁 flows/ (6 files)         — WITH animated flow preview (NEW)
-    📁 workflows/ (8 files)     — WITH process preview
-    📁 environments/ (5 files)  — WITH env comparison table preview
-    📁 api/ (5 files)           — WITH endpoint count badge
-    📁 testing/ (6 files)       — WITH test pyramid preview
-    📁 ui-design-system/ (6 files) — WITH colour swatch preview
-    📁 project/ (4 files)       — WITH structure preview
-  - **VISUAL: Each doc card shows a mini visual preview** (not just text)
-  - Detail ("/docs/:section/:slug"): full Markdown with:
-    - **VISUAL: Mermaid diagrams rendered** (flowcharts, sequence diagrams, ERD)
-    - **VISUAL: Tables styled** with alternating rows and sorting
-    - **VISUAL: Code blocks** with syntax highlighting and copy
+  - shadcn/ui Card grid showing each doc folder as a visual tile
+  - Each Card: lucide-react folder icon, folder name, file count Badge,
+    mini visual preview (not just text — show a small icon/illustration)
+  - Cards for:
+    📁 architecture/ — mini diagram icon
+    📁 flows/ — mini flow arrow icon
+    📁 workflows/ — mini process icon
+    📁 environments/ — server icon
+    📁 api/ — endpoint count Badge
+    📁 testing/ — test pyramid icon
+    📁 ui-design-system/ — colour swatch preview
+    📁 project/ — folder tree icon
+  - Nested tree navigation with expand/collapse (shadcn/ui Collapsible)
+  - Detail ("/docs/:section/:slug"): full Markdown rendered with:
+    - **VISUAL: Mermaid diagrams rendered** (flowcharts, sequence, ERD)
+    - **VISUAL: Tables** using shadcn/ui Table with alternating rows
+    - **VISUAL: Code blocks** with react-syntax-highlighter + copy Button
     - Breadcrumb: Docs > Architecture > Security
 
-Flows ("/flows") — **NEW VISUAL PAGE**:
-  **This page visualizes ALL user and system flows as interactive diagrams.**
+Flows ("/flows") — **VISUAL FLOW DIAGRAMS (NOT MARKDOWN)**:
+  ╔══════════════════════════════════════════════════════════╗
+  ║  This page must show VISUAL DIAGRAMS for each flow.     ║
+  ║  Use React Flow, SVG, or structured node layouts.       ║
+  ║  Do NOT just render the markdown files as text.         ║
+  ╚══════════════════════════════════════════════════════════╝
 
-  - **VISUAL: User Journey Visualizer**
-    - Parse docs/flows/user-journeys.md
-    - Render as horizontal swimlane diagram
-    - Each step is a clickable node
-    - Animate user movement through journey on hover/play
-    - Show persona icon at start
+  shadcn/ui Tabs or Select to switch between flow types:
 
-  - **VISUAL: Authentication Flow Diagram**
-    - Parse docs/flows/authentication-flow.md
-    - Render as animated sequence diagram
-    - Show request/response arrows between Client, API, DB
-    - Token lifecycle visualization
-    - Animate on play button
+  - **User Journey**: Horizontal swimlane diagram with clickable step nodes,
+    persona icon at start, animated progression on play
+  - **Authentication Flow**: Sequence diagram with request/response arrows
+    between Client, API, DB; token lifecycle visualization
+  - **Core Features Flow**: Multi-lane process diagram showing main feature
+    workflows; clickable nodes link to relevant specs
+  - **Data Flow**: React Flow graph with colour-coded data type nodes
+  - **Error Handling**: Decision tree with severity colours
+    (warning=yellow, error=red, fatal=dark red)
+  - **State Transitions**: State machine diagram with clickable current state
+    and animated transition edges
 
-  - **VISUAL: Core Features Flow**
-    - Parse docs/flows/core-features-flow.md
-    - Render as multi-lane process flow diagram
-    - Show main feature workflows extracted from SRS
-    - Clickable nodes link to relevant specs
-
-  - **VISUAL: Data Flow Diagram**
-    - Parse docs/flows/data-flow.md
-    - Render as React Flow graph
-    - Show data moving between components
-    - Colour-coded by data type
-
-  - **VISUAL: Error Handling Flow**
-    - Parse docs/flows/error-handling-flow.md
-    - Render as decision tree diagram
-    - Show error types, propagation paths, recovery actions
-    - Colour-coded by severity (warning=yellow, error=red, fatal=dark red)
-
-  - **VISUAL: State Transition Diagrams**
-    - Parse docs/flows/state-transitions.md
-    - Render as state machine diagrams
-    - Highlight current state on click
-    - Show valid transitions as animated edges
-
-  Flow selector dropdown to switch between flows
   Play/Pause controls for animations
-  Export as PNG/SVG button
+  Export as PNG/SVG via shadcn/ui Button
 
 Backlog ("/backlog"):
-  THIS IS THE MOST CRITICAL DATA PAGE — fully interactive board with visuals.
+  THIS IS THE MOST DATA-RICH PAGE — must be highly visual and interactive.
 
-  - **VISUAL: Kanban Board View** (drag-disabled, display only)
-    - Columns: Todo | In Progress | QA Review | Done | Blocked
-    - Cards show ticket summary, owner badge, model badge
-    - Column headers show count and total points
+  Top section (always visible, above the fold):
+  - **Recharts BarChart**: Tickets by status per sprint (stacked bars)
+  - **Recharts PieChart**: Overall status distribution
+  - **AnimatedCounter** shadcn/ui Cards: Total, Done, In Progress, Blocked
+  - **ProgressBar**: Overall project completion with animated fill
 
-  - **VISUAL: Sprint Burndown Chart** (per sprint tab)
-    - X-axis: time/tickets, Y-axis: remaining points
-    - Ideal line vs actual progress
+  Main content (shadcn/ui Tabs):
 
-  - **VISUAL: Sprint Progress Bar** (animated fill)
+  **Tab 1: Kanban Board** (default view, drag-disabled display only):
+    - 5 columns: Todo | In Progress | QA Review | Done | Blocked
+    - Each column: header with count Badge, point total
+    - shadcn/ui Cards per ticket: title, owner Avatar/Badge, model Badge
+      (haiku=green, sonnet=blue, opus=purple), points, dependency indicator
+    - Column colour coding matching status
 
-  - Tab per sprint (Sprint 0, 1, 2, …) with visual indicators
-  - Per-sprint header: goal, points, animated progress bar
-  - Table view with:
-    - Status badges colour-coded with icons:
-      🔲 todo = slate, 🔄 in-progress = blue pulse, 🧪 qa = purple, ✅ done = emerald, ⏸️ blocked = red
-    - Owner badges with role icons
-    - Model badges (haiku=green, sonnet=blue, opus=purple)
-    - Dependency links (clickable to jump to ticket)
-  - Filters: status, owner, model (with badge previews)
-  - Search: instant filter with highlight
-  - Overall stats: animated counters
-  - Bug Backlog tab with severity colour badges
-  - Click ticket → DetailsPanel with full info + dependency graph
+  **Tab 2: Sprint Table** (per-sprint view):
+    - Sprint selector using shadcn/ui Tabs (Sprint 0, 1, 2, …)
+    - Per-sprint: goal text, **animated ProgressBar**, points summary
+    - shadcn/ui Table with sortable columns:
+      - Status Badge (colour-coded):
+        🔲 todo=slate, 🔄 in-progress=blue, 🧪 qa=purple,
+        ✅ done=emerald, ⏸️ blocked=red
+      - Owner Badge with role colour
+      - Model Badge (haiku=green, sonnet=blue, opus=purple)
+      - Points column
+      - Dependency links (clickable)
+    - **Recharts LineChart**: Sprint burndown (ideal vs actual line)
+
+  - Filter bar: shadcn/ui Select for status, owner, model
+  - Search: instant filter with debounced input
+  - Bug Backlog tab with severity colour Badges
+  - Click ticket → Sheet/DetailsPanel with full info + dependency graph
 
 Workflows ("/workflows"):
-  - Full-screen React Flow canvas (see Section 7.5)
-  - **VISUAL: Multiple workflow graphs** selectable via dropdown:
+  - Full-screen React Flow canvas (see Section 7.5 for animation details)
+  - **VISUAL: Multiple workflow graphs** selectable via shadcn/ui Select:
     1. Feature Development Flow
     2. Sprint Execution Flow
     3. System Request Lifecycle
     4. CI/CD Pipeline (with parallel lanes)
     5. Authentication Flow
     6. Project-specific user flows
-  - Top toolbar: animation controls + search + workflow selector
-  - **VISUAL: Animated edges** showing data/process flow
-  - **VISUAL: Node highlighting** on hover with info tooltip
+  - Top toolbar: AnimationController + search + workflow selector
+  - **VISUAL: Animated edges** (CSS stroke-dasharray animation)
+  - **VISUAL: Node highlighting** on hover with shadcn/ui Tooltip
   - Bottom-right: legend overlay (collapsible)
-  - Export graph as PNG/SVG
+  - Export graph as PNG/SVG via shadcn/ui Button
 
-Architecture ("/architecture") — **ENHANCED WITH VISUALS**:
-  **Must show diagrams, not just markdown text.**
+Architecture ("/architecture") — **INTERACTIVE DIAGRAMS (NOT MARKDOWN)**:
+  ╔══════════════════════════════════════════════════════════╗
+  ║  This page must show VISUAL DIAGRAMS, not markdown text.║
+  ║  Use React Flow, SVG, or structured Card layouts.       ║
+  ╚══════════════════════════════════════════════════════════╝
 
-  - **VISUAL: System Architecture Diagram** (main view)
-    - Interactive diagram from docs/architecture/overview.md
-    - Components: Client, API Gateway, Services, Database, Cache, Queue
-    - Click component → show details panel
-    - Animated connection lines
+  shadcn/ui Tabs navigation between diagram types:
 
-  - **VISUAL: Database ERD**
-    - Parse docs/architecture/database.md
-    - Render actual ERD diagram (not just ASCII)
-    - Tables as boxes with columns
-    - Relationship lines with cardinality labels
-    - Click table → show schema details
+  **Tab 1: System Architecture** (default view)
+    - React Flow graph or structured SVG diagram
+    - Components as nodes: Client, API Gateway, Services, DB, Cache, Queue
+    - Connection lines between components
+    - Click component → shadcn/ui Sheet with details
 
-  - **VISUAL: Frontend Component Tree**
-    - Parse docs/architecture/frontend.md
-    - Render as collapsible tree diagram
-    - Show: App → Layouts → Pages → Components
+  **Tab 2: Database ERD**
+    - shadcn/ui Cards for each table (table name + columns listed)
+    - Relationship lines with cardinality labels (1:1, 1:N, N:M)
+    - Or React Flow graph with table nodes
+    - Click table → show full schema in Sheet
+
+  **Tab 3: Frontend Component Tree**
+    - Collapsible tree diagram or nested shadcn/ui Cards
+    - Show: App → Layouts → Pages → Components hierarchy
     - Click component → show props/state info
 
-  - **VISUAL: Backend Layer Diagram**
-    - Parse docs/architecture/backend.md
-    - Show: Routes → Middleware → Controllers → Services → Repositories → DB
-    - Animated request flow on play
+  **Tab 4: Backend Layers**
+    - Layered diagram: Routes → Middleware → Controllers → Services → DB
+    - Show request flow direction with arrows
+    - Animated flow on play button
 
-  - **VISUAL: Security Flow Diagram**
-    - Parse docs/architecture/security.md
-    - Show auth flow, token lifecycle, permission checks
+  **Tab 5: Security Flow**
+    - Auth flow diagram with token lifecycle
+    - Permission check flow
 
-  - **VISUAL: Cloud Infrastructure Diagram**
-    - Parse docs/architecture/cloud.md
-    - Show: VPC, subnets, services, load balancer
-    - Cloud provider icons (AWS/GCP/Azure)
-
-  - Tab navigation between diagrams
-  - Each tab also has "View Source" to see the markdown
+  - Each tab: "View Source" toggle to show raw markdown
   - Export diagrams as PNG/SVG
 
-Sprints ("/sprints") — **NEW PAGE FOR SPRINT RESULTS**:
+Sprints ("/sprints") — **SPRINT RESULTS WITH CHARTS**:
   View completed sprint documentation from sprints/ folder.
 
-  - List of completed sprints with status badges
+  - Sprint list as shadcn/ui Cards with status Badges
   - Per-sprint view shows:
-    - **VISUAL: Sprint Summary Card** with key metrics
-    - **VISUAL: Completion Chart** (pie: completed vs remaining)
-    - qa_result.md rendered with test result badges
-    - release_notes.md rendered with feature highlights
+    - **Recharts PieChart**: Completion (done vs remaining tickets)
+    - **shadcn/ui Card**: Sprint summary with key metric Badges
+    - qa_result.md rendered with test result Badges (pass/fail/skip)
+    - release_notes.md rendered with feature highlight Cards
     - summary.md rendered with retrospective insights
-  - Compare sprints view (velocity over time)
+  - **Recharts LineChart**: Velocity comparison across all sprints
 
 Requirements ("/requirements"):
-  - Renders original SRS/PRD as Markdown
+  - Rendered SRS/PRD markdown with syntax highlighting
   - **VISUAL: Requirements Traceability Matrix**
-    - Table mapping requirements → specs → tickets
-    - Colour-coded by implementation status
-  - Functional vs non-functional sections with colour badges
-  - **VISUAL: Coverage indicator** (% of requirements with tickets)
+    - shadcn/ui Table mapping: requirement → spec → ticket
+    - Status Badges colour-coded by implementation status
+  - Functional vs non-functional sections with shadcn/ui Badges
+  - **Recharts/ProgressBar**: Coverage (% of requirements with tickets)
 
 ### 7.5 Workflow Animation Engine
 
@@ -2161,7 +2279,14 @@ PERFORMANCE (>50 nodes or >80 edges):
 Generate these inside viewer/src/data/. The viewer must have access to
 EVERY SINGLE generated .md file so it can render them all.
 
-**CRITICAL: Include structured JSON files for visual rendering, not just markdown.**
+╔══════════════════════════════════════════════════════════════════╗
+║  CRITICAL: The JSON data files are what enable visual rendering.║
+║  Without properly structured JSON, the viewer can only show     ║
+║  markdown text — which defeats the entire purpose.              ║
+║  Every JSON file below MUST be generated with complete,         ║
+║  realistic data. This is what powers the charts, diagrams,      ║
+║  kanban boards, and interactive components.                     ║
+╚══════════════════════════════════════════════════════════════════╝
 
 viewer/src/data/
 ├── specs/
@@ -2288,7 +2413,7 @@ viewer/src/data/
 │                                 #     stateMachines: [{ entity, states: [...], transitions: [...] }]
 │                                 #   }
 │
-├── metrics.json                  # NEW — Project metrics for dashboard:
+├── metrics.json                  # Project metrics for dashboard:
 │                                 #   {
 │                                 #     velocity: [{ sprint, points }],
 │                                 #     modelDistribution: { haiku: N, sonnet: N, opus: N },
@@ -2296,12 +2421,38 @@ viewer/src/data/
 │                                 #     burndown: [{ date, remaining }]
 │                                 #   }
 │
+├── design-system.json            # Structured design system data for visual rendering:
+│                                 #   {
+│                                 #     colors: {
+│                                 #       primary, secondary, success, warning, error, info,
+│                                 #       neutrals: [{ name, hex, usage }],
+│                                 #       semantic: [{ usage, colorRef }]
+│                                 #     },
+│                                 #     typography: {
+│                                 #       scale: [{ level, family, size, weight, lineHeight }]
+│                                 #     },
+│                                 #     spacing: [{ name, px, rem }],
+│                                 #     radii: [{ name, px }],
+│                                 #     shadows: [{ name, value }],
+│                                 #     components: [{ name, category, variants, status }],
+│                                 #     screens: [{
+│                                 #       name, route, category, description, wireframe,
+│                                 #       states: ['loading','empty','error','populated'],
+│                                 #       componentsUsed: [...]
+│                                 #     }],
+│                                 #     screenFlow: { nodes: [...], edges: [...] },
+│                                 #     breakpoints: [{ name, minWidth, columns, behavior }],
+│                                 #     icons: [{ name, category, usage }],
+│                                 #     accessibility: { wcagLevel, checklist: [{ item, status }] }
+│                                 #   }
+│
 └── requirements.md               # Original SRS/PRD input documents
 
 Import strategy:
 - Use Vite's ?raw import for .md files so they are embedded at build time
 - For .json files, use standard import
-- Generate architecture.json and flows.json by parsing the markdown files
+- Generate architecture.json, flows.json, and design-system.json by parsing markdown
+- design-system.json is parsed from specs/10_ui_designer.md + docs/ui-design-system/
 - These JSON files enable the visual diagram rendering (not just text)
 
 JSON Generation Rules:
@@ -2324,6 +2475,32 @@ Every generated file must:
 Specs: 300–800 lines each.
 Docs: 100–300 lines each.
 Viewer: must build with zero TypeScript errors (strict mode).
+
+VIEWER-SPECIFIC QUALITY GATES (all must pass):
+
+  ✓ shadcn/ui is used for ALL UI primitives (Button, Card, Badge, Tabs,
+    Table, Select, Dialog, Sheet, Tooltip, etc.) — NO custom implementations
+  ✓ Recharts is used for ALL charts with consistent CHART_COLORS theme
+  ✓ Dashboard page has at LEAST 3 different Recharts charts visible
+  ✓ Dashboard page has animated stat counter Cards
+  ✓ Dashboard page has a clickable mini architecture diagram
+  ✓ Design System page EXISTS with 7 tabs (colours, typography, components,
+    screens, spacing, icons, accessibility)
+  ✓ Design System page renders live colour swatches (not just hex text)
+  ✓ Design System page renders live interactive component examples
+  ✓ Design System page shows screen inventory with wireframe previews
+  ✓ Design System is the SECOND item in sidebar (after Dashboard)
+  ✓ Specs page shows a visual Card grid (not a text list)
+  ✓ Docs page shows folder Cards with file count Badges
+  ✓ Backlog page has BOTH kanban board view AND table view
+  ✓ Backlog page has at least 2 charts (status distribution, burndown)
+  ✓ Workflows page renders React Flow graphs with animated edges
+  ✓ Architecture page has interactive diagrams (NOT just markdown text)
+  ✓ Flows page has visual diagrams (NOT just markdown text)
+  ✓ Every page has at least one interactive/visual element beyond text
+  ✓ Dark theme is the default with proper contrast ratios
+  ✓ Sidebar navigation links to all 10 pages and works correctly
+  ✓ The app looks like a premium SaaS dashboard, NOT a markdown reader
 
 ══════════════════════════════════════════════════════════════
 BEGIN GENERATION
@@ -2363,7 +2540,15 @@ Once the AI has generated everything, your project folder contains:
 **Next steps:**
 
 1. **Review specs** — Skim for accuracy, correct any assumptions.
-2. **Open the viewer** — `cd viewer && npm install && npm run dev` — see everything visually with diagrams and charts.
+2. **Open the viewer** — set up and run the visual dashboard:
+   ```
+   cd viewer
+   npm install
+   npx shadcn@latest init -d
+   npx shadcn@latest add button card badge tabs dialog tooltip table dropdown-menu sheet separator select command popover scroll-area toggle-group avatar
+   npm run dev
+   ```
+   This gives you an interactive dashboard with charts, diagrams, kanban boards, and more.
 3. **Review sprint plan** — Read `prompts/sprint_0/sprint_plan_0.md` for Definition of Done.
 4. **Execute Sprint 0** — Paste `prompts/sprint_0/dev_sprint_0.md` into your AI.
 5. **Run QA** — Paste `prompts/sprint_0/qa_sprint_0.md` to test with curl commands.
