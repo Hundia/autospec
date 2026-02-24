@@ -28,7 +28,7 @@
     "claude",
     "copilot"
   ],
-  "author": "AutoSpec Team",
+  "author": "Eli Hundia <eli.hundia@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@inquirer/prompts": "^5.5.0",
