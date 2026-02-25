@@ -49,10 +49,10 @@ Read ALL documents in the input folder. Use them as the single source of truth.
 
 ## Input
 
-Read every file in: {{INPUT_FOLDER}}
+Read every file in: requirnments
 These are the project's SRS, PRD, and/or requirements documents.
 
-Development Environment: {{ENVIRONMENT}}
+Development Environment: vscode-copilot
 (Options: claude-code, vscode-copilot, cursor, windsurf, jetbrains-ai, aider)
 
 Extract from them:
@@ -1678,6 +1678,31 @@ provides a visually impressive dashboard for ALL generated artefacts
   react-markdown + remark-gfm — Markdown rendering
   react-syntax-highlighter — code block highlighting
 
+### 7.1.1 Framework Lockdown (MANDATORY)
+
+Use ONLY the framework/component mapping below. Do not substitute alternatives.
+
+  - App shell + routing: React Router (`Layout`, `Sidebar`, `Header`, nested routes)
+  - UI primitives: shadcn/ui ONLY (`src/components/ui/*`)
+  - Charts and KPI visuals: Recharts ONLY
+  - Workflow/graph canvases: `@xyflow/react` ONLY
+  - Rich motion/transitions: framer-motion ONLY (panel/card transitions)
+  - Markdown rendering: `react-markdown` + `remark-gfm` ONLY
+  - Code highlighting: `react-syntax-highlighter` ONLY
+  - Icons: `lucide-react` ONLY
+
+Forbidden substitutions (must NOT appear):
+  - Chart.js, Nivo, ECharts, ApexCharts
+  - visx, cytoscape, d3-force graph libraries for workflow pages
+  - MUI, Ant Design, Chakra, Mantine, Bootstrap component primitives
+  - Markdown-it/Marked/MDX-based runtime replacement
+
+Enforcement checks (must be explicitly validated):
+  - `package.json` includes required libraries above.
+  - Viewer pages import from required libraries for their role.
+  - No forbidden libraries in `package.json` or imports.
+  - `src/components/ui/` is used for primitive controls across pages.
+
 ### 7.2 Project Structure
 
 viewer/
@@ -2003,11 +2028,25 @@ Docs ("/docs"):
     📁 ui-design-system/ — colour swatch preview
     📁 project/ — folder tree icon
   - Nested tree navigation with expand/collapse (shadcn/ui Collapsible)
+  - REQUIRED: documentation search bar at top of page:
+    - debounced input (200–300ms)
+    - searches title, path, headings, and markdown content excerpt
+    - keyboard support: `/` focuses search, `Esc` clears
+    - result count badge + highlighted match snippets
+    - selecting result navigates to `/docs/:section/:slug` and scrolls to heading
+    - empty-state and no-result states with helpful suggestions
   - Detail ("/docs/:section/:slug"): full Markdown rendered with:
     - **VISUAL: Mermaid diagrams rendered** (flowcharts, sequence, ERD)
     - **VISUAL: Tables** using shadcn/ui Table with alternating rows
     - **VISUAL: Code blocks** with react-syntax-highlighter + copy Button
     - Breadcrumb: Docs > Architecture > Security
+
+Global Search (Header.tsx):
+  - REQUIRED global command/search trigger in header (shadcn/ui Command + Dialog)
+  - Searches across specs, docs, backlog tickets, and sprint files
+  - Keyboard shortcut: `Ctrl/Cmd + K`
+  - Each result shows type badge (Spec/Doc/Ticket/Sprint) + path
+  - Selecting result navigates directly to page/detail route
 
 Flows ("/flows") — **VISUAL FLOW DIAGRAMS (NOT MARKDOWN)**:
   ╔══════════════════════════════════════════════════════════╗
@@ -2497,16 +2536,75 @@ VIEWER-SPECIFIC QUALITY GATES (all must pass):
   ✓ Workflows page renders React Flow graphs with animated edges
   ✓ Architecture page has interactive diagrams (NOT just markdown text)
   ✓ Flows page has visual diagrams (NOT just markdown text)
+  ✓ Docs page includes working debounced search (title/path/content)
+  ✓ Header includes global command search (Ctrl/Cmd + K) across artefacts
   ✓ Every page has at least one interactive/visual element beyond text
   ✓ Dark theme is the default with proper contrast ratios
   ✓ Sidebar navigation links to all 10 pages and works correctly
   ✓ The app looks like a premium SaaS dashboard, NOT a markdown reader
 
+MANDATORY CONSISTENCY RULES (to reduce broken/low-quality viewer output):
+
+  ✓ NO hardcoded demo arrays inside page components for backlog/spec/doc metrics
+    (all page data must come from `src/data/*.json` and/or `?raw` markdown imports)
+  ✓ Every route in App.tsx has a matching sidebar navigation item and page export
+  ✓ Every visual component referenced by a page must exist as a concrete file
+  ✓ No placeholder sections like "TODO", "coming soon", "sample data", "mock data"
+  ✓ No page may be only markdown rendering; each page must include visual widgets
+  ✓ No direct hex color hardcoding inside page components; use shared theme tokens
+
+VISUAL ACCEPTANCE MATRIX (must be satisfied before final output):
+
+  - Dashboard: ≥ 4 charts + stat cards + recent table + quick links
+  - Design System: 7 interactive tabs + live component previews + screen inventory
+  - Specs: card grid + spec progress visualization + detailed spec viewer
+  - Docs: folder cards + structured doc tree + enhanced markdown rendering
+  - Backlog: chart summary + kanban + sprint table + filters + ticket detail panel
+  - Workflows: selectable graphs + animated edges + controls + legend + export
+  - Flows: at least 4 distinct visual flow diagrams + selector + export
+  - Architecture: at least 5 visual diagram tabs + drill-down details + export
+  - Sprints: sprint cards + completion chart + velocity trend + QA/release views
+  - Requirements: traceability matrix + coverage/progress visualization
+
+BUILD + VALIDATION PROTOCOL (REQUIRED BEFORE RETURNING RESULTS):
+
+  1. Install dependencies in `viewer/`.
+  2. Run (in order):
+     - `npm run typecheck`
+     - `npm run build`
+  3. If either command fails, fix errors and re-run both commands.
+  4. Repeat repair loop until both pass (max 3 full repair attempts).
+  5. If still failing after 3 attempts, output:
+     - exact failing files,
+     - exact error messages,
+     - what was attempted,
+     - smallest remaining manual fix required.
+
+STRUCTURAL SELF-CHECKLIST (MUST EXECUTE IN-PROMPT):
+
+  - Verify all required files from Section 7.2 exist.
+  - Verify all 10 page routes render without runtime import errors.
+  - Verify chart components use shared CHART_COLORS/theme tokens.
+  - Verify `src/data/backlog.json`, `workflows.json`, `architecture.json`,
+    `flows.json`, `metrics.json`, and `design-system.json` are valid JSON.
+  - Verify sidebar order starts with Dashboard, then Design System.
+  - Verify framework lockdown: required libs present, forbidden libs absent.
+  - Verify docs search returns results and deep-links to doc detail pages.
+  - Verify global search opens with Ctrl/Cmd+K and navigates correctly.
+  - Verify no TypeScript `any` in newly generated viewer page/component files
+    unless unavoidable (must justify inline if used).
+
+FAIL-SAFE REGENERATION RULE:
+
+  If visual acceptance matrix or build protocol fails, regenerate only the
+  failing viewer files with stricter constraints (do not rewrite successful
+  files), then re-run validation until pass.
+
 ══════════════════════════════════════════════════════════════
 BEGIN GENERATION
 ══════════════════════════════════════════════════════════════
 
-Read all documents in {{INPUT_FOLDER}}.
+Read all documents in requirnments.
 Generate every file listed above.
 Start now.
 ```
