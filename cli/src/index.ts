@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * SDD CLI - Spec-Driven Development Command Line Interface
+ * AutoSpec CLI - Spec-Driven Development Command Line Interface
  *
- * A toolkit for bootstrapping and managing SDD projects.
+ * A toolkit for bootstrapping and managing AutoSpec projects.
  */
 
 import { Command } from 'commander';
@@ -15,15 +15,15 @@ import { sprintCommand, SprintOptions } from './commands/sprint.js';
 import { specCommand, SpecOptions } from './commands/spec.js';
 import { dashboardCommand, DashboardOptions } from './commands/dashboard.js';
 
-const VERSION = '1.0.0';
+const VERSION = '0.1.0';
 
 // ASCII art banner
 const BANNER = `
   ╔═══════════════════════════════════════════════════╗
   ║                                                   ║
-  ║   ${chalk.bold.cyan('SDD')} - Spec-Driven Development CLI           ║
+  ║   ${chalk.bold.cyan('AutoSpec')} - Spec-Driven Development CLI      ║
   ║                                                   ║
-  ║   Bootstrap and manage SDD projects with ease     ║
+  ║   Bootstrap and manage AutoSpec projects           ║
   ║                                                   ║
   ╚═══════════════════════════════════════════════════╝
 `;
@@ -32,14 +32,14 @@ const BANNER = `
 const program = new Command();
 
 program
-  .name('sdd')
-  .description('Spec-Driven Development CLI - Bootstrap and manage SDD projects')
+  .name('autospec')
+  .description('AutoSpec CLI - Spec-Driven Development for AI-assisted projects')
   .version(VERSION);
 
 // Init command
 program
   .command('init')
-  .description('Initialize SDD in a new or existing project')
+  .description('Initialize AutoSpec in a new or existing project')
   .option('-n, --name <name>', 'Project name')
   .option('-p, --provider <provider>', 'AI provider (claude, copilot, gemini, all)', 'claude')
   .option('-f, --force', 'Overwrite existing configuration')
@@ -126,13 +126,13 @@ program
 program.action(() => {
   console.log(BANNER);
   console.log(chalk.bold('  Commands:\n'));
-  console.log(chalk.cyan('    sdd init') + '            Initialize SDD in a project');
-  console.log(chalk.cyan('    sdd status') + '          Show current sprint status');
-  console.log(chalk.cyan('    sdd sprint <num>') + '    Generate sprint prompt');
-  console.log(chalk.cyan('    sdd spec <name>') + '     Create a new feature spec');
-  console.log(chalk.cyan('    sdd dashboard') + '       Launch monitoring dashboard');
+  console.log(chalk.cyan('    autospec init') + '        Initialize AutoSpec in a project');
+  console.log(chalk.cyan('    autospec status') + '      Show current sprint status');
+  console.log(chalk.cyan('    autospec sprint <num>') + ' Generate sprint prompt');
+  console.log(chalk.cyan('    autospec spec <name>') + ' Create a new feature spec');
+  console.log(chalk.cyan('    autospec dashboard') + '   Launch monitoring dashboard');
   console.log('');
-  console.log(chalk.dim('  Run ' + chalk.cyan('sdd <command> --help') + ' for more info\n'));
+  console.log(chalk.dim('  Run ' + chalk.cyan('autospec <command> --help') + ' for more info\n'));
 });
 
 // Parse arguments

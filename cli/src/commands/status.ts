@@ -1,5 +1,5 @@
 /**
- * SDD Status Command
+ * AutoSpec Status Command
  * Show current sprint status from backlog
  */
 
@@ -105,8 +105,8 @@ export async function statusCommand(sprintNumber?: number): Promise<void> {
   // Check for config
   const config = await readConfig(projectDir);
   if (!config) {
-    console.log(chalk.yellow('\n  SDD not initialized in this directory.'));
-    console.log(chalk.dim('  Run ' + chalk.cyan('sdd init') + ' to get started.\n'));
+    console.log(chalk.yellow('\n  AutoSpec not initialized in this directory.'));
+    console.log(chalk.dim('  Run ' + chalk.cyan('autospec init') + ' to get started.\n'));
     return;
   }
 

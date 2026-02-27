@@ -1,6 +1,6 @@
 /**
- * SDD Init Command
- * Initialize SDD in a new or existing project
+ * AutoSpec Init Command
+ * Initialize AutoSpec in a new or existing project
  */
 
 import path from 'path';
@@ -8,7 +8,7 @@ import { input, select, confirm } from '@inquirer/prompts';
 import chalk from 'chalk';
 import ora from 'ora';
 
-import { createConfig, writeConfig, configExists, SDDConfig } from '../utils/config.js';
+import { createConfig, writeConfig, configExists, AutoSpecConfig } from '../utils/config.js';
 import { ensureDir, exists, readFile } from '../utils/file.js';
 import { generateAllSpecs } from '../generators/spec.generator.js';
 import { generateBacklog } from '../generators/backlog.generator.js';
@@ -32,7 +32,7 @@ export interface InitOptions {
 async function gatherProjectInfo(options: InitOptions): Promise<{
   projectName: string;
   aiProvider: 'claude' | 'copilot' | 'gemini' | 'all';
-  techStack: SDDConfig['techStack'];
+  techStack: AutoSpecConfig['techStack'];
   requirements?: ParsedRequirements;
 }> {
   // Check for requirements file
@@ -114,17 +114,17 @@ async function gatherProjectInfo(options: InitOptions): Promise<{
 }
 
 /**
- * Initialize SDD in a project
+ * Initialize AutoSpec in a project
  */
 export async function initCommand(options: InitOptions = {}): Promise<void> {
   const projectDir = process.cwd();
 
-  console.log(chalk.bold('\n  SDD Init - Spec-Driven Development Setup\n'));
+  console.log(chalk.bold('\n  AutoSpec Init - Spec-Driven Development Setup\n'));
 
   // Check if already initialized
   if (await configExists(projectDir)) {
     if (!options.force) {
-      console.log(chalk.yellow('  SDD is already initialized in this directory.'));
+      console.log(chalk.yellow('  AutoSpec is already initialized in this directory.'));
       const shouldOverwrite = await confirm({
         message: 'Overwrite existing configuration?',
         default: false,
@@ -140,7 +140,7 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
   // Gather project info
   const info = await gatherProjectInfo(options);
 
-  const spinner = ora('Creating SDD project structure...').start();
+  const spinner = ora('Creating AutoSpec project structure...').start();
 
   try {
     // Create directories
@@ -230,7 +230,7 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
 
     await writeConfig(config, projectDir);
 
-    spinner.succeed('SDD initialized successfully!');
+    spinner.succeed('AutoSpec initialized successfully!');
 
     // Summary
     console.log('\n' + chalk.bold('  Created files:\n'));
@@ -263,7 +263,7 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
       console.log(chalk.green(`    ✓ ${path.relative(projectDir, file)}`));
     }
 
-    console.log(chalk.green('\n    ✓ .sddrc.json'));
+    console.log(chalk.green('\n    ✓ .autospecrc.json'));
 
     // Next steps
     console.log('\n' + chalk.bold('  Next steps:\n'));
@@ -271,14 +271,14 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
     console.log(chalk.dim('  2. Review documentation in docs/'));
     console.log(chalk.dim('  3. Review Sprint 0 tickets in specs/backlog.md'));
     console.log(chalk.dim('  4. Start Sprint 0 with sprint_prompts/sprint-0-foundation.md'));
-    console.log(chalk.dim('  5. Run ' + chalk.cyan('sdd status') + ' to see progress'));
+    console.log(chalk.dim('  5. Run ' + chalk.cyan('autospec status') + ' to see progress'));
     console.log(chalk.dim('  6. Use docs/gemini-diagram-prompts.md for visual diagrams'));
     console.log(chalk.dim('  7. Use docs/remotion-video-prompt.md for video generation'));
     console.log(chalk.dim('  8. Use prompts/viewer/ to generate a project viewer website'));
 
     console.log('');
   } catch (error) {
-    spinner.fail('Failed to initialize SDD');
+    spinner.fail('Failed to initialize AutoSpec');
     console.error(chalk.red(`\n  Error: ${error}`));
     throw error;
   }

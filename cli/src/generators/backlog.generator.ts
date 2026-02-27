@@ -7,13 +7,13 @@ import path from 'path';
 import { writeFile } from '../utils/file.js';
 import { getCurrentDate } from '../utils/file.js';
 import { ParsedRequirements } from '../parsers/requirements.parser.js';
-import { SDDConfig } from '../utils/config.js';
+import { AutoSpecConfig } from '../utils/config.js';
 
 export interface BacklogGeneratorOptions {
   projectName: string;
   outputDir: string;
   requirements?: ParsedRequirements;
-  config?: Partial<SDDConfig>;
+  config?: Partial<AutoSpecConfig>;
 }
 
 /**

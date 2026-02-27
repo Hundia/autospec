@@ -1,6 +1,6 @@
 /**
  * File System Utilities
- * Common file operations for the SDD CLI
+ * Common file operations for the AutoSpec CLI
  */
 
 import fs from 'fs-extra';
@@ -85,7 +85,7 @@ export async function findProjectRoot(startDir: string = process.cwd()): Promise
 
   while (currentDir !== path.dirname(currentDir)) {
     // Look for common project markers
-    const markers = ['.sddrc.json', 'package.json', '.git'];
+    const markers = ['.autospecrc.json', 'package.json', '.git'];
 
     for (const marker of markers) {
       if (await fs.pathExists(path.join(currentDir, marker))) {

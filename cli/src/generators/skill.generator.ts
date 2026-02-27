@@ -307,7 +307,7 @@ Create documentation for a completed sprint.
  */
 const COPILOT_INSTRUCTIONS = `# GitHub Copilot Instructions
 
-This project follows Spec-Driven Development (SDD) methodology.
+This project follows AutoSpec's Spec-Driven Development methodology.
 
 ## Core Principles
 
@@ -409,7 +409,7 @@ When working with this codebase:
 2. Follow established patterns
 3. Update backlog status as you complete work
 
-*Generated with SDD for All framework on ${getCurrentDate()}*
+*Generated with AutoSpec on ${getCurrentDate()}*
 `;
 
   const filePath = path.join(projectDir, '.gemini', 'context.md');

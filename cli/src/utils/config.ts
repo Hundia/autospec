@@ -1,12 +1,12 @@
 /**
- * SDD Configuration Management
- * Handles reading/writing .sddrc.json config files
+ * AutoSpec Configuration Management
+ * Handles reading/writing .autospecrc.json config files
  */
 
 import fs from 'fs-extra';
 import path from 'path';
 
-export interface SDDConfig {
+export interface AutoSpecConfig {
   projectName: string;
   version: string;
   created: string;
@@ -26,9 +26,9 @@ export interface SDDConfig {
   };
 }
 
-const CONFIG_FILENAME = '.sddrc.json';
+const CONFIG_FILENAME = '.autospecrc.json';
 
-const DEFAULT_CONFIG: SDDConfig = {
+const DEFAULT_CONFIG: AutoSpecConfig = {
   projectName: 'My Project',
   version: '1.0.0',
   created: new Date().toISOString().split('T')[0],
@@ -65,13 +65,13 @@ export async function configExists(dir: string = process.cwd()): Promise<boolean
 /**
  * Read config from a directory
  */
-export async function readConfig(dir: string = process.cwd()): Promise<SDDConfig | null> {
+export async function readConfig(dir: string = process.cwd()): Promise<AutoSpecConfig | null> {
   const configPath = getConfigPath(dir);
 
   if (await fs.pathExists(configPath)) {
     try {
       const content = await fs.readFile(configPath, 'utf-8');
-      return JSON.parse(content) as SDDConfig;
+      return JSON.parse(content) as AutoSpecConfig;
     } catch (error) {
       console.error(`Error reading config: ${error}`);
       return null;
@@ -84,7 +84,7 @@ export async function readConfig(dir: string = process.cwd()): Promise<SDDConfig
 /**
  * Write config to a directory
  */
-export async function writeConfig(config: SDDConfig, dir: string = process.cwd()): Promise<void> {
+export async function writeConfig(config: AutoSpecConfig, dir: string = process.cwd()): Promise<void> {
   const configPath = getConfigPath(dir);
   await fs.writeFile(configPath, JSON.stringify(config, null, 2));
 }
@@ -92,7 +92,7 @@ export async function writeConfig(config: SDDConfig, dir: string = process.cwd()
 /**
  * Create a new config with defaults merged with provided values
  */
-export function createConfig(overrides: Partial<SDDConfig> = {}): SDDConfig {
+export function createConfig(overrides: Partial<AutoSpecConfig> = {}): AutoSpecConfig {
   return {
     ...DEFAULT_CONFIG,
     ...overrides,
@@ -112,16 +112,16 @@ export function createConfig(overrides: Partial<SDDConfig> = {}): SDDConfig {
  * Update an existing config
  */
 export async function updateConfig(
-  updates: Partial<SDDConfig>,
+  updates: Partial<AutoSpecConfig>,
   dir: string = process.cwd()
-): Promise<SDDConfig | null> {
+): Promise<AutoSpecConfig | null> {
   const existing = await readConfig(dir);
 
   if (!existing) {
     return null;
   }
 
-  const updated: SDDConfig = {
+  const updated: AutoSpecConfig = {
     ...existing,
     ...updates,
     techStack: {

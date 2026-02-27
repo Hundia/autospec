@@ -144,7 +144,7 @@ Begin by reading the Sprint 0 tickets in \`specs/backlog.md\`, then:
 
 ---
 
-*Generated with SDD for All framework on ${getCurrentDate()}*
+*Generated with AutoSpec on ${getCurrentDate()}*
 `;
 }
 
@@ -267,7 +267,7 @@ Begin by reading the Sprint ${sprint.number} tickets in \`specs/backlog.md\`, th
 
 ---
 
-*Generated with SDD for All framework on ${getCurrentDate()}*
+*Generated with AutoSpec on ${getCurrentDate()}*
 `;
 }
 

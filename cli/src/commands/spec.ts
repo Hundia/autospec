@@ -1,5 +1,5 @@
 /**
- * SDD Spec Command
+ * AutoSpec Spec Command
  * Generate new feature specification files
  */
 
@@ -220,8 +220,8 @@ export async function specCommand(name: string, options: SpecOptions = {}): Prom
   // Check for config
   const config = await readConfig(projectDir);
   if (!config) {
-    console.log(chalk.yellow('  SDD not initialized in this directory.'));
-    console.log(chalk.dim('  Run ' + chalk.cyan('sdd init') + ' to get started.\n'));
+    console.log(chalk.yellow('  AutoSpec not initialized in this directory.'));
+    console.log(chalk.dim('  Run ' + chalk.cyan('autospec init') + ' to get started.\n'));
     return;
   }
 
