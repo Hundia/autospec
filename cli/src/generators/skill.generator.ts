@@ -269,6 +269,117 @@ Create a new feature specification document.
 `;
 
 /**
+ * Plan Sprint skill content
+ */
+const PLAN_SPRINT_SKILL = `# Plan Sprint
+
+Assemble a team of expert AI agents to collaboratively plan a sprint before building it. Experts analyze the goal in parallel, then three PMs (drafter → reviewer → finalizer) produce a production-ready sprint plan for the backlog.
+
+## Usage
+
+\`\`\`
+/plan-sprint [goal description]
+\`\`\`
+
+**Examples:**
+- \`/plan-sprint Add user authentication with JWT and social login\`
+- \`/plan-sprint Refactor payment processing to support subscriptions\`
+- \`/plan-sprint Build admin dashboard with analytics and user management\`
+
+## Instructions
+
+When this command is invoked, execute the 6-phase planning workflow below. The argument \`$ARGUMENTS\` is the sprint goal description.
+
+---
+
+### Phase 1: Goal Analysis & Expert Selection
+
+1. **Validate the goal.** If \`$ARGUMENTS\` is empty or too vague (fewer than 5 words, no clear deliverable), ask the user to clarify.
+
+2. **Read \`specs/backlog.md\`** — scan all sprint headers to determine the next sprint number.
+
+3. **Read \`docs/\` index** — identify which subsystems the goal touches.
+
+4. **Determine which experts to activate:**
+
+| Expert | Activate When | Reads |
+|--------|---------------|-------|
+| **Architect** (ALWAYS) | Every sprint | \`specs/02_backend_lead.md\`, \`specs/03_frontend_lead.md\`, project entry points, relevant \`docs/\` |
+| **UX/UI Expert** | Frontend/GUI work | \`specs/10_ui_designer.md\`, \`docs/ui-design-system/\`, \`docs/flows/\` |
+| **Database Expert** | Schema changes | \`specs/04_db_architect.md\`, \`docs/architecture/database.md\`, schema file |
+| **Human Experience Expert** | User-facing features | \`specs/01_product_manager.md\`, relevant \`docs/flows/\` |
+
+5. **Announce** which experts are activated and which subsystems are affected.
+
+---
+
+### Phase 2: Expert Analysis (PARALLEL)
+
+Launch all activated experts simultaneously as parallel Task agents. Each produces structured analysis:
+
+- **Architect**: System impact, API design, file structure, technical approach, integration points, risks, complexity estimate
+- **UX/UI Expert**: User flows, component design, page layout, accessibility, data-testid attributes, i18n keys
+- **Database Expert**: Schema changes, migration plan, query patterns, data integrity, rollback strategy
+- **Human Experience Expert**: Persona impact, user journey map, cognitive load, error recovery, edge cases, success metrics
+
+---
+
+### Phase 3: PM-A — Draft Sprint Plan
+
+Runs SEQUENTIALLY after Phase 2. Reads \`specs/01_product_manager.md\`, receives all expert analyses, synthesizes into complete draft sprint with:
+- Problem statement, user stories
+- Technical decisions table
+- Phased tickets (each with #, title, description, owner, model, points, status, dependencies)
+- QA plan, docs impact, i18n
+
+---
+
+### Phase 4: PM-B — Review & Enhance
+
+Runs SEQUENTIALLY after Phase 3. Reads \`specs/05_qa_lead.md\`, adversarially reviews PM-A's draft:
+- Completeness, ticket granularity, dependency correctness
+- Model assignment (FinOps), QA coverage gaps, documentation gaps
+- Points realism (30-60 total), overlap with existing backlog
+- Outputs: issues found, tickets to add/modify/remove, adjustments
+
+---
+
+### Phase 5: PM-C — Final Synthesis
+
+Runs SEQUENTIALLY after Phase 4. Merges PM-A draft + PM-B review:
+- Incorporates valid PM-B recommendations
+- Resolves conflicts
+- Validates: sequential numbering, no ticket >8 pts, total 30-60 pts, complete metadata
+- Outputs FINAL sprint in exact backlog format
+
+---
+
+### Phase 6: Present & Commit to Backlog
+
+1. Show planning team summary + full sprint preview
+2. **Wait for user confirmation** before writing
+3. If confirmed: append to \`specs/backlog.md\`, update dates and docs index
+4. If modifications requested: apply and re-present
+
+## Edge Cases
+
+- **Goal too vague** → ask user to clarify
+- **Overlaps existing tickets** → surface and ask how to handle
+- **Blocking prerequisite found** → add Phase 0 prerequisites
+- **Sprint too large (>60 pts)** → PM-C splits into sub-sprints
+- **Backend-only** → skip UX/UI and HX experts
+- **Frontend-only** → skip Database expert
+
+## Important Rules
+
+- ALWAYS run experts in PARALLEL — they are independent
+- ALWAYS run PMs in SEQUENCE — each depends on the previous
+- NEVER write to backlog without user confirmation
+- ALWAYS match the exact backlog format from existing sprints
+- Use FinOps model selection: haiku (40%), sonnet (45%), opus (15%)
+`;
+
+/**
  * Create Sprint Docs skill content
  */
 const CREATE_SPRINT_DOCS_SKILL = `# Create Sprint Docs
@@ -362,6 +473,7 @@ async function generateClaudeSkills(projectDir: string): Promise<string[]> {
   await ensureDir(commandsDir);
 
   const skills = [
+    { name: 'plan-sprint.md', content: PLAN_SPRINT_SKILL },
     { name: 'execute-ticket.md', content: EXECUTE_TICKET_SKILL },
     { name: 'sprint-status.md', content: SPRINT_STATUS_SKILL },
     { name: 'update-backlog.md', content: UPDATE_BACKLOG_SKILL },

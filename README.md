@@ -166,7 +166,7 @@ autospec/
 │   ├── specs/              # All 10 role templates
 │   └── prompts/            # Sprint execution prompts
 ├── skills/                 # AI assistant integrations
-│   ├── claude/             # 9 Claude Code slash commands
+│   ├── claude/             # 10 Claude Code slash commands
 │   └── copilot/            # GitHub Copilot instructions
 ├── docs/                   # Deep-dive documentation
 │   ├── methodology/        # 9 chapters on the method
@@ -207,7 +207,7 @@ autospec dashboard         # Launch monitoring dashboard
 
 | Platform | Integration | Details |
 |----------|------------|---------|
-| **Claude Code** | 9 slash commands | `/sprint-run`, `/execute-ticket`, `/sprint-status`, `/update-backlog`, `/qa-review`, `/create-spec`, `/create-sprint-docs`, `/sprint-close`, `/help` |
+| **Claude Code** | 10 slash commands | `/plan-sprint`, `/sprint-run`, `/execute-ticket`, `/sprint-status`, `/update-backlog`, `/qa-review`, `/create-spec`, `/create-sprint-docs`, `/sprint-close`, `/help` |
 | **GitHub Copilot** | Custom instructions | `.github/copilot-instructions.md` with full SDD context |
 | **Cursor** | Rules file | Drop specs into Cursor rules for context |
 | **OpenAI GPT** | Prompt templates | Copy sprint prompts into ChatGPT/API |

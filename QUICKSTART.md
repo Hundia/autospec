@@ -195,6 +195,7 @@ project/
 │
 ├── .claude/commands/                   # Claude Code skills (if environment = claude-code)
 │   ├── help.md                        # /help — Command menu
+│   ├── plan-sprint.md                 # /plan-sprint [goal] — Expert agents plan sprint → 3-PM review → backlog
 │   ├── execute-ticket.md              # /execute-ticket X.Y — 9-step ticket execution
 │   ├── sprint-run.md                  # /sprint-run X — Full sprint lifecycle (6 phases)
 │   ├── sprint-status.md               # /sprint-status X — Progress + health + FinOps
@@ -2663,6 +2664,7 @@ Generate `.claude/commands/` directory with these markdown command files:
 ```
 .claude/commands/
 ├── help.md              # /help — Display all available commands
+├── plan-sprint.md       # /plan-sprint [goal] — Expert agents plan sprint → 3-PM review → backlog
 ├── execute-ticket.md    # /execute-ticket X.Y — Execute single ticket with QA + docs
 ├── sprint-run.md        # /sprint-run X — Full sprint: plan → implement → QA → docs → close
 ├── sprint-status.md     # /sprint-status X — Sprint progress with health indicators
@@ -2681,6 +2683,21 @@ Generate `.claude/commands/` directory with these markdown command files:
 4. **FinOps-aware**: Commands reference the Model column for cost-efficient model selection
 5. **Docs-linked**: Every ticket completion triggers docs/ update
 6. **Sprint-lifecycle**: Full lifecycle from planning to closure with cross-references
+
+**Key command: `/plan-sprint [goal]`** (6-phase expert planning):
+```
+Phase 1: Goal Analysis — parse goal, determine next sprint #, select experts
+Phase 2: Expert Analysis (PARALLEL) — Architect + UX/UI + DB + HX produce structured analyses
+Phase 3: PM-A Draft — synthesize expert analyses into phased sprint plan with tickets
+Phase 4: PM-B Review — adversarial review for gaps, risks, model/point adjustments
+Phase 5: PM-C Finalize — merge draft + review into backlog-ready sprint plan
+Phase 6: Present & Commit — show plan, get user confirmation, append to backlog
+```
+
+Experts are conditionally activated: backend-only sprints skip UX/UI and HX;
+frontend-only sprints skip Database. The Architect always participates.
+The 3-PM pattern (maker-checker-resolver) catches blind spots that a single
+pass would miss.
 
 **Key command: `/execute-ticket X.Y`** (9-step workflow):
 ```
@@ -2742,6 +2759,7 @@ Generate `.github/copilot-instructions.md` with the same workflow rules adapted
 for Copilot's instruction format:
 - Same 4 mandatory rules (backlog-first, docs-first, QA, living docs)
 - Same FinOps model selection guidance
+- Sprint planning workflow (multi-expert → 3-PM review → backlog)
 - Ticket implementation workflow (9 steps)
 - Multi-agent coordination rules (Agent A = Backend, Agent B = Frontend)
 - Sprint closing template with docs cross-references
@@ -2791,11 +2809,11 @@ Once the AI has generated everything, your project folder contains:
 | `prompts/` | Multi-agent, finops, Gemini diagrams, Remotion video | 4 |
 | `sprints/sprint_X/` | Per-sprint results: qa_result, release_notes, summary | 3 per sprint |
 | `viewer/` | React monitor app with visual dashboards | Full project |
-| `.claude/commands/` | Claude Code slash commands (if claude-code env) | 9 |
+| `.claude/commands/` | Claude Code slash commands (if claude-code env) | 10 |
 | `.github/` | Copilot instructions (if vscode-copilot env) | 1 |
 | `CLAUDE.md` | Project instructions with mandatory SDD workflow | 1 |
 
-**Total: 10 specs + ~50 docs + prompts for ALL sprints + viewer + skills**
+**Total: 10 specs + ~50 docs + prompts for ALL sprints + viewer + 10 skills**
 
 **Next steps:**
 
@@ -2822,6 +2840,9 @@ Once the AI has generated everything, your project folder contains:
 ### Option A: Using Slash Commands (Claude Code / Copilot)
 
 ```
+# Plan a sprint with expert AI agents
+/plan-sprint Add user auth with JWT and social login
+
 # Full sprint lifecycle (one command)
 /sprint-run 1              # Plan → implement → QA → docs → close
 

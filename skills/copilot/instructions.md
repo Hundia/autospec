@@ -156,6 +156,17 @@ The `Model` column in `specs/backlog.md` recommends the model for each ticket.
 - DO NOT modify backend code
 - Check backlog before starting tickets that depend on Agent A
 
+## Sprint Planning
+
+For planning new sprints, use the multi-expert approach:
+1. **Expert Analysis** (parallel): Architect, UX/UI, Database, Human Experience experts analyze the goal
+2. **PM-A Draft**: Synthesize expert analyses into a phased sprint plan with tickets
+3. **PM-B Review**: Adversarial review for gaps, risks, and improvements
+4. **PM-C Finalize**: Merge draft + review into backlog-ready sprint plan
+5. **Commit**: Append to `specs/backlog.md` after user confirmation
+
+Experts are conditionally activated: backend-only sprints skip UX/UI and HX; frontend-only skip Database. The Architect always participates.
+
 ## Sprint Closing
 
 When closing a sprint, generate `sprints/sprint_X/summary.md` with:

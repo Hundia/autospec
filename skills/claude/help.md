@@ -12,6 +12,7 @@ When this command is invoked, display the following:
 ### Sprint Lifecycle
 | Command | Description |
 |---------|-------------|
+| `/plan-sprint [goal]` | Assemble expert AI agents to plan a sprint (experts → 3-PM review → backlog) |
 | `/sprint-run X` | Execute entire sprint: plan → implement → QA → docs → close |
 | `/sprint-status X` | Show sprint progress with visual progress bar |
 | `/sprint-close X` | Close sprint, generate summary with docs linkage |
