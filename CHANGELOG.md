@@ -5,7 +5,17 @@ All notable changes to AutoSpec will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2026-01-21
+## [Unreleased]
+
+## [0.1.0] - 2026-02-27
+
+Initial open-source release. Previously published as `1.0.0` (now deprecated).
+
+### BREAKING CHANGES
+
+- Config file renamed: `.sddrc.json` → `.autospecrc.json`
+- Internal interface renamed: `SDDConfig` → `AutoSpecConfig`
+- Version reset from `1.0.0` to `0.1.0` (semver-correct for initial release)
 
 ### Added
 
@@ -26,19 +36,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`autospec spec <name>`** - Create new feature specifications
   - Template-based generation
   - Interactive and non-interactive modes
+- **`autospec dashboard`** - Launch monitoring dashboard
+  - Kanban board, burndown charts, cost analysis
 
 #### Specification Framework
 - **10-Role Model** - Comprehensive specification coverage
-  - Product Manager (01) - Vision, personas, user flows
-  - Backend Lead (02) - API design, authentication, services
-  - Frontend Lead (03) - Design system, components, interactions
-  - DB Architect (04) - Schema design, migrations, indexing
-  - QA Lead (05) - Testing strategy, acceptance criteria
-  - DevOps Lead (06) - Infrastructure, CI/CD, deployment
-  - Marketing Lead (07) - Go-to-market strategy
-  - Finance Lead (08) - Pricing, unit economics
-  - Business Lead (09) - Strategy, competitive analysis
-  - UI Designer (10) - Wireframes, screen specifications
+  - Product Manager, Backend Lead, Frontend Lead, DB Architect,
+    QA Lead, DevOps Lead, Marketing Lead, Finance Lead,
+    Business Lead, UI Designer
 
 #### Backlog Management
 - **Single Source of Truth** - `specs/backlog.md` as master tracker
@@ -62,50 +67,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Templates
 - **Spec Templates** - Complete templates for all 10 roles
 - **Prompt Templates** - Sprint execution prompts
-  - Foundation sprint (Sprint 0)
-  - Business sprint template
-  - Multi-agent coordination
-  - QA review process
 - **Skill Templates** - AI assistant configurations
 
 #### AI Platform Support
-- **Claude (Anthropic)** - Full support with Claude Code skills
-  - execute-ticket skill
-  - qa-review skill
-  - sprint-status skill
-  - update-backlog skill
-  - create-spec skill
-  - create-sprint-docs skill
+- **Claude (Anthropic)** - Full support with 9 Claude Code slash commands
 - **GitHub Copilot** - Full support with custom instructions
 - **Google Gemini** - Partial support
 - **OpenAI GPT** - Partial support via API
 
-#### IDE Support
-- **VSCode** - Extensions and multi-window setup
-- **JetBrains** - AI Assistant integration
-- **Terminal** - Claude Code CLI support
-- **Cursor** - Built-in AI support
-
 #### Documentation
-- **Methodology Guides**
-  - Philosophy and principles
-  - Spec structure guidelines
-  - Team roles explanation
-  - Backlog management patterns
-  - Multi-agent coordination
-  - QA methodology
-  - Model selection guide
-- **Environment Guides**
-  - VSCode setup
-  - GitHub Copilot configuration
-  - Claude Code terminal usage
-
-#### Developer Experience
-- TypeScript implementation with full type safety
-- Comprehensive test suite with Vitest
-- Clean CLI interface with chalk and ora
-- YAML and Handlebars template support
-- Cross-platform compatibility (Node.js >= 18)
+- **Methodology Guides** - 9 chapters covering philosophy, specs, roles, backlog, multi-agent, QA, model selection, validation, and ground truth schema
+- **Environment Guides** - VSCode, GitHub Copilot, Claude Code terminal
+- **Academic Paper** - Peer-review style research paper with methodology and results
 
 ### Technical Details
 
@@ -119,22 +92,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## Roadmap
-
-### [1.1.0] - Planned
-
-- `autospec validate` command for project structure validation
-- Enhanced multi-agent coordination
-- Additional IDE integrations
-- Template marketplace
-
-### [1.2.0] - Planned
-
-- Git integration for automatic branch management
-- PR template generation
-- Sprint retrospective automation
-- Metrics dashboard
-
----
-
-[1.0.0]: https://github.com/Hundia/autospec/releases/tag/v1.0.0
+[Unreleased]: https://github.com/Hundia/autospec/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/Hundia/autospec/releases/tag/v0.1.0
