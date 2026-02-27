@@ -1,6 +1,6 @@
 # QA Review
 
-Review completed tickets following the QA Lead guidelines.
+Review completed tickets following the QA Lead guidelines with change-appropriate verification.
 
 ## Usage
 
@@ -18,6 +18,7 @@ When this command is invoked:
 
 1. **Read QA standards**:
    - Read `specs/05_qa_lead.md` for quality guidelines
+   - Read `docs/testing/strategy.md` for test patterns
    - Understand Definition of Done checklist
 
 2. **Identify tickets to review**:
@@ -25,49 +26,65 @@ When this command is invoked:
    - Find tickets with 🧪 QA Review status
    - If specific ticket provided, review only that one
 
-3. **For each ticket, verify**:
+3. **Scale QA to change type**:
+
+   | Change Type | QA Required |
+   |-------------|-------------|
+   | **Bug fix** | Reproduce the bug first, apply fix, verify the exact user flow passes |
+   | **API change** | Run API tests. If new endpoint, test via curl with happy path + error cases |
+   | **UI change** | Run UI/component tests. Verify rendering on target viewports |
+   | **Database migration** | Verify migration applies cleanly, test affected API endpoints |
+   | **Docs/config only** | No QA needed — mark ✅ directly |
+   | **Full-stack feature** | Run full test suite. Add test cases if coverage gaps exist |
+
+4. **For each ticket, verify**:
 
    ### Code Quality
-   - [ ] Follows project coding standards
+   - [ ] Follows project coding standards (`docs/project/coding-standards.md`)
    - [ ] No console.log/print statements left
    - [ ] Error handling implemented
    - [ ] No hardcoded secrets/URLs
-   - [ ] TypeScript types are correct (no `any`)
+   - [ ] TypeScript types correct (no `any`)
 
    ### Testing
    - [ ] Unit tests written and pass
    - [ ] Integration tests if applicable
    - [ ] Edge cases covered
-   - [ ] Tests are meaningful (not just coverage)
+   - [ ] Tests are meaningful (not just coverage padding)
 
    ### Functionality
    - [ ] Feature works as specified in the linked spec
-   - [ ] Works on target viewport/devices (if UI)
    - [ ] Handles error states gracefully
    - [ ] No regressions to existing features
 
    ### Security (if applicable)
    - [ ] Input validation present
    - [ ] Auth/authz enforced where needed
-   - [ ] No SQL injection vulnerabilities
-   - [ ] No XSS vulnerabilities
+   - [ ] No SQL injection, XSS, or CSRF vulnerabilities
 
    ### Documentation
-   - [ ] Code comments where needed
-   - [ ] API documentation updated (if endpoints added)
+   - [ ] Relevant `docs/` section updated
+   - [ ] API changes documented in `docs/api/reference.md`
+   - [ ] Database changes documented in `docs/architecture/database.md`
 
-4. **Run tests**:
-   - Execute relevant test suites
-   - Report results
+5. **Run tests**:
+   ```bash
+   npm test                    # Full suite
+   npm run test:unit           # Unit only
+   npm run test:integration    # Integration only
+   npm run test:e2e            # E2E if applicable
+   ```
 
-5. **Update backlog**:
+6. **Update backlog**:
    - **If PASS**: Change status 🧪 QA Review → ✅ Done
-   - **If FAIL**: Keep at 🧪, create bug ticket, document issues
+   - **If FAIL**: Keep at 🧪, create bug ticket (`B.XX`), document issues
 
 ## Output Format
 
 ```
-## QA Review: Ticket [X.X]
+## QA Review: Ticket [X.X] — [Title]
+
+### Change Type: [Bug fix / API change / UI change / Full-stack]
 
 ### Checklist Results
 
@@ -76,32 +93,32 @@ When this command is invoked:
 - [x] No debug statements
 - [x] Error handling present
 - [x] No hardcoded values
+- [x] Types correct
 
 #### Testing
 - [x] Unit tests pass (X/X)
-- [x] Integration tests pass
+- [x] Integration tests pass (X/X)
 - [x] Edge cases covered
 
 #### Functionality
 - [x] Works as specified
 - [x] Error states handled
+- [x] No regressions
 
-#### Security
-- [x] Input validation
-- [x] Auth enforced
+#### Documentation
+- [x] docs/api/reference.md updated
+- [x] docs/architecture/database.md updated
 
 ### Test Results
-```
-npm test
-✓ 12 tests passed
-```
+| Suite | Pass | Fail | Coverage |
+|-------|------|------|----------|
+| Unit | X | 0 | XX% |
+| Integration | X | 0 | XX% |
 
-### Verdict: ✅ PASS / ❌ FAIL
+### Verdict: ✅ PASS
 
-### Issues Found (if any)
-1. [Issue description]
-   - Severity: High/Medium/Low
-   - Bug ticket created: B.X
+### Issues Found
+None
 
 ### Status Updated
 🧪 QA Review → ✅ Done
@@ -109,8 +126,10 @@ npm test
 
 ## Important Rules
 
-- Be thorough - this is the last gate before "done"
-- Run actual tests, don't just check if files exist
-- Create bug tickets for any issues found
+- Be thorough — this is the last gate before "done"
+- Run ACTUAL tests, don't just check if files exist
+- Scale QA effort to change type (don't over-test config changes)
+- Create bug tickets (B.XX) for any issues found
 - Document all findings even if passing
-- For child-facing features, verify child-appropriate content
+- Verify documentation was updated alongside code
+- For bug fixes: MUST reproduce the original bug before verifying the fix

@@ -1,6 +1,6 @@
 # Sprint Status
 
-Display current sprint progress and ticket status.
+Display current sprint progress with health indicators and model cost tracking.
 
 ## Usage
 
@@ -30,10 +30,17 @@ When this command is invoked:
    - Count tickets by status
    - Calculate completion percentage
    - Identify blockers
+   - Calculate model distribution (FinOps)
 
-4. **Display progress**:
+4. **Determine health**:
+   - 🟢 On Track: ≥ 80% of expected progress
+   - 🟡 At Risk: 60-79%
+   - 🔴 Behind: < 60%
+
+5. **Display progress**:
    - Show visual progress bar
    - List all tickets with current status
+   - Show model distribution
    - Highlight next actionable tickets
 
 ## Output Format
@@ -41,45 +48,41 @@ When this command is invoked:
 ### Single Sprint
 
 ```
-## Sprint 4: Session Management — ACTIVE
+## Sprint 4: Session Management — 🟢 On Track
 
 ### Progress
 ████████████░░░░░░░░ 60% (6/10 complete)
 
 ### Status Breakdown
-- ✅ Done: 4
-- 🧪 QA Review: 2
-- 🔄 In Progress: 1
-- 🔲 Todo: 2
-- ⏸️ Blocked: 1
+| Status | Count |
+|--------|-------|
+| ✅ Done | 4 |
+| 🧪 QA Review | 2 |
+| 🔄 In Progress | 1 |
+| 🔲 Todo | 2 |
+| ⏸️ Blocked | 1 |
+
+### Model Distribution (FinOps)
+| Model | Tickets | % | Target |
+|-------|---------|---|--------|
+| Haiku | 4 | 40% | 40% ✅ |
+| Sonnet | 5 | 50% | 45% ✅ |
+| Opus | 1 | 10% | 15% ✅ |
 
 ### Tickets
-| # | Ticket | Status | Owner |
-|---|--------|--------|-------|
-| 4.1 | Create sessions table | ✅ Done | DB |
-| 4.2 | Create SessionService | ✅ Done | Backend |
-| 4.3 | Create session API | ✅ Done | Backend |
-| 4.4 | Build SessionPage | 🧪 QA Review | Frontend |
-| 4.5 | Build SessionCard | 🧪 QA Review | Frontend |
-| 4.6 | Implement state machine | 🔄 In Progress | Backend |
-| 4.7 | Add caching | 🔲 Todo | Backend |
-| 4.8 | Write API tests | 🔲 Todo | QA |
-| 4.9 | Integration test | ⏸️ Blocked | QA |
-| 4.10 | Sprint docs | ✅ Done | Product |
+| # | Ticket | Status | Owner | Model | Deps |
+|---|--------|--------|-------|-------|------|
+| 4.1 | Create sessions table | ✅ | DB | haiku | — |
+| 4.2 | Create SessionService | ✅ | Backend | sonnet | 4.1 |
+| 4.6 | State machine | 🔄 | Backend | opus | 4.2 |
 
 ### Blockers
-- 4.9: Waiting for staging environment (DevOps)
+- ⏸️ 4.9: Waiting for staging environment (DevOps)
 
 ### Next Actions
 1. Complete QA review for 4.4, 4.5
 2. Finish 4.6 implementation
-3. Unblock 4.9
-
-### Definition of Done Progress
-- [x] All DB migrations applied
-- [x] API endpoints functional
-- [ ] All tests passing
-- [ ] Sprint documentation complete
+3. Unblock 4.9 (DevOps dependency)
 ```
 
 ### All Sprints Overview
@@ -87,34 +90,33 @@ When this command is invoked:
 ```
 ## Project Sprint Overview
 
-### Completed
-| Sprint | Name | Tickets | Completed |
-|--------|------|---------|-----------|
-| 0 | Foundation | 8 | 2026-01-10 |
-| 1 | Authentication | 12 | 2026-01-12 |
-| 2 | User Profiles | 10 | 2026-01-14 |
-| 3 | Content Management | 11 | 2026-01-16 |
+### Health: 🟢 On Track
 
-### Active
-| Sprint | Name | Progress | Remaining |
-|--------|------|----------|-----------|
-| 4 | Session Management | 60% | 4 tickets |
-
-### Planned
-| Sprint | Name | Tickets | Dependencies |
-|--------|------|---------|--------------|
-| 5 | Progress Tracking | 15 | Sprint 4 |
-| 6 | Gamification | 12 | Sprint 5 |
+| Sprint | Name | Status | Progress | Tickets |
+|--------|------|--------|----------|---------|
+| 0 | Foundation | ✅ Complete | 100% | 8/8 |
+| 1 | Auth | ✅ Complete | 100% | 12/12 |
+| 4 | Sessions | 🔄 Active | 60% | 6/10 |
+| 5 | Progress | 🔲 Planned | 0% | 0/15 |
 
 ### Velocity
-- Average tickets/sprint: 10.5
-- Average sprint duration: 2 days
+- Average: 10.5 tickets/sprint
+- Last sprint: 12 tickets
+- Projected completion: Sprint 6
+
+### FinOps Summary
+| Model | Total Tickets | Cost Share |
+|-------|--------------|------------|
+| Haiku | 24 (42%) | ~$12 |
+| Sonnet | 26 (45%) | ~$45 |
+| Opus | 8 (14%) | ~$28 |
 ```
 
 ## Important Rules
 
 - Always read from backlog.md for latest status
 - Show clear progress visualization
+- Include health indicator (🟢🟡🔴)
 - Highlight blockers prominently
+- Include FinOps model distribution
 - Suggest next actionable items
-- Include Definition of Done progress for active sprint

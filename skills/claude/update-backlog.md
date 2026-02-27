@@ -1,6 +1,6 @@
 # Update Backlog
 
-Modify ticket statuses or add tickets to the backlog.
+Modify ticket statuses, add tickets, report bugs, or link documentation.
 
 ## Usage
 
@@ -16,6 +16,7 @@ Modify ticket statuses or add tickets to the backlog.
 | `add` | `add [sprint] [description] [owner] [model]` | `/update-backlog add 4 "Add caching" Backend sonnet` |
 | `bug` | `bug [description]` | `/update-backlog bug "Login fails on Safari"` |
 | `note` | `note [ticket] [text]` | `/update-backlog note 4.3 "Needs API key"` |
+| `docs` | `docs [ticket] [doc_paths]` | `/update-backlog docs 4.3 docs/api/reference.md` |
 
 ### Status Shortcuts
 
@@ -48,14 +49,22 @@ When this command is invoked:
    - Find the target sprint
    - Add new row to ticket table
    - Assign next ticket number
+   - Include model recommendation (haiku/sonnet/opus) based on complexity
 
    ### Bug Report
-   - Create bug ticket in current sprint or dedicated bugs section
-   - Format: `B.X` for bug tickets
+   - Create bug ticket in Bug Backlog section
+   - Format: `B.XX` for bug tickets
+   - Reference relevant `docs/` section if applicable
+   - Include severity (Critical/High/Medium/Low)
 
    ### Add Note
    - Find the ticket
    - Add note as blockquote below ticket table
+
+   ### Link Documentation
+   - Find the ticket in the backlog
+   - Add docs references to the ticket's Docs column
+   - Verify the referenced doc files exist
 
 4. **Save the backlog**:
    - Write updated content to `specs/backlog.md`
@@ -67,7 +76,6 @@ When this command is invoked:
 ## Output Format
 
 ### Status Update
-
 ```
 ## Backlog Updated
 
@@ -78,40 +86,23 @@ Ticket 4.3: 🔄 In Progress → ✅ Done
 Sprint 4: 7/10 complete (70%)
 ```
 
-### Add Ticket
-
-```
-## Backlog Updated
-
-### Added Ticket
-| 4.11 | Add session caching to reduce DB load | 🔲 Todo | Backend | sonnet |
-
-### Sprint 4 Now Has
-11 tickets (7 done, 1 QA, 2 in progress, 1 todo)
-```
-
 ### Bug Report
-
 ```
 ## Bug Ticket Created
 
 ### Bug
-| B.3 | BUG: Login fails on Safari 17.x | 🔲 Todo | Frontend | sonnet |
+| B.5 | Login fails on Safari 17.x | High | Frontend | 🔲 Todo | `docs/architecture/security.md` |
 
-### Details
-- Reported during: QA review of ticket 3.5
-- Severity: High (blocks Safari users)
-- Added to: Sprint 3 bugs section
+### Added to Bug Backlog
+Reference: docs/architecture/security.md (auth flow section)
 ```
 
-### Add Note
-
+### Link Documentation
 ```
-## Note Added
+## Documentation Linked
 
-### Ticket 4.3 Note
-> Requires AWS_SECRET_KEY environment variable to be set.
-> Contact DevOps for staging credentials.
+### Ticket 4.3
+Docs: `docs/api/reference.md`, `docs/architecture/backend.md`
 ```
 
 ## Important Rules
@@ -119,6 +110,7 @@ Sprint 4: 7/10 complete (70%)
 - Always validate ticket numbers exist
 - Preserve backlog formatting
 - For status changes, only move in valid transitions
-- Bug tickets get `B.X` prefix
+- Bug tickets get `B.XX` prefix with incrementing number
 - Notes use blockquote format
+- Model recommendations follow FinOps: haiku (simple), sonnet (standard), opus (complex)
 - Confirm changes after making them
