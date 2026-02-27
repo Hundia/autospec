@@ -1,12 +1,20 @@
 {
   "name": "autospec",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "AutoSpec - From requirements to running code. AI-powered spec-driven development.",
   "type": "module",
   "bin": {
     "autospec": "./dist/index.js"
   },
   "main": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --clean --external @inquirer/prompts --external chalk --external commander --external fs-extra --external handlebars --external ora --external yaml",
     "dev": "tsup src/index.ts --format esm --watch",
@@ -15,7 +23,8 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "lint": "eslint src/**/*.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm test"
   },
   "keywords": [
     "autospec",
@@ -26,7 +35,10 @@
     "specifications",
     "multi-agent",
     "claude",
-    "copilot"
+    "copilot",
+    "gemini",
+    "developer-tools",
+    "code-generation"
   ],
   "author": "AutoSpec Team",
   "license": "MIT",
@@ -51,7 +63,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Hundia/autospec.git"
+    "url": "https://github.com/Hundia/autospec.git",
+    "directory": "cli"
+  },
+  "bugs": {
+    "url": "https://github.com/Hundia/autospec/issues"
   },
   "homepage": "https://github.com/Hundia/autospec#readme"
 }
