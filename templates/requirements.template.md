@@ -209,4 +209,4 @@ After completing this requirements document:
 
 ---
 
-*This template is part of [AutoSpec](https://github.com/user/autospec) - AI-powered spec-driven development.*
+*This template is part of [AutoSpec](https://github.com/Hundia/autospec) - AI-powered spec-driven development.*

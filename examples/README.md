@@ -190,4 +190,4 @@ Good example projects:
 
 ---
 
-*These examples are part of [AutoSpec](https://github.com/user/autospec) - AI-powered spec-driven development.*
+*These examples are part of [AutoSpec](https://github.com/Hundia/autospec) - AI-powered spec-driven development.*

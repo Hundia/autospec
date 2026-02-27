@@ -218,7 +218,7 @@ export const slidesHE = [
       { cmd: 'autospec sprint 0', desc: 'הפק פרומפט לספרינט' },
     ],
     links: {
-      github: 'github.com/user/autospec',
+      github: 'github.com/Hundia/autospec',
       docs: 'autospec.dev/docs',
     },
     tagline: 'מדרישות לקוד עובד.',

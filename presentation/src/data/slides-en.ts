@@ -218,7 +218,7 @@ export const slidesEN = [
       { cmd: 'autospec sprint 0', desc: 'Generate sprint prompt' },
     ],
     links: {
-      github: 'github.com/user/autospec',
+      github: 'github.com/Hundia/autospec',
       docs: 'autospec.dev/docs',
     },
     tagline: 'From requirements to running code.',
