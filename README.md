@@ -1,3 +1,9 @@
+[![npm version](https://img.shields.io/npm/v/autospec.svg)](https://www.npmjs.com/package/autospec)
+[![CI](https://github.com/Hundia/autospec/actions/workflows/ci.yml/badge.svg)](https://github.com/Hundia/autospec/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.4+-blue.svg)](https://www.typescriptlang.org/)
+
 # AutoSpec
 
 **From requirements to running code — AI-powered spec-driven development**
@@ -11,13 +17,35 @@
                             |_|
 ```
 
-AutoSpec is a battle-tested methodology for AI-assisted software development. It transforms vague requirements into comprehensive specifications, enabling AI coding assistants to execute with precision.
-
-**Validated on 263 tickets across two production case studies.**
+> **Validated on 263 tickets across 2 production case studies.**
+> AI frameworks generate boilerplate. AutoSpec builds real applications.
 
 ---
 
-## The Problem
+## Quick Start
+
+### Option A: CLI (30 seconds)
+
+```bash
+npx autospec init
+```
+
+Or install globally:
+
+```bash
+npm install -g autospec
+autospec init
+```
+
+### Option B: Zero-install (single paste)
+
+Copy the prompt from [QUICKSTART.md](./QUICKSTART.md) into Claude Code, Copilot, or any AI assistant. No npm required.
+
+---
+
+## Why AutoSpec?
+
+### The Problem
 
 Most developers use AI like this:
 
@@ -29,26 +57,42 @@ Most developers use AI like this:
 
 **The result:** Wasted time, inconsistent outputs, poor scalability.
 
-## The Solution
+### The Solution
 
 ```
-Requirements → Specs → Backlog → Sprint 0 → Sprint 1 → ... → Done
+Requirements --> Specs --> Backlog --> Sprint 0 --> Sprint 1 --> ... --> Done
 ```
 
-1. Write what you want (requirements)
-2. Generate 10 comprehensive specs covering all perspectives
-3. Extract tickets into a structured backlog
-4. Execute sprints with AI agents following the specs exactly
+1. **Write** what you want (requirements document)
+2. **Generate** 10 comprehensive specs covering every perspective
+3. **Extract** tickets into a structured backlog
+4. **Execute** sprints with AI agents following the specs exactly
 
 ---
 
-## Get Started in 5 Minutes
+## What Makes AutoSpec Different
 
-**Read the [QUICKSTART Guide](./QUICKSTART.md)** for step-by-step instructions with copy-paste prompts.
+| Capability | AutoSpec | Spec-Kit | BMAD | OpenSpec |
+|-----------|----------|----------|------|---------|
+| Production-validated | 263 tickets, 2 case studies | Examples only | Examples only | Community projects |
+| Setup method | Single prompt OR CLI | Python `uvx` | `npx bmad` | `npx @fission-ai/openspec` |
+| FinOps model routing | Built-in (haiku/sonnet/opus) | No | No | No |
+| Living docs linkage | Sprint <-> docs cross-refs | No | Agent-based | Partial |
+| Bug fix protocol | Reproduce -> fix -> verify | No | No | No |
+| Zero-install option | QUICKSTART.md single paste | No | No | No |
+| Academic paper | Published | No | No | No |
 
-Or jump straight to an example:
-- **[ShopFlow E-commerce](./examples/ecommerce/)** - Full example (174 tickets, 7 sprints)
-- **[DataHub API Service](./examples/api-service/)** - Working code example (89 tickets)
+### Key Differentiators
+
+1. **Production-validated, not theoretical.** 263 tickets executed across two real applications (ShopFlow e-commerce, DataHub API). Every pattern in AutoSpec was stress-tested in production before being documented.
+
+2. **FinOps-optimized model routing.** Every ticket specifies which AI model tier to use (haiku/sonnet/opus). Result: ~40% cost savings vs. using premium models for everything, with no quality loss.
+
+3. **True living documentation.** Sprint summaries cross-reference docs, docs reference sprint tickets, backlog links to both. Nothing goes stale because everything is connected.
+
+4. **Bug Fix Verification Protocol.** Reproduce the exact user flow first, fix, then verify by replaying the user flow (not just the code change). Catches multi-bug-same-symptom scenarios that other frameworks miss entirely.
+
+5. **Zero-to-productive in 5 minutes.** Copy one prompt from QUICKSTART.md and paste it into any AI assistant. No CLI install, no Python, no Docker. Works with Claude, Copilot, GPT, Gemini, Cursor.
 
 ---
 
@@ -121,49 +165,53 @@ autospec/
 │   ├── requirements.template.md
 │   ├── specs/              # All 10 role templates
 │   └── prompts/            # Sprint execution prompts
-├── skills/                 # AI assistant integrations (9 Claude commands, Copilot instructions)
-│   ├── claude/             # Claude Code slash commands (/sprint-run, /execute-ticket, etc.)
-│   └── copilot/            # GitHub Copilot custom instructions
+├── skills/                 # AI assistant integrations
+│   ├── claude/             # 9 Claude Code slash commands
+│   └── copilot/            # GitHub Copilot instructions
 ├── docs/                   # Deep-dive documentation
 │   ├── methodology/        # 9 chapters on the method
 │   └── environments/       # IDE-specific guides
 ├── cli/                    # TypeScript CLI tool
+├── dashboard/              # Web monitoring dashboard
 └── demo/                   # Live demo prompts
 ```
 
 ---
 
-## Using the CLI (Optional)
-
-For automation, install the CLI:
+## Using the CLI
 
 ```bash
+# Quick start with npx (no install)
+npx autospec init
+
+# Or install globally
 npm install -g autospec
 
+# Or add to your project
+npm install --save-dev autospec
+```
+
+### Commands
+
+```bash
 autospec init              # Initialize project with specs
 autospec status            # Show sprint progress
 autospec sprint <number>   # Generate sprint prompt
 autospec spec <name>       # Generate feature spec
 autospec dashboard         # Launch monitoring dashboard
-autospec validate          # Validate project structure
 ```
 
-### Monitoring Dashboard
+---
 
-Launch a real-time web dashboard to monitor your project:
+## AI Assistant Support
 
-```bash
-autospec dashboard
-```
-
-The dashboard provides:
-- **Backlog Board** - Kanban view of all tickets
-- **Sprint Burndown** - Progress charts and velocity tracking
-- **Agent Activity** - Multi-agent execution monitoring
-- **Screen Preview** - Visualize wireframes from UI specs
-- **Cost Analysis** - Model usage and savings metrics
-
-See [dashboard/README.md](./dashboard/README.md) for details.
+| Platform | Integration | Details |
+|----------|------------|---------|
+| **Claude Code** | 9 slash commands | `/sprint-run`, `/execute-ticket`, `/sprint-status`, `/update-backlog`, `/qa-review`, `/create-spec`, `/create-sprint-docs`, `/sprint-close`, `/help` |
+| **GitHub Copilot** | Custom instructions | `.github/copilot-instructions.md` with full SDD context |
+| **Cursor** | Rules file | Drop specs into Cursor rules for context |
+| **OpenAI GPT** | Prompt templates | Copy sprint prompts into ChatGPT/API |
+| **Google Gemini** | Context file | `.gemini/context.md` with project patterns |
 
 ---
 
@@ -171,11 +219,10 @@ See [dashboard/README.md](./dashboard/README.md) for details.
 
 ### Research Paper
 
-AutoSpec methodology is documented in a peer-review style academic paper:
 - [Academic Paper (PDF)](./docs/ACADEMIC_PAPER.pdf) — Full research paper with methodology and results
 - [Academic Paper (Markdown)](./docs/ACADEMIC_PAPER.md) — Source document
 
-### Methodology (the "why")
+### Methodology
 
 - [Philosophy](./docs/methodology/01_philosophy.md) — Why spec-driven development works
 - [Spec Structure](./docs/methodology/02_spec_structure.md) — How to write effective specs
@@ -190,12 +237,6 @@ AutoSpec methodology is documented in a peer-review style academic paper:
 - [Terminal + Claude Code](./docs/environments/terminal/claude_code.md)
 - [VSCode + GitHub Copilot](./docs/environments/vscode/github_copilot.md)
 
-### Templates
-
-- [Requirements Template](./templates/requirements.template.md) — Starting point
-- [Spec Templates](./templates/specs/) — All 10 role templates
-- [Prompt Templates](./templates/prompts/) — Sprint execution prompts
-
 ---
 
 ## Proven Results
@@ -207,14 +248,6 @@ AutoSpec methodology is documented in a peer-review style academic paper:
 | Test coverage achieved | 70%+ |
 | Cost savings vs. all-premium models | ~40% |
 | Time savings with multi-agent | ~45% |
-
----
-
-## Platform Support
-
-**AI Models:** Claude, GitHub Copilot, OpenAI GPT, Gemini
-
-**IDEs:** VSCode, JetBrains, Cursor, Terminal (Claude Code)
 
 ---
 
@@ -236,11 +269,13 @@ MIT — see [LICENSE](./LICENSE)
 
 ---
 
-## Quick Links
+## Links
 
 | Resource | Description |
 |----------|-------------|
 | [QUICKSTART.md](./QUICKSTART.md) | Get started in 5 minutes |
+| [CHANGELOG.md](./CHANGELOG.md) | Version history |
+| [ROADMAP.md](./ROADMAP.md) | Planned milestones |
 | [examples/](./examples/) | Complete worked examples |
 | [templates/](./templates/) | Templates for new projects |
 | [docs/methodology/](./docs/methodology/) | Deep-dive on the method |
