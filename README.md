@@ -121,9 +121,9 @@ autospec/
 │   ├── requirements.template.md
 │   ├── specs/              # All 10 role templates
 │   └── prompts/            # Sprint execution prompts
-├── skills/                 # AI assistant integrations
-│   ├── claude/             # Claude Code commands
-│   └── copilot/            # Copilot instructions
+├── skills/                 # AI assistant integrations (9 Claude commands, Copilot instructions)
+│   ├── claude/             # Claude Code slash commands (/sprint-run, /execute-ticket, etc.)
+│   └── copilot/            # GitHub Copilot custom instructions
 ├── docs/                   # Deep-dive documentation
 │   ├── methodology/        # 9 chapters on the method
 │   └── environments/       # IDE-specific guides
