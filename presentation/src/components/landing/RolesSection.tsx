@@ -7,7 +7,7 @@ const roles = [
     num: '01',
     name: 'Product Manager',
     icon: FileText,
-    focus: 'Vision, personas, user flows',
+    focus: 'User stories, acceptance criteria, feature priorities, and sprint backlog',
     color: 'blue',
     preview: `# Product Manager Specification
 
@@ -29,7 +29,7 @@ for small to medium teams who need lightweight project tracking.
     num: '02',
     name: 'Backend Lead',
     icon: Server,
-    focus: 'APIs, auth, services',
+    focus: 'System architecture, API contracts, module boundaries, dependency map',
     color: 'green',
     preview: `# Backend Lead Specification
 
@@ -57,7 +57,7 @@ RESTful API with JWT authentication
     num: '03',
     name: 'Frontend Lead',
     icon: Layout,
-    focus: 'Components, design system',
+    focus: 'Route map, state management, API service layer, component hierarchy',
     color: 'purple',
     preview: `# Frontend Lead Specification
 
@@ -83,7 +83,7 @@ React with TypeScript, Tailwind CSS
     num: '04',
     name: 'DB Architect',
     icon: Database,
-    focus: 'Schema, migrations',
+    focus: 'Schema definition, entity relationships, migration strategy, index plan',
     color: 'orange',
     preview: `# Database Architect Specification
 
@@ -112,7 +112,7 @@ React with TypeScript, Tailwind CSS
     num: '05',
     name: 'QA Lead',
     icon: TestTube,
-    focus: 'Testing strategy',
+    focus: 'Test strategy, E2E test suite, bug reproduction protocol',
     color: 'yellow',
     preview: `# QA Lead Specification
 
@@ -141,7 +141,7 @@ React with TypeScript, Tailwind CSS
     num: '06',
     name: 'DevOps Lead',
     icon: Cloud,
-    focus: 'Infrastructure, CI/CD',
+    focus: 'Dockerfile, compose config, CI/CD pipeline, deployment checklist',
     color: 'cyan',
     preview: `# DevOps Lead Specification
 
@@ -167,7 +167,7 @@ React with TypeScript, Tailwind CSS
     num: '07',
     name: 'Marketing Lead',
     icon: Megaphone,
-    focus: 'Go-to-market',
+    focus: 'Go-to-market strategy, positioning, competitive analysis',
     color: 'pink',
     preview: `# Marketing Lead Specification
 
@@ -191,7 +191,7 @@ React with TypeScript, Tailwind CSS
     num: '08',
     name: 'Finance Lead',
     icon: DollarSign,
-    focus: 'Pricing, economics',
+    focus: 'FinOps model routing, cost analysis, pricing models',
     color: 'emerald',
     preview: `# Finance Lead Specification
 
@@ -221,7 +221,7 @@ React with TypeScript, Tailwind CSS
     num: '09',
     name: 'Business Lead',
     icon: BarChart3,
-    focus: 'Strategy, competition',
+    focus: 'Business strategy, market fit, growth metrics',
     color: 'indigo',
     preview: `# Business Lead Specification
 
@@ -248,7 +248,7 @@ React with TypeScript, Tailwind CSS
     num: '10',
     name: 'UI Designer',
     icon: Palette,
-    focus: 'Screens, wireframes',
+    focus: 'Color tokens, typography scale, component primitives, pattern library',
     color: 'rose',
     preview: `# UI Designer Specification
 
@@ -294,7 +294,7 @@ export default function RolesSection() {
   const [selectedRole, setSelectedRole] = useState<typeof roles[0] | null>(null);
 
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8">
+    <section id="roles" className="py-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
@@ -306,14 +306,25 @@ export default function RolesSection() {
         >
           <span className="inline-flex items-center gap-2 px-4 py-1 bg-purple-500/10 border border-purple-500/20 rounded-full text-sm text-purple-400 mb-4">
             <Users size={14} />
-            The 10-Role Model
+            Role-Based Architecture
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Specifications from Every Angle
+            10 Roles. 10 Spec Files. Zero Ambiguity.
           </h2>
           <p className="text-white/60 max-w-2xl mx-auto">
-            Even solo developers think like a complete team. Each role provides a unique perspective
-            that ensures nothing is overlooked.
+            Each spec file captures one perspective on your project. Together, they form a complete specification that any AI agent can consume.
+          </p>
+        </motion.div>
+
+        {/* Solo Developer Callout */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-xl p-6 mb-12 text-center"
+        >
+          <p className="text-white/80 text-lg">
+            <span className="text-white font-semibold">Solo developer?</span> You still need all 10 perspectives. AutoSpec gives you the thinking of a full team — PM, architect, DBA, QA, DevOps, and more — in structured markdown files your AI references on every task.
           </p>
         </motion.div>
 
@@ -352,6 +363,19 @@ export default function RolesSection() {
         >
           Click any role to see example spec content
         </motion.p>
+
+        {/* Flow Description */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-12 bg-slate-800/30 border border-white/10 rounded-xl p-8"
+        >
+          <h3 className="text-lg font-semibold text-white mb-3">How a Feature Flows Through All 10 Roles</h3>
+          <p className="text-white/60 text-sm leading-relaxed">
+            A single requirement — say, "add waitlist to class bookings" — flows through all 10 perspectives. The PM defines the user story. The architect designs the module boundary. The DBA adds the schema. The frontend architect plans the UI state. The QA engineer writes the test cases. The security auditor reviews access control. The technical writer documents the API. Ten perspectives, one coherent feature.
+          </p>
+        </motion.div>
 
         {/* Role Preview Modal */}
         <AnimatePresence>

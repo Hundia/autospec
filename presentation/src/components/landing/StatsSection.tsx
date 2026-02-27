@@ -1,50 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Zap, CheckCircle2, Clock, TestTube, DollarSign, Bot, Quote } from 'lucide-react';
+import { Zap, CheckCircle2, Clock, DollarSign, Bot, Quote, Users } from 'lucide-react';
 
 const stats = [
-  {
-    value: '263+',
-    label: 'Tickets Executed',
-    icon: CheckCircle2,
-    color: 'green',
-    description: 'Across production applications',
-  },
-  {
-    value: '~45%',
-    label: 'Time Savings',
-    icon: Clock,
-    color: 'blue',
-    description: 'With multi-agent execution',
-  },
-  {
-    value: '~40%',
-    label: 'Cost Reduction',
-    icon: DollarSign,
-    color: 'emerald',
-    description: 'Compared to traditional dev',
-  },
-  {
-    value: '70%+',
-    label: 'Test Coverage',
-    icon: TestTube,
-    color: 'purple',
-    description: 'Achieved consistently',
-  },
-  {
-    value: '12',
-    label: 'Days to Production',
-    icon: Zap,
-    color: 'yellow',
-    description: 'For complete applications',
-  },
-  {
-    value: '10',
-    label: 'Role Perspectives',
-    icon: Bot,
-    color: 'cyan',
-    description: 'Complete specification coverage',
-  },
+  { value: '263', label: 'Production Tickets', description: 'Shipped across 2 real-world applications', icon: CheckCircle2, color: 'green' },
+  { value: '10', label: 'Role-Based Specs', description: 'Each capturing a distinct architectural perspective', icon: Users, color: 'blue' },
+  { value: '20+', label: 'Sprints Completed', description: 'With persistent memory compounding knowledge', icon: Zap, color: 'purple' },
+  { value: '~60%', label: 'Cost Reduction', description: 'Through FinOps model routing', icon: DollarSign, color: 'emerald' },
+  { value: '100', label: 'Documentation Files', description: 'Auto-linked to sprints, living knowledge base', icon: Bot, color: 'yellow' },
+  { value: '30s', label: 'Time to Start', description: 'Zero-install: paste one prompt, get structured', icon: Clock, color: 'cyan' },
 ];
 
 const colorClasses: Record<string, { bg: string; border: string; icon: string }> = {
@@ -55,6 +19,73 @@ const colorClasses: Record<string, { bg: string; border: string; icon: string }>
   yellow: { bg: 'bg-yellow-500/10', border: 'border-yellow-500/30', icon: 'text-yellow-500' },
   cyan: { bg: 'bg-cyan-500/10', border: 'border-cyan-500/30', icon: 'text-cyan-500' },
 };
+
+function useCountUp(target: string, duration: number = 1500) {
+  const [count, setCount] = useState('0');
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (hasAnimated || !ref.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasAnimated(true);
+          const numericPart = parseInt(target.replace(/[^0-9]/g, ''));
+          const prefix = target.match(/^[^0-9]*/)?.[0] || '';
+          const suffix = target.match(/[^0-9]*$/)?.[0] || '';
+
+          if (isNaN(numericPart)) {
+            setCount(target);
+            return;
+          }
+
+          const startTime = performance.now();
+          const animate = (currentTime: number) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+            const current = Math.round(numericPart * eased);
+            setCount(`${prefix}${current}${suffix}`);
+            if (progress < 1) requestAnimationFrame(animate);
+          };
+          requestAnimationFrame(animate);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [target, duration, hasAnimated]);
+
+  return { count, ref };
+}
+
+function StatCard({ stat, index }: { stat: typeof stats[0]; index: number }) {
+  const colors = colorClasses[stat.color];
+  const { count, ref } = useCountUp(stat.value);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: index * 0.1 }}
+      className={`${colors.bg} ${colors.border} border rounded-xl p-6 text-center hover:scale-105 transition-transform`}
+    >
+      <stat.icon className={`${colors.icon} mx-auto mb-3`} size={28} />
+      <div className="text-3xl sm:text-4xl font-bold text-white mb-1">
+        {count}
+      </div>
+      <div className="text-sm font-medium text-white/80 mb-1">{stat.label}</div>
+      <div className="text-xs text-white/50">{stat.description}</div>
+    </motion.div>
+  );
+}
 
 export default function StatsSection() {
   return (
@@ -81,26 +112,9 @@ export default function StatsSection() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
-          {stats.map((stat, index) => {
-            const colors = colorClasses[stat.color];
-            return (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className={`${colors.bg} ${colors.border} border rounded-xl p-6 text-center hover:scale-105 transition-transform`}
-              >
-                <stat.icon className={`${colors.icon} mx-auto mb-3`} size={28} />
-                <div className="text-3xl sm:text-4xl font-bold text-white mb-1">
-                  {stat.value}
-                </div>
-                <div className="text-sm font-medium text-white/80 mb-1">{stat.label}</div>
-                <div className="text-xs text-white/50">{stat.description}</div>
-              </motion.div>
-            );
-          })}
+          {stats.map((stat, index) => (
+            <StatCard key={stat.label} stat={stat} index={index} />
+          ))}
         </div>
 
         {/* Testimonial */}
@@ -115,16 +129,15 @@ export default function StatsSection() {
           <div className="relative bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-white/10 rounded-2xl p-8 sm:p-12 text-center">
             <Quote className="text-white/10 mx-auto mb-6" size={48} />
             <blockquote className="text-xl sm:text-2xl text-white/90 font-medium mb-6 max-w-3xl mx-auto leading-relaxed">
-              "AutoSpec turned AI from an unpredictable tool into a reliable development partner.
-              We went from idea to production-ready e-commerce platform in just 12 days."
+              "We tried three other spec frameworks before AutoSpec. By Sprint 5, they'd drifted so far from reality that the AI was ignoring the specs entirely. AutoSpec's living docs and sprint memory is the first one that actually gets MORE useful over time."
             </blockquote>
             <div className="flex items-center justify-center gap-4">
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
-                SF
+                PV
               </div>
               <div className="text-left">
-                <div className="font-semibold text-white">ShopFlow Project</div>
-                <div className="text-sm text-white/50">174 tickets, 7 sprints, full e-commerce</div>
+                <div className="font-semibold text-white">Production Validation Team</div>
+                <div className="text-sm text-white/50">Senior Developer</div>
               </div>
             </div>
           </div>

@@ -4,22 +4,22 @@ import { Github, Twitter, Mail, Heart, Copy, Check, Terminal, ArrowRight, Star }
 
 const footerLinks = {
   product: [
-    { name: 'Quick Start', href: '#quickstart' },
-    { name: 'Documentation', href: '#docs' },
-    { name: 'Examples', href: '#examples' },
-    { name: 'Case Studies', href: '#examples' },
+    { label: 'Documentation', href: '#docs' },
+    { label: 'Interactive Viewer', href: '#viewer' },
+    { label: 'FinOps Guide', href: '#finops' },
+    { label: 'Changelog', href: '#' },
   ],
   resources: [
-    { name: 'Academic Paper', href: '#paper' },
-    { name: 'Blog', href: '#' },
-    { name: 'Changelog', href: '#' },
-    { name: 'Roadmap', href: '#' },
+    { label: 'Getting Started', href: '#quickstart' },
+    { label: 'The 10 Roles', href: '#roles' },
+    { label: 'Sprint Memory', href: '#memory' },
+    { label: 'Academic Paper', href: '#paper' },
   ],
   community: [
-    { name: 'GitHub', href: 'https://github.com/Hundia/autospec' },
-    { name: 'Discord', href: '#' },
-    { name: 'Twitter', href: '#' },
-    { name: 'Contributing', href: '#' },
+    { label: 'GitHub', href: 'https://github.com/Hundia/autospec', external: true },
+    { label: 'Discord', href: '#', external: true },
+    { label: 'Contributing', href: '#', external: true },
+    { label: 'Report Issue', href: '#', external: true },
   ],
 };
 
@@ -45,11 +45,10 @@ export default function Footer() {
           className="max-w-4xl mx-auto text-center"
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Ready to Ship Better Software?
+            Your AI Agent Deserves Better Than a Blank Prompt
           </h2>
           <p className="text-white/60 mb-8 max-w-2xl mx-auto">
-            Start building with spec-driven development today.
-            Turn your AI assistant into a reliable development partner.
+            Give it structure. Give it memory. Give it 10 perspectives on every problem.
           </p>
 
           {/* Install Command */}
@@ -106,7 +105,7 @@ export default function Footer() {
                 <span className="text-lg font-bold text-white">AutoSpec</span>
               </a>
               <p className="text-sm text-white/50 mb-4">
-                The spec-driven development framework for AI-powered software engineering.
+                AutoSpec — Structured AI Development. Open Source. Production Validated.
               </p>
               <div className="flex items-center gap-3">
                 <a
@@ -140,12 +139,12 @@ export default function Footer() {
               <h4 className="font-semibold text-white mb-4">Product</h4>
               <ul className="space-y-2">
                 {footerLinks.product.map((link) => (
-                  <li key={link.name}>
+                  <li key={link.label}>
                     <a
                       href={link.href}
                       className="text-sm text-white/50 hover:text-white transition-colors"
                     >
-                      {link.name}
+                      {link.label}
                     </a>
                   </li>
                 ))}
@@ -157,12 +156,12 @@ export default function Footer() {
               <h4 className="font-semibold text-white mb-4">Resources</h4>
               <ul className="space-y-2">
                 {footerLinks.resources.map((link) => (
-                  <li key={link.name}>
+                  <li key={link.label}>
                     <a
                       href={link.href}
                       className="text-sm text-white/50 hover:text-white transition-colors"
                     >
-                      {link.name}
+                      {link.label}
                     </a>
                   </li>
                 ))}
@@ -174,14 +173,14 @@ export default function Footer() {
               <h4 className="font-semibold text-white mb-4">Community</h4>
               <ul className="space-y-2">
                 {footerLinks.community.map((link) => (
-                  <li key={link.name}>
+                  <li key={link.label}>
                     <a
                       href={link.href}
-                      target={link.href.startsWith('http') ? '_blank' : undefined}
-                      rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      target={link.external ? '_blank' : undefined}
+                      rel={link.external ? 'noopener noreferrer' : undefined}
                       className="text-sm text-white/50 hover:text-white transition-colors"
                     >
-                      {link.name}
+                      {link.label}
                     </a>
                   </li>
                 ))}

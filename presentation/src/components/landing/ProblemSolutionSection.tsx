@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'; // needed for React.Fragment
 import { motion } from 'framer-motion';
-import { MessageSquare, Shuffle, RotateCcw, Puzzle, ArrowDown, ArrowRight, FileText, Users, ListTodo, Bot, CheckCircle2 } from 'lucide-react';
+import { MessageSquare, Shuffle, RotateCcw, Puzzle, BrainCircuit, ArrowRight, FileText, Users, ListTodo, Bot, CheckCircle2 } from 'lucide-react';
 
 const problems = [
   {
@@ -25,6 +25,12 @@ const problems = [
     icon: Puzzle,
     title: 'Integration Chaos',
     description: "Code that doesn't fit together",
+    color: 'red',
+  },
+  {
+    icon: BrainCircuit,
+    title: 'Context Amnesia',
+    description: 'Every session starts from zero — no memory of past decisions.',
     color: 'red',
   },
 ];
@@ -85,19 +91,20 @@ export default function ProblemSolutionSection() {
         >
           <div className="text-center mb-12">
             <span className="inline-block px-4 py-1 bg-red-500/10 border border-red-500/20 rounded-full text-sm text-red-400 mb-4">
-              The Problem
+              Why AI Coding Fails
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-              Why AI Coding Often Fails
+              AI Agents Are Powerful. Without Structure, They're Expensive Chaos.
             </h2>
             <p className="text-white/60 max-w-2xl mx-auto">
               AI assistants are powerful, but without structure, they're unreliable partners.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {problems.map((problem, index) => {
               const colors = colorClasses[problem.color];
+              const isLast = index === problems.length - 1;
               return (
                 <motion.div
                   key={problem.title}
@@ -105,7 +112,9 @@ export default function ProblemSolutionSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className={`${colors.bg} ${colors.border} border rounded-xl p-6 hover:scale-105 transition-transform`}
+                  className={`${colors.bg} ${colors.border} border rounded-xl p-6 hover:scale-105 transition-transform ${
+                    isLast ? 'sm:col-span-2 sm:max-w-xs sm:mx-auto lg:col-span-1 lg:max-w-none' : ''
+                  }`}
                 >
                   <problem.icon className={`${colors.icon} mb-4`} size={32} />
                   <h3 className="text-lg font-semibold text-white mb-2">{problem.title}</h3>
@@ -116,17 +125,58 @@ export default function ProblemSolutionSection() {
           </div>
         </motion.div>
 
-        {/* Arrow Transition */}
+        {/* Enhanced Transition Arrow */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-          className="flex justify-center my-8"
+          transition={{ duration: 0.5 }}
+          className="flex flex-col items-center my-12 gap-0"
         >
-          <div className="w-16 h-16 bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-white/10 rounded-full flex items-center justify-center">
-            <ArrowDown className="text-white/60" size={28} />
-          </div>
+          {/* Top vertical gradient line (red→blue) */}
+          <div
+            className="w-px h-12"
+            style={{ background: 'linear-gradient(to bottom, rgb(239 68 68 / 0.4), rgb(59 130 246 / 0.6))' }}
+          />
+
+          {/* Central badge with spring animation */}
+          <motion.div
+            initial={{ scale: 0, rotate: -180 }}
+            whileInView={{ scale: 1, rotate: 0 }}
+            viewport={{ once: true }}
+            transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.2 }}
+            className="relative"
+          >
+            {/* Outer glow ring */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500/30 to-purple-500/30 blur-xl scale-150" />
+            {/* Ring border */}
+            <div className="absolute inset-0 rounded-full border border-white/10" />
+            {/* Badge */}
+            <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-white/20 flex items-center justify-center">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/80">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                <path d="M2 17l10 5 10-5" />
+                <path d="M2 12l10 5 10-5" />
+              </svg>
+            </div>
+          </motion.div>
+
+          {/* Label text */}
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.4 }}
+            className="mt-3 mb-3 text-sm font-medium bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400 bg-clip-text text-transparent text-center"
+          >
+            AutoSpec transforms chaos into structure
+          </motion.p>
+
+          {/* Bottom vertical gradient line (blue→green) */}
+          <div
+            className="w-px h-12"
+            style={{ background: 'linear-gradient(to bottom, rgb(59 130 246 / 0.6), rgb(16 185 129 / 0.4))' }}
+          />
         </motion.div>
 
         {/* Solution Section */}
@@ -171,6 +221,18 @@ export default function ProblemSolutionSection() {
               );
             })}
           </div>
+
+          {/* Bottom line */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="text-center text-white/50 mt-12 text-lg max-w-xl mx-auto"
+          >
+            You don't have an AI problem. You have a structure problem.{' '}
+            <span className="text-white font-semibold">AutoSpec is the structure.</span>
+          </motion.p>
         </motion.div>
       </div>
     </section>
