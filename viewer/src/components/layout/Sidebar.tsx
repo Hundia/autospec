@@ -1,12 +1,13 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { LayoutDashboard, FileText, List, BookOpen, Zap, Grid, Palette } from 'lucide-react'
+import { LayoutDashboard, FileText, List, BookOpen, Zap, Grid, Palette, Workflow } from 'lucide-react'
 
 const navItems = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/docs/methodology/01_philosophy', label: 'Docs', icon: BookOpen },
   { to: '/specs/01_product_manager', label: 'Specs', icon: FileText },
   { to: '/backlog', label: 'Backlog', icon: List },
+  { to: '/sprint/6', label: 'Sprint 6', icon: Workflow },
   { to: '/skills/sprint-run', label: 'Skills', icon: Zap },
   { to: '/environments', label: 'Environments', icon: Grid },
   { to: '/design-system', label: 'Design System', icon: Palette },

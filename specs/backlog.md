@@ -100,6 +100,28 @@
 
 ---
 
+## Sprint 6: Multi-Agent Orchestration Engine (~38 pts)
+
+**Theme:** Extend CLI with agent profiles, phase sequencing, and multi-agent generate command
+**Status:** 🔲 Planned
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 6.1 | Define phase type system: `foundation`, `scaffold`, `content`, `polish`, `qa` with ordering + dependency rules in `cli/src/types/phases.ts` | Backend | 2 | 🔲 | — | `docs/cli/orchestration.md` |
+| 6.2 | Define agent type enum + base agent profile schema (`AgentProfile` interface) in `cli/src/types/agents.ts` | Backend | 2 | 🔲 | — | `docs/cli/orchestration.md` |
+| 6.3 | Extend `.autospecrc.json` schema: add `agents`, `phases`, `orchestration` config sections to `cli/src/utils/config.ts` | Backend | 3 | 🔲 | 6.1, 6.2 | `docs/cli/orchestration.md` |
+| 6.4 | Create 6 agent profiles (Claude, Copilot, Gemini, Cline, Aider, Windsurf) + agent registry with lookup in `cli/src/agents/` | Backend | 5 | 🔲 | 6.2 | `docs/cli/agent_profiles.md` |
+| 6.5 | Auto-detect active AI environment from process/env signals in `cli/src/utils/detect-agent.ts` | Backend | 3 | 🔲 | 6.4 | `docs/cli/orchestration.md` |
+| 6.6 | State manager: track phase progress, file hashes, completion status in `cli/src/orchestration/state.ts` | Backend | 5 | 🔲 | 6.1 | `docs/cli/orchestration.md` |
+| 6.7 | Phase validators: pre/post-condition checks per phase type in `cli/src/orchestration/validators.ts` | Backend | 3 | 🔲 | 6.1, 6.6 | `docs/cli/orchestration.md` |
+| 6.8 | Cross-reference validator: verify backlog ↔ docs ↔ sprint summary linkage in `cli/src/orchestration/cross-ref.ts` | Backend | 3 | 🔲 | 6.6 | `docs/cli/orchestration.md` |
+| 6.9 | Phase sequencing engine: resolve ordering, dependency graph, parallel-safe detection in `cli/src/orchestration/sequencer.ts` | Backend | 5 | 🔲 | 6.1, 6.6, 6.7 | `docs/cli/orchestration.md` |
+| 6.10 | `autospec generate` command: wrap existing generators behind sequencer, emit agent-specific output in `cli/src/commands/generate.ts` | Backend | 3 | 🔲 | 6.4, 6.9 | `docs/cli/orchestration.md` |
+| 6.11 | Update `autospec init` to resume from partial state (detect existing files, skip completed phases) | Backend | 3 | 🔲 | 6.6 | `docs/cli/orchestration.md` |
+| 6.12 | Sprint 6 summary + docs + backlog update | PM | 1 | 🔲 | 6.1–6.11 | `sprints/sprint-6/summary.md` |
+
+---
+
 ## Bug Tracker
 
 *(No bugs yet — Sprint 0 is initial setup)*
@@ -116,4 +138,5 @@
 | Sprint 3 | 32 | ✅ Done |
 | Sprint 4 | 26 | ✅ Done |
 | Sprint 5 | 26 | ✅ Done |
-| **Total** | **187** | ✅ **ALL COMPLETE** |
+| Sprint 6 | 38 | 🔲 Planned |
+| **Total** | **225** | 🔄 **IN PROGRESS** |

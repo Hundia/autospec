@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 const routeLabels: Record<string, string> = {
   '/': 'Dashboard',
   '/backlog': 'Backlog',
+  '/sprint/6': 'Sprint 6 — Multi-Agent Orchestration',
   '/environments': 'Environments',
   '/design-system': 'Design System',
 }
@@ -13,6 +14,7 @@ function getTitle(pathname: string): string {
   if (pathname.startsWith('/docs/')) return 'Documentation'
   if (pathname.startsWith('/specs/')) return 'Specifications'
   if (pathname.startsWith('/skills/')) return 'Skills'
+  if (pathname.startsWith('/sprint/')) return 'Sprint Detail'
   return 'AutoSpec'
 }
 

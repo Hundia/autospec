@@ -22,12 +22,16 @@ export const docsManifest: DocEntry[] = [
   // Viewer
   { slug: '01_architecture', title: 'Architecture', section: 'viewer' },
   { slug: '02_design_system', title: 'Design System', section: 'viewer' },
+  // CLI
+  { slug: 'orchestration', title: 'Phase Orchestration', section: 'cli' },
+  { slug: 'agent_profiles', title: 'Agent Profiles', section: 'cli' },
 ]
 
-export const sections = ['methodology', 'viewer'] as const
+export const sections = ['methodology', 'viewer', 'cli'] as const
 export type DocSection = typeof sections[number]
 
 export const sectionLabels: Record<DocSection, string> = {
   methodology: 'Methodology',
   viewer: 'Viewer',
+  cli: 'CLI',
 }
