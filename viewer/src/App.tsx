@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import { Layout } from './components/layout/Layout'
 import { DashboardPage } from './pages/DashboardPage'
 import { DocsPage } from './pages/DocsPage'
@@ -10,7 +10,7 @@ import { DesignSystemPage } from './pages/DesignSystemPage'
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Layout>
         <Routes>
           <Route path="/" element={<DashboardPage />} />
@@ -22,6 +22,6 @@ export default function App() {
           <Route path="/design-system" element={<DesignSystemPage />} />
         </Routes>
       </Layout>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
