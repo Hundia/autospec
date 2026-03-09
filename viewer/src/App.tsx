@@ -1,0 +1,27 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Layout } from './components/layout/Layout'
+import { DashboardPage } from './pages/DashboardPage'
+import { DocsPage } from './pages/DocsPage'
+import { SpecsPage } from './pages/SpecsPage'
+import { BacklogPage } from './pages/BacklogPage'
+import { SkillsPage } from './pages/SkillsPage'
+import { EnvironmentsPage } from './pages/EnvironmentsPage'
+import { DesignSystemPage } from './pages/DesignSystemPage'
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/docs/:section/:slug" element={<DocsPage />} />
+          <Route path="/specs/:slug" element={<SpecsPage />} />
+          <Route path="/backlog" element={<BacklogPage />} />
+          <Route path="/skills/:slug" element={<SkillsPage />} />
+          <Route path="/environments" element={<EnvironmentsPage />} />
+          <Route path="/design-system" element={<DesignSystemPage />} />
+        </Routes>
+      </Layout>
+    </BrowserRouter>
+  )
+}

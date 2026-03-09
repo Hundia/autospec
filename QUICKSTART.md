@@ -1665,12 +1665,10 @@ SECTION 7 — VIEWER / PROJECT MONITOR WEBSITE
 ══════════════════════════════════════════════════════════════
 
 ╔══════════════════════════════════════════════════════════════════╗
-║  CRITICAL: The viewer is a FULL VISUAL WEBSITE — NOT a simple   ║
-║  markdown file reader. Every page MUST include interactive       ║
-║  charts, diagrams, animated components, and rich UI built with  ║
-║  shadcn/ui + Recharts. Think of it as an executive PRESENTATION ║
-║  of the entire project. If a page only renders raw markdown     ║
-║  text without visualizations, it is WRONG and must be redone.   ║
+║  CRITICAL: This is a FULL VISUAL WEBSITE — NOT a markdown       ║
+║  reader. Every page must include interactive charts, diagrams,  ║
+║  and rich UI with the warm FitnessAiManager design system.      ║
+║  If a page only renders raw markdown text, it is WRONG.         ║
 ╚══════════════════════════════════════════════════════════════════╝
 
 Generate a complete, self-contained React application in viewer/ that
@@ -1679,48 +1677,46 @@ provides a visually impressive dashboard for ALL generated artefacts
 
 ### 7.1 Tech Stack
 
-  React 18 + TypeScript + Vite + Tailwind CSS v4 + React Router
-  shadcn/ui — complete component library (REQUIRED — do NOT build custom
-              UI primitives). Initialize:
-                npx shadcn@latest init -d
-                npx shadcn@latest add button card badge tabs dialog
-                tooltip table dropdown-menu sheet separator select
-                command popover scroll-area toggle-group avatar
-  recharts — charts and data visualisation (REQUIRED for every data page):
-              PieChart, BarChart, LineChart, AreaChart, RadarChart
-  @dagrejs/dagre — graph layout algorithms for ERD, state machines, architecture
-  @xyflow/react (React Flow v12) — workflow graph visualisation (optional, for workflow page)
-  fuse.js — fuzzy search across docs, specs, and backlog
-  framer-motion — panel transitions ONLY (NOT for mass edge animation)
-  lucide-react — icons (used by shadcn/ui)
-  react-markdown + remark-gfm + rehype-highlight — Markdown rendering with syntax highlighting
-  mermaid — render Mermaid diagram blocks embedded in markdown
-  react-syntax-highlighter — code block highlighting (fallback)
+  React 18 + TypeScript + Vite 5 + Tailwind CSS v3 + React Router v6
+
+  UI Primitives: FitnessAiManager design system (REQUIRED — port from source)
+    Source: /opt/FitnessAiManager/apps/web/src/design-system/components/primitives/
+    Components to port: Button.tsx, Card.tsx, Badge.tsx, Input.tsx
+    Remove: RTL classes (dir-rtl, text-right), Hebrew fonts (Heebo/Rubik/Assistant)
+    Keep: all variant logic, shadow system, transition classes
+
+  Additional libraries (install via npm):
+    - recharts — charts and data visualisation (REQUIRED for every data page):
+                PieChart, BarChart, LineChart, AreaChart
+    - @xyflow/react (React Flow v12) — workflow graph visualisation (optional)
+    - fuse.js — fuzzy search across docs, specs, and backlog
+    - lucide-react — icons
+    - react-markdown + remark-gfm — Markdown rendering
+    - mermaid — render Mermaid diagram blocks embedded in markdown
 
 ### 7.1.1 Framework Lockdown (MANDATORY)
 
 Use ONLY the framework/component mapping below. Do not substitute alternatives.
 
   - App shell + routing: React Router (`Layout`, `Sidebar`, `Header`, nested routes)
-  - UI primitives: shadcn/ui ONLY (`src/components/ui/*`)
+  - UI primitives: FitnessAiManager primitives ONLY (`src/components/primitives/*`)
   - Charts and KPI visuals: Recharts ONLY
-  - Workflow/graph canvases: `@xyflow/react` ONLY
-  - Rich motion/transitions: framer-motion ONLY (panel/card transitions)
+  - Workflow/graph canvases: `@xyflow/react` ONLY (if used)
   - Markdown rendering: `react-markdown` + `remark-gfm` ONLY
-  - Code highlighting: `react-syntax-highlighter` ONLY
   - Icons: `lucide-react` ONLY
 
-Forbidden substitutions (must NOT appear):
+FORBIDDEN (must NOT appear anywhere):
+  - shadcn/ui — incompatible with warm palette, do NOT install
+  - @radix-ui imports (shadcn dependency)
   - Chart.js, Nivo, ECharts, ApexCharts
-  - visx, cytoscape, d3-force graph libraries for workflow pages
-  - MUI, Ant Design, Chakra, Mantine, Bootstrap component primitives
-  - Markdown-it/Marked/MDX-based runtime replacement
+  - MUI, Ant Design, Chakra, Mantine, Bootstrap
+  - Any RTL CSS classes (dir-rtl, text-right as default layout)
+  - Dark slate colors: #0f172a, slate-950, zinc-900, gray-950
 
 Enforcement checks (must be explicitly validated):
-  - `package.json` includes required libraries above.
-  - Viewer pages import from required libraries for their role.
-  - No forbidden libraries in `package.json` or imports.
-  - `src/components/ui/` is used for primitive controls across pages.
+  - `package.json` does NOT include shadcn, @radix-ui, or dark theme packages
+  - `src/components/primitives/` has Button, Card, Badge, Input
+  - No forbidden libraries in `package.json` or imports
 
 ### 7.2 Project Structure
 
@@ -1730,186 +1726,79 @@ viewer/
 ├── src/
 │   ├── App.tsx
 │   ├── main.tsx
-│   ├── index.css                    # Tailwind + global tokens + @keyframes
+│   ├── index.css                    # Tailwind + global tokens
 │   │
 │   ├── data/                        # Static artefacts (import at build time)
 │   │   ├── specs/                   # All 10 spec .md files
 │   │   ├── docs/                    # All docs .md files (mirrored structure)
-│   │   │   ├── architecture/        # 8 files including diagrams.md
-│   │   │   ├── flows/               # 6 flow definition files (NEW)
-│   │   │   ├── workflows/           # 8 files
-│   │   │   ├── environments/        # 5 files
-│   │   │   ├── api/                 # 5 files including curl-examples.md
-│   │   │   ├── testing/             # 6 files including api-test-suite.md
-│   │   │   ├── ui-design-system/    # 6 files including screens.md
-│   │   │   └── project/             # 4 files including dependencies.md
-│   │   ├── sprints/                 # Sprint result folders (NEW)
-│   │   │   └── sprint_X/            # qa_result.md, release_notes.md, summary.md
-│   │   ├── backlog.json             # Parsed backlog (sprints + tickets)
-│   │   ├── workflows.json           # Graph definitions (nodes + edges)
-│   │   ├── architecture.json        # Parsed architecture diagrams (NEW)
-│   │   ├── flows.json               # Parsed flow definitions (NEW)
+│   │   ├── backlog.ts               # Typed backlog data (sprints + tickets)
+│   │   ├── environments.ts          # 6×N compatibility matrix
 │   │   └── requirements.md          # Original SRS
 │   │
 │   ├── pages/
-│   │   ├── DashboardPage.tsx        # "/" — with visual charts
-│   │   ├── DesignSystemPage.tsx     # "/design-system" — FULL design system showcase
+│   │   ├── DashboardPage.tsx        # "/" — KPI cards + Recharts charts
+│   │   ├── DesignSystemPage.tsx     # "/design-system" — component gallery
 │   │   ├── SpecsPage.tsx            # "/specs" + "/specs/:slug"
 │   │   ├── DocsPage.tsx             # "/docs" + "/docs/:section/:slug"
-│   │   ├── BacklogPage.tsx          # "/backlog" — kanban + charts
-│   │   ├── WorkflowsPage.tsx        # "/workflows" — animated flows
-│   │   ├── FlowsPage.tsx            # "/flows" — user/system flows
-│   │   ├── ArchitecturePage.tsx     # "/architecture" — interactive diagrams
-│   │   ├── SprintsPage.tsx          # "/sprints" — sprint results
-│   │   └── RequirementsPage.tsx     # "/requirements" — traceability matrix
+│   │   ├── BacklogPage.tsx          # "/backlog" — kanban + table
+│   │   ├── SkillsPage.tsx           # "/skills/:slug" — skill cards
+│   │   └── EnvironmentsPage.tsx     # "/environments" — compatibility matrix
 │   │
 │   ├── components/
-│   │   ├── layout/
-│   │   │   ├── Sidebar.tsx          # Collapsible nav (260 px → 64 px)
-│   │   │   ├── Header.tsx           # Search, breadcrumb, theme toggle
-│   │   │   ├── DetailsPanel.tsx     # Right drawer (380 px, slide-in)
-│   │   │   └── Layout.tsx           # Three-column shell
-│   │   │
-│   │   ├── specs/
-│   │   │   ├── SpecViewer.tsx       # Markdown renderer + sticky TOC
-│   │   │   ├── SpecCard.tsx         # Grid card for spec list
-│   │   │   └── MermaidRenderer.tsx  # Mermaid diagram rendering (NEW)
-│   │   │
-│   │   ├── docs/
-│   │   │   ├── DocViewer.tsx        # Markdown renderer for docs
-│   │   │   ├── DocTree.tsx          # Nested folder tree navigation
-│   │   │   ├── DocCard.tsx          # Card with visual preview
-│   │   │   └── CodeBlock.tsx        # Syntax highlighted code (NEW)
-│   │   │
-│   │   ├── backlog/
-│   │   │   ├── BacklogBoard.tsx     # Tab per sprint + table
-│   │   │   ├── KanbanBoard.tsx      # Visual kanban view (NEW)
-│   │   │   ├── BurndownChart.tsx    # Sprint burndown (NEW)
-│   │   │   ├── SprintTab.tsx
-│   │   │   ├── TicketRow.tsx
-│   │   │   └── TicketCard.tsx       # Kanban card (NEW)
-│   │   │
-│   │   ├── workflows/
-│   │   │   ├── WorkflowCanvas.tsx   # React Flow wrapper
-│   │   │   ├── AnimatedEdge.tsx     # SVG stroke-dashoffset animation
-│   │   │   ├── WorkflowNode.tsx     # Memoised node component
-│   │   │   ├── AnimationController.tsx  # Play/Pause/Speed/Focus toolbar
-│   │   │   ├── WorkflowLegend.tsx   # Collapsible legend overlay
-│   │   │   ├── WorkflowSearch.tsx   # Search + filter bar
-│   │   │   ├── WorkflowSelector.tsx # Dropdown to select flow (NEW)
-│   │   │   └── PlayTour.tsx         # Auto-walk critical path
-│   │   │
-│   │   ├── flows/                   # NEW — Flow visualization components
-│   │   │   ├── UserJourneyDiagram.tsx    # Swimlane user journey
-│   │   │   ├── SequenceDiagram.tsx       # Request/response sequence
-│   │   │   ├── DataFlowDiagram.tsx       # Data movement visualization
-│   │   │   ├── StateMachine.tsx          # State transition diagram
-│   │   │   └── FlowSelector.tsx          # Flow type selector
-│   │   │
-│   │   ├── diagrams/               # Custom SVG diagram components (dagre-based)
-│   │   │   ├── LayeredArchDiagram.tsx    # Horizontal layer architecture (System, Frontend, Backend, Security)
-│   │   │   ├── ERDDiagram.tsx            # Entity-Relationship with crow's foot notation, zoom, minimap
-│   │   │   ├── StateMachineDiagram.tsx   # State → state with dagre layout, animated transitions
-│   │   │   ├── SequenceDiagram.tsx       # Participant lifelines, messages, groups (alt/opt/loop)
-│   │   │   └── DiagramExport.tsx         # Export any diagram as PNG/SVG
-│   │   │
-│   │   ├── sprints/                 # Sprint results components
-│   │   │   ├── SprintSummaryCard.tsx     # Sprint overview card
-│   │   │   ├── SprintCompletionChart.tsx # Pie chart completion
-│   │   │   ├── QAResultsViewer.tsx       # Test results with badges
-│   │   │   ├── ReleaseNotesViewer.tsx    # Feature highlights
-│   │   │   └── VelocityChart.tsx         # Velocity over sprints
-│   │   │
-│   │   ├── design-system/          # Design System showcase components
-│   │   │   ├── ColorPalette.tsx         # Interactive colour swatch grid
-│   │   │   ├── TypographyScale.tsx      # Font scale + weight showcase
-│   │   │   ├── SpacingScale.tsx         # Visual spacing/sizing reference
-│   │   │   ├── ComponentGallery.tsx     # Live rendered component examples
-│   │   │   ├── ScreenInventory.tsx      # Screen wireframes / mockups gallery
-│   │   │   ├── IconLibrary.tsx          # Icon grid with search
-│   │   │   ├── ResponsivePreview.tsx    # Breakpoint visualizer
-│   │   │   └── AccessibilityMatrix.tsx  # A11y compliance checklist
-│   │   │
-│   │   ├── dashboard/
-│   │   │   ├── OverviewCards.tsx         # Stat cards with AnimatedCounter
-│   │   │   ├── ProgressRing.tsx          # SVG animated circular progress
-│   │   │   ├── SprintTimeline.tsx        # Recharts BarChart (stacked)
-│   │   │   ├── ModelDistribution.tsx     # Recharts PieChart
-│   │   │   ├── VelocityMini.tsx          # Recharts LineChart
-│   │   │   ├── MiniArchitecture.tsx      # Clickable mini diagram → /arch
-│   │   │   └── RecentTickets.tsx         # shadcn/ui Table with Badges
-│   │   │
-│   │   ├── charts/                  # Reusable Recharts wrappers
-│   │   │   ├── PieChart.tsx              # Recharts PieChart wrapper
-│   │   │   ├── BarChart.tsx              # Recharts BarChart wrapper
-│   │   │   ├── LineChart.tsx             # Recharts LineChart wrapper
-│   │   │   ├── AreaChart.tsx             # Recharts AreaChart wrapper
-│   │   │   ├── ProgressBar.tsx           # Animated progress bar
-│   │   │   └── AnimatedCounter.tsx       # Count-up number animation
-│   │   │
-│   │   └── ui/                      # shadcn/ui components (auto-generated)
-│   │       # Generated by: npx shadcn@latest add button card badge tabs
-│   │       # dialog tooltip table dropdown-menu sheet separator select
-│   │       # command popover scroll-area toggle-group avatar
-│   │       # Do NOT build custom UI primitives — use shadcn/ui
+│   │   ├── primitives/              # FitnessAiManager ports (Button, Card, Badge, Input)
+│   │   ├── layout/                  # Sidebar, Header, Layout
+│   │   └── charts/                  # Recharts wrappers (BarChart, PieChart, etc.)
 │   │
-│   ├── hooks/
-│   │   ├── useAnimationEngine.ts    # Central animation state
-│   │   ├── useAnimationSettings.ts  # localStorage persistence
-│   │   ├── useReducedMotion.ts      # prefers-reduced-motion
-│   │   ├── useBacklogData.ts        # Parse and filter backlog (NEW)
-│   │   └── useDiagramExport.ts      # Export diagrams (NEW)
-│   │
-│   └── lib/
-│       ├── animation.ts             # Constants, easing, helpers
-│       ├── graph.ts                 # BFS, critical path, subgraph
-│       ├── theme.ts                 # Design tokens
-│       ├── mermaid.ts               # Mermaid parsing helpers (NEW)
-│       ├── markdown.ts              # Markdown parsing with diagrams (NEW)
-│       └── export.ts                # PNG/SVG export utilities (NEW)
+│   └── hooks/
+│       └── useBacklogData.ts        # Parse and filter backlog
 │
 ├── tailwind.config.js
 ├── vite.config.ts
 ├── tsconfig.json
 └── package.json
 
-### 7.3 Design System (shadcn/ui Dark Theme)
+### 7.3 Design System (Warm FitnessAiManager Palette)
 
-Use shadcn/ui "new-york" style. Configure dark theme as default.
+Port the warm design system from FitnessAiManager. Do NOT use dark mode.
 
-Colours (CSS variables for shadcn/ui):
-  --bg:           #0f172a   (slate-950)
-  --surface:      #1e293b   (slate-800)
-  --surface-2:    #334155   (slate-700)
-  --border:       rgba(255,255,255,0.08)
-  --text:         #f1f5f9   (slate-100)
-  --text-muted:   #94a3b8   (slate-400)
-  --primary:      #3b82f6   (blue-500)
-  --secondary:    #a855f7   (purple-500)
-  --success:      #10b981   (emerald-500)
-  --warning:      #f59e0b   (amber-500)
-  --error:        #ef4444   (red-500)
-  --info:         #06b6d4   (cyan-500)
+Source tailwind.config.js:
+  /opt/FitnessAiManager/apps/web/tailwind.config.js
+
+Colours (exact hex values — copy these into tailwind.config.js):
+  parchment:      #f5f3ed   ← PAGE BACKGROUND (body bg-color)
+  cream:          #faf9f5   ← CARD/SURFACE background
+  sage:           #698472   ← PRIMARY actions, active nav, buttons
+  sage-600:       #536a5b   ← hover state
+  sage-700:       #44564a   ← active/pressed state
+  terracotta:     #8e6a59   ← ACCENT, headings, error states
+  terracotta-700: #76574a   ← terracotta hover
+  sand:           #d8d0ba   ← BORDERS, dividers
+  sand-200:       #e8e4d8   ← subtle fills, code backgrounds
+  charcoal:       #1a1a1a   ← BODY TEXT
 
 Recharts theme (use consistently across ALL charts):
-  CHART_COLORS = ['#3b82f6', '#a855f7', '#10b981', '#f59e0b',
-                   '#ef4444', '#06b6d4', '#ec4899', '#8b5cf6']
+  CHART_COLORS = ['#698472', '#8e6a59', '#536a5b', '#b08a79',
+                   '#a08c72', '#44564a', '#d9b9a8', '#d8d0ba']
 
-Typography: Inter (headings 600–700, body 400), JetBrains Mono (code)
-Base: 16 px, scale: 1.25
-Spacing: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 px
-Radii: sm 6, md 10, lg 16, full 9999
+Typography:
+  Body: Inter (Google Fonts, weights: 300/400/500/600/700)
+  Code: JetBrains Mono (Google Fonts, weights: 400/500)
+  Load via <link> in index.html (no self-hosted)
+  font-family body: 'Inter', sans-serif
+  font-family code: 'JetBrains Mono', monospace
+
+Shadows (copy from source):
+  subtle:   0 2px 8px rgba(142, 106, 89, 0.08)
+  soft:     0 4px 16px rgba(142, 106, 89, 0.12)
+  elevated: 0 8px 32px rgba(142, 106, 89, 0.16)
 
 Component rules (MANDATORY):
-  - ALL buttons → shadcn/ui <Button> (never custom)
-  - ALL cards → shadcn/ui <Card> with CardHeader, CardContent, CardFooter
-  - ALL badges → shadcn/ui <Badge> (variant: default, secondary, destructive, outline)
-  - ALL tabs → shadcn/ui <Tabs> with TabsList, TabsTrigger, TabsContent
-  - ALL tables → shadcn/ui <Table> with proper header/body/row/cell
-  - ALL tooltips → shadcn/ui <Tooltip>
-  - ALL dropdowns → shadcn/ui <Select> or <DropdownMenu>
-  - ALL charts → Recharts with CHART_COLORS theme
-  - NEVER build custom UI primitives — use shadcn/ui for everything
+  - ALL buttons → FitnessAiManager <Button> variants: primary(sage)/secondary(terracotta)/outline/ghost
+  - ALL cards → FitnessAiManager <Card> with CardHeader, CardContent, CardFooter
+  - ALL badges → FitnessAiManager <Badge> with warm variants (not shadcn)
+  - ALL charts → Recharts with CHART_COLORS warm theme
+  - NEVER use shadcn/ui — port primitives from FitnessAiManager source
+  - NEVER use dark slate (#0f172a) as background
 
 ### 7.4 Pages
 
