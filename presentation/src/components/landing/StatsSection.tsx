@@ -5,7 +5,7 @@ import { Zap, CheckCircle2, Clock, DollarSign, Bot, Quote, Users } from 'lucide-
 const stats = [
   { value: '263', label: 'Production Tickets', description: 'Shipped across 2 real-world applications', icon: CheckCircle2, color: 'green' },
   { value: '10', label: 'Role-Based Specs', description: 'Each capturing a distinct architectural perspective', icon: Users, color: 'blue' },
-  { value: '20+', label: 'Sprints Completed', description: 'With persistent memory compounding knowledge', icon: Zap, color: 'purple' },
+  { value: '25+', label: 'Sprints Completed', description: 'With persistent memory compounding knowledge', icon: Zap, color: 'purple' },
   { value: '~60%', label: 'Cost Reduction', description: 'Through FinOps model routing', icon: DollarSign, color: 'emerald' },
   { value: '100', label: 'Documentation Files', description: 'Auto-linked to sprints, living knowledge base', icon: Bot, color: 'yellow' },
   { value: '30s', label: 'Time to Start', description: 'Zero-install: paste one prompt, get structured', icon: Clock, color: 'cyan' },

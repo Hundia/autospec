@@ -5,6 +5,9 @@ import ProblemSolutionSection from '../components/landing/ProblemSolutionSection
 import CompetitiveSection from '../components/landing/CompetitiveSection';
 import RolesSection from '../components/landing/RolesSection';
 import SprintMemorySection from '../components/landing/SprintMemorySection';
+import SprintLifecycleSection from '../components/landing/SprintLifecycleSection';
+import OrchestratorSection from '../components/landing/OrchestratorSection';
+import QASection from '../components/landing/QASection';
 import ViewerSection from '../components/landing/ViewerSection';
 import FinOpsSection from '../components/landing/FinOpsSection';
 import StatsSection from '../components/landing/StatsSection';
@@ -24,6 +27,9 @@ export default function LandingPage() {
         <CompetitiveSection />
         <RolesSection />
         <SprintMemorySection />
+        <SprintLifecycleSection />
+        <OrchestratorSection />
+        <QASection />
         <ViewerSection />
         <FinOpsSection />
         <StatsSection />

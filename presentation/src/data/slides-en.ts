@@ -99,29 +99,16 @@ export const slidesEN = [
     insight: 'Even solo developers benefit from thinking in roles.',
   },
   {
-    type: 'multiagent',
-    title: 'Multi-Agent Execution',
-    description: 'Double your velocity with parallel AI agents',
-    agents: [
-      {
-        name: 'Agent A',
-        role: 'Backend Lead',
-        tickets: ['1.1 - Create users table', '1.2 - Auth service', '1.4 - User API'],
-        color: 'blue',
-      },
-      {
-        name: 'Agent B',
-        role: 'Frontend Lead',
-        tickets: ['1.3 - Login form', '1.5 - Dashboard', '1.6 - Profile page'],
-        color: 'green',
-      },
+    type: 'sprintLifecycle',
+    title: 'The Sprint Lifecycle',
+    phases: [
+      { icon: '📋', title: 'Plan', description: 'Define tickets, estimate points, assign agents' },
+      { icon: '📝', title: 'Document', description: 'Write briefs with full context for agents' },
+      { icon: '⚙️', title: 'Execute', description: 'Agents implement tickets in isolated worktrees' },
+      { icon: '🧪', title: 'QA', description: 'Verify every ticket with build + test + review' },
+      { icon: '📊', title: 'Summarize', description: 'Record outcomes, docs updated, files changed' },
     ],
-    benefits: [
-      '~45% time savings',
-      'Clear boundaries prevent conflicts',
-      'Each agent has focused context',
-      'Dependencies tracked in backlog',
-    ],
+    callout: 'Every sprint follows this cycle. Nothing ships without all 5 phases.',
   },
   {
     type: 'backlog',
@@ -149,6 +136,112 @@ export const slidesEN = [
         'Critical bugs block sprint completion',
         'Bugs traced back to original ticket',
       ],
+    },
+  },
+  {
+    type: 'orchestrator',
+    title: 'Orchestrator Pattern',
+    orchestrator: {
+      name: 'Opus Orchestrator',
+      tasks: ['Writes sprint briefs', 'Spawns parallel agents', 'Reviews results & merges'],
+    },
+    agents: [
+      { name: 'Sonnet Agent A', task: 'Backend tickets in worktree-a' },
+      { name: 'Sonnet Agent B', task: 'Frontend tickets in worktree-b' },
+      { name: 'Sonnet Agent C', task: 'Docs & config in worktree-c' },
+    ],
+    benefits: ['Clean main context', 'Parallel execution', 'Isolated worktrees'],
+  },
+  {
+    type: 'multiagent',
+    title: 'Multi-Agent Execution',
+    description: 'Double your velocity with parallel AI agents',
+    agents: [
+      {
+        name: 'Agent A',
+        role: 'Backend Lead',
+        tickets: ['1.1 - Create users table', '1.2 - Auth service', '1.4 - User API'],
+        color: 'blue',
+      },
+      {
+        name: 'Agent B',
+        role: 'Frontend Lead',
+        tickets: ['1.3 - Login form', '1.5 - Dashboard', '1.6 - Profile page'],
+        color: 'green',
+      },
+    ],
+    benefits: [
+      '~45% time savings',
+      'Clear boundaries prevent conflicts',
+      'Each agent has focused context',
+      'Dependencies tracked in backlog',
+    ],
+  },
+  {
+    type: 'qaMethodology',
+    title: 'QA Methodology',
+    pyramid: [
+      { level: 'E2E', percentage: '10%', description: 'Full user flow tests' },
+      { level: 'Integration', percentage: '30%', description: 'API & service tests' },
+      { level: 'Unit / API', percentage: '60%', description: 'Function & endpoint tests' },
+    ],
+    bugProtocol: [
+      'Reproduce the exact user flow',
+      'Fix the code',
+      'Verify by replaying user flow',
+    ],
+    callout: 'Every ticket is verified before Done. No exceptions.',
+  },
+  {
+    type: 'sprintSummary',
+    title: 'Sprint Summaries',
+    sections: [
+      { icon: '✅', title: 'Completed Tickets', example: '5.1 Auth service ✅, 5.2 Login page ✅' },
+      { icon: '📄', title: 'Docs Updated', example: 'docs/auth/01-architecture.md, docs/frontend/routing.md' },
+      { icon: '📁', title: 'Files Modified', example: 'src/auth/auth.service.ts, src/pages/Login.tsx' },
+      { icon: '🧪', title: 'QA Results', example: 'API: 17/17 pass, UI: 6/6 pass' },
+    ],
+    callout: 'Future agents read summaries to understand what was built.',
+  },
+  {
+    type: 'skillsEnvironments',
+    title: 'Skills & Environments',
+    skills: [
+      '/plan-sprint',
+      '/sprint-run',
+      '/execute-ticket',
+      '/sprint-status',
+      '/qa-review',
+    ],
+    environments: [
+      { name: 'Claude Code', support: 'Full' },
+      { name: 'Copilot', support: 'Full' },
+      { name: 'Cursor', support: 'Full' },
+      { name: 'Windsurf', support: 'Partial' },
+      { name: 'JetBrains', support: 'Partial' },
+      { name: 'Aider', support: 'Basic' },
+    ],
+    callout: 'Same methodology, any AI assistant.',
+  },
+  {
+    type: 'viewer',
+    title: 'Live Viewer Dashboard',
+    url: 'hundia.github.io/autospec/viewer',
+    features: ['Specs Browser', 'Backlog Kanban', 'Living Docs'],
+    linkText: 'Try it live →',
+  },
+  {
+    type: 'finops',
+    title: 'FinOps: Smart Model Routing',
+    tiers: [
+      { model: 'Haiku', share: '40%', tasks: 'Migrations, configs, CRUD', tier: 'cheapest' },
+      { model: 'Sonnet', share: '45%', tasks: 'Services, components, tests', tier: 'balanced' },
+      { model: 'Opus', share: '15%', tasks: 'Architecture, security, planning', tier: 'premium' },
+    ],
+    comparison: {
+      allOpus: '$47/sprint',
+      finOps: '$19/sprint',
+      savings: '~60% savings',
     },
   },
   {
@@ -183,8 +276,8 @@ export const slidesEN = [
     type: 'results',
     title: 'Proven Results',
     metrics: [
-      { label: 'Sprints Completed', value: '16+', icon: '🏃' },
-      { label: 'Tickets Executed', value: '200+', icon: '✅' },
+      { label: 'Sprints Completed', value: '25+', icon: '🏃' },
+      { label: 'Tickets Executed', value: '263', icon: '✅' },
       { label: 'Time to Production', value: '12 days', icon: '⚡' },
       { label: 'Test Coverage', value: '70%+', icon: '🧪' },
       { label: 'Cost Savings', value: '~40%', icon: '💰' },

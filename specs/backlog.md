@@ -141,33 +141,48 @@
 ## Sprint 11: Presentation Expansion — Methodology Slides + Landing Enhancements (~58 pts)
 
 **Theme:** Expand the 11-slide deck to 18 slides covering sprint lifecycle, orchestrator pattern, QA methodology, sprint summaries, skills/environments, viewer, and FinOps. Add 3 new landing page sections + mobile fixes.
-**Status:** 🔲 Planned
+**Status:** 🔄 In Progress
 
 | ID | Ticket | Owner | Pts | Status | Deps | Docs |
 |----|--------|-------|-----|--------|------|------|
-| 11.1 | Update `slides-en.ts`: add 7 new slide data entries (types: `sprintLifecycle`, `orchestrator`, `qaMethodology`, `sprintSummary`, `skillsEnvironments`, `viewer`, `finops`), reorder to 18-slide sequence, update results data `200+`→`263` | Frontend | 5 | 🔲 | — | — |
-| 11.2 | Update `slides-he.ts`: Hebrew translations for all 7 new slide entries + same 18-slide reorder | Frontend | 3 | 🔲 | 11.1 | — |
-| 11.3 | Create `SprintLifecycleSlide.tsx` — 5-phase cycle: Plan→Document→Execute→QA→Summarize. Emerald accent. Circular flow with animated phase nodes | Frontend | 3 | 🔲 | 11.1 | — |
-| 11.4 | Create `OrchestratorSlide.tsx` — Two-tier: Opus orchestrator → Sonnet agents in parallel. Indigo accent. Fan-out connector animations | Frontend | 3 | 🔲 | 11.1 | — |
-| 11.5 | Create `QAMethodologySlide.tsx` — Test pyramid (60% unit, 30% integration, 10% E2E) + bug fix protocol. Red/rose accent | Frontend | 3 | 🔲 | 11.1 | — |
-| 11.6 | Create `SprintSummarySlide.tsx` — Summary template: completed tickets, docs updated, files modified, QA results. Teal accent | Frontend | 3 | 🔲 | 11.1 | — |
-| 11.7 | Create `SkillsEnvironmentsSlide.tsx` — 10 slash commands + 6×10 compatibility matrix. Sky accent (avoid cyan collision) | Frontend | 3 | 🔲 | 11.1 | — |
-| 11.8 | Create `ViewerSlide.tsx` — Browser mockup of viewer app with live link. Green accent | Frontend | 3 | 🔲 | 11.1 | — |
-| 11.9 | Create `FinOpsSlide.tsx` — Donut chart: Haiku 40%, Sonnet 45%, Opus 15% + cost comparison. Amber accent | Frontend | 3 | 🔲 | 11.1 | — |
-| 11.10 | Update `PresentationPage.tsx` — import 7 new slide components, add to `slideComponents` map | Frontend | 2 | 🔲 | 11.3–11.9 | — |
-| 11.11 | Create `OrchestratorSection.tsx` for landing page — two-tier Opus→Sonnet visualization, agent briefs, parallel worktrees. Indigo/purple gradient | Frontend | 5 | 🔲 | — | — |
-| 11.12 | Create `QASection.tsx` for landing page — test pyramid + bug fix verification protocol + 5 QA tiers. Red/rose gradient | Frontend | 5 | 🔲 | — | — |
-| 11.13 | Create `SprintLifecycleSection.tsx` for landing page — animated 5-phase pipeline. Insert between SprintMemorySection and ViewerSection | Frontend | 5 | 🔲 | — | — |
-| 11.14 | Update `LandingPage.tsx` — import + add OrchestratorSection, SprintLifecycleSection, QASection. Update `StatsSection` numbers to current values | Frontend | 2 | 🔲 | 11.11–11.13 | — |
-| 11.15 | Fix mobile progress dots for 18 slides — collapse or compact bar on `sm:` breakpoint | Frontend | 3 | 🔲 | 11.10 | — |
-| 11.16 | Build verification + RTL QA — `npm run build`, verify 18 slides in EN + HE, keyboard nav | QA | 2 | 🔲 | 11.14, 11.15 | — |
+| 11.1 | Update `slides-en.ts`: add 7 new slide data entries (types: `sprintLifecycle`, `orchestrator`, `qaMethodology`, `sprintSummary`, `skillsEnvironments`, `viewer`, `finops`), reorder to 18-slide sequence, update results data `200+`→`263` | Frontend | 5 | ✅ | — | — |
+| 11.2 | Update `slides-he.ts`: Hebrew translations for all 7 new slide entries + same 18-slide reorder | Frontend | 3 | ✅ | 11.1 | — |
+| 11.3 | Create `SprintLifecycleSlide.tsx` — 5-phase cycle: Plan→Document→Execute→QA→Summarize. Emerald accent. Circular flow with animated phase nodes | Frontend | 3 | ✅ | 11.1 | — |
+| 11.4 | Create `OrchestratorSlide.tsx` — Two-tier: Opus orchestrator → Sonnet agents in parallel. Indigo accent. Fan-out connector animations | Frontend | 3 | ✅ | 11.1 | — |
+| 11.5 | Create `QAMethodologySlide.tsx` — Test pyramid (60% unit, 30% integration, 10% E2E) + bug fix protocol. Red/rose accent | Frontend | 3 | ✅ | 11.1 | — |
+| 11.6 | Create `SprintSummarySlide.tsx` — Summary template: completed tickets, docs updated, files modified, QA results. Teal accent | Frontend | 3 | ✅ | 11.1 | — |
+| 11.7 | Create `SkillsEnvironmentsSlide.tsx` — 10 slash commands + 6×10 compatibility matrix. Sky accent (avoid cyan collision) | Frontend | 3 | ✅ | 11.1 | — |
+| 11.8 | Create `ViewerSlide.tsx` — Browser mockup of viewer app with live link. Green accent | Frontend | 3 | ✅ | 11.1 | — |
+| 11.9 | Create `FinOpsSlide.tsx` — Donut chart: Haiku 40%, Sonnet 45%, Opus 15% + cost comparison. Amber accent | Frontend | 3 | ✅ | 11.1 | — |
+| 11.10 | Update `PresentationPage.tsx` — import 7 new slide components, add to `slideComponents` map | Frontend | 2 | ✅ | 11.3–11.9 | — |
+| 11.11 | Create `OrchestratorSection.tsx` for landing page — two-tier Opus→Sonnet visualization, agent briefs, parallel worktrees. Indigo/purple gradient | Frontend | 5 | ✅ | — | — |
+| 11.12 | Create `QASection.tsx` for landing page — test pyramid + bug fix verification protocol + 5 QA tiers. Red/rose gradient | Frontend | 5 | ✅ | — | — |
+| 11.13 | Create `SprintLifecycleSection.tsx` for landing page — animated 5-phase pipeline. Insert between SprintMemorySection and ViewerSection | Frontend | 5 | ✅ | — | — |
+| 11.14 | Update `LandingPage.tsx` — import + add OrchestratorSection, SprintLifecycleSection, QASection. Update `StatsSection` numbers to current values | Frontend | 2 | ✅ | 11.11–11.13 | — |
+| 11.15 | Fix mobile progress dots for 18 slides — collapse or compact bar on `sm:` breakpoint | Frontend | 3 | ✅ | 11.10 | — |
+| 11.16 | Build verification + RTL QA — `npm run build`, verify 18 slides in EN + HE, keyboard nav | QA | 2 | ✅ | 11.14, 11.15 | — |
 | 11.17 | Create `sprints/sprint-11/summary.md`, update backlog statistics, create `docs/presentation/slide_catalog.md` | PM | 3 | 🔲 | 11.16 | `sprints/sprint-11/summary.md`, `docs/presentation/slide_catalog.md` |
 
 ---
 
 ## Bug Tracker
 
-*(No bugs yet — Sprint 0 is initial setup)*
+### B.01 — Separate `/sprint-run` from `/sprint-close`
+
+**Severity:** Enhancement (workflow)
+**Reported:** 2026-03-10
+**Status:** 🔲 Todo
+
+**Problem:** Currently `/sprint-run` includes sprint closing (Phase 5-6: mark tickets ✅, write summary, create tag). This means the sprint is closed before the user has a chance to review the implemented work, test it, or request changes.
+
+**Expected:** `/sprint-run` should stop after Phase 3 (QA) and Phase 4 (docs). The user should then review the work — test in browser, inspect code, request fixes. Only after explicit user approval should `/sprint-close` be invoked to finalize.
+
+**Fix:**
+1. Update `skills/claude/sprint-run.md` — remove Phases 5-6 (sprint close + final report). End with a "Sprint execution complete. Review the changes, then run `/sprint-close` when ready." message.
+2. Update `skills/claude/sprint-close.md` — ensure it handles Phases 5-6 independently (mark ✅, write summary, tag, final report).
+3. Update `.claude/commands/sprint-run.md` and `.claude/commands/sprint-close.md` symlinks if needed.
+
+**Affected files:** `skills/claude/sprint-run.md`, `skills/claude/sprint-close.md`, `.claude/commands/sprint-run.md`, `.claude/commands/sprint-close.md`
 
 ---
 

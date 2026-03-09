@@ -13,8 +13,15 @@ import ProblemSlide from '../components/ProblemSlide';
 import SolutionSlide from '../components/SolutionSlide';
 import WorkflowSlide from '../components/WorkflowSlide';
 import RolesSlide from '../components/RolesSlide';
+import SprintLifecycleSlide from '../components/SprintLifecycleSlide';
 import MultiAgentSlide from '../components/MultiAgentSlide';
 import BacklogSlide from '../components/BacklogSlide';
+import OrchestratorSlide from '../components/OrchestratorSlide';
+import QAMethodologySlide from '../components/QAMethodologySlide';
+import SprintSummarySlide from '../components/SprintSummarySlide';
+import SkillsEnvironmentsSlide from '../components/SkillsEnvironmentsSlide';
+import ViewerSlide from '../components/ViewerSlide';
+import FinOpsSlide from '../components/FinOpsSlide';
 import ExampleSlide from '../components/ExampleSlide';
 import ResultsSlide from '../components/ResultsSlide';
 import DemoSlide from '../components/DemoSlide';
@@ -26,8 +33,15 @@ const slideComponents = {
   solution: SolutionSlide,
   workflow: WorkflowSlide,
   roles: RolesSlide,
-  multiagent: MultiAgentSlide,
+  sprintLifecycle: SprintLifecycleSlide,
   backlog: BacklogSlide,
+  orchestrator: OrchestratorSlide,
+  multiagent: MultiAgentSlide,
+  qaMethodology: QAMethodologySlide,
+  sprintSummary: SprintSummarySlide,
+  skillsEnvironments: SkillsEnvironmentsSlide,
+  viewer: ViewerSlide,
+  finops: FinOpsSlide,
   example: ExampleSlide,
   results: ResultsSlide,
   demo: DemoSlide,
@@ -165,7 +179,7 @@ export default function PresentationPage() {
         </button>
 
         {/* Progress Dots */}
-        <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <div className={`flex gap-1 sm:gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
           {slides.map((_, idx) => (
             <button
               key={idx}
@@ -173,10 +187,10 @@ export default function PresentationPage() {
                 setDirection(idx > currentSlide ? 1 : -1);
                 setCurrentSlide(idx);
               }}
-              className={`h-2 rounded-full transition-all ${
+              className={`rounded-full transition-all ${
                 idx === currentSlide
-                  ? 'bg-blue-500 w-8'
-                  : 'bg-white/30 hover:bg-white/50 w-2'
+                  ? 'bg-blue-500 w-4 sm:w-8 h-1.5 sm:h-2'
+                  : 'bg-white/30 hover:bg-white/50 w-1.5 sm:w-2 h-1.5 sm:h-2'
               }`}
               aria-label={`Slide ${idx + 1}`}
             />

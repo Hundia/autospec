@@ -99,29 +99,16 @@ export const slidesHE = [
     insight: 'גם מפתחים יחידים נהנים מחשיבה בתפקידים.',
   },
   {
-    type: 'multiagent',
-    title: 'הרצה מרובת סוכנים',
-    description: 'הכפל את המהירות עם סוכני AI מקביליים',
-    agents: [
-      {
-        name: 'סוכן A',
-        role: 'ליד Backend',
-        tickets: ['1.1 - צור טבלת users', '1.2 - שירות אימות', '1.4 - User API'],
-        color: 'blue',
-      },
-      {
-        name: 'סוכן B',
-        role: 'ליד Frontend',
-        tickets: ['1.3 - טופס התחברות', '1.5 - דשבורד', '1.6 - דף פרופיל'],
-        color: 'green',
-      },
+    type: 'sprintLifecycle',
+    title: 'מחזור חיי הספרינט',
+    phases: [
+      { icon: '📋', title: 'תכנון', description: 'הגדר משימות, הערך נקודות, שבץ סוכנים' },
+      { icon: '📝', title: 'תיעוד', description: 'כתוב briefs עם הקשר מלא לסוכנים' },
+      { icon: '⚙️', title: 'ביצוע', description: 'סוכנים מממשים משימות ב-worktrees מבודדים' },
+      { icon: '🧪', title: 'QA', description: 'אמת כל משימה עם build + test + review' },
+      { icon: '📊', title: 'סיכום', description: 'תעד תוצאות, דוקומנטציה, קבצים ששונו' },
     ],
-    benefits: [
-      '~45% חיסכון בזמן',
-      'גבולות ברורים מונעים קונפליקטים',
-      'לכל סוכן הקשר ממוקד',
-      'תלויות מנוהלות בבאקלוג',
-    ],
+    callout: 'כל ספרינט עובר את המחזור הזה. שום דבר לא יוצא בלי כל 5 השלבים.',
   },
   {
     type: 'backlog',
@@ -149,6 +136,112 @@ export const slidesHE = [
         'באגים קריטיים חוסמים השלמת ספרינט',
         'באגים מקושרים למשימה המקורית',
       ],
+    },
+  },
+  {
+    type: 'orchestrator',
+    title: 'תבנית ה-Orchestrator',
+    orchestrator: {
+      name: 'Opus Orchestrator',
+      tasks: ['כותב briefs לספרינט', 'משגר סוכנים מקביליים', 'סוקר תוצאות ומאחד'],
+    },
+    agents: [
+      { name: 'Sonnet Agent A', task: 'משימות Backend ב-worktree-a' },
+      { name: 'Sonnet Agent B', task: 'משימות Frontend ב-worktree-b' },
+      { name: 'Sonnet Agent C', task: 'דוקומנטציה וקונפיגורציה ב-worktree-c' },
+    ],
+    benefits: ['הקשר ראשי נקי', 'ביצוע מקבילי', 'worktrees מבודדים'],
+  },
+  {
+    type: 'multiagent',
+    title: 'הרצה מרובת סוכנים',
+    description: 'הכפל את המהירות עם סוכני AI מקביליים',
+    agents: [
+      {
+        name: 'סוכן A',
+        role: 'ליד Backend',
+        tickets: ['1.1 - צור טבלת users', '1.2 - שירות אימות', '1.4 - User API'],
+        color: 'blue',
+      },
+      {
+        name: 'סוכן B',
+        role: 'ליד Frontend',
+        tickets: ['1.3 - טופס התחברות', '1.5 - דשבורד', '1.6 - דף פרופיל'],
+        color: 'green',
+      },
+    ],
+    benefits: [
+      '~45% חיסכון בזמן',
+      'גבולות ברורים מונעים קונפליקטים',
+      'לכל סוכן הקשר ממוקד',
+      'תלויות מנוהלות בבאקלוג',
+    ],
+  },
+  {
+    type: 'qaMethodology',
+    title: 'מתודולוגיית QA',
+    pyramid: [
+      { level: 'E2E', percentage: '10%', description: 'בדיקות תהליך מלא' },
+      { level: 'Integration', percentage: '30%', description: 'בדיקות API ושירותים' },
+      { level: 'Unit / API', percentage: '60%', description: 'בדיקות פונקציות ו-endpoints' },
+    ],
+    bugProtocol: [
+      'שחזר את תהליך המשתמש המדויק',
+      'תקן את הקוד',
+      'אמת בהרצה חוזרת של התהליך',
+    ],
+    callout: 'כל משימה מאומתת לפני Done. בלי יוצאים מן הכלל.',
+  },
+  {
+    type: 'sprintSummary',
+    title: 'סיכומי ספרינט',
+    sections: [
+      { icon: '✅', title: 'משימות שהושלמו', example: '5.1 שירות אימות ✅, 5.2 דף התחברות ✅' },
+      { icon: '📄', title: 'דוקומנטציה שעודכנה', example: 'docs/auth/01-architecture.md, docs/frontend/routing.md' },
+      { icon: '📁', title: 'קבצים ששונו', example: 'src/auth/auth.service.ts, src/pages/Login.tsx' },
+      { icon: '🧪', title: 'תוצאות QA', example: 'API: 17/17 עובר, UI: 6/6 עובר' },
+    ],
+    callout: 'סוכנים עתידיים קוראים סיכומים כדי להבין מה נבנה.',
+  },
+  {
+    type: 'skillsEnvironments',
+    title: 'Skills וסביבות',
+    skills: [
+      '/plan-sprint',
+      '/sprint-run',
+      '/execute-ticket',
+      '/sprint-status',
+      '/qa-review',
+    ],
+    environments: [
+      { name: 'Claude Code', support: 'Full' },
+      { name: 'Copilot', support: 'Full' },
+      { name: 'Cursor', support: 'Full' },
+      { name: 'Windsurf', support: 'Partial' },
+      { name: 'JetBrains', support: 'Partial' },
+      { name: 'Aider', support: 'Basic' },
+    ],
+    callout: 'אותה מתודולוגיה, כל עוזר AI.',
+  },
+  {
+    type: 'viewer',
+    title: 'דשבורד Viewer חי',
+    url: 'hundia.github.io/autospec/viewer',
+    features: ['דפדפן מפרטים', 'באקלוג Kanban', 'דוקומנטציה חיה'],
+    linkText: 'נסה אותו חי →',
+  },
+  {
+    type: 'finops',
+    title: 'FinOps: ניתוב מודלים חכם',
+    tiers: [
+      { model: 'Haiku', share: '40%', tasks: 'מיגרציות, קונפיגורציה, CRUD', tier: 'cheapest' },
+      { model: 'Sonnet', share: '45%', tasks: 'שירותים, קומפוננטות, בדיקות', tier: 'balanced' },
+      { model: 'Opus', share: '15%', tasks: 'ארכיטקטורה, אבטחה, תכנון', tier: 'premium' },
+    ],
+    comparison: {
+      allOpus: '$47/ספרינט',
+      finOps: '$19/ספרינט',
+      savings: '~60% חיסכון',
     },
   },
   {
@@ -183,8 +276,8 @@ export const slidesHE = [
     type: 'results',
     title: 'תוצאות מוכחות',
     metrics: [
-      { label: 'ספרינטים שהושלמו', value: '16+', icon: '🏃' },
-      { label: 'משימות שבוצעו', value: '200+', icon: '✅' },
+      { label: 'ספרינטים שהושלמו', value: '25+', icon: '🏃' },
+      { label: 'משימות שבוצעו', value: '263', icon: '✅' },
       { label: 'זמן לפרודקשן', value: '12 ימים', icon: '⚡' },
       { label: 'כיסוי בדיקות', value: '70%+', icon: '🧪' },
       { label: 'חיסכון בעלויות', value: '~40%', icon: '💰' },
