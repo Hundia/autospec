@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Github, BookOpen, Zap, Code2, FileText } from 'lucide-react';
+import { Menu, X, Github, BookOpen, Zap, Code2, FileText, Monitor } from 'lucide-react';
 
 const navLinks = [
   { name: 'Docs', href: '#docs', icon: BookOpen },
   { name: 'Quick Start', href: '#quickstart', icon: Zap },
   { name: 'Examples', href: '#examples', icon: Code2 },
   { name: 'Paper', href: '#paper', icon: FileText },
+  { name: 'Viewer', href: './viewer/', icon: Monitor },
 ];
 
 export default function Navigation() {

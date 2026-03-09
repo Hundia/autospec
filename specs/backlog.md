@@ -122,6 +122,22 @@
 
 ---
 
+## Sprint 10: README Update + GitHub Pages Consolidation (~10 pts)
+
+**Theme:** Make presentation/ the main GitHub Pages site with viewer/ as sub-site, update README with live links
+**Status:** ✅ Done
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 10.1 | Switch presentation/ from BrowserRouter to HashRouter | Frontend | 1 | ✅ | — | — |
+| 10.2 | Update vite.config.ts base paths (presentation: `/autospec/`, viewer: `/autospec/viewer/`) | Frontend | 1 | ✅ | — | — |
+| 10.3 | Rewrite `.github/workflows/pages.yml` to build both apps and combine | DevOps | 3 | ✅ | — | `docs/deployment/github_pages.md` |
+| 10.4 | Add `build-presentation` job to `.github/workflows/ci.yml` | DevOps | 1 | ✅ | — | — |
+| 10.5 | Update ViewerSection + Navigation in presentation/ to link to live viewer | Frontend | 2 | ✅ | 10.2 | — |
+| 10.6 | Update README.md with live demo links, GitHub Pages badge, updated structure | Product | 2 | ✅ | — | — |
+
+---
+
 ## Bug Tracker
 
 *(No bugs yet — Sprint 0 is initial setup)*
@@ -139,4 +155,5 @@
 | Sprint 4 | 26 | ✅ Done |
 | Sprint 5 | 26 | ✅ Done |
 | Sprint 6 | 38 | 🔲 Planned |
-| **Total** | **225** | 🔄 **IN PROGRESS** |
+| Sprint 10 | 10 | ✅ Done |
+| **Total** | **235** | 🔄 **IN PROGRESS** |

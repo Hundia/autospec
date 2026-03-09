@@ -16,22 +16,31 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: viewer
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: viewer/package-lock.json
       - uses: actions/configure-pages@v5
+
+      # Build presentation (main site)
       - run: npm ci
+        working-directory: presentation
       - run: npm run build
+        working-directory: presentation
+
+      # Build viewer (sub-site)
+      - run: npm ci
+        working-directory: viewer
+      - run: npm run build
+        working-directory: viewer
+
+      # Combine: copy viewer into presentation/dist/viewer/
+      - run: mkdir -p presentation/dist/viewer && cp -r viewer/dist/* presentation/dist/viewer/
+
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: viewer/dist
+          path: presentation/dist
 
   deploy:
     environment:

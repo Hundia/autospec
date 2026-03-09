@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Monitor, BarChart3, Search, TrendingDown, GitBranch, Code2, Palette, Users } from 'lucide-react';
+import { Monitor, BarChart3, Search, TrendingDown, GitBranch, Code2, Palette, Users, ExternalLink } from 'lucide-react';
 
 const viewerFeatures = [
   {
@@ -112,7 +112,7 @@ export default function ViewerSection() {
                 </div>
                 <div className="flex-1 mx-4">
                   <div className="bg-slate-800 rounded-md px-3 py-1 text-xs text-white/40 font-mono">
-                    localhost:3000/viewer
+                    hundia.github.io/autospec/viewer
                   </div>
                 </div>
               </div>
@@ -169,19 +169,29 @@ export default function ViewerSection() {
           </motion.div>
         </div>
 
-        {/* Stakeholder callout */}
+        {/* CTA to live viewer */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-16 flex items-center justify-center gap-3 text-white/50 text-sm"
+          className="mt-16 text-center"
         >
-          <Users size={16} className="text-cyan-400 flex-shrink-0" />
-          <span>
-            Non-technical stakeholders can browse the Viewer to understand project status —
-            without reading a single line of code.
-          </span>
+          <a
+            href="./viewer/"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-medium rounded-lg transition-all shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40"
+          >
+            <Monitor size={18} />
+            Explore the Live Viewer
+            <ExternalLink size={14} />
+          </a>
+          <p className="mt-4 flex items-center justify-center gap-3 text-white/50 text-sm">
+            <Users size={16} className="text-cyan-400 flex-shrink-0" />
+            <span>
+              Non-technical stakeholders can browse the Viewer to understand project status —
+              without reading a single line of code.
+            </span>
+          </p>
         </motion.div>
       </div>
     </section>

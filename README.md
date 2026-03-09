@@ -1,5 +1,6 @@
 [![npm version](https://img.shields.io/npm/v/autospec.svg)](https://www.npmjs.com/package/autospec)
 [![CI](https://github.com/Hundia/autospec/actions/workflows/ci.yml/badge.svg)](https://github.com/Hundia/autospec/actions/workflows/ci.yml)
+[![GitHub Pages](https://github.com/Hundia/autospec/actions/workflows/pages.yml/badge.svg)](https://hundia.github.io/autospec/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.4+-blue.svg)](https://www.typescriptlang.org/)
@@ -19,6 +20,18 @@
 
 > **Validated on 263 tickets across 2 production case studies.**
 > AI frameworks generate boilerplate. AutoSpec builds real applications.
+
+---
+
+## Live Demo
+
+| Site | URL |
+|------|-----|
+| **Landing Page** | [hundia.github.io/autospec](https://hundia.github.io/autospec/) |
+| **Slide Deck** | [hundia.github.io/autospec/#/presentation](https://hundia.github.io/autospec/#/presentation) |
+| **Project Viewer** | [hundia.github.io/autospec/viewer](https://hundia.github.io/autospec/viewer/) |
+
+The **Viewer** is a browsable dashboard showing specs, backlog, docs, and sprint progress — built using AutoSpec's own SDD methodology.
 
 ---
 
@@ -158,6 +171,9 @@ Match AI model to task complexity:
 ```
 autospec/
 ├── QUICKSTART.md           # Start here!
+├── presentation/           # Marketing landing page + slide deck (React + Vite)
+├── viewer/                 # SDD project browser (React + Vite)
+├── cli/                    # TypeScript CLI tool
 ├── examples/               # Complete worked examples
 │   ├── ecommerce/          # ShopFlow (7 sprints)
 │   └── api-service/        # DataHub with source code
@@ -169,10 +185,9 @@ autospec/
 │   ├── claude/             # 10 Claude Code slash commands
 │   └── copilot/            # GitHub Copilot instructions
 ├── docs/                   # Deep-dive documentation
-│   ├── methodology/        # 9 chapters on the method
+│   ├── methodology/        # 10 chapters on the method
 │   └── environments/       # IDE-specific guides
-├── cli/                    # TypeScript CLI tool
-├── dashboard/              # Web monitoring dashboard
+├── specs/                  # 10 role spec files + backlog.md
 └── demo/                   # Live demo prompts
 ```
 
@@ -273,6 +288,8 @@ MIT — see [LICENSE](./LICENSE)
 
 | Resource | Description |
 |----------|-------------|
+| [Live Demo](https://hundia.github.io/autospec/) | Landing page + slide deck |
+| [Project Viewer](https://hundia.github.io/autospec/viewer/) | Browse specs, backlog, and docs |
 | [QUICKSTART.md](./QUICKSTART.md) | Get started in 5 minutes |
 | [CHANGELOG.md](./CHANGELOG.md) | Version history |
 | [ROADMAP.md](./ROADMAP.md) | Planned milestones |
