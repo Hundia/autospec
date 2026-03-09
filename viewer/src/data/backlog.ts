@@ -128,4 +128,19 @@ export const backlogData: Sprint[] = [
       { id: '6.12', title: 'Sprint 6 summary + docs', owner: 'PM', points: 1, status: 'todo', dependencies: [] },
     ],
   },
+  {
+    number: '10',
+    name: 'Sprint 10',
+    theme: 'README Update + GitHub Pages Consolidation',
+    status: 'done',
+    totalPoints: 10,
+    tickets: [
+      { id: '10.1', title: 'Switch presentation/ to HashRouter', owner: 'Frontend', points: 1, status: 'done', dependencies: [] },
+      { id: '10.2', title: 'Update vite.config.ts base paths', owner: 'Frontend', points: 1, status: 'done', dependencies: [] },
+      { id: '10.3', title: 'Rewrite pages.yml for combined deploy', owner: 'DevOps', points: 3, status: 'done', dependencies: [] },
+      { id: '10.4', title: 'Add build-presentation CI job', owner: 'DevOps', points: 1, status: 'done', dependencies: [] },
+      { id: '10.5', title: 'Update ViewerSection + Navigation links', owner: 'Frontend', points: 2, status: 'done', dependencies: ['10.2'] },
+      { id: '10.6', title: 'Update README with live demo links', owner: 'Product', points: 2, status: 'done', dependencies: [] },
+    ],
+  },
 ]
