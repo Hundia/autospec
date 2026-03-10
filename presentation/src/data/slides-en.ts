@@ -1,4 +1,5 @@
 export const slidesEN = [
+  // 1. title
   {
     type: 'title',
     title: 'AutoSpec',
@@ -7,45 +8,141 @@ export const slidesEN = [
     presenter: 'Your Name',
     date: '2026',
   },
+  // 2. eraTraditional
   {
-    type: 'problem',
-    title: 'The Problem with AI Coding',
-    points: [
-      {
-        icon: '💬',
-        title: 'Vague Requests',
-        description: '"Build me a login system"',
-      },
-      {
-        icon: '🎲',
-        title: 'Unpredictable Output',
-        description: 'Different results every time',
-      },
-      {
-        icon: '🔄',
-        title: 'Endless Iterations',
-        description: 'Back and forth fixing issues',
-      },
-      {
-        icon: '🧩',
-        title: 'Integration Chaos',
-        description: 'Code that doesn\'t fit together',
-      },
+    type: 'eraTraditional',
+    title: 'The Traditional Era',
+    subtitle: 'Development was slow but predictable',
+    characteristics: [
+      { icon: '⌨️', title: 'Manual Coding', description: 'Every line written by hand' },
+      { icon: '👥', title: 'Code Reviews', description: 'Human gatekeeping quality' },
+      { icon: '📖', title: 'Documentation', description: 'Existed because humans wrote it' },
+      { icon: '🧠', title: 'Institutional Memory', description: 'Knowledge lived in people' },
     ],
-    bottomLine: 'AI assistants are powerful, but without structure, they\'re unreliable.',
+    metrics: { speed: 'Low', predictability: 'High', docs: 'Comprehensive', knowledge: 'Preserved' },
   },
+  // 3. eraAssistant
+  {
+    type: 'eraAssistant',
+    title: 'The Code Assistant Era',
+    subtitle: 'AI helped you type faster, not think better',
+    tools: ['GitHub Copilot', 'TabNine', 'Kite'],
+    gains: [
+      { title: 'Typing Speed', description: '3x faster autocomplete' },
+      { title: 'Boilerplate', description: 'Repetitive code eliminated' },
+    ],
+    unchanged: [
+      { title: 'Design Decisions', description: 'Still entirely human' },
+      { title: 'Architecture', description: 'No AI involvement' },
+    ],
+    decisionAuthority: 'Human',
+  },
+  // 4. eraAgentic
+  {
+    type: 'eraAgentic',
+    title: 'The Agentic Era',
+    subtitle: 'Revolutionary power, dangerous autonomy',
+    tools: ['Claude Code', 'Cursor', 'Devin'],
+    power: [
+      { title: 'Full Features', description: 'Entire modules in one prompt' },
+      { title: 'Cross-Stack', description: 'Frontend + Backend + DB together' },
+      { title: 'Autonomous', description: 'AI makes implementation decisions' },
+    ],
+    danger: [
+      { title: 'No Memory', description: 'Every session starts from zero' },
+      { title: 'Context Drift', description: 'Long conversations corrupt decisions' },
+      { title: 'Zero Documentation', description: 'Chat logs are not docs' },
+    ],
+  },
+  // 5. contextPoisoning
+  {
+    type: 'contextPoisoning',
+    title: 'Context Poisoning',
+    subtitle: "Long conversations don't just lose context — they actively corrupt it",
+    stages: [
+      { turn: 'Turn 1', status: 'Clean', color: 'green', snippet: 'Use PostgreSQL with Prisma ORM', description: 'Clear initial decisions' },
+      { turn: 'Turn 25', status: 'Drift', color: 'yellow', snippet: "Actually, let's try MongoDB here...", description: 'Contradicting earlier choices' },
+      { turn: 'Turn 50', status: 'Contradiction', color: 'orange', snippet: "Wait, we're using Prisma right?", description: 'Forgetting what was decided' },
+      { turn: 'Turn 100', status: 'Chaos', color: 'red', snippet: 'TypeError: Cannot read undefined', description: 'Compounding errors from lost context' },
+    ],
+  },
+  // 6. reverseTax
+  {
+    type: 'reverseTax',
+    title: 'The Reverse Engineering Tax',
+    subtitle: 'Two months later, you reverse-engineer your own codebase',
+    dayOne: {
+      title: 'Day 1',
+      items: ['Active AI context', 'AI knows all conventions', 'Moving fast, shipping features'],
+    },
+    daySixty: {
+      title: 'Day 60',
+      items: ['Chat logs deleted or stale', 'Zero context for new sessions', '"Why was this built this way?"'],
+    },
+    cost: { hours: 40, label: 'Hours lost to reverse engineering per quarter' },
+  },
+  // 7. breakingPoint
+  {
+    type: 'breakingPoint',
+    title: 'The Breaking Point',
+    subtitle: 'The faster you build, the faster you lose',
+    buildItems: ['6 AI agents', '200+ files generated', '50 chat sessions'],
+    debtItems: ['0 docs written', '0 decisions recorded', '0 handoff possible'],
+    stats: [
+      { value: '73%', label: 'of AI projects abandoned within 6 months' },
+      { value: '40hrs', label: 'spent re-understanding code per quarter' },
+      { value: '$0', label: 'value of chat logs after session ends' },
+    ],
+    bottomLine: 'Agentic development without structure is technical debt at AI speed.',
+  },
+  // 8. bridge
+  {
+    type: 'bridge',
+    title: 'What if...',
+    question: 'What if AI had all the context BEFORE it wrote a single line of code?',
+    points: [
+      'What if every decision was recorded, not just the code?',
+      'What if new sessions inherited all previous knowledge?',
+      'What if AI agents worked from specs, not conversations?',
+    ],
+  },
+  // 9. solution
   {
     type: 'solution',
-    title: 'The AutoSpec Solution',
+    title: 'Spec-Driven Development',
     flow: [
-      { step: 'Requirements', icon: '📋', description: 'What you want to build' },
-      { step: 'Specifications', icon: '📐', description: 'Detailed contracts' },
-      { step: 'Backlog', icon: '📝', description: 'Sized tickets' },
-      { step: 'AI Execution', icon: '🤖', description: 'Parallel agents' },
-      { step: 'Working Code', icon: '✅', description: 'Production ready' },
+      { step: 'Requirements', icon: '📋', description: 'Human intent captured once' },
+      { step: 'Specifications', icon: '📐', description: '10 role-based contracts' },
+      { step: 'Backlog', icon: '📝', description: 'Sized, ordered tickets' },
+      { step: 'AI Execution', icon: '🤖', description: 'Agents with full context' },
+      { step: 'Working Code', icon: '✅', description: 'Tested, documented, production-ready' },
     ],
-    keyInsight: 'Treat specifications as code. Every line traces back to a spec.',
+    keyInsight: "Don't let AI think. Let it execute. Specs are the thinking.",
   },
+  // 10. docsFolder
+  {
+    type: 'docsFolder',
+    title: 'The docs/ Folder',
+    subtitle: 'Your institutional memory — not documentation, living knowledge',
+    tree: [
+      { name: 'docs/', type: 'folder', depth: 0 },
+      { name: 'auth/', type: 'folder', depth: 1, annotation: 'JWT, guards, middleware' },
+      { name: 'database/', type: 'folder', depth: 1, annotation: 'Schema, ERD, migrations' },
+      { name: 'frontend/', type: 'folder', depth: 1, annotation: 'Routes, stores, services' },
+      { name: 'scheduling/', type: 'folder', depth: 1, annotation: 'Classes, capacity, views' },
+      { name: 'bookings/', type: 'folder', depth: 1, annotation: 'State machine, waitlist' },
+    ],
+    growth: [
+      { sprint: 'Sprint 0', docs: 10 },
+      { sprint: 'Sprint 5', docs: 45 },
+      { sprint: 'Sprint 10', docs: 100 },
+    ],
+    comparison: {
+      without: 'Knowledge in chat logs — lost when session ends',
+      with: 'Knowledge in version-controlled docs — grows forever',
+    },
+  },
+  // 11. workflow
   {
     type: 'workflow',
     title: 'The AutoSpec Workflow',
@@ -80,6 +177,7 @@ export const slidesEN = [
       },
     ],
   },
+  // 12. roles
   {
     type: 'roles',
     title: 'The 10-Role Model',
@@ -98,6 +196,7 @@ export const slidesEN = [
     ],
     insight: 'Even solo developers benefit from thinking in roles.',
   },
+  // 13. sprintLifecycle
   {
     type: 'sprintLifecycle',
     title: 'The Sprint Lifecycle',
@@ -110,6 +209,7 @@ export const slidesEN = [
     ],
     callout: 'Every sprint follows this cycle. Nothing ships without all 5 phases.',
   },
+  // 14. backlog
   {
     type: 'backlog',
     title: 'The Backlog System',
@@ -138,6 +238,7 @@ export const slidesEN = [
       ],
     },
   },
+  // 15. orchestrator
   {
     type: 'orchestrator',
     title: 'Orchestrator Pattern',
@@ -152,6 +253,7 @@ export const slidesEN = [
     ],
     benefits: ['Clean main context', 'Parallel execution', 'Isolated worktrees'],
   },
+  // 16. multiagent
   {
     type: 'multiagent',
     title: 'Multi-Agent Execution',
@@ -177,6 +279,7 @@ export const slidesEN = [
       'Dependencies tracked in backlog',
     ],
   },
+  // 17. qaMethodology
   {
     type: 'qaMethodology',
     title: 'QA Methodology',
@@ -192,6 +295,7 @@ export const slidesEN = [
     ],
     callout: 'Every ticket is verified before Done. No exceptions.',
   },
+  // 18. sprintSummary
   {
     type: 'sprintSummary',
     title: 'Sprint Summaries',
@@ -203,6 +307,24 @@ export const slidesEN = [
     ],
     callout: 'Future agents read summaries to understand what was built.',
   },
+  // 19. modelOptimization
+  {
+    type: 'modelOptimization',
+    title: 'Model Optimization',
+    subtitle: "When specs are clear, you don't need the biggest model",
+    tiers: [
+      { model: 'Haiku', share: '40%', tasks: 'Migrations, configs, CRUD', tier: 'cheapest', reason: 'Specs remove ambiguity' },
+      { model: 'Sonnet', share: '45%', tasks: 'Services, components, tests', tier: 'balanced', reason: 'Brief provides full context' },
+      { model: 'Opus', share: '15%', tasks: 'Architecture, planning', tier: 'premium', reason: 'Only for genuine decisions' },
+    ],
+    insight: 'No room for deep reasoning because all decisions are pre-made in specs.',
+    comparison: {
+      allOpus: '$47/sprint',
+      optimized: '$19/sprint',
+      savings: '~60% savings',
+    },
+  },
+  // 20. skillsEnvironments
   {
     type: 'skillsEnvironments',
     title: 'Skills & Environments',
@@ -223,6 +345,7 @@ export const slidesEN = [
     ],
     callout: 'Same methodology, any AI assistant.',
   },
+  // 21. viewer
   {
     type: 'viewer',
     title: 'Live Viewer Dashboard',
@@ -230,20 +353,7 @@ export const slidesEN = [
     features: ['Specs Browser', 'Backlog Kanban', 'Living Docs'],
     linkText: 'Try it live →',
   },
-  {
-    type: 'finops',
-    title: 'FinOps: Smart Model Routing',
-    tiers: [
-      { model: 'Haiku', share: '40%', tasks: 'Migrations, configs, CRUD', tier: 'cheapest' },
-      { model: 'Sonnet', share: '45%', tasks: 'Services, components, tests', tier: 'balanced' },
-      { model: 'Opus', share: '15%', tasks: 'Architecture, security, planning', tier: 'premium' },
-    ],
-    comparison: {
-      allOpus: '$47/sprint',
-      finOps: '$19/sprint',
-      savings: '~60% savings',
-    },
-  },
+  // 22. example
   {
     type: 'example',
     title: 'Real Example: ShopFlow E-Commerce',
@@ -272,6 +382,7 @@ export const slidesEN = [
       'Admin dashboard',
     ],
   },
+  // 23. results
   {
     type: 'results',
     title: 'Proven Results',
@@ -288,6 +399,7 @@ export const slidesEN = [
       source: 'Battle-tested on production applications',
     },
   },
+  // 24. demo
   {
     type: 'demo',
     title: 'Live Demo',
@@ -301,6 +413,21 @@ export const slidesEN = [
     ],
     note: 'Demo time: ~5 minutes',
   },
+  // 25. beforeAfter
+  {
+    type: 'beforeAfter',
+    title: 'Before & After',
+    subtitle: 'Same team, same AI tools. The only difference: structure.',
+    rows: [
+      { aspect: 'Context', before: 'Lost every session', after: 'Preserved forever in docs/' },
+      { aspect: 'Documentation', before: 'None — chat logs only', after: '100+ living docs' },
+      { aspect: 'Onboarding', before: 'Weeks of reverse engineering', after: 'Read specs, start coding' },
+      { aspect: 'AI Accuracy', before: 'Degrades over conversation', after: 'Consistent from spec' },
+      { aspect: 'Cost', before: '$47/sprint (all Opus)', after: '$19/sprint (model routing)' },
+      { aspect: 'Handoff', before: 'Impossible without original dev', after: 'Anyone reads the specs' },
+    ],
+  },
+  // 26. closing
   {
     type: 'closing',
     title: 'Get Started Today',
@@ -315,5 +442,11 @@ export const slidesEN = [
       docs: 'autospec.dev/docs',
     },
     tagline: 'From requirements to running code.',
+  },
+  // 27. finalTagline
+  {
+    type: 'finalTagline',
+    title: 'AutoSpec',
+    tagline: "Don't let your AI think. Let it execute.",
   },
 ];

@@ -9,8 +9,15 @@ import { slidesHE } from '../data/slides-he';
 
 // Components
 import TitleSlide from '../components/TitleSlide';
-import ProblemSlide from '../components/ProblemSlide';
+import EraTraditionalSlide from '../components/EraTraditionalSlide';
+import EraAssistantSlide from '../components/EraAssistantSlide';
+import EraAgenticSlide from '../components/EraAgenticSlide';
+import ContextPoisoningSlide from '../components/ContextPoisoningSlide';
+import ReverseTaxSlide from '../components/ReverseTaxSlide';
+import BreakingPointSlide from '../components/BreakingPointSlide';
+import BridgeSlide from '../components/BridgeSlide';
 import SolutionSlide from '../components/SolutionSlide';
+import DocsFolderSlide from '../components/DocsFolderSlide';
 import WorkflowSlide from '../components/WorkflowSlide';
 import RolesSlide from '../components/RolesSlide';
 import SprintLifecycleSlide from '../components/SprintLifecycleSlide';
@@ -19,18 +26,27 @@ import BacklogSlide from '../components/BacklogSlide';
 import OrchestratorSlide from '../components/OrchestratorSlide';
 import QAMethodologySlide from '../components/QAMethodologySlide';
 import SprintSummarySlide from '../components/SprintSummarySlide';
+import ModelOptimizationSlide from '../components/ModelOptimizationSlide';
 import SkillsEnvironmentsSlide from '../components/SkillsEnvironmentsSlide';
 import ViewerSlide from '../components/ViewerSlide';
-import FinOpsSlide from '../components/FinOpsSlide';
 import ExampleSlide from '../components/ExampleSlide';
 import ResultsSlide from '../components/ResultsSlide';
 import DemoSlide from '../components/DemoSlide';
+import BeforeAfterSlide from '../components/BeforeAfterSlide';
 import ClosingSlide from '../components/ClosingSlide';
+import FinalTaglineSlide from '../components/FinalTaglineSlide';
 
 const slideComponents = {
   title: TitleSlide,
-  problem: ProblemSlide,
+  eraTraditional: EraTraditionalSlide,
+  eraAssistant: EraAssistantSlide,
+  eraAgentic: EraAgenticSlide,
+  contextPoisoning: ContextPoisoningSlide,
+  reverseTax: ReverseTaxSlide,
+  breakingPoint: BreakingPointSlide,
+  bridge: BridgeSlide,
   solution: SolutionSlide,
+  docsFolder: DocsFolderSlide,
   workflow: WorkflowSlide,
   roles: RolesSlide,
   sprintLifecycle: SprintLifecycleSlide,
@@ -39,13 +55,15 @@ const slideComponents = {
   multiagent: MultiAgentSlide,
   qaMethodology: QAMethodologySlide,
   sprintSummary: SprintSummarySlide,
+  modelOptimization: ModelOptimizationSlide,
   skillsEnvironments: SkillsEnvironmentsSlide,
   viewer: ViewerSlide,
-  finops: FinOpsSlide,
   example: ExampleSlide,
   results: ResultsSlide,
   demo: DemoSlide,
+  beforeAfter: BeforeAfterSlide,
   closing: ClosingSlide,
+  finalTagline: FinalTaglineSlide,
 };
 
 export default function PresentationPage() {

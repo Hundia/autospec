@@ -165,6 +165,45 @@
 
 ---
 
+## Sprint 12A: Presentation Evolution Narrative (55 pts)
+
+**Theme:** Replace single problem slide with 5-act narrative arc across 27 slides.
+**Status:** ✅ Done
+
+| ID | Ticket | Owner | Pts | Status | Docs |
+|----|--------|-------|-----|--------|------|
+| 12.1 | Update `slides-en.ts` — 27 entries in new order, 10 new slides, rework solution | Agent A | 5 | ✅ | — |
+| 12.2 | Update `slides-he.ts` — Hebrew translations for all new entries | Agent A | 5 | ✅ | — |
+| 12.3 | Create `EraTraditionalSlide.tsx` — slate-400 header, 2x2 cards, metrics bar | Agent A | 5 | ✅ | — |
+| 12.4 | Create `EraAssistantSlide.tsx` — blue-400 header, tool badges, gained/unchanged cols | Agent A | 5 | ✅ | — |
+| 12.5 | Create `EraAgenticSlide.tsx` — cyan-400 header, power/danger split | Agent A | 5 | ✅ | — |
+| 12.6 | Create `ContextPoisoningSlide.tsx` — amber→red gradient, vertical timeline, shake | Agent A | 5 | ✅ | — |
+| 12.7 | Create `ReverseTaxSlide.tsx` — red-500 header, Day 1 vs Day 60, animated counter | Agent A | 5 | ✅ | — |
+| 12.8 | Create `BreakingPointSlide.tsx` — red-600 header, balance beam, stat cards | Agent A | 5 | ✅ | — |
+| 12.9 | Create `BridgeSlide.tsx` — purple glow, typewriter question, staggered sub-points | Agent A | 5 | ✅ | — |
+| 12.10 | Create `DocsFolderSlide.tsx` — emerald-400, file tree, growth bars, comparison | Agent A | 5 | ✅ | — |
+| 12.11 | Create `ModelOptimizationSlide.tsx` — amber-400, tiers + reason field, insight | Agent A | 5 | ✅ | — |
+| 12.12 | Create `BeforeAfterSlide.tsx` — red/green columns, 6-row comparison table | Agent A | 5 | ✅ | — |
+| 12.13 | Create `FinalTaglineSlide.tsx` — near-black bg, word-by-word reveal | Agent A | 3 | ✅ | — |
+| 12.14 | Update `PresentationPage.tsx` — import 11 new, remove problem/finops, 27 entries | Agent A | 3 | ✅ | — |
+| 12.15 | Delete `ProblemSlide.tsx` — verified no orphan imports | Agent A | 2 | ✅ | — |
+
+---
+
+## Sprint 12: Landing Page Evolution Narrative (~14 pts)
+
+**Theme:** Replace ProblemSolutionSection with EvolutionSection (4-era timeline), add BeforeAfterSection comparison, strengthen SprintMemorySection with reverse-engineering tax messaging.
+**Status:** ✅ Done
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 12.16 | Create `EvolutionSection.tsx` — 4-era timeline (Traditional → Code Assistant → Agentic → SDD). Horizontal desktop, vertical mobile. Color-coded cards with connecting gradient bar | Frontend | 5 | ✅ | — | — |
+| 12.17 | Create `BeforeAfterSection.tsx` — two-column comparison: "Without SDD" (red) vs "With SDD" (green). 6 matched rows: Context, Documentation, Onboarding, AI Accuracy, Cost, Handoff | Frontend | 4 | ✅ | — | — |
+| 12.18 | Update `LandingPage.tsx` — replace ProblemSolutionSection with EvolutionSection, add BeforeAfterSection between StatsSection and CaseStudiesSection | Frontend | 2 | ✅ | 12.16, 12.17 | — |
+| 12.19 | Enhance `SprintMemorySection.tsx` — add reverse-engineering tax messaging: subtitle, "Session N" line, bottom quote | Frontend | 3 | ✅ | — | — |
+
+---
+
 ## Bug Tracker
 
 ### B.01 — Separate `/sprint-run` from `/sprint-close`
@@ -199,4 +238,6 @@
 | Sprint 6 | 38 | 🔲 Planned |
 | Sprint 10 | 10 | ✅ Done |
 | Sprint 11 | 58 | 🔲 Planned |
-| **Total** | **293** | 🔄 **IN PROGRESS** |
+| Sprint 12A | 55 | ✅ Done |
+| Sprint 12B | 14 | ✅ Done |
+| **Total** | **362** | 🔄 **IN PROGRESS** |

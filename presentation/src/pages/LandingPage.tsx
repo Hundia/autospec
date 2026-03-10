@@ -1,7 +1,8 @@
 import React from 'react';
 import Navigation from '../components/landing/Navigation';
 import HeroSection from '../components/landing/HeroSection';
-import ProblemSolutionSection from '../components/landing/ProblemSolutionSection';
+import EvolutionSection from '../components/landing/EvolutionSection';
+import BeforeAfterSection from '../components/landing/BeforeAfterSection';
 import CompetitiveSection from '../components/landing/CompetitiveSection';
 import RolesSection from '../components/landing/RolesSection';
 import SprintMemorySection from '../components/landing/SprintMemorySection';
@@ -23,7 +24,7 @@ export default function LandingPage() {
       <Navigation />
       <main>
         <HeroSection />
-        <ProblemSolutionSection />
+        <EvolutionSection />
         <CompetitiveSection />
         <RolesSection />
         <SprintMemorySection />
@@ -33,6 +34,7 @@ export default function LandingPage() {
         <ViewerSection />
         <FinOpsSection />
         <StatsSection />
+        <BeforeAfterSection />
         <CaseStudiesSection />
         <QuickStartSection />
         <ToolsSection />

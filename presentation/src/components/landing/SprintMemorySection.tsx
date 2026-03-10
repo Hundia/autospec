@@ -79,8 +79,9 @@ export default function SprintMemorySection() {
             </span>
           </h2>
           <p className="text-white/60 max-w-2xl mx-auto">
-            Most AI frameworks lose context when the session ends. AutoSpec's sprint memory system
-            creates a permanent, growing knowledge base that makes every future session smarter.
+            Without structure, teams spend 40+ hours per quarter reverse-engineering their own
+            AI-generated code. AutoSpec's sprint memory system creates permanent, growing knowledge
+            that eliminates this tax.
           </p>
         </motion.div>
 
@@ -173,7 +174,7 @@ export default function SprintMemorySection() {
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-red-500/50 rounded-full flex-shrink-0" />
-                Session N: Still starting from zero ✗
+                Session N: 40hrs reverse-engineering what was built ✗
               </div>
             </div>
           </div>
@@ -213,8 +214,8 @@ export default function SprintMemorySection() {
           className="mt-12 bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-purple-500/20 rounded-xl p-8 text-center"
         >
           <p className="text-white/80 text-lg italic max-w-3xl mx-auto leading-relaxed">
-            "Close your IDE. Come back next week. Open a new AI session. It reads CLAUDE.md, the
-            backlog, and the sprint summaries — and picks up exactly where you left off."
+            "No more reverse engineering your own code. Come back next month. Your AI reads the
+            specs, summaries, and docs — and picks up exactly where you left off."
           </p>
         </motion.div>
       </div>

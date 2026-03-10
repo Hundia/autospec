@@ -1,4 +1,5 @@
 export const slidesHE = [
+  // 1. title
   {
     type: 'title',
     title: 'AutoSpec',
@@ -7,45 +8,141 @@ export const slidesHE = [
     presenter: 'השם שלך',
     date: '2026',
   },
+  // 2. eraTraditional
   {
-    type: 'problem',
-    title: 'הבעיה עם קידוד ב-AI',
-    points: [
-      {
-        icon: '💬',
-        title: 'בקשות מעורפלות',
-        description: '"תבנה לי מערכת התחברות"',
-      },
-      {
-        icon: '🎲',
-        title: 'תוצאות בלתי צפויות',
-        description: 'תוצאה שונה בכל פעם',
-      },
-      {
-        icon: '🔄',
-        title: 'איטרציות אינסופיות',
-        description: 'הלוך וחזור לתקן בעיות',
-      },
-      {
-        icon: '🧩',
-        title: 'כאוס באינטגרציה',
-        description: 'קוד שלא מתחבר יחד',
-      },
+    type: 'eraTraditional',
+    title: 'עידן הפיתוח המסורתי',
+    subtitle: 'הפיתוח היה איטי אך צפוי',
+    characteristics: [
+      { icon: '⌨️', title: 'קידוד ידני', description: 'כל שורה נכתבת ביד' },
+      { icon: '👥', title: 'סקירות קוד', description: 'שמירת איכות על ידי בני אדם' },
+      { icon: '📖', title: 'תיעוד', description: 'קיים כי בני אדם כתבו אותו' },
+      { icon: '🧠', title: 'זיכרון ארגוני', description: 'הידע נשמר אצל אנשים' },
     ],
-    bottomLine: 'עוזרי AI הם חזקים, אבל בלי מבנה, הם לא אמינים.',
+    metrics: { speed: 'נמוכה', predictability: 'גבוהה', docs: 'מקיף', knowledge: 'שמור' },
   },
+  // 3. eraAssistant
+  {
+    type: 'eraAssistant',
+    title: 'עידן עוזר הקוד',
+    subtitle: 'AI עזר לך להקליד מהר יותר, לא לחשוב טוב יותר',
+    tools: ['GitHub Copilot', 'TabNine', 'Kite'],
+    gains: [
+      { title: 'מהירות הקלדה', description: 'השלמה אוטומטית מהירה פי 3' },
+      { title: 'קוד שגרתי', description: 'קוד חוזר הוסר' },
+    ],
+    unchanged: [
+      { title: 'החלטות עיצוב', description: 'עדיין לגמרי אנושיות' },
+      { title: 'ארכיטקטורה', description: 'אין מעורבות AI' },
+    ],
+    decisionAuthority: 'אנושי',
+  },
+  // 4. eraAgentic
+  {
+    type: 'eraAgentic',
+    title: 'עידן הסוכנים',
+    subtitle: 'כוח מהפכני, אוטונומיה מסוכנת',
+    tools: ['Claude Code', 'Cursor', 'Devin'],
+    power: [
+      { title: 'פיצ\'רים מלאים', description: 'מודולים שלמים בפרומפט אחד' },
+      { title: 'כל המחסנית', description: 'Frontend + Backend + DB יחד' },
+      { title: 'אוטונומי', description: 'AI מקבל החלטות מימוש' },
+    ],
+    danger: [
+      { title: 'אין זיכרון', description: 'כל סשן מתחיל מאפס' },
+      { title: 'סחיפת הקשר', description: 'שיחות ארוכות משחיתות החלטות' },
+      { title: 'אפס תיעוד', description: 'לוגי צ\'אט אינם תיעוד' },
+    ],
+  },
+  // 5. contextPoisoning
+  {
+    type: 'contextPoisoning',
+    title: 'הרעלת הקשר',
+    subtitle: 'שיחות ארוכות לא רק מאבדות הקשר — הן פוגמות בו באופן פעיל',
+    stages: [
+      { turn: 'תור 1', status: 'נקי', color: 'green', snippet: 'השתמש ב-PostgreSQL עם Prisma ORM', description: 'החלטות ראשוניות ברורות' },
+      { turn: 'תור 25', status: 'סחיפה', color: 'yellow', snippet: 'בעצם, בואנו ננסה MongoDB כאן...', description: 'סתירה לבחירות קודמות' },
+      { turn: 'תור 50', status: 'סתירה', color: 'orange', snippet: 'רגע, אנחנו משתמשים ב-Prisma נכון?', description: 'שכחה של מה שהוחלט' },
+      { turn: 'תור 100', status: 'כאוס', color: 'red', snippet: 'TypeError: Cannot read undefined', description: 'שגיאות מצטברות מהקשר אבוד' },
+    ],
+  },
+  // 6. reverseTax
+  {
+    type: 'reverseTax',
+    title: 'מס ההנדסה לאחור',
+    subtitle: 'חודשיים לאחר מכן, אתה מבצע הנדסה לאחור על בסיס הקוד שלך',
+    dayOne: {
+      title: 'יום 1',
+      items: ['הקשר AI פעיל', 'AI מכיר את כל המוסכמות', 'מתקדמים מהר, שולחים פיצ\'רים'],
+    },
+    daySixty: {
+      title: 'יום 60',
+      items: ['לוגי צ\'אט נמחקו או מיושנים', 'אפס הקשר לסשנים חדשים', '"למה זה נבנה כך?"'],
+    },
+    cost: { hours: 40, label: 'שעות אבודות להנדסה לאחור בכל רבעון' },
+  },
+  // 7. breakingPoint
+  {
+    type: 'breakingPoint',
+    title: 'נקודת השבר',
+    subtitle: 'ככל שתבנה מהר יותר, כך תאבד מהר יותר',
+    buildItems: ['6 סוכני AI', '200+ קבצים שנוצרו', '50 סשני צ\'אט'],
+    debtItems: ['0 מסמכים נכתבו', '0 החלטות תועדו', '0 מסירה אפשרית'],
+    stats: [
+      { value: '73%', label: 'מפרויקטי AI נזנחים תוך 6 חודשים' },
+      { value: '40 שעות', label: 'מוצאות להבין מחדש קוד בכל רבעון' },
+      { value: '$0', label: 'ערך לוגי צ\'אט לאחר סיום הסשן' },
+    ],
+    bottomLine: 'פיתוח אג\'נטי ללא מבנה הוא חוב טכני במהירות AI.',
+  },
+  // 8. bridge
+  {
+    type: 'bridge',
+    title: 'מה אם...',
+    question: 'מה אם ל-AI היה כל ההקשר לפני שכתב שורת קוד אחת?',
+    points: [
+      'מה אם כל החלטה תועדה, לא רק הקוד?',
+      'מה אם סשנים חדשים ירשו את כל הידע הקודם?',
+      'מה אם סוכני AI עבדו ממפרטים, לא משיחות?',
+    ],
+  },
+  // 9. solution
   {
     type: 'solution',
-    title: 'הפתרון של AutoSpec',
+    title: 'פיתוח מונחה מפרטים',
     flow: [
-      { step: 'דרישות', icon: '📋', description: 'מה אתה רוצה לבנות' },
-      { step: 'מפרטים', icon: '📐', description: 'חוזים מפורטים' },
-      { step: 'באקלוג', icon: '📝', description: 'משימות מתוחמות' },
-      { step: 'הרצת AI', icon: '🤖', description: 'סוכנים מקביליים' },
-      { step: 'קוד עובד', icon: '✅', description: 'מוכן לפרודקשן' },
+      { step: 'דרישות', icon: '📋', description: 'כוונת האדם מתועדת פעם אחת' },
+      { step: 'מפרטים', icon: '📐', description: '10 חוזים מבוססי תפקידים' },
+      { step: 'באקלוג', icon: '📝', description: 'משימות מסודרות ומדורגות' },
+      { step: 'הרצת AI', icon: '🤖', description: 'סוכנים עם הקשר מלא' },
+      { step: 'קוד עובד', icon: '✅', description: 'נבדק, מתועד, מוכן לפרודקשן' },
     ],
-    keyInsight: 'התייחס למפרטים כמו לקוד. כל שורה מתחברת למפרט.',
+    keyInsight: 'אל תניח ל-AI לחשוב. תן לו לבצע. המפרטים הם החשיבה.',
   },
+  // 10. docsFolder
+  {
+    type: 'docsFolder',
+    title: 'תיקיית docs/',
+    subtitle: 'הזיכרון הארגוני שלך — לא תיעוד, ידע חי',
+    tree: [
+      { name: 'docs/', type: 'folder', depth: 0 },
+      { name: 'auth/', type: 'folder', depth: 1, annotation: 'JWT, משמרים, middleware' },
+      { name: 'database/', type: 'folder', depth: 1, annotation: 'סכמה, ERD, מיגרציות' },
+      { name: 'frontend/', type: 'folder', depth: 1, annotation: 'ניתובים, חנויות, שירותים' },
+      { name: 'scheduling/', type: 'folder', depth: 1, annotation: 'שיעורים, קיבולת, תצוגות' },
+      { name: 'bookings/', type: 'folder', depth: 1, annotation: 'מכונת מצבים, רשימת המתנה' },
+    ],
+    growth: [
+      { sprint: 'ספרינט 0', docs: 10 },
+      { sprint: 'ספרינט 5', docs: 45 },
+      { sprint: 'ספרינט 10', docs: 100 },
+    ],
+    comparison: {
+      without: 'ידע בלוגי צ\'אט — אובד כשהסשן מסתיים',
+      with: 'ידע במסמכים מנוהלי גרסאות — גדל לנצח',
+    },
+  },
+  // 11. workflow
   {
     type: 'workflow',
     title: 'תהליך העבודה של AutoSpec',
@@ -80,6 +177,7 @@ export const slidesHE = [
       },
     ],
   },
+  // 12. roles
   {
     type: 'roles',
     title: 'מודל 10 התפקידים',
@@ -98,6 +196,7 @@ export const slidesHE = [
     ],
     insight: 'גם מפתחים יחידים נהנים מחשיבה בתפקידים.',
   },
+  // 13. sprintLifecycle
   {
     type: 'sprintLifecycle',
     title: 'מחזור חיי הספרינט',
@@ -110,6 +209,7 @@ export const slidesHE = [
     ],
     callout: 'כל ספרינט עובר את המחזור הזה. שום דבר לא יוצא בלי כל 5 השלבים.',
   },
+  // 14. backlog
   {
     type: 'backlog',
     title: 'מערכת הבאקלוג',
@@ -138,6 +238,7 @@ export const slidesHE = [
       ],
     },
   },
+  // 15. orchestrator
   {
     type: 'orchestrator',
     title: 'תבנית ה-Orchestrator',
@@ -152,6 +253,7 @@ export const slidesHE = [
     ],
     benefits: ['הקשר ראשי נקי', 'ביצוע מקבילי', 'worktrees מבודדים'],
   },
+  // 16. multiagent
   {
     type: 'multiagent',
     title: 'הרצה מרובת סוכנים',
@@ -177,6 +279,7 @@ export const slidesHE = [
       'תלויות מנוהלות בבאקלוג',
     ],
   },
+  // 17. qaMethodology
   {
     type: 'qaMethodology',
     title: 'מתודולוגיית QA',
@@ -192,6 +295,7 @@ export const slidesHE = [
     ],
     callout: 'כל משימה מאומתת לפני Done. בלי יוצאים מן הכלל.',
   },
+  // 18. sprintSummary
   {
     type: 'sprintSummary',
     title: 'סיכומי ספרינט',
@@ -203,6 +307,24 @@ export const slidesHE = [
     ],
     callout: 'סוכנים עתידיים קוראים סיכומים כדי להבין מה נבנה.',
   },
+  // 19. modelOptimization
+  {
+    type: 'modelOptimization',
+    title: 'אופטימיזציית מודלים',
+    subtitle: 'כשהמפרטים ברורים, אתה לא צריך את המודל הגדול ביותר',
+    tiers: [
+      { model: 'Haiku', share: '40%', tasks: 'מיגרציות, קונפיגורציה, CRUD', tier: 'cheapest', reason: 'המפרטים מסירים עמימות' },
+      { model: 'Sonnet', share: '45%', tasks: 'שירותים, קומפוננטות, בדיקות', tier: 'balanced', reason: 'ה-brief מספק הקשר מלא' },
+      { model: 'Opus', share: '15%', tasks: 'ארכיטקטורה, תכנון', tier: 'premium', reason: 'רק להחלטות אמיתיות' },
+    ],
+    insight: 'אין מקום לחשיבה עמוקה כי כל ההחלטות מוכנות מראש במפרטים.',
+    comparison: {
+      allOpus: '$47/ספרינט',
+      optimized: '$19/ספרינט',
+      savings: '~60% חיסכון',
+    },
+  },
+  // 20. skillsEnvironments
   {
     type: 'skillsEnvironments',
     title: 'Skills וסביבות',
@@ -223,6 +345,7 @@ export const slidesHE = [
     ],
     callout: 'אותה מתודולוגיה, כל עוזר AI.',
   },
+  // 21. viewer
   {
     type: 'viewer',
     title: 'דשבורד Viewer חי',
@@ -230,20 +353,7 @@ export const slidesHE = [
     features: ['דפדפן מפרטים', 'באקלוג Kanban', 'דוקומנטציה חיה'],
     linkText: 'נסה אותו חי →',
   },
-  {
-    type: 'finops',
-    title: 'FinOps: ניתוב מודלים חכם',
-    tiers: [
-      { model: 'Haiku', share: '40%', tasks: 'מיגרציות, קונפיגורציה, CRUD', tier: 'cheapest' },
-      { model: 'Sonnet', share: '45%', tasks: 'שירותים, קומפוננטות, בדיקות', tier: 'balanced' },
-      { model: 'Opus', share: '15%', tasks: 'ארכיטקטורה, אבטחה, תכנון', tier: 'premium' },
-    ],
-    comparison: {
-      allOpus: '$47/ספרינט',
-      finOps: '$19/ספרינט',
-      savings: '~60% חיסכון',
-    },
-  },
+  // 22. example
   {
     type: 'example',
     title: 'דוגמה אמיתית: ShopFlow מסחר אלקטרוני',
@@ -272,6 +382,7 @@ export const slidesHE = [
       'דשבורד אדמין',
     ],
   },
+  // 23. results
   {
     type: 'results',
     title: 'תוצאות מוכחות',
@@ -288,6 +399,7 @@ export const slidesHE = [
       source: 'נבדק בקרב על אפליקציות בפרודקשן',
     },
   },
+  // 24. demo
   {
     type: 'demo',
     title: 'הדגמה חיה',
@@ -301,6 +413,21 @@ export const slidesHE = [
     ],
     note: 'זמן הדגמה: ~5 דקות',
   },
+  // 25. beforeAfter
+  {
+    type: 'beforeAfter',
+    title: 'לפני ואחרי',
+    subtitle: 'אותה צוות, אותם כלי AI. ההבדל היחיד: מבנה.',
+    rows: [
+      { aspect: 'הקשר', before: 'אובד בכל סשן', after: 'שמור לנצח ב-docs/' },
+      { aspect: 'תיעוד', before: 'אין — רק לוגי צ\'אט', after: '100+ מסמכים חיים' },
+      { aspect: 'קליטה', before: 'שבועות של הנדסה לאחור', after: 'קרא מפרטים, התחל לקודד' },
+      { aspect: 'דיוק AI', before: 'מתדרדר במהלך השיחה', after: 'עקבי מהמפרט' },
+      { aspect: 'עלות', before: '$47/ספרינט (כל Opus)', after: '$19/ספרינט (ניתוב מודלים)' },
+      { aspect: 'מסירה', before: 'בלתי אפשרי בלי המפתח המקורי', after: 'כל אחד יכול לקרוא את המפרטים' },
+    ],
+  },
+  // 26. closing
   {
     type: 'closing',
     title: 'התחל היום',
@@ -315,5 +442,11 @@ export const slidesHE = [
       docs: 'autospec.dev/docs',
     },
     tagline: 'מדרישות לקוד עובד.',
+  },
+  // 27. finalTagline
+  {
+    type: 'finalTagline',
+    title: 'AutoSpec',
+    tagline: 'אל תניח ל-AI שלך לחשוב. תן לו לבצע.',
   },
 ];
