@@ -4,9 +4,7 @@ export const slidesHE = [
     type: 'title',
     title: 'AutoSpec',
     subtitle: 'מדרישות לקוד עובד',
-    tagline: 'פיתוח מונחה מפרטים עם AI',
-    presenter: 'השם שלך',
-    date: '2026',
+    tagline: 'אל תן ל-AI לחשוב. תן לו מפרטים.',
   },
   // 2. eraTraditional
   {
@@ -106,10 +104,27 @@ export const slidesHE = [
       'מה אם סוכני AI עבדו ממפרטים, לא משיחות?',
     ],
   },
-  // 9. solution
+  // 9. sddMethodology — NEW
+  {
+    type: 'sddMethodology',
+    title: 'SDD: המתודולוגיה',
+    principles: [
+      { title: 'מפרטים לפני קוד', description: 'לכוד כוונה פעם אחת, בצע פעמים רבות', icon: '📐' },
+      { title: 'תיעוד חי', description: 'הדוקומנטציה גדלה עם הפרויקט, לא מתיישנת', icon: '📖' },
+      { title: 'חשיבה מבוססת תפקידים', description: '10 נקודות מבט מונעות נקודות עיוורון', icon: '🎭' },
+      { title: 'ביצוע אג\'נטי', description: 'מפרטים ברורים מסירים עמימות לסוכני AI', icon: '🤖' },
+    ],
+    implementations: [
+      { name: 'AutoSpec', description: 'מסגרת SDD מלאה עם CLI + viewer', status: 'featured' },
+      { name: 'OpenSpec', description: 'פורמט מפרטים פתוח מונחה קהילה', status: 'alternative' },
+      { name: 'המסגרת שלך', description: 'SDD היא מתודולוגיה, לא מוצר', status: 'custom' },
+    ],
+  },
+  // 10. solution — REWORKED
   {
     type: 'solution',
-    title: 'פיתוח מונחה מפרטים',
+    title: 'AutoSpec: מימוש של SDD',
+    subtitle: 'לפיתוח מונחה מפרטים יש מימושים רבים. זה שלנו.',
     flow: [
       { step: 'דרישות', icon: '📋', description: 'כוונת האדם מתועדת פעם אחת' },
       { step: 'מפרטים', icon: '📐', description: '10 חוזים מבוססי תפקידים' },
@@ -117,9 +132,9 @@ export const slidesHE = [
       { step: 'הרצת AI', icon: '🤖', description: 'סוכנים עם הקשר מלא' },
       { step: 'קוד עובד', icon: '✅', description: 'נבדק, מתועד, מוכן לפרודקשן' },
     ],
-    keyInsight: 'אל תניח ל-AI לחשוב. תן לו לבצע. המפרטים הם החשיבה.',
+    keyInsight: 'הכוח מגיע מהמפרטים, לא מהכלי. AutoSpec פשוט עושה את זה מהר.',
   },
-  // 10. docsFolder
+  // 11. docsFolder
   {
     type: 'docsFolder',
     title: 'תיקיית docs/',
@@ -142,61 +157,61 @@ export const slidesHE = [
       with: 'ידע במסמכים מנוהלי גרסאות — גדל לנצח',
     },
   },
-  // 11. workflow
+  // 12. workflow — REWORKED to 7 phases
   {
     type: 'workflow',
-    title: 'תהליך העבודה של AutoSpec',
+    title: 'צינור העבודה המלא של AutoSpec',
     steps: [
-      {
-        number: '01',
-        title: 'כתוב דרישות',
-        description: 'צור מסמך SRS שמתאר מה אתה רוצה',
-        time: '1-2 שעות',
-        output: 'requirements.md',
-      },
-      {
-        number: '02',
-        title: 'הפק מפרטים',
-        description: 'AutoSpec יוצר 10 מפרטים לפי תפקידים',
-        time: '5 דקות',
-        output: 'specs/*.md',
-      },
-      {
-        number: '03',
-        title: 'סקירה ושיפור',
-        description: 'וודא שהמפרטים תואמים לחזון שלך',
-        time: '30 דקות',
-        output: 'מפרטים מאושרים',
-      },
-      {
-        number: '04',
-        title: 'הרץ ספרינטים',
-        description: 'סוכני AI עובדים על המשימות בשיטתיות',
-        time: '2-4 שעות/ספרינט',
-        output: 'פיצ\'רים עובדים',
-      },
+      { number: '01', title: 'כתוב דרישות', description: 'צור מסמך SRS שמתאר מה אתה רוצה', time: '1-2 שעות', output: 'requirements.md' },
+      { number: '02', title: 'הפק מפרטים', description: 'יצירה מרובת-סוכנים של 10 מפרטים מבוססי תפקידים', time: '5 דקות', output: 'specs/*.md' },
+      { number: '03', title: 'הזרקת ידע', description: 'CLAUDE.md + תיקיית docs/ נטענים להקשר הסוכן', time: 'אוטומטי', output: 'הקשר מלא' },
+      { number: '04', title: 'תכנון ספרינטים + ניתוב מודלים', description: 'מנהל מוצר מקצה משימות, מנתב לפי מורכבות: Haiku לפשוט, Sonnet למורכב, Opus לארכיטקטורה', time: '10 דקות', output: 'backlog.md' },
+      { number: '05', title: 'ביצוע ב-Worktrees', description: 'סוכנים מקביליים מממשים משימות ב-worktrees מבודדים של git', time: '2-4 שעות/ספרינט', output: 'פיצ\'רים עובדים' },
+      { number: '06', title: 'QA + עדכון דוקומנטציה', description: 'לולאת אימות: build, test, review. עדכון דוקומנטציה חיה', time: '30 דקות', output: 'קוד מאומת + docs/' },
+      { number: '07', title: 'בניית Viewer', description: 'צור דשבורד ויזואלי ממפרטים, באקלוג ודוקומנטציה', time: '5 דקות', output: 'אפליקציית Viewer' },
     ],
   },
-  // 12. roles
+  // 13. roles — REWORKED
   {
     type: 'roles',
     title: 'מודל 10 התפקידים',
-    description: 'כל פרויקט מפורט מ-10 נקודות מבט',
+    description: 'תפקידים הם נקודות מבט לכתיבת מפרטים',
     roles: [
-      { num: '01', name: 'מנהל מוצר', focus: 'חזון, פרסונות, תהליכים' },
-      { num: '02', name: 'ליד Backend', focus: 'APIs, אימות, שירותים' },
-      { num: '03', name: 'ליד Frontend', focus: 'קומפוננטות, עיצוב' },
-      { num: '04', name: 'ארכיטקט DB', focus: 'סכמה, מיגרציות' },
-      { num: '05', name: 'ליד QA', focus: 'אסטרטגיית בדיקות' },
-      { num: '06', name: 'ליד DevOps', focus: 'תשתיות, CI/CD' },
-      { num: '07', name: 'ליד שיווק', focus: 'Go-to-market' },
-      { num: '08', name: 'ליד פיננסים', focus: 'תמחור, כלכלה' },
-      { num: '09', name: 'ליד עסקי', focus: 'אסטרטגיה, תחרות' },
-      { num: '10', name: 'מעצב UI', focus: 'מסכים, wireframes' },
+      { num: '01', name: 'מנהל מוצר', focus: 'חזון, פרסונות, תהליכים', specFile: 'specs/01_product_manager.md' },
+      { num: '02', name: 'ליד Backend', focus: 'APIs, אימות, שירותים', specFile: 'specs/02_backend_lead.md' },
+      { num: '03', name: 'ליד Frontend', focus: 'קומפוננטות, עיצוב', specFile: 'specs/03_frontend_lead.md' },
+      { num: '04', name: 'ארכיטקט DB', focus: 'סכמה, מיגרציות', specFile: 'specs/04_db_architect.md' },
+      { num: '05', name: 'ליד QA', focus: 'אסטרטגיית בדיקות', specFile: 'specs/05_qa_lead.md' },
+      { num: '06', name: 'ליד DevOps', focus: 'תשתיות, CI/CD', specFile: 'specs/06_devops_lead.md' },
+      { num: '07', name: 'ליד שיווק', focus: 'Go-to-market', specFile: 'specs/07_marketing_lead.md' },
+      { num: '08', name: 'ליד פיננסים', focus: 'תמחור, כלכלה', specFile: 'specs/08_finance_lead.md' },
+      { num: '09', name: 'ליד עסקי', focus: 'אסטרטגיה, תחרות', specFile: 'specs/09_business_lead.md' },
+      { num: '10', name: 'מעצב UI', focus: 'מסכים, wireframes', specFile: 'specs/10_ui_designer.md' },
     ],
+    agentDistinction: {
+      subtitle: 'תפקיד הוא תיאור תפקיד. סוכן הוא העובד. סוכן אחד יכול ללבוש כמה כובעים.',
+      lanes: [
+        { agent: 'Opus Orchestrator', roles: ['מנהל מוצר', 'ליד עסקי'] },
+        { agent: 'Sonnet Agent A', roles: ['ליד Backend', 'ארכיטקט DB', 'ליד DevOps'] },
+        { agent: 'Sonnet Agent B', roles: ['ליד Frontend', 'ליד QA', 'מעצב UI'] },
+      ],
+    },
     insight: 'גם מפתחים יחידים נהנים מחשיבה בתפקידים.',
   },
-  // 13. sprintLifecycle
+  // 14. ticketExecution — NEW
+  {
+    type: 'ticketExecution',
+    title: 'צלילה עמוקה לביצוע משימה',
+    stages: [
+      { stage: 1, title: 'משימה מהבאקלוג', description: 'מזהה משימה, כותרת, נקודות סיפור, קריטריוני קבלה', icon: '🎫', time: '0 דק\'‎' },
+      { stage: 2, title: 'מנהל מוצר מקצה הקשר', description: 'מפרט תפקיד מתיקיית specs/ + חלקי docs/ רלוונטיים + סיכומי ספרינטים קודמים מוזרקים ל-brief', icon: '📋', time: '2 דק\'‎' },
+      { stage: 3, title: 'סוכן פיתוח מבצע', description: 'מממש קוד, כותב בדיקות, מעדכן דוקומנטציה — הכל ב-worktree מבודד', icon: '⚙️', time: '15-45 דק\'‎' },
+      { stage: 4, title: 'סוכן QA סוקר', description: 'סוכן נפרד עם תפקיד ליד QA (specs/05_qa_lead.md) מתכנן בדיקות, מאמת תהליך משתמש, מאשר או חוסם', icon: '🧪', time: '5-10 דק\'‎' },
+      { stage: 5, title: 'מיזוג + סיכום', description: 'הבאקלוג מתעדכן ל-✅, נכתב סיכום ספרינט, docs/ מתעדכן', icon: '✅', time: '2 דק\'‎' },
+    ],
+    callout: 'סוכן מנהל המוצר מתזמר את כל התהליך.',
+  },
+  // 15. sprintLifecycle
   {
     type: 'sprintLifecycle',
     title: 'מחזור חיי הספרינט',
@@ -209,7 +224,7 @@ export const slidesHE = [
     ],
     callout: 'כל ספרינט עובר את המחזור הזה. שום דבר לא יוצא בלי כל 5 השלבים.',
   },
-  // 14. backlog
+  // 16. backlog
   {
     type: 'backlog',
     title: 'מערכת הבאקלוג',
@@ -238,13 +253,14 @@ export const slidesHE = [
       ],
     },
   },
-  // 15. orchestrator
+  // 17. orchestrator — MINOR REWORK
   {
     type: 'orchestrator',
     title: 'תבנית ה-Orchestrator',
     orchestrator: {
-      name: 'Opus Orchestrator',
-      tasks: ['כותב briefs לספרינט', 'משגר סוכנים מקביליים', 'סוקר תוצאות ומאחד'],
+      name: 'מנהל מוצר (Opus)',
+      subtitle: 'ה-Orchestrator הוא סוכן AI עם תפקיד מנהל המוצר מ-specs/01_product_manager.md',
+      tasks: ['כותב briefs לספרינט', 'משגר סוכנים מקביליים', 'מסדר ספרינטים לפי גרף תלויות', 'סוקר תוצאות ומאחד'],
     },
     agents: [
       { name: 'Sonnet Agent A', task: 'משימות Backend ב-worktree-a' },
@@ -253,7 +269,7 @@ export const slidesHE = [
     ],
     benefits: ['הקשר ראשי נקי', 'ביצוע מקבילי', 'worktrees מבודדים'],
   },
-  // 16. multiagent
+  // 18. multiagent
   {
     type: 'multiagent',
     title: 'הרצה מרובת סוכנים',
@@ -279,7 +295,7 @@ export const slidesHE = [
       'תלויות מנוהלות בבאקלוג',
     ],
   },
-  // 17. qaMethodology
+  // 19. qaMethodology
   {
     type: 'qaMethodology',
     title: 'מתודולוגיית QA',
@@ -295,7 +311,7 @@ export const slidesHE = [
     ],
     callout: 'כל משימה מאומתת לפני Done. בלי יוצאים מן הכלל.',
   },
-  // 18. sprintSummary
+  // 20. sprintSummary
   {
     type: 'sprintSummary',
     title: 'סיכומי ספרינט',
@@ -307,7 +323,7 @@ export const slidesHE = [
     ],
     callout: 'סוכנים עתידיים קוראים סיכומים כדי להבין מה נבנה.',
   },
-  // 19. modelOptimization
+  // 21. modelOptimization
   {
     type: 'modelOptimization',
     title: 'אופטימיזציית מודלים',
@@ -324,28 +340,34 @@ export const slidesHE = [
       savings: '~60% חיסכון',
     },
   },
-  // 20. skillsEnvironments
+  // 22. environmentProof — NEW type key (replaces skillsEnvironments)
   {
-    type: 'skillsEnvironments',
-    title: 'Skills וסביבות',
-    skills: [
-      '/plan-sprint',
-      '/sprint-run',
-      '/execute-ticket',
-      '/sprint-status',
-      '/qa-review',
-    ],
+    type: 'environmentProof',
+    title: 'אגנוסטי לסביבה: הוכחה',
     environments: [
-      { name: 'Claude Code', support: 'Full' },
-      { name: 'Copilot', support: 'Full' },
-      { name: 'Cursor', support: 'Full' },
-      { name: 'Windsurf', support: 'Partial' },
-      { name: 'JetBrains', support: 'Partial' },
-      { name: 'Aider', support: 'Basic' },
+      {
+        name: 'Claude Code',
+        accent: 'cyan',
+        mockup: 'terminal',
+        commands: ['$ claude', '> /sprint-run', 'Loading CLAUDE.md...', 'Loading specs/*.md...', 'Sprint 3 executing...'],
+      },
+      {
+        name: 'GitHub Copilot',
+        accent: 'purple',
+        mockup: 'ide',
+        commands: ['CLAUDE.md loaded in workspace', 'specs/ folder indexed', '@workspace /sprint-run'],
+      },
+      {
+        name: 'Air-Gapped / Continue',
+        accent: 'amber',
+        mockup: 'local',
+        commands: ['Ollama running locally', 'Same specs/ folder', 'No cloud required'],
+      },
     ],
-    callout: 'אותה מתודולוגיה, כל עוזר AI.',
+    callout: 'אותו CLAUDE.md. אותו specs/. אותה מתודולוגיה.',
+    bottomText: 'עובד בכל סביבה — גם בלי אינטרנט.',
   },
-  // 21. viewer
+  // 23. viewer
   {
     type: 'viewer',
     title: 'דשבורד Viewer חי',
@@ -353,7 +375,7 @@ export const slidesHE = [
     features: ['דפדפן מפרטים', 'באקלוג Kanban', 'דוקומנטציה חיה'],
     linkText: 'נסה אותו חי →',
   },
-  // 22. example
+  // 24. example
   {
     type: 'example',
     title: 'דוגמה אמיתית: ShopFlow מסחר אלקטרוני',
@@ -382,7 +404,7 @@ export const slidesHE = [
       'דשבורד אדמין',
     ],
   },
-  // 23. results
+  // 25. results
   {
     type: 'results',
     title: 'תוצאות מוכחות',
@@ -399,7 +421,7 @@ export const slidesHE = [
       source: 'נבדק בקרב על אפליקציות בפרודקשן',
     },
   },
-  // 24. demo
+  // 26. demo
   {
     type: 'demo',
     title: 'הדגמה חיה',
@@ -413,7 +435,7 @@ export const slidesHE = [
     ],
     note: 'זמן הדגמה: ~5 דקות',
   },
-  // 25. beforeAfter
+  // 27. beforeAfter
   {
     type: 'beforeAfter',
     title: 'לפני ואחרי',
@@ -427,7 +449,7 @@ export const slidesHE = [
       { aspect: 'מסירה', before: 'בלתי אפשרי בלי המפתח המקורי', after: 'כל אחד יכול לקרוא את המפרטים' },
     ],
   },
-  // 26. closing
+  // 28. closing
   {
     type: 'closing',
     title: 'התחל היום',
@@ -443,7 +465,7 @@ export const slidesHE = [
     },
     tagline: 'מדרישות לקוד עובד.',
   },
-  // 27. finalTagline
+  // 29. finalTagline
   {
     type: 'finalTagline',
     title: 'AutoSpec',

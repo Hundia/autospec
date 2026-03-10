@@ -6,6 +6,7 @@ interface OrchestratorSlideProps {
     title: string;
     orchestrator: {
       name: string;
+      subtitle?: string;
       tasks: string[];
     };
     agents: Array<{
@@ -39,6 +40,9 @@ export default function OrchestratorSlide({ data, lang }: OrchestratorSlideProps
           <div className="w-3 h-3 rounded-full bg-indigo-400 animate-pulse" />
           <h3 className="text-2xl font-bold text-white">{data.orchestrator.name}</h3>
         </div>
+        {data.orchestrator.subtitle && (
+          <p className="text-xs text-indigo-300/70 mb-3 max-w-md mx-auto">{data.orchestrator.subtitle}</p>
+        )}
         <div className="flex flex-wrap justify-center gap-3">
           {data.orchestrator.tasks.map((task, idx) => (
             <span

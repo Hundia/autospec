@@ -4,9 +4,7 @@ export const slidesEN = [
     type: 'title',
     title: 'AutoSpec',
     subtitle: 'From Requirements to Running Code',
-    tagline: 'AI-Powered Spec-Driven Development',
-    presenter: 'Your Name',
-    date: '2026',
+    tagline: "Don't let AI think. Give it specs.",
   },
   // 2. eraTraditional
   {
@@ -106,10 +104,27 @@ export const slidesEN = [
       'What if AI agents worked from specs, not conversations?',
     ],
   },
-  // 9. solution
+  // 9. sddMethodology — NEW
+  {
+    type: 'sddMethodology',
+    title: 'SDD: The Methodology',
+    principles: [
+      { title: 'Specifications Before Code', description: 'Capture intent once, execute many times', icon: '📐' },
+      { title: 'Living Documentation', description: 'Docs grow with the project, never stale', icon: '📖' },
+      { title: 'Role-Based Thinking', description: '10 perspectives prevent blind spots', icon: '🎭' },
+      { title: 'Agentic Execution', description: 'Clear specs remove ambiguity for AI agents', icon: '🤖' },
+    ],
+    implementations: [
+      { name: 'AutoSpec', description: 'Full SDD framework with CLI + viewer', status: 'featured' },
+      { name: 'OpenSpec', description: 'Community-driven open specification format', status: 'alternative' },
+      { name: 'Your Framework', description: 'SDD is a methodology, not a product', status: 'custom' },
+    ],
+  },
+  // 10. solution — REWORKED
   {
     type: 'solution',
-    title: 'Spec-Driven Development',
+    title: 'AutoSpec: An SDD Implementation',
+    subtitle: 'Spec-Driven Development has many implementations. This is ours.',
     flow: [
       { step: 'Requirements', icon: '📋', description: 'Human intent captured once' },
       { step: 'Specifications', icon: '📐', description: '10 role-based contracts' },
@@ -117,9 +132,9 @@ export const slidesEN = [
       { step: 'AI Execution', icon: '🤖', description: 'Agents with full context' },
       { step: 'Working Code', icon: '✅', description: 'Tested, documented, production-ready' },
     ],
-    keyInsight: "Don't let AI think. Let it execute. Specs are the thinking.",
+    keyInsight: 'The power comes from specifications, not the tool. AutoSpec just makes it fast.',
   },
-  // 10. docsFolder
+  // 11. docsFolder
   {
     type: 'docsFolder',
     title: 'The docs/ Folder',
@@ -142,61 +157,61 @@ export const slidesEN = [
       with: 'Knowledge in version-controlled docs — grows forever',
     },
   },
-  // 11. workflow
+  // 12. workflow — REWORKED to 7 phases
   {
     type: 'workflow',
-    title: 'The AutoSpec Workflow',
+    title: 'The Full AutoSpec Pipeline',
     steps: [
-      {
-        number: '01',
-        title: 'Write Requirements',
-        description: 'Create an SRS document describing what you want',
-        time: '1-2 hours',
-        output: 'requirements.md',
-      },
-      {
-        number: '02',
-        title: 'Generate Specs',
-        description: 'AutoSpec creates 10 role-based specifications',
-        time: '5 minutes',
-        output: 'specs/*.md',
-      },
-      {
-        number: '03',
-        title: 'Review & Refine',
-        description: 'Validate specs match your vision',
-        time: '30 minutes',
-        output: 'Approved specs',
-      },
-      {
-        number: '04',
-        title: 'Execute Sprints',
-        description: 'AI agents work through tickets systematically',
-        time: '2-4 hours/sprint',
-        output: 'Working features',
-      },
+      { number: '01', title: 'Write Requirements', description: 'Create an SRS document describing what you want', time: '1-2 hours', output: 'requirements.md' },
+      { number: '02', title: 'Generate Specs', description: 'Multi-agent generation of 10 role-based specifications', time: '5 minutes', output: 'specs/*.md' },
+      { number: '03', title: 'Inject Knowledge', description: 'CLAUDE.md + docs/ folder loaded into agent context', time: 'Automatic', output: 'Full context' },
+      { number: '04', title: 'Plan Sprints + Model Routing', description: 'PM assigns tickets, routes by complexity: Haiku for simple, Sonnet for complex, Opus for architecture', time: '10 minutes', output: 'backlog.md' },
+      { number: '05', title: 'Execute in Worktrees', description: 'Parallel agents implement tickets in isolated git worktrees', time: '2-4 hours/sprint', output: 'Working features' },
+      { number: '06', title: 'QA + Update Docs', description: 'Verification loop: build, test, review. Update living documentation', time: '30 minutes', output: 'Verified code + docs/' },
+      { number: '07', title: 'Build Viewer', description: 'Generate visual dashboard from specs, backlog, and docs', time: '5 minutes', output: 'Viewer app' },
     ],
   },
-  // 12. roles
+  // 13. roles — REWORKED
   {
     type: 'roles',
     title: 'The 10-Role Model',
-    description: 'Every project is specified from 10 perspectives',
+    description: 'Roles are perspectives for WRITING specifications',
     roles: [
-      { num: '01', name: 'Product Manager', focus: 'Vision, personas, flows' },
-      { num: '02', name: 'Backend Lead', focus: 'APIs, auth, services' },
-      { num: '03', name: 'Frontend Lead', focus: 'Components, design system' },
-      { num: '04', name: 'DB Architect', focus: 'Schema, migrations' },
-      { num: '05', name: 'QA Lead', focus: 'Testing strategy' },
-      { num: '06', name: 'DevOps Lead', focus: 'Infrastructure, CI/CD' },
-      { num: '07', name: 'Marketing Lead', focus: 'Go-to-market' },
-      { num: '08', name: 'Finance Lead', focus: 'Pricing, economics' },
-      { num: '09', name: 'Business Lead', focus: 'Strategy, competition' },
-      { num: '10', name: 'UI Designer', focus: 'Screens, wireframes' },
+      { num: '01', name: 'Product Manager', focus: 'Vision, personas, flows', specFile: 'specs/01_product_manager.md' },
+      { num: '02', name: 'Backend Lead', focus: 'APIs, auth, services', specFile: 'specs/02_backend_lead.md' },
+      { num: '03', name: 'Frontend Lead', focus: 'Components, design system', specFile: 'specs/03_frontend_lead.md' },
+      { num: '04', name: 'DB Architect', focus: 'Schema, migrations', specFile: 'specs/04_db_architect.md' },
+      { num: '05', name: 'QA Lead', focus: 'Testing strategy', specFile: 'specs/05_qa_lead.md' },
+      { num: '06', name: 'DevOps Lead', focus: 'Infrastructure, CI/CD', specFile: 'specs/06_devops_lead.md' },
+      { num: '07', name: 'Marketing Lead', focus: 'Go-to-market', specFile: 'specs/07_marketing_lead.md' },
+      { num: '08', name: 'Finance Lead', focus: 'Pricing, economics', specFile: 'specs/08_finance_lead.md' },
+      { num: '09', name: 'Business Lead', focus: 'Strategy, competition', specFile: 'specs/09_business_lead.md' },
+      { num: '10', name: 'UI Designer', focus: 'Screens, wireframes', specFile: 'specs/10_ui_designer.md' },
     ],
+    agentDistinction: {
+      subtitle: 'A role is a job description. An agent is the employee. One agent can wear multiple hats.',
+      lanes: [
+        { agent: 'Opus Orchestrator', roles: ['Product Manager', 'Business Lead'] },
+        { agent: 'Sonnet Agent A', roles: ['Backend Lead', 'DB Architect', 'DevOps Lead'] },
+        { agent: 'Sonnet Agent B', roles: ['Frontend Lead', 'QA Lead', 'UI Designer'] },
+      ],
+    },
     insight: 'Even solo developers benefit from thinking in roles.',
   },
-  // 13. sprintLifecycle
+  // 14. ticketExecution — NEW
+  {
+    type: 'ticketExecution',
+    title: 'Ticket Execution Deep-Dive',
+    stages: [
+      { stage: 1, title: 'Ticket from Backlog', description: 'Ticket ID, title, story points, acceptance criteria', icon: '🎫', time: '0 min' },
+      { stage: 2, title: 'PM Assigns Context', description: 'Role spec from specs/ folder + relevant docs/ sections + previous sprint summaries injected into brief', icon: '📋', time: '2 min' },
+      { stage: 3, title: 'Dev Agent Executes', description: 'Implements code, writes tests, updates docs — all in an isolated worktree', icon: '⚙️', time: '15-45 min' },
+      { stage: 4, title: 'QA Agent Reviews', description: 'Separate agent with QA Lead role (specs/05_qa_lead.md) plans tests, verifies user flow, approves or blocks', icon: '🧪', time: '5-10 min' },
+      { stage: 5, title: 'Merge + Summarize', description: 'Backlog updated to ✅, sprint summary written, docs/ updated', icon: '✅', time: '2 min' },
+    ],
+    callout: 'Product Manager agent orchestrates this entire process.',
+  },
+  // 15. sprintLifecycle
   {
     type: 'sprintLifecycle',
     title: 'The Sprint Lifecycle',
@@ -209,7 +224,7 @@ export const slidesEN = [
     ],
     callout: 'Every sprint follows this cycle. Nothing ships without all 5 phases.',
   },
-  // 14. backlog
+  // 16. backlog
   {
     type: 'backlog',
     title: 'The Backlog System',
@@ -238,13 +253,14 @@ export const slidesEN = [
       ],
     },
   },
-  // 15. orchestrator
+  // 17. orchestrator — MINOR REWORK
   {
     type: 'orchestrator',
     title: 'Orchestrator Pattern',
     orchestrator: {
-      name: 'Opus Orchestrator',
-      tasks: ['Writes sprint briefs', 'Spawns parallel agents', 'Reviews results & merges'],
+      name: 'Product Manager (Opus)',
+      subtitle: 'The orchestrator is an AI agent with the PM role from specs/01_product_manager.md',
+      tasks: ['Writes sprint briefs', 'Spawns parallel agents', 'Sequences sprints by dependency graph', 'Reviews results & merges'],
     },
     agents: [
       { name: 'Sonnet Agent A', task: 'Backend tickets in worktree-a' },
@@ -253,7 +269,7 @@ export const slidesEN = [
     ],
     benefits: ['Clean main context', 'Parallel execution', 'Isolated worktrees'],
   },
-  // 16. multiagent
+  // 18. multiagent
   {
     type: 'multiagent',
     title: 'Multi-Agent Execution',
@@ -279,7 +295,7 @@ export const slidesEN = [
       'Dependencies tracked in backlog',
     ],
   },
-  // 17. qaMethodology
+  // 19. qaMethodology
   {
     type: 'qaMethodology',
     title: 'QA Methodology',
@@ -295,7 +311,7 @@ export const slidesEN = [
     ],
     callout: 'Every ticket is verified before Done. No exceptions.',
   },
-  // 18. sprintSummary
+  // 20. sprintSummary
   {
     type: 'sprintSummary',
     title: 'Sprint Summaries',
@@ -307,7 +323,7 @@ export const slidesEN = [
     ],
     callout: 'Future agents read summaries to understand what was built.',
   },
-  // 19. modelOptimization
+  // 21. modelOptimization
   {
     type: 'modelOptimization',
     title: 'Model Optimization',
@@ -324,28 +340,34 @@ export const slidesEN = [
       savings: '~60% savings',
     },
   },
-  // 20. skillsEnvironments
+  // 22. environmentProof — NEW type key (replaces skillsEnvironments)
   {
-    type: 'skillsEnvironments',
-    title: 'Skills & Environments',
-    skills: [
-      '/plan-sprint',
-      '/sprint-run',
-      '/execute-ticket',
-      '/sprint-status',
-      '/qa-review',
-    ],
+    type: 'environmentProof',
+    title: 'Environment Agnostic: Proof',
     environments: [
-      { name: 'Claude Code', support: 'Full' },
-      { name: 'Copilot', support: 'Full' },
-      { name: 'Cursor', support: 'Full' },
-      { name: 'Windsurf', support: 'Partial' },
-      { name: 'JetBrains', support: 'Partial' },
-      { name: 'Aider', support: 'Basic' },
+      {
+        name: 'Claude Code',
+        accent: 'cyan',
+        mockup: 'terminal',
+        commands: ['$ claude', '> /sprint-run', 'Loading CLAUDE.md...', 'Loading specs/*.md...', 'Sprint 3 executing...'],
+      },
+      {
+        name: 'GitHub Copilot',
+        accent: 'purple',
+        mockup: 'ide',
+        commands: ['CLAUDE.md loaded in workspace', 'specs/ folder indexed', '@workspace /sprint-run'],
+      },
+      {
+        name: 'Air-Gapped / Continue',
+        accent: 'amber',
+        mockup: 'local',
+        commands: ['Ollama running locally', 'Same specs/ folder', 'No cloud required'],
+      },
     ],
-    callout: 'Same methodology, any AI assistant.',
+    callout: 'Same CLAUDE.md. Same specs/. Same methodology.',
+    bottomText: 'Works in any environment — even without internet.',
   },
-  // 21. viewer
+  // 23. viewer
   {
     type: 'viewer',
     title: 'Live Viewer Dashboard',
@@ -353,7 +375,7 @@ export const slidesEN = [
     features: ['Specs Browser', 'Backlog Kanban', 'Living Docs'],
     linkText: 'Try it live →',
   },
-  // 22. example
+  // 24. example
   {
     type: 'example',
     title: 'Real Example: ShopFlow E-Commerce',
@@ -382,7 +404,7 @@ export const slidesEN = [
       'Admin dashboard',
     ],
   },
-  // 23. results
+  // 25. results
   {
     type: 'results',
     title: 'Proven Results',
@@ -399,7 +421,7 @@ export const slidesEN = [
       source: 'Battle-tested on production applications',
     },
   },
-  // 24. demo
+  // 26. demo
   {
     type: 'demo',
     title: 'Live Demo',
@@ -413,7 +435,7 @@ export const slidesEN = [
     ],
     note: 'Demo time: ~5 minutes',
   },
-  // 25. beforeAfter
+  // 27. beforeAfter
   {
     type: 'beforeAfter',
     title: 'Before & After',
@@ -427,7 +449,7 @@ export const slidesEN = [
       { aspect: 'Handoff', before: 'Impossible without original dev', after: 'Anyone reads the specs' },
     ],
   },
-  // 26. closing
+  // 28. closing
   {
     type: 'closing',
     title: 'Get Started Today',
@@ -443,7 +465,7 @@ export const slidesEN = [
     },
     tagline: 'From requirements to running code.',
   },
-  // 27. finalTagline
+  // 29. finalTagline
   {
     type: 'finalTagline',
     title: 'AutoSpec',

@@ -17,9 +17,11 @@ import ReverseTaxSlide from '../components/ReverseTaxSlide';
 import BreakingPointSlide from '../components/BreakingPointSlide';
 import BridgeSlide from '../components/BridgeSlide';
 import SolutionSlide from '../components/SolutionSlide';
+import SDDMethodologySlide from '../components/SDDMethodologySlide';
 import DocsFolderSlide from '../components/DocsFolderSlide';
 import WorkflowSlide from '../components/WorkflowSlide';
 import RolesSlide from '../components/RolesSlide';
+import TicketExecutionSlide from '../components/TicketExecutionSlide';
 import SprintLifecycleSlide from '../components/SprintLifecycleSlide';
 import MultiAgentSlide from '../components/MultiAgentSlide';
 import BacklogSlide from '../components/BacklogSlide';
@@ -27,7 +29,7 @@ import OrchestratorSlide from '../components/OrchestratorSlide';
 import QAMethodologySlide from '../components/QAMethodologySlide';
 import SprintSummarySlide from '../components/SprintSummarySlide';
 import ModelOptimizationSlide from '../components/ModelOptimizationSlide';
-import SkillsEnvironmentsSlide from '../components/SkillsEnvironmentsSlide';
+import EnvironmentProofSlide from '../components/EnvironmentProofSlide';
 import ViewerSlide from '../components/ViewerSlide';
 import ExampleSlide from '../components/ExampleSlide';
 import ResultsSlide from '../components/ResultsSlide';
@@ -45,10 +47,12 @@ const slideComponents = {
   reverseTax: ReverseTaxSlide,
   breakingPoint: BreakingPointSlide,
   bridge: BridgeSlide,
+  sddMethodology: SDDMethodologySlide,
   solution: SolutionSlide,
   docsFolder: DocsFolderSlide,
   workflow: WorkflowSlide,
   roles: RolesSlide,
+  ticketExecution: TicketExecutionSlide,
   sprintLifecycle: SprintLifecycleSlide,
   backlog: BacklogSlide,
   orchestrator: OrchestratorSlide,
@@ -56,7 +60,7 @@ const slideComponents = {
   qaMethodology: QAMethodologySlide,
   sprintSummary: SprintSummarySlide,
   modelOptimization: ModelOptimizationSlide,
-  skillsEnvironments: SkillsEnvironmentsSlide,
+  environmentProof: EnvironmentProofSlide,
   viewer: ViewerSlide,
   example: ExampleSlide,
   results: ResultsSlide,

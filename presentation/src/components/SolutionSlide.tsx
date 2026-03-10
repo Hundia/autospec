@@ -5,6 +5,7 @@ import { ArrowRight } from 'lucide-react';
 interface SolutionSlideProps {
   data: {
     title: string;
+    subtitle?: string;
     flow: Array<{
       step: string;
       icon: string;
@@ -21,10 +22,23 @@ export default function SolutionSlide({ data, lang }: SolutionSlideProps) {
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-4xl sm:text-5xl font-bold text-center mb-12 text-green-400"
+        className="text-4xl sm:text-5xl font-bold text-center mb-3 text-green-400"
       >
         {data.title}
       </motion.h2>
+
+      {data.subtitle && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.15 }}
+          className="text-center text-white/60 text-lg mb-10"
+        >
+          {data.subtitle}
+        </motion.p>
+      )}
+
+      {!data.subtitle && <div className="mb-12" />}
 
       {/* Flow Diagram */}
       <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 mb-12">

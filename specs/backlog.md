@@ -204,6 +204,43 @@
 
 ---
 
+---
+
+## Sprint 13A: Data Layer + New Slides + Title Overhaul (~30 pts)
+
+**Theme:** Restructure slide data to 29-slide sequence, create SDDMethodology + TicketExecution slides, overhaul TitleSlide.
+**Status:** ✅ Done
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 13.1 | Update `slides-en.ts` — 29-slide sequence with all new/reworked data | Agent 13A | 5 | ✅ | — |
+| 13.2 | Update `slides-he.ts` — Hebrew translations matching 13.1 exactly | Agent 13A | 5 | ✅ | 13.1 |
+| 13.3 | Rework `TitleSlide.tsx` — animated gradient bg, glow title, word-by-word tagline, ambient dots, badge | Agent 13A | 5 | ✅ | — |
+| 13.4 | Create `SDDMethodologySlide.tsx` — left/right split: principles vs implementations, SVG connector | Agent 13A | 5 | ✅ | 13.1 |
+| 13.5 | Rework `SolutionSlide.tsx` — add subtitle prop below title | Agent 13A | 2 | ✅ | — |
+| 13.6 | Create `TicketExecutionSlide.tsx` — 5-stage vertical pipeline with amber connectors | Agent 13A | 5 | ✅ | 13.1 |
+| 13.7 | Build verification — npm run build exits 0, 29 slides in each data file | Agent 13A | 3 | ✅ | 13.1–13.6 |
+
+---
+
+## Sprint 13B: Component Reworks + Wiring (~24 pts)
+
+**Theme:** Rework Workflow, Roles, Environment slides. Wire PresentationPage. Hebrew sync. Final QA.
+**Status:** ✅ Done
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 13.8 | Rework `WorkflowSlide.tsx` — 7-phase horizontal pipeline | Frontend | 5 | ✅ | 13.1 |
+| 13.9 | Rework `RolesSlide.tsx` — role≠agent + agent swim lanes | Frontend | 5 | ✅ | 13.1 |
+| 13.10 | Create `EnvironmentProofSlide.tsx` — 3 environment mockup cards | Frontend | 5 | ✅ | 13.1 |
+| 13.11 | Minor rework `OrchestratorSlide.tsx` — PM role emphasis | Frontend | 2 | ✅ | 13.1 |
+| 13.12 | Update `PresentationPage.tsx` — wire 3 new, remove 1 old | Frontend | 2 | ✅ | 13.4, 13.6, 13.10 |
+| 13.13 | Hebrew translations verified for 13B changes | Frontend | 3 | ✅ | 13.8-13.11 |
+| 13.14 | Final build + QA — 29 slides EN + HE | QA | 2 | ✅ | 13.12, 13.13 |
+| 13.15 | Backlog + viewer data + sprint summary | PM | 1 | ✅ | 13.14 |
+
+---
+
 ## Bug Tracker
 
 ### B.01 — Separate `/sprint-run` from `/sprint-close`
@@ -240,4 +277,6 @@
 | Sprint 11 | 58 | 🔲 Planned |
 | Sprint 12A | 55 | ✅ Done |
 | Sprint 12B | 14 | ✅ Done |
-| **Total** | **362** | 🔄 **IN PROGRESS** |
+| Sprint 13A | 30 | ✅ Done |
+| Sprint 13B | 24 | ✅ Done |
+| **Total** | **416** | 🔄 **IN PROGRESS** |
