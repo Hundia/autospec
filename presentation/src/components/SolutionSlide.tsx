@@ -1,12 +1,17 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
 
 interface SolutionSlideProps {
   data: {
     title: string;
     subtitle?: string;
-    flow: Array<{
+    capabilities?: Array<{
+      number: string;
+      title: string;
+      description: string;
+      artifact: string;
+      icon: string;
+    }>;
+    flow?: Array<{
       step: string;
       icon: string;
       description: string;
@@ -16,9 +21,9 @@ interface SolutionSlideProps {
   lang: 'en' | 'he';
 }
 
-export default function SolutionSlide({ data, lang }: SolutionSlideProps) {
+export default function SolutionSlide({ data }: SolutionSlideProps) {
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-5xl mx-auto w-full">
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -32,50 +37,48 @@ export default function SolutionSlide({ data, lang }: SolutionSlideProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.15 }}
-          className="text-center text-white/60 text-lg mb-10"
+          className="text-center text-white/60 text-lg mb-8"
         >
           {data.subtitle}
         </motion.p>
       )}
 
-      {!data.subtitle && <div className="mb-12" />}
+      {!data.subtitle && <div className="mb-10" />}
 
-      {/* Flow Diagram */}
-      <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 mb-12">
-        {data.flow.map((item, idx) => (
-          <React.Fragment key={idx}>
+      {/* Capabilities grid (new format) */}
+      {data.capabilities && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+          {data.capabilities.map((cap, idx) => (
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 + idx * 0.15 }}
-              className="bg-gradient-to-br from-green-500/20 to-blue-500/20 border border-green-500/30 rounded-xl p-4 sm:p-6 text-center min-w-[120px]"
+              key={idx}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 + idx * 0.15, duration: 0.5 }}
+              className="bg-gradient-to-br from-green-500/15 to-blue-500/15 border border-green-500/30 rounded-xl p-5 flex flex-col"
             >
-              <div className="text-3xl sm:text-4xl mb-2">{item.icon}</div>
-              <h3 className="text-lg font-semibold text-white mb-1">{item.step}</h3>
-              <p className="text-xs sm:text-sm text-white/60">{item.description}</p>
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-green-400/50 text-xl font-black">{cap.number}</span>
+                <span className="text-2xl">{cap.icon}</span>
+              </div>
+              <h3 className="text-base font-semibold text-white mb-2">{cap.title}</h3>
+              <p className="text-white/60 text-sm flex-1 mb-4">{cap.description}</p>
+              <code className="text-xs font-mono text-green-300/80 bg-slate-900/60 rounded px-3 py-1.5 block truncate">
+                {cap.artifact}
+              </code>
             </motion.div>
-            {idx < data.flow.length - 1 && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 + idx * 0.15 }}
-              >
-                <ArrowRight className="text-green-400/50 w-6 h-6" />
-              </motion.div>
-            )}
-          </React.Fragment>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {/* Key Insight */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1 }}
+        transition={{ delay: 0.9 }}
         className="text-center"
       >
-        <p className="text-xl text-green-300 bg-green-500/10 border border-green-500/30 rounded-lg px-6 py-4 inline-block">
-          💡 {data.keyInsight}
+        <p className="text-lg text-green-300 bg-green-500/10 border border-green-500/30 rounded-lg px-6 py-4 inline-block">
+          {data.keyInsight}
         </p>
       </motion.div>
     </div>

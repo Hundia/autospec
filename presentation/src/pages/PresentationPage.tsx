@@ -18,11 +18,12 @@ import BreakingPointSlide from '../components/BreakingPointSlide';
 import BridgeSlide from '../components/BridgeSlide';
 import SolutionSlide from '../components/SolutionSlide';
 import SDDMethodologySlide from '../components/SDDMethodologySlide';
+import SDDCostOfChaosSlide from '../components/SDDCostOfChaosSlide';
+import SDDThreePillarsSlide from '../components/SDDThreePillarsSlide';
 import DocsFolderSlide from '../components/DocsFolderSlide';
 import WorkflowSlide from '../components/WorkflowSlide';
 import RolesSlide from '../components/RolesSlide';
 import TicketExecutionSlide from '../components/TicketExecutionSlide';
-import SprintLifecycleSlide from '../components/SprintLifecycleSlide';
 import MultiAgentSlide from '../components/MultiAgentSlide';
 import BacklogSlide from '../components/BacklogSlide';
 import OrchestratorSlide from '../components/OrchestratorSlide';
@@ -34,6 +35,8 @@ import ViewerSlide from '../components/ViewerSlide';
 import ExampleSlide from '../components/ExampleSlide';
 import ResultsSlide from '../components/ResultsSlide';
 import DemoSlide from '../components/DemoSlide';
+import FutureWaterfallSlide from '../components/FutureWaterfallSlide';
+import FutureMonolithSlide from '../components/FutureMonolithSlide';
 import BeforeAfterSlide from '../components/BeforeAfterSlide';
 import ClosingSlide from '../components/ClosingSlide';
 import FinalTaglineSlide from '../components/FinalTaglineSlide';
@@ -48,12 +51,13 @@ const slideComponents = {
   breakingPoint: BreakingPointSlide,
   bridge: BridgeSlide,
   sddMethodology: SDDMethodologySlide,
+  sddCostOfChaos: SDDCostOfChaosSlide,
+  sddThreePillars: SDDThreePillarsSlide,
   solution: SolutionSlide,
   docsFolder: DocsFolderSlide,
   workflow: WorkflowSlide,
   roles: RolesSlide,
   ticketExecution: TicketExecutionSlide,
-  sprintLifecycle: SprintLifecycleSlide,
   backlog: BacklogSlide,
   orchestrator: OrchestratorSlide,
   multiagent: MultiAgentSlide,
@@ -65,6 +69,8 @@ const slideComponents = {
   example: ExampleSlide,
   results: ResultsSlide,
   demo: DemoSlide,
+  futureWaterfall: FutureWaterfallSlide,
+  futureMonolith: FutureMonolithSlide,
   beforeAfter: BeforeAfterSlide,
   closing: ClosingSlide,
   finalTagline: FinalTaglineSlide,

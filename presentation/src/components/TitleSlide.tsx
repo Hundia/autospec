@@ -6,6 +6,7 @@ interface TitleSlideProps {
     title: string;
     subtitle: string;
     tagline: string;
+    presenter?: string;
   };
   lang: 'en' | 'he';
 }
@@ -23,7 +24,7 @@ export default function TitleSlide({ data, lang }: TitleSlideProps) {
   const words = data.tagline.split(' ');
 
   return (
-    <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
+    <div className="relative w-full flex items-center justify-center overflow-hidden">
       {/* Animated gradient background */}
       <motion.div
         className="absolute inset-0 pointer-events-none"
@@ -42,7 +43,7 @@ export default function TitleSlide({ data, lang }: TitleSlideProps) {
       {ambientDots.map((dot, i) => (
         <motion.div
           key={i}
-          className="absolute rounded-full bg-blue-400/20"
+          className="absolute rounded-full bg-blue-400/20 pointer-events-none"
           style={{
             left: dot.x,
             top: dot.y,
@@ -90,6 +91,18 @@ export default function TitleSlide({ data, lang }: TitleSlideProps) {
         >
           {data.subtitle}
         </motion.p>
+
+        {/* Presenter name */}
+        {data.presenter && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.55, duration: 0.4 }}
+            className="text-lg text-white/50 font-light mb-8"
+          >
+            {data.presenter}
+          </motion.p>
+        )}
 
         {/* Tagline — word-by-word stagger */}
         <div className="flex flex-wrap justify-center gap-x-3 gap-y-1 mb-14">

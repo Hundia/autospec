@@ -38,13 +38,13 @@ export default function ContextPoisoningSlide({ data }: ContextPoisoningSlidePro
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.15 }}
-        className="text-center text-slate-400 text-base mb-10 max-w-2xl mx-auto"
+        className="text-center text-slate-400 text-base mb-6 max-w-2xl mx-auto"
       >
         {data.subtitle}
       </motion.p>
 
-      {/* Vertical degradation timeline */}
-      <div className="space-y-4">
+      {/* 2x2 grid layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {data.stages.map((stage, idx) => {
           const colors = colorMap[stage.color] || colorMap.green;
           const isLast = idx === data.stages.length - 1;
@@ -63,12 +63,11 @@ export default function ContextPoisoningSlide({ data }: ContextPoisoningSlidePro
                   ? { delay: 0.25 + idx * 0.2, duration: 0.5, times: [0, 0.2, 0.4, 0.6, 0.8, 1] }
                   : { delay: 0.25 + idx * 0.2, duration: 0.4 }
               }
-              className={`flex items-start gap-4 ${colors.bg} border ${colors.border} rounded-xl p-4`}
+              className={`flex items-start gap-3 ${colors.bg} border ${colors.border} rounded-xl p-3`}
             >
-              {/* Dot + connector */}
-              <div className="flex flex-col items-center flex-shrink-0 mt-1">
+              {/* Dot */}
+              <div className="flex-shrink-0 mt-1">
                 <div className={`w-3 h-3 rounded-full ${colors.dot} shadow-lg`} />
-                {!isLast && <div className="w-0.5 h-8 bg-slate-600/50 mt-2" />}
               </div>
 
               {/* Content */}
@@ -81,10 +80,10 @@ export default function ContextPoisoningSlide({ data }: ContextPoisoningSlidePro
                     {stage.status}
                   </span>
                 </div>
-                <code className="block font-mono text-sm text-slate-200 bg-slate-900/60 rounded px-3 py-1.5 mb-1.5 truncate">
+                <code className="block font-mono text-xs text-slate-200 bg-slate-900/60 rounded px-3 py-1.5 mb-1.5 truncate">
                   {stage.snippet}
                 </code>
-                <p className="text-slate-400 text-sm">{stage.description}</p>
+                <p className="text-slate-400 text-xs">{stage.description}</p>
               </div>
             </motion.div>
           );

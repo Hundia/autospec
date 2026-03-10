@@ -241,6 +241,30 @@
 
 ---
 
+## Sprint 14: Presentation Fixes + SDD Deepening + Future Vision (~32 pts)
+
+**Theme:** Fix 3 bugs, add 4 new slides (SDD Cost of Chaos, Three Pillars, Future Waterfall, Future Monolith), rework Solution slide, remove redundant SprintLifecycle slide. Final: 32 slides.
+**Status:** ✅ Done
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 14.1 | Fix TitleSlide nav — remove `min-h-screen`, add `pointer-events-none` to ambient dots | Frontend | 2 | ✅ | — |
+| 14.2 | Add "Eli Hundia" presenter name to title slide — data + component | Frontend | 1 | ✅ | — |
+| 14.3 | Fix ContextPoisoning overflow — 2x2 grid, compact cards | Frontend | 3 | ✅ | — |
+| 14.4 | Update `slides-en.ts` — 32-slide sequence: +4 new, -1 removed, reworked solution | Frontend | 5 | ✅ | — |
+| 14.5 | Update `slides-he.ts` — Hebrew translations matching 14.4 | Frontend | 3 | ✅ | 14.4 |
+| 14.6 | Create `SDDCostOfChaosSlide.tsx` — red/green two-column comparison | Frontend | 4 | ✅ | 14.4 |
+| 14.7 | Create `SDDThreePillarsSlide.tsx` — three pillar cards with artifacts | Frontend | 4 | ✅ | 14.4 |
+| 14.8 | Rework `SolutionSlide.tsx` — capabilities[] replaces flow[] | Frontend | 3 | ✅ | 14.4 |
+| 14.9 | Create `FutureWaterfallSlide.tsx` — time allocation bars + insight | Frontend | 4 | ✅ | 14.4 |
+| 14.10 | Create `FutureMonolithSlide.tsx` — microservices vs monolith comparison | Frontend | 4 | ✅ | 14.4 |
+| 14.11 | Update `PresentationPage.tsx` — wire 4 new, remove SprintLifecycle | Frontend | 2 | ✅ | 14.6-14.10 |
+| 14.12 | Delete `SprintLifecycleSlide.tsx` | Frontend | 0 | ✅ | 14.11 |
+| 14.13 | Build + QA — 32 slides EN+HE, nav works, no overflow | QA | 1 | ✅ | 14.12 |
+| 14.14 | Backlog + sprint summary | PM | 1 | ✅ | 14.13 |
+
+---
+
 ## Bug Tracker
 
 ### B.01 — Separate `/sprint-run` from `/sprint-close`
@@ -279,4 +303,5 @@
 | Sprint 12B | 14 | ✅ Done |
 | Sprint 13A | 30 | ✅ Done |
 | Sprint 13B | 24 | ✅ Done |
-| **Total** | **416** | 🔄 **IN PROGRESS** |
+| Sprint 14 | 32 | ✅ Done |
+| **Total** | **448** | 🔄 **IN PROGRESS** |

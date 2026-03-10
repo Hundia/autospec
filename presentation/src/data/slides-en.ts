@@ -5,6 +5,7 @@ export const slidesEN = [
     title: 'AutoSpec',
     subtitle: 'From Requirements to Running Code',
     tagline: "Don't let AI think. Give it specs.",
+    presenter: 'Eli Hundia',
   },
   // 2. eraTraditional
   {
@@ -104,7 +105,7 @@ export const slidesEN = [
       'What if AI agents worked from specs, not conversations?',
     ],
   },
-  // 9. sddMethodology — NEW
+  // 9. sddMethodology
   {
     type: 'sddMethodology',
     title: 'SDD: The Methodology',
@@ -120,21 +121,59 @@ export const slidesEN = [
       { name: 'Your Framework', description: 'SDD is a methodology, not a product', status: 'custom' },
     ],
   },
-  // 10. solution — REWORKED
+  // 10. sddCostOfChaos — NEW
+  {
+    type: 'sddCostOfChaos',
+    title: 'The Cost of No Specifications',
+    subtitle: 'Agentic AI without specs is a liability, not an asset',
+    columns: {
+      left: {
+        label: 'With Conversation',
+        color: 'red',
+        items: [
+          { icon: '💬', text: 'Context degrades after turn 30' },
+          { icon: '🔄', text: 'Every session starts from zero' },
+          { icon: '❌', text: 'Decisions lost when chat ends' },
+          { icon: '🚫', text: 'No agent can continue your work' },
+        ],
+      },
+      right: {
+        label: 'With Specifications',
+        color: 'green',
+        items: [
+          { icon: '📐', text: 'Decisions persisted in specs/' },
+          { icon: '🔗', text: 'Any session inherits full context' },
+          { icon: '✅', text: 'Choices survive forever in docs/' },
+          { icon: '🤖', text: 'Any agent can continue seamlessly' },
+        ],
+      },
+    },
+    callout: 'Specifications are the memory that AI was never given.',
+  },
+  // 11. sddThreePillars — NEW
+  {
+    type: 'sddThreePillars',
+    title: 'The Three Pillars of SDD',
+    subtitle: 'Concrete artifacts, not abstract principles',
+    pillars: [
+      { number: '01', title: 'Specification Files', description: 'Human intent captured in structured .md files. One prompt generates 10 role-based specs covering every perspective.', artifact: 'specs/01_product_manager.md', icon: '📐', color: 'teal' },
+      { number: '02', title: 'Living Documentation', description: 'The docs/ folder grows with every ticket. Not written separately — generated alongside code automatically.', artifact: 'docs/auth/01-architecture.md', icon: '📖', color: 'emerald' },
+      { number: '03', title: 'Role-Based Decomposition', description: '10 perspectives ensure no blind spots. PM, Backend, QA — each writes from their domain expertise.', artifact: 'specs/ (10 files)', icon: '🎭', color: 'cyan' },
+    ],
+  },
+  // 12. solution — REWORKED
   {
     type: 'solution',
-    title: 'AutoSpec: An SDD Implementation',
-    subtitle: 'Spec-Driven Development has many implementations. This is ours.',
-    flow: [
-      { step: 'Requirements', icon: '📋', description: 'Human intent captured once' },
-      { step: 'Specifications', icon: '📐', description: '10 role-based contracts' },
-      { step: 'Backlog', icon: '📝', description: 'Sized, ordered tickets' },
-      { step: 'AI Execution', icon: '🤖', description: 'Agents with full context' },
-      { step: 'Working Code', icon: '✅', description: 'Tested, documented, production-ready' },
+    title: 'AutoSpec: Your SDD Toolkit',
+    subtitle: 'One prompt. Ten specs. Zero context loss.',
+    capabilities: [
+      { number: '01', title: '10 AI-Generated Specifications', description: 'One requirements document generates 10 role-based spec files — PM, Backend, Frontend, DB, QA, DevOps, and more.', artifact: '$ autospec init → specs/*.md', icon: '📐' },
+      { number: '02', title: 'Orchestrated Sprint Execution', description: 'Opus PM agent coordinates Sonnet dev agents running in parallel git worktrees. Each agent has full context from specs.', artifact: 'Opus → [Agent A, B, C] → merge', icon: '🎯' },
+      { number: '03', title: 'Living Knowledge System', description: 'Every ticket updates docs/, backlog, and sprint summaries. Knowledge compounds with every sprint.', artifact: 'docs/ (100+ files after Sprint 10)', icon: '📖' },
     ],
-    keyInsight: 'The power comes from specifications, not the tool. AutoSpec just makes it fast.',
+    keyInsight: 'AutoSpec implements SDD so you can stop arguing about methodology and start shipping.',
   },
-  // 11. docsFolder
+  // 13. docsFolder
   {
     type: 'docsFolder',
     title: 'The docs/ Folder',
@@ -157,7 +196,7 @@ export const slidesEN = [
       with: 'Knowledge in version-controlled docs — grows forever',
     },
   },
-  // 12. workflow — REWORKED to 7 phases
+  // 14. workflow
   {
     type: 'workflow',
     title: 'The Full AutoSpec Pipeline',
@@ -171,7 +210,7 @@ export const slidesEN = [
       { number: '07', title: 'Build Viewer', description: 'Generate visual dashboard from specs, backlog, and docs', time: '5 minutes', output: 'Viewer app' },
     ],
   },
-  // 13. roles — REWORKED
+  // 15. roles
   {
     type: 'roles',
     title: 'The 10-Role Model',
@@ -198,7 +237,7 @@ export const slidesEN = [
     },
     insight: 'Even solo developers benefit from thinking in roles.',
   },
-  // 14. ticketExecution — NEW
+  // 16. ticketExecution
   {
     type: 'ticketExecution',
     title: 'Ticket Execution Deep-Dive',
@@ -211,20 +250,7 @@ export const slidesEN = [
     ],
     callout: 'Product Manager agent orchestrates this entire process.',
   },
-  // 15. sprintLifecycle
-  {
-    type: 'sprintLifecycle',
-    title: 'The Sprint Lifecycle',
-    phases: [
-      { icon: '📋', title: 'Plan', description: 'Define tickets, estimate points, assign agents' },
-      { icon: '📝', title: 'Document', description: 'Write briefs with full context for agents' },
-      { icon: '⚙️', title: 'Execute', description: 'Agents implement tickets in isolated worktrees' },
-      { icon: '🧪', title: 'QA', description: 'Verify every ticket with build + test + review' },
-      { icon: '📊', title: 'Summarize', description: 'Record outcomes, docs updated, files changed' },
-    ],
-    callout: 'Every sprint follows this cycle. Nothing ships without all 5 phases.',
-  },
-  // 16. backlog
+  // 17. backlog
   {
     type: 'backlog',
     title: 'The Backlog System',
@@ -253,7 +279,7 @@ export const slidesEN = [
       ],
     },
   },
-  // 17. orchestrator — MINOR REWORK
+  // 18. orchestrator
   {
     type: 'orchestrator',
     title: 'Orchestrator Pattern',
@@ -269,7 +295,7 @@ export const slidesEN = [
     ],
     benefits: ['Clean main context', 'Parallel execution', 'Isolated worktrees'],
   },
-  // 18. multiagent
+  // 19. multiagent
   {
     type: 'multiagent',
     title: 'Multi-Agent Execution',
@@ -295,7 +321,7 @@ export const slidesEN = [
       'Dependencies tracked in backlog',
     ],
   },
-  // 19. qaMethodology
+  // 20. qaMethodology
   {
     type: 'qaMethodology',
     title: 'QA Methodology',
@@ -311,7 +337,7 @@ export const slidesEN = [
     ],
     callout: 'Every ticket is verified before Done. No exceptions.',
   },
-  // 20. sprintSummary
+  // 21. sprintSummary
   {
     type: 'sprintSummary',
     title: 'Sprint Summaries',
@@ -323,7 +349,7 @@ export const slidesEN = [
     ],
     callout: 'Future agents read summaries to understand what was built.',
   },
-  // 21. modelOptimization
+  // 22. modelOptimization
   {
     type: 'modelOptimization',
     title: 'Model Optimization',
@@ -340,7 +366,7 @@ export const slidesEN = [
       savings: '~60% savings',
     },
   },
-  // 22. environmentProof — NEW type key (replaces skillsEnvironments)
+  // 23. environmentProof
   {
     type: 'environmentProof',
     title: 'Environment Agnostic: Proof',
@@ -367,7 +393,7 @@ export const slidesEN = [
     callout: 'Same CLAUDE.md. Same specs/. Same methodology.',
     bottomText: 'Works in any environment — even without internet.',
   },
-  // 23. viewer
+  // 24. viewer
   {
     type: 'viewer',
     title: 'Live Viewer Dashboard',
@@ -375,7 +401,7 @@ export const slidesEN = [
     features: ['Specs Browser', 'Backlog Kanban', 'Living Docs'],
     linkText: 'Try it live →',
   },
-  // 24. example
+  // 25. example
   {
     type: 'example',
     title: 'Real Example: ShopFlow E-Commerce',
@@ -404,7 +430,7 @@ export const slidesEN = [
       'Admin dashboard',
     ],
   },
-  // 25. results
+  // 26. results
   {
     type: 'results',
     title: 'Proven Results',
@@ -421,7 +447,7 @@ export const slidesEN = [
       source: 'Battle-tested on production applications',
     },
   },
-  // 26. demo
+  // 27. demo
   {
     type: 'demo',
     title: 'Live Demo',
@@ -435,7 +461,49 @@ export const slidesEN = [
     ],
     note: 'Demo time: ~5 minutes',
   },
-  // 27. beforeAfter
+  // 28. futureWaterfall — NEW
+  {
+    type: 'futureWaterfall',
+    title: 'The Future: Planning-First Development',
+    subtitle: 'The new development time allocation',
+    insight: "We're returning to waterfall — but smarter. When specs are clear, agents don't hallucinate. When agents don't hallucinate, you can use cheaper models and get the same results.",
+    allocation: [
+      { phase: 'Planning & Specification', percentage: 40, color: 'blue', description: 'Understanding WHAT to build is the big investment. Define it right, agents execute it right.' },
+      { phase: 'Development', percentage: 30, color: 'green', description: 'With clear specs, even smaller models deliver high-end results. The "small chunk" of the future.' },
+      { phase: 'Testing & Verification', percentage: 30, color: 'amber', description: 'QA agents verify every ticket. Automated validation ensures nothing ships broken.' },
+    ],
+    callout: "The future developer spends more time thinking than typing. That's not slower — it's smarter.",
+  },
+  // 29. futureMonolith — NEW
+  {
+    type: 'futureMonolith',
+    title: 'The Future: Monolith Renaissance',
+    subtitle: 'Why agents prefer monorepos over microservices',
+    comparison: {
+      microservices: {
+        label: 'Microservices',
+        icon: '🔀',
+        problems: [
+          'Context scattered across repositories',
+          'API contracts create ambiguity',
+          'Agent must infer behavior from interfaces',
+          'Cross-service debugging is guesswork',
+        ],
+      },
+      monolith: {
+        label: 'Monolith / Monorepo',
+        icon: '🏛️',
+        benefits: [
+          'Entire codebase in one context window',
+          'Direct function calls — no API ambiguity',
+          'Agent sees the full process end-to-end',
+          'Refactoring is atomic, not distributed',
+        ],
+      },
+    },
+    callout: 'Decoupling made sense for human teams. For agents with 200K context windows, a monolith is a superpower.',
+  },
+  // 30. beforeAfter
   {
     type: 'beforeAfter',
     title: 'Before & After',
@@ -449,7 +517,7 @@ export const slidesEN = [
       { aspect: 'Handoff', before: 'Impossible without original dev', after: 'Anyone reads the specs' },
     ],
   },
-  // 28. closing
+  // 31. closing
   {
     type: 'closing',
     title: 'Get Started Today',
@@ -465,7 +533,7 @@ export const slidesEN = [
     },
     tagline: 'From requirements to running code.',
   },
-  // 29. finalTagline
+  // 32. finalTagline
   {
     type: 'finalTagline',
     title: 'AutoSpec',
