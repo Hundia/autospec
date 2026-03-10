@@ -14,11 +14,18 @@ const sprintData = [
   { sprint: 'S4', points: 26, tickets: 4, status: 'done' },
   { sprint: 'S5', points: 26, tickets: 5, status: 'done' },
   { sprint: 'S6', points: 38, tickets: 12, status: 'todo' },
+  { sprint: 'S10', points: 10, tickets: 3, status: 'done' },
+  { sprint: 'S11', points: 58, tickets: 8, status: 'todo' },
+  { sprint: 'S12A', points: 55, tickets: 7, status: 'done' },
+  { sprint: 'S12B', points: 14, tickets: 3, status: 'done' },
+  { sprint: 'S13A', points: 30, tickets: 7, status: 'done' },
+  { sprint: 'S13B', points: 24, tickets: 8, status: 'done' },
+  { sprint: 'S14', points: 32, tickets: 14, status: 'done' },
 ]
 
 const statusData = [
-  { name: 'Done', value: 34, color: '#698472' },
-  { name: 'Planned', value: 12, color: '#d8d0ba' },
+  { name: 'Done', value: 76, color: '#698472' },
+  { name: 'Planned', value: 20, color: '#d8d0ba' },
 ]
 
 export const DashboardPage: React.FC = () => {
@@ -35,17 +42,17 @@ export const DashboardPage: React.FC = () => {
       <div className="grid grid-cols-5 gap-4">
         <Card variant="outlined">
           <CardContent className="py-4">
-            <AnimatedCounter value={225} label="Total Points" />
+            <AnimatedCounter value={448} label="Total Points" />
           </CardContent>
         </Card>
         <Card variant="outlined">
           <CardContent className="py-4">
-            <AnimatedCounter value={46} label="Total Tickets" />
+            <AnimatedCounter value={96} label="Total Tickets" />
           </CardContent>
         </Card>
         <Card variant="outlined">
           <CardContent className="py-4">
-            <AnimatedCounter value={7} label="Sprints" />
+            <AnimatedCounter value={14} label="Sprints" />
           </CardContent>
         </Card>
         <Card variant="outlined">
@@ -55,8 +62,8 @@ export const DashboardPage: React.FC = () => {
         </Card>
         <Card variant="outlined">
           <CardContent className="py-4 flex flex-col items-center">
-            <ProgressRing value={187} max={225} size={56} color="#698472" />
-            <div className="text-xs text-sand-600 mt-1">83% Done</div>
+            <ProgressRing value={352} max={448} size={56} color="#698472" />
+            <div className="text-xs text-sand-600 mt-1">79% Done</div>
           </CardContent>
         </Card>
       </div>
