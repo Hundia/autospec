@@ -21,6 +21,8 @@ const colorMap: Record<string, { border: string; bg: string; text: string; glow:
   amber: { border: 'border-amber-500/30', bg: 'bg-amber-500/10', text: 'text-amber-400', glow: 'shadow-amber-500/20' },
   indigo: { border: 'border-indigo-500/30', bg: 'bg-indigo-500/10', text: 'text-indigo-400', glow: 'shadow-indigo-500/20' },
   green: { border: 'border-green-500/30', bg: 'bg-green-500/10', text: 'text-green-400', glow: 'shadow-green-500/20' },
+  rose: { border: 'border-rose-500/30', bg: 'bg-rose-500/10', text: 'text-rose-400', glow: 'shadow-rose-500/20' },
+  teal: { border: 'border-teal-500/30', bg: 'bg-teal-500/10', text: 'text-teal-400', glow: 'shadow-teal-500/20' },
 };
 
 export default function PipelineStep({ number, title, subtitle, time, output, accentColor, hero, children, isRTL }: PipelineStepProps) {

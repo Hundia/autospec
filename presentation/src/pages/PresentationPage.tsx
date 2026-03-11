@@ -165,7 +165,7 @@ export default function PresentationPage() {
     <div
       ref={scrollRef}
       dir={isRTL ? 'rtl' : 'ltr'}
-      className={`min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white ${isScrollable ? 'overflow-y-auto overflow-x-hidden' : 'overflow-hidden'}`}
+      className={`bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white ${isScrollable ? 'h-screen overflow-y-auto overflow-x-hidden' : 'min-h-screen overflow-hidden'}`}
     >
       {/* Back to Home */}
       <Link

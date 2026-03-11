@@ -8,6 +8,8 @@ import SkillsVisualization from './SkillsVisualization';
 import BrowserMockup from './BrowserMockup';
 import WorktreeDiagram from './WorktreeDiagram';
 import QALoopVisualization from './QALoopVisualization';
+import UserReviewVisualization from './UserReviewVisualization';
+import SprintSummaryVisualization from './SprintSummaryVisualization';
 
 interface PipelineStep_Data {
   number: string;
@@ -37,6 +39,8 @@ const visualizationMap: Record<string, React.FC<{ lang: 'en' | 'he' }>> = {
   '05': BrowserMockup,
   '06': WorktreeDiagram,
   '07': QALoopVisualization,
+  '08': UserReviewVisualization,
+  '09': SprintSummaryVisualization,
 };
 
 export default function PipelineSlide({ data, lang }: PipelineSlideProps) {
