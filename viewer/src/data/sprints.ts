@@ -123,7 +123,7 @@ export const sprintVisualizations: Record<string, SprintVisualization> = {
     sprintId: '6',
     title: 'Multi-Agent Orchestration',
     planning: {
-      overview: 'Multi-agent orchestration engine: phase type system, 6 agent profiles (Claude, Gemini, Copilot, OpenCode, Cline, Aider), state management, phase sequencing, CLI integration. Planned via 6-phase expert analysis with Architect + HX Expert parallel analysis, PM-A draft (24 tickets, 67pts), PM-B adversarial review (10 issues found), PM-C final synthesis (12 tickets, 38pts).',
+      overview: 'Multi-agent orchestration engine: phase type system, 6 agent profiles (Claude, Gemini, Copilot, OpenCode, Cline, Continue), state management, phase sequencing, CLI integration. Planned via 6-phase expert analysis with Architect + HX Expert parallel analysis, PM-A draft (24 tickets, 67pts), PM-B adversarial review (10 issues found), PM-C final synthesis (12 tickets, 38pts).',
       flowSteps: [
         { id: 'start', label: 'User Goal', type: 'start', status: 'complete' },
         { id: 'analyze', label: 'Read Backlog + Docs', type: 'process', status: 'complete' },
@@ -152,7 +152,7 @@ export const sprintVisualizations: Record<string, SprintVisualization> = {
           { id: '6.1', label: 'Phase Types', x: 40, y: 20, owner: 'Backend', points: 2, status: 'todo', description: 'Define phase type system: foundation, scaffold, content, polish, qa with ordering + dependency rules' },
           { id: '6.2', label: 'Agent Schema', x: 270, y: 20, owner: 'Backend', points: 2, status: 'todo', description: 'Define agent type enum + base AgentProfile interface' },
           { id: '6.3', label: 'Config Extension', x: 155, y: 100, owner: 'Backend', points: 3, status: 'todo', description: 'Extend .autospecrc.json with agents, phases, orchestration sections' },
-          { id: '6.4', label: '6 Agent Profiles', x: 430, y: 100, owner: 'Backend', points: 5, status: 'todo', description: 'Create Claude, Copilot, Gemini, Cline, Aider, Windsurf profiles + registry' },
+          { id: '6.4', label: '6 Agent Profiles', x: 430, y: 100, owner: 'Backend', points: 5, status: 'todo', description: 'Create Claude, Copilot, Gemini, Cline, Continue, Windsurf profiles + registry' },
           { id: '6.5', label: 'Auto-Detection', x: 560, y: 190, owner: 'Backend', points: 3, status: 'todo', description: 'Auto-detect active AI environment from process/env signals' },
           { id: '6.6', label: 'State Manager', x: 40, y: 190, owner: 'Backend', points: 5, status: 'todo', description: 'Track phase progress, file hashes, completion status. Atomic writes.' },
           { id: '6.7', label: 'Validators', x: 200, y: 190, owner: 'Backend', points: 3, status: 'todo', description: 'Pre/post-condition checks per phase type' },
@@ -239,7 +239,7 @@ export const sprintVisualizations: Record<string, SprintVisualization> = {
           { id: 'copilot', name: 'GitHub Copilot', color: '#000000', values: { context: 40, output: 25, subagents: 10, streaming: 30, resume: 10, isolation: 15 } },
           { id: 'opencode', name: 'OpenCode', color: '#f59e0b', values: { context: 60, output: 55, subagents: 35, streaming: 40, resume: 20, isolation: 30 } },
           { id: 'cline', name: 'Cline', color: '#8b5cf6', values: { context: 70, output: 60, subagents: 15, streaming: 50, resume: 15, isolation: 25 } },
-          { id: 'aider', name: 'Aider', color: '#ef4444', values: { context: 55, output: 50, subagents: 10, streaming: 35, resume: 20, isolation: 60 } },
+          { id: 'continue', name: 'Continue', color: '#ef4444', values: { context: 55, output: 50, subagents: 10, streaming: 35, resume: 20, isolation: 60 } },
         ],
         axes: [
           { key: 'context', label: 'Context' },

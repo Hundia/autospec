@@ -1,0 +1,98 @@
+---
+description: "Manage sprint backlog — statuses, tickets, bugs, docs links"
+globs: "specs/backlog.md"
+---
+# Update Backlog
+
+Rules for managing `specs/backlog.md` — the central task tracker for this project.
+
+## Actions
+
+### 1. Status Update
+
+Change a ticket's status emoji. Valid transitions:
+
+| From | To | Meaning |
+|------|----|---------|
+| 🔲 | 🔄 | Starting work |
+| 🔄 | 🧪 | Implementation done, entering QA |
+| 🧪 | ✅ | QA passed, ticket complete |
+| 🔄 | ✅ | Small change, QA inline with implementation |
+| 🔄 | ⏸️ | Blocked by dependency or decision |
+| ⏸️ | 🔄 | Unblocked, resuming work |
+| 🧪 | 🔄 | QA failed, returning to development |
+
+### 2. Add a Feature Ticket
+
+Format: `- 🔲 **X.Y** — Description of the feature`
+
+Where:
+- `X` = sprint number
+- `Y` = ticket number within the sprint (sequential)
+
+Example:
+```markdown
+- 🔲 **16.4** — Add dark mode toggle to viewer settings panel
+```
+
+### 3. Add a Bug Ticket
+
+Format: `- 🔲 **B.XX** — Bug description`
+
+Where `XX` is a globally sequential bug number.
+
+Example:
+```markdown
+- 🔲 **B.23** — Viewer crashes when spec file contains empty YAML frontmatter
+```
+
+Bug tickets should include:
+- Steps to reproduce (if known)
+- Expected vs actual behavior
+- Affected component (CLI, Viewer, etc.)
+
+### 4. Add a Note
+
+Add context to a ticket using a sub-bullet:
+
+```markdown
+- 🔄 **16.3** — Create Cursor IDE skill files
+  - Note: Using .mdc format with YAML frontmatter
+```
+
+### 5. Add Documentation Links
+
+When a ticket produces or updates documentation, link it:
+
+```markdown
+- ✅ **16.3** — Create Cursor IDE skill files
+  - Docs: `docs/environments/cursor-setup.md`
+```
+
+## Formatting Rules
+
+- Preserve existing section headers and sprint boundaries
+- Keep tickets in numerical order within each sprint
+- Do not remove completed tickets — they serve as history
+- Use exactly one space after the status emoji
+- Bold the ticket number with `**X.Y**`
+- Use an em dash ` — ` (space-emdash-space) between number and description
+- Keep descriptions concise (one line, under 80 characters)
+
+## Status Summary Shortcuts
+
+When reporting sprint status, count tickets by emoji:
+
+```
+Sprint 16: 2 ✅ | 3 🔄 | 1 ⏸️ | 4 🔲 = 10 tickets
+```
+
+## Dependencies
+
+If a ticket depends on another, note it:
+
+```markdown
+- 🔲 **16.5** — Build viewer dashboard (depends on 16.4)
+```
+
+Do not start a ticket whose dependencies are not ✅.

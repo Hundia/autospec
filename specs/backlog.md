@@ -110,7 +110,7 @@
 | 6.1 | Define phase type system: `foundation`, `scaffold`, `content`, `polish`, `qa` with ordering + dependency rules in `cli/src/types/phases.ts` | Backend | 2 | 🔲 | — | `docs/cli/orchestration.md` |
 | 6.2 | Define agent type enum + base agent profile schema (`AgentProfile` interface) in `cli/src/types/agents.ts` | Backend | 2 | 🔲 | — | `docs/cli/orchestration.md` |
 | 6.3 | Extend `.autospecrc.json` schema: add `agents`, `phases`, `orchestration` config sections to `cli/src/utils/config.ts` | Backend | 3 | 🔲 | 6.1, 6.2 | `docs/cli/orchestration.md` |
-| 6.4 | Create 6 agent profiles (Claude, Copilot, Gemini, Cline, Aider, Windsurf) + agent registry with lookup in `cli/src/agents/` | Backend | 5 | 🔲 | 6.2 | `docs/cli/agent_profiles.md` |
+| 6.4 | Create 6 agent profiles (Claude, Copilot, Gemini, Cline, Continue, Windsurf) + agent registry with lookup in `cli/src/agents/` | Backend | 5 | 🔲 | 6.2 | `docs/cli/agent_profiles.md` |
 | 6.5 | Auto-detect active AI environment from process/env signals in `cli/src/utils/detect-agent.ts` | Backend | 3 | 🔲 | 6.4 | `docs/cli/orchestration.md` |
 | 6.6 | State manager: track phase progress, file hashes, completion status in `cli/src/orchestration/state.ts` | Backend | 5 | 🔲 | 6.1 | `docs/cli/orchestration.md` |
 | 6.7 | Phase validators: pre/post-condition checks per phase type in `cli/src/orchestration/validators.ts` | Backend | 3 | 🔲 | 6.1, 6.6 | `docs/cli/orchestration.md` |
@@ -307,6 +307,36 @@
 
 ---
 
+## Sprint 16: Continue Extension + Complete Environment Skills (~37 pts)
+
+**Theme:** Replace Aider with Continue VS Code extension, create skill files for all environments (Continue, Cursor, Windsurf, JetBrains), environment setup docs, update compatibility matrix
+**Status:** ✅ Done
+
+### Phase A: Data + Core Skills (PARALLEL)
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 16.1 | Replace Aider→Continue in `environments.ts`, update compatibility matrix | Frontend | 3 | ✅ | — | `docs/viewer/05_advanced_pages.md` |
+| 16.2 | Create `skills/continue/` — 3 rules + 10 prompts adapted from Claude skills | Backend | 8 | ✅ | — | `docs/environments/vscode/continue.md` |
+| 16.3 | Create `skills/cursor/` — SDD rules + 6 skill MDC files | Backend | 5 | ✅ | — | `docs/environments/vscode/cursor.md` |
+
+### Phase B: Remaining Skills + Docs (PARALLEL)
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 16.4 | Create `skills/windsurf/instructions.md` + `skills/jetbrains/instructions.md` | Backend | 5 | ✅ | — | `docs/environments/vscode/windsurf.md`, `docs/environments/jetbrains/setup.md` |
+| 16.5 | Create 4 environment docs: continue, cursor, windsurf, jetbrains | Docs | 8 | ✅ | — | `docs/environments/` |
+
+### Phase C: Integration + QA (SERIAL)
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 16.6 | Update all Aider references across codebase → Continue | Frontend | 3 | ✅ | 16.1 | — |
+| 16.7 | Viewer build + QA | QA | 3 | ✅ | 16.1, 16.6 | — |
+| 16.8 | Sprint 16 summary + backlog update | PM | 2 | ✅ | 16.1–16.7 | `sprints/sprint-16/summary.md` |
+
+---
+
 ## Bug Tracker
 
 ### B.01 — Separate `/sprint-run` from `/sprint-close`
@@ -347,4 +377,5 @@
 | Sprint 13B | 24 | ✅ Done |
 | Sprint 14 | 32 | ✅ Done |
 | Sprint 15 | 81 | ✅ Done |
-| **Total** | **529** | 🔄 **IN PROGRESS** |
+| Sprint 16 | 37 | ✅ Done |
+| **Total** | **566** | 🔄 **IN PROGRESS** |

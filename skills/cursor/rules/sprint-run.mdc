@@ -1,0 +1,93 @@
+---
+description: "Full sprint execution — plan, implement, QA, docs, close"
+globs: "specs/backlog.md"
+---
+# Sprint Run
+
+Execute a full sprint from start to finish. Follow all six phases in order.
+
+## Phase 1: Sprint Briefing
+
+1. Read `specs/backlog.md` to identify the current sprint and its tickets
+2. List all tickets with their statuses and dependencies
+3. Determine execution order based on dependencies
+4. Identify which spec files and docs are relevant
+5. Read `agents/sprint-X-brief.md` if it exists for additional context
+
+**Output**: Ordered list of tickets to execute with dependency notes.
+
+## Phase 2: Ticket Execution
+
+For each ticket in dependency order:
+
+1. Set ticket status to 🔄 in `specs/backlog.md`
+2. Read the relevant spec and doc files
+3. Implement the change following project conventions
+4. Run appropriate tests (see QA table below)
+5. Commit with format: `type(scope): description`
+
+### QA by Change Type
+
+| Type | Verification |
+|------|-------------|
+| Docs/config | Review accuracy |
+| Bug fix | Reproduce → fix → verify → test |
+| CLI change | `cd cli && npm run build && npm test` |
+| Viewer change | `cd viewer && npm run build` |
+| New feature | Full tests + new test cases |
+
+Do not proceed to the next ticket if the current one fails QA.
+
+## Phase 3: QA Verification
+
+After all tickets are implemented:
+
+1. Run the full test suite: `cd cli && npm test`
+2. Build all artifacts: `cd cli && npm run build && cd ../viewer && npm run build`
+3. Check for regressions in related features
+4. Verify each ticket's acceptance criteria is met
+
+## Phase 4: Documentation Update
+
+For each completed ticket:
+
+1. Update relevant `docs/` files
+2. Add implementation notes if the approach deviated from the plan
+3. Update `specs/backlog.md` with completion notes
+
+## Phase 5: Sprint Close
+
+1. Set all completed tickets to ✅ in `specs/backlog.md`
+2. Create `sprints/sprint-X/summary.md` with:
+   - Sprint goal
+   - Tickets completed (with brief descriptions)
+   - Tickets deferred (with reasons)
+   - Key decisions made
+   - Known issues or follow-ups
+
+## Phase 6: Final Report
+
+Present a summary:
+
+```
+## Sprint X Complete
+
+**Completed**: N tickets
+**Deferred**: N tickets
+**Key Changes**:
+- Change 1
+- Change 2
+
+**Follow-ups**:
+- Item 1
+- Item 2
+```
+
+## Important Rules
+
+- Never skip QA — even for "small" changes
+- If a ticket is blocked, set it to ⏸️ and move on
+- Do not modify tickets from other sprints
+- Commit after each ticket, not at the end
+- If the sprint brief conflicts with the backlog, the backlog is authoritative
+- Keep the sprint summary factual — no speculation about future work

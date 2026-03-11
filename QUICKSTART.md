@@ -26,7 +26,7 @@ Choose the environment that matches your AI-assisted development setup:
 | `cursor` | Cursor IDE with AI | Claude/GPT-4 | Composer-style, multi-file edits |
 | `windsurf` | Windsurf/Codeium IDE | Various | Flow-based, context-aware |
 | `jetbrains-ai` | JetBrains IDEs with AI Assistant | Various | IDE-native, refactoring-focused |
-| `aider` | Aider CLI tool | Claude/GPT-4 | Git-integrated, diff-based |
+| `continue` | Continue VS Code extension | Claude/GPT-4/Local | Open-source, custom rules + prompts |
 
 **Environment affects:**
 - Sprint prompt formatting (how instructions are structured)
@@ -53,7 +53,7 @@ Read every file in: requirnments
 These are the project's SRS, PRD, and/or requirements documents.
 
 Development Environment: vscode-copilot
-(Options: claude-code, vscode-copilot, cursor, windsurf, jetbrains-ai, aider)
+(Options: claude-code, vscode-copilot, cursor, windsurf, jetbrains-ai, continue)
 
 Extract from them:
   - Project name and description

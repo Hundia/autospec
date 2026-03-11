@@ -19,7 +19,7 @@ Six built-in profiles ship with AutoSpec:
 | GitHub Copilot | ~32K | ~3K | micro | Most conservative, smallest chunks |
 | OpenCode | Varies | Varies | phase | Provider-dependent, @general subagent |
 | Cline | ~200K | Varies | phase | VS Code native, model-agnostic |
-| Aider | ~128K | Varies | phase | Git-centric, diff-based edits |
+| Continue | ~128K | Varies | phase | Open-source, custom rules + prompts |
 
 ## Profile Schema
 
@@ -57,7 +57,7 @@ The registry detects the active agent by checking environment signals:
 | `GITHUB_COPILOT` env var | GitHub Copilot |
 | `GEMINI_API_KEY` env var | Gemini CLI |
 | `CLINE_*` env pattern | Cline |
-| `AIDER_*` env pattern | Aider |
+| `CONTINUE_*` env pattern | Continue |
 | None matched | Falls back to conservative defaults |
 
 When no agent is detected, the system uses a Copilot-like conservative profile (32K context, micro chunks) to ensure generation completes safely.
@@ -101,6 +101,6 @@ For unknown/custom agents:
 | `cli/src/agents/profiles/copilot.ts` | GitHub Copilot profile |
 | `cli/src/agents/profiles/gemini.ts` | Gemini CLI profile |
 | `cli/src/agents/profiles/cline.ts` | Cline profile |
-| `cli/src/agents/profiles/aider.ts` | Aider profile |
+| `cli/src/agents/profiles/continue.ts` | Continue profile |
 | `cli/src/agents/profiles/windsurf.ts` | Windsurf profile |
 | `cli/src/utils/detect-agent.ts` | Environment-based agent detection |

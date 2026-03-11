@@ -43,7 +43,7 @@ update-backlog, create-spec, create-sprint-docs, qa-review, help
 `viewer/src/data/environments.ts` → `compatibilityMatrix`
 
 ### Tools covered
-Claude Code, Cursor, GitHub Copilot, Windsurf, JetBrains AI, Aider
+Claude Code, Cursor, GitHub Copilot, Windsurf, JetBrains AI, Continue
 
 ---
 

@@ -19,7 +19,7 @@ export const tools: EnvironmentTool[] = [
   { id: 'copilot', name: 'GitHub Copilot', shortName: 'Copilot', color: '#536a5b' },
   { id: 'windsurf', name: 'Windsurf', shortName: 'Windsurf', color: '#b08a79' },
   { id: 'jetbrains', name: 'JetBrains AI', shortName: 'JetBrains', color: '#a08c72' },
-  { id: 'aider', name: 'Aider', shortName: 'Aider', color: '#857358' },
+  { id: 'continue', name: 'Continue', shortName: 'Continue', color: '#857358' },
 ]
 
 export const skills: Skill[] = [
@@ -62,9 +62,9 @@ export const compatibilityMatrix: Record<string, Record<string, CompatibilityLev
     'sprint-status': 'none', 'sprint-close': 'none', 'update-backlog': 'partial',
     'create-spec': 'partial', 'create-sprint-docs': 'none', 'qa-review': 'partial', 'help': 'none',
   },
-  'aider': {
+  'continue': {
     'sprint-run': 'partial', 'execute-ticket': 'full', 'plan-sprint': 'partial',
-    'sprint-status': 'none', 'sprint-close': 'partial', 'update-backlog': 'full',
-    'create-spec': 'none', 'create-sprint-docs': 'partial', 'qa-review': 'partial', 'help': 'none',
+    'sprint-status': 'partial', 'sprint-close': 'partial', 'update-backlog': 'full',
+    'create-spec': 'partial', 'create-sprint-docs': 'partial', 'qa-review': 'full', 'help': 'full',
   },
 }
