@@ -150,15 +150,17 @@ export const slidesHE = [
     },
     callout: 'מפרטים הם הזיכרון ש-AI מעולם לא קיבל.',
   },
-  // 11. sddThreePillars — NEW
+  // 11. sddThreePillars — REWORKED: Five Pillars
   {
     type: 'sddThreePillars',
-    title: 'שלושת עמודי התווך של SDD',
-    subtitle: 'תוצרים קונקרטיים, לא עקרונות מופשטים',
+    title: 'חמשת עמודי התווך של SDD',
+    subtitle: 'הכללים שגורמים ל-SDD לעבוד — תוצרים קונקרטיים, תהליך אכיף',
     pillars: [
-      { number: '01', title: 'קבצי מפרטים', description: 'כוונת האדם מתועדת בקבצי .md מובנים. פרומפט אחד מייצר 10 מפרטים מבוססי תפקידים שמכסים כל נקודת מבט.', artifact: 'specs/01_product_manager.md', icon: '📐', color: 'teal' },
+      { number: '01', title: 'פיתוח Backlog-First', description: 'מקור אמת יחיד. כל שינוי מתועד במשימה לפני המימוש. עקיבות מלאה מרעיון ל-commit.', artifact: 'specs/backlog.md', icon: '📋', color: 'teal' },
       { number: '02', title: 'תיעוד חי', description: 'תיקיית docs/ גדלה עם כל משימה. לא נכתב בנפרד — נוצר אוטומטית יחד עם הקוד.', artifact: 'docs/auth/01-architecture.md', icon: '📖', color: 'emerald' },
-      { number: '03', title: 'פירוק מבוסס תפקידים', description: '10 נקודות מבט מבטיחות שאין נקודות עיוורון. מנהל מוצר, Backend, QA — כל אחד כותב מהתמחותו.', artifact: 'specs/ (10 קבצים)', icon: '🎭', color: 'cyan' },
+      { number: '03', title: 'קישור ספרינט ↔ דוקומנטציה', description: 'סיכומי ספרינט מצליבים דוקומנטציה, משימות, תוצאות QA ו-commits. שום דבר לא יתום.', artifact: 'sprints/sprint-15/summary.md', icon: '🔗', color: 'cyan' },
+      { number: '04', title: 'QA לפני Done', description: 'אימות מקצה לקצה. באגים משוחזרים קודם. עומק הבדיקות מותאם לסוג השינוי.', artifact: 'scripts/agent-team-tests.ts', icon: '🧪', color: 'amber' },
+      { number: '05', title: 'מפרטים מבוססי תפקידים', description: '10 נקודות מבט מבטיחות שאין נקודות עיוורון. מנהל מוצר, Backend, QA — כל אחד כותב מהתמחותו.', artifact: 'specs/01_product_manager.md', icon: '🎭', color: 'violet' },
     ],
   },
   // 12. solution — REWORKED

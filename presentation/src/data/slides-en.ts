@@ -150,15 +150,17 @@ export const slidesEN = [
     },
     callout: 'Specifications are the memory that AI was never given.',
   },
-  // 11. sddThreePillars — NEW
+  // 11. sddThreePillars — REWORKED: Five Pillars
   {
     type: 'sddThreePillars',
-    title: 'The Three Pillars of SDD',
-    subtitle: 'Concrete artifacts, not abstract principles',
+    title: 'The Five Pillars of SDD',
+    subtitle: 'The rules that make SDD work — concrete artifacts, enforced process',
     pillars: [
-      { number: '01', title: 'Specification Files', description: 'Human intent captured in structured .md files. One prompt generates 10 role-based specs covering every perspective.', artifact: 'specs/01_product_manager.md', icon: '📐', color: 'teal' },
+      { number: '01', title: 'Backlog-First Development', description: 'Single source of truth. Every change tracked with a ticket before implementation. Full traceability from idea to commit.', artifact: 'specs/backlog.md', icon: '📋', color: 'teal' },
       { number: '02', title: 'Living Documentation', description: 'The docs/ folder grows with every ticket. Not written separately — generated alongside code automatically.', artifact: 'docs/auth/01-architecture.md', icon: '📖', color: 'emerald' },
-      { number: '03', title: 'Role-Based Decomposition', description: '10 perspectives ensure no blind spots. PM, Backend, QA — each writes from their domain expertise.', artifact: 'specs/ (10 files)', icon: '🎭', color: 'cyan' },
+      { number: '03', title: 'Sprint ↔ Docs Linkage', description: 'Sprint summaries cross-reference docs, tickets, QA results, and commits. Nothing is orphaned.', artifact: 'sprints/sprint-15/summary.md', icon: '🔗', color: 'cyan' },
+      { number: '04', title: 'QA Before Done', description: 'End-to-end verification. Bug fixes reproduced first. Test depth scales with change type.', artifact: 'scripts/agent-team-tests.ts', icon: '🧪', color: 'amber' },
+      { number: '05', title: 'Role-Based Specs', description: '10 perspectives ensure no blind spots. PM, Backend, QA — each writes from their domain expertise.', artifact: 'specs/01_product_manager.md', icon: '🎭', color: 'violet' },
     ],
   },
   // 12. solution — REWORKED
