@@ -69,11 +69,18 @@ When this command is invoked:
 - [Observation]
 ```
 
-5. **Update backlog**:
+5. **Update viewer data**:
+   - Update `viewer/src/data/backlog.ts` — ensure all ticket statuses match final state
+   - Update `viewer/src/data/sprints.ts` — add/update `SprintVisualization` with retrospective data:
+     - `retrospective.completedAt`, `keyMetrics`, `highlights`, `challenges`
+     - `timeline` data if multi-phase execution occurred
+   - Build viewer: `cd viewer && npm run build` — verify exit 0
+
+6. **Update backlog**:
    - Mark sprint as COMPLETE with completion date
    - Update sprint metadata
 
-6. **Create git tag** (recommend to user):
+7. **Create git tag** (recommend to user):
    ```bash
    git tag -a sprint-X-complete -m "Sprint X Complete: [Name]"
    ```

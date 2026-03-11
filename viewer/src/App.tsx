@@ -7,7 +7,8 @@ import { BacklogPage } from './pages/BacklogPage'
 import { SkillsPage } from './pages/SkillsPage'
 import { EnvironmentsPage } from './pages/EnvironmentsPage'
 import { DesignSystemPage } from './pages/DesignSystemPage'
-import { Sprint6Page } from './pages/Sprint6Page'
+import { SprintPage } from './pages/SprintPage'
+import { SprintsListPage } from './pages/SprintsListPage'
 
 export default function App() {
   return (
@@ -18,7 +19,8 @@ export default function App() {
           <Route path="/docs/:section/:slug" element={<DocsPage />} />
           <Route path="/specs/:slug" element={<SpecsPage />} />
           <Route path="/backlog" element={<BacklogPage />} />
-          <Route path="/sprint/6" element={<Sprint6Page />} />
+          <Route path="/sprints" element={<SprintsListPage />} />
+          <Route path="/sprint/:id" element={<SprintPage />} />
           <Route path="/skills/:slug" element={<SkillsPage />} />
           <Route path="/environments" element={<EnvironmentsPage />} />
           <Route path="/design-system" element={<DesignSystemPage />} />

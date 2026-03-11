@@ -265,6 +265,48 @@
 
 ---
 
+## Sprint 15: Viewer Overhaul — Sprint Pages, Planning/Retrospective, Expert Review (~81 pts)
+
+**Theme:** Complete viewer overhaul: generic sprint pages, collapsible sidebar, derived dashboard KPIs, expert Playwright review
+**Status:** ✅ Done
+
+### Sprint 15A: Data Layer + Generic SprintPage (~35 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 15.1 | Create `viewer/src/data/sprints.ts` — types + Sprint 6 data | Frontend | 5 | ✅ | — |
+| 15.2 | Create generic `SprintPage.tsx` — 4-tab data-driven page | Frontend | 8 | ✅ | 15.1 |
+| 15.3 | Update `App.tsx` routing — `/sprint/:id` + `/sprints` | Frontend | 2 | ✅ | 15.2 |
+| 15.4 | Backfill sprint data (S0-S5) | Frontend | 5 | ✅ | 15.1 |
+| 15.5 | Backfill sprint data (S10-S14) | Frontend | 5 | ✅ | 15.1 |
+| 15.6 | Sprint 6 rich planning data — dependency graph, sequence, radar | Frontend | 5 | ✅ | 15.1 |
+| 15.7 | Delete `Sprint6Page.tsx` | Frontend | 0 | ✅ | 15.2, 15.6 |
+| 15.8 | FlowDiagram integration — Sprint 6 planning flow | Frontend | 5 | ✅ | 15.1 |
+
+### Sprint 15B: Sidebar + Dashboard + Skill Update (~22 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 15.9 | Sidebar collapsible Sprints section — 14+ sprint links | Frontend | 5 | ✅ | 15.3 |
+| 15.10 | SprintsListPage — card grid with status/progress | Frontend | 4 | ✅ | 15.3 |
+| 15.11 | Dashboard derived data — KPIs from backlog.ts | Frontend | 3 | ✅ | — |
+| 15.12 | Update `sprint-run.md` — Phase 1.5 + Phase 5b | PM | 3 | ✅ | — |
+| 15.13 | Update `sprint-close.md` — viewer data step | PM | 2 | ✅ | — |
+| 15.14 | Build + QA | QA | 2 | ✅ | 15.9-15.13 |
+| 15.15 | Sprint 15 planning flow data (dogfooding) | Frontend | 3 | ✅ | 15.1 |
+
+### Sprint 15C: Expert Review + Polish (~24 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 15.16 | Playwright expert review script | QA | 5 | ✅ | 15.14 |
+| 15.17 | Fix critical review findings | Frontend | 8 | ✅ | 15.16 |
+| 15.18 | Fix moderate review findings | Frontend | 5 | ✅ | 15.16 |
+| 15.19 | FlowDiagram polish | Frontend | 3 | ✅ | 15.8 |
+| 15.20 | Final build + comprehensive QA | QA | 3 | ✅ | 15.17-15.19 |
+
+---
+
 ## Bug Tracker
 
 ### B.01 — Separate `/sprint-run` from `/sprint-close`
@@ -304,4 +346,5 @@
 | Sprint 13A | 30 | ✅ Done |
 | Sprint 13B | 24 | ✅ Done |
 | Sprint 14 | 32 | ✅ Done |
-| **Total** | **448** | 🔄 **IN PROGRESS** |
+| Sprint 15 | 81 | ✅ Done |
+| **Total** | **529** | 🔄 **IN PROGRESS** |

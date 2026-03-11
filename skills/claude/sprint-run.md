@@ -12,7 +12,7 @@ Execute an entire sprint end-to-end: plan → implement → QA → docs → clos
 
 ## Instructions
 
-Execute the sprint through 6 phases. Get user confirmation after Phase 1 before proceeding.
+Execute the sprint through 8 phases. Get user confirmation after Phase 1 before proceeding.
 
 ---
 
@@ -74,6 +74,24 @@ When running multiple sprints or large batches, use the **Opus Orchestrator + So
 
 ---
 
+### Phase 1.5: Viewer Planning Data
+
+After the user approves the execution plan, populate the viewer with planning visualizations so stakeholders can review the sprint plan visually before implementation begins.
+
+1. Open `viewer/src/data/sprints.ts`
+2. Add a new `SprintVisualization` entry for this sprint:
+   - `planning.overview`: 2-3 sentence summary of what the sprint builds
+   - `planning.flowSteps` + `planning.flowConnections`: FlowDiagram data showing the key workflow being built (start → process → decision → end pattern)
+   - `planning.dependencyGraph`: If the sprint has multi-component changes, include nodes + edges showing ticket dependencies
+   - `planning.sequenceDiagram`: If the sprint involves multi-actor interactions, include actors + messages
+3. Update `viewer/src/data/backlog.ts` if the sprint isn't already there — add the Sprint entry with all tickets
+4. Build and verify the viewer: `cd viewer && npm run build`
+5. The user can now review planning visualizations at `/sprint/:id` → Planning tab before approving execution
+
+**Skip conditions:** If the sprint is trivially small (< 5 pts) or docs-only, skip this phase.
+
+---
+
 ### Phase 2: Ticket Execution
 
 For each ticket (in dependency order):
@@ -125,6 +143,25 @@ For each completed ticket:
    - Retrospective
 4. Update sprint status to COMPLETE in backlog
 5. Create git tag: `sprint-X-complete`
+
+---
+
+### Phase 5b: Viewer Retrospective Data
+
+After closing the sprint, populate the viewer with retrospective visualizations.
+
+1. Open `viewer/src/data/sprints.ts`
+2. Update the sprint's `SprintVisualization` entry with retrospective data:
+   - `retrospective.completedAt`: Today's date
+   - `retrospective.timeline`: If the sprint had execution phases, add TimelinePhase data showing the Gantt-style execution
+   - `retrospective.agentRadar`: If multiple agents were used (Opus orchestrator + Sonnet agents), include AgentData showing capabilities used
+   - `retrospective.keyMetrics`: Points delivered, tickets completed, files changed, etc.
+   - `retrospective.highlights`: What went well (2-4 bullet points)
+   - `retrospective.challenges`: What was difficult (1-3 bullet points)
+3. Update `viewer/src/data/backlog.ts` — ensure all ticket statuses match final state
+4. Build and verify the viewer: `cd viewer && npm run build`
+
+**Skip conditions:** If the sprint is trivially small (< 5 pts) or docs-only, skip this phase.
 
 ---
 
