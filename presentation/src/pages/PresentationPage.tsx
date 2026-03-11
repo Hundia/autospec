@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Globe, Home } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -22,6 +22,8 @@ import SDDCostOfChaosSlide from '../components/SDDCostOfChaosSlide';
 import SDDThreePillarsSlide from '../components/SDDThreePillarsSlide';
 import DocsFolderSlide from '../components/DocsFolderSlide';
 import WorkflowSlide from '../components/WorkflowSlide';
+import PipelineSlide from '../components/pipeline/PipelineSlide';
+import ScrollProgressBar from '../components/pipeline/ScrollProgressBar';
 import RolesSlide from '../components/RolesSlide';
 import TicketExecutionSlide from '../components/TicketExecutionSlide';
 import MultiAgentSlide from '../components/MultiAgentSlide';
@@ -56,6 +58,7 @@ const slideComponents = {
   solution: SolutionSlide,
   docsFolder: DocsFolderSlide,
   workflow: WorkflowSlide,
+  pipeline: PipelineSlide,
   roles: RolesSlide,
   ticketExecution: TicketExecutionSlide,
   backlog: BacklogSlide,
@@ -80,6 +83,7 @@ export default function PresentationPage() {
   const [lang, setLang] = useState<'en' | 'he'>('en');
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const slides = lang === 'en' ? slidesEN : slidesHE;
   const isRTL = lang === 'he';
@@ -117,8 +121,11 @@ export default function PresentationPage() {
         prevSlide();
       }
     } else if (e.key === ' ') {
-      e.preventDefault();
-      nextSlide();
+      const isScrollable = !!(slides[currentSlide] as any).scrollable;
+      if (!isScrollable) {
+        e.preventDefault();
+        nextSlide();
+      }
     }
   };
 
@@ -127,7 +134,15 @@ export default function PresentationPage() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentSlide, isRTL]);
 
+  // Reset scroll position when slide changes
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
+  }, [currentSlide]);
+
   const currentSlideData = slides[currentSlide];
+  const isScrollable = !!(currentSlideData as any).scrollable;
   const SlideComponent = slideComponents[currentSlideData.type as keyof typeof slideComponents];
 
   // Animation variants based on direction and RTL
@@ -148,8 +163,9 @@ export default function PresentationPage() {
 
   return (
     <div
+      ref={scrollRef}
       dir={isRTL ? 'rtl' : 'ltr'}
-      className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden"
+      className={`min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white ${isScrollable ? 'overflow-y-auto overflow-x-hidden' : 'overflow-hidden'}`}
     >
       {/* Back to Home */}
       <Link
@@ -188,11 +204,13 @@ export default function PresentationPage() {
           animate="center"
           exit="exit"
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="min-h-screen flex items-center justify-center p-8"
+          className={`min-h-screen ${isScrollable ? 'pt-16' : 'flex items-center justify-center'} p-8`}
         >
           <SlideComponent data={currentSlideData} lang={lang} />
         </motion.div>
       </AnimatePresence>
+
+      <ScrollProgressBar containerRef={scrollRef} visible={isScrollable} />
 
       {/* Navigation - centered at bottom */}
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4">

@@ -1,0 +1,1 @@
+/opt/FitnessAiManager/autospec/skills/claude/plan-presentation.md
