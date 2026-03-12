@@ -273,37 +273,36 @@ export const slidesEN = [
     agentDistinction: {
       subtitle: 'A role is a job description. An agent is the employee. One agent can wear multiple hats.',
       lanes: [
-        { agent: 'Opus Orchestrator', roles: ['Product Manager', 'Business Lead'] },
-        { agent: 'Sonnet Agent A', roles: ['Backend Lead', 'DB Architect', 'DevOps Lead'] },
-        { agent: 'Sonnet Agent B', roles: ['Frontend Lead', 'QA Lead', 'UI Designer'] },
+        { agent: 'Orchestrator', roles: ['Product Manager', 'Business Lead'] },
+        { agent: 'Agent A', roles: ['Backend Lead', 'DB Architect', 'DevOps Lead'] },
+        { agent: 'Agent B', roles: ['Frontend Lead', 'QA Lead', 'UI Designer'] },
       ],
     },
     insight: 'Even solo developers benefit from thinking in roles.',
   },
 
-  // 11. orchestrator (with multiagent parallelExecution merged in)
+  // 11. orchestrator (provider-agnostic with selector)
   {
     type: 'orchestrator',
     title: 'Orchestrator Pattern',
+    subtitle: 'Same pattern, any AI provider',
+    providers: [
+      { id: 'claude', name: 'Claude Code', icon: '🟣', accent: 'indigo', orchestratorModel: 'Opus 4.6', agentModel: 'Sonnet 4.6' },
+      { id: 'copilot', name: 'GitHub Copilot', icon: '🔵', accent: 'blue', orchestratorModel: 'GPT 5.4', agentModel: 'GPT 5.2' },
+      { id: 'gemini', name: 'Gemini', icon: '🟡', accent: 'amber', orchestratorModel: 'Gemini Ultra', agentModel: 'Gemini Pro' },
+      { id: 'local', name: 'Continue (Local)', icon: '🟢', accent: 'green', orchestratorModel: 'Llama 4 70B', agentModel: 'Llama 4 8B' },
+    ],
     orchestrator: {
-      name: 'Product Manager (Opus)',
-      subtitle: 'The orchestrator is an AI agent with the PM role from specs/01_product_manager.md',
-      tasks: ['Writes sprint briefs', 'Spawns parallel agents', 'Sequences sprints by dependency graph', 'Reviews results & merges'],
+      roleLabel: 'Product Manager',
+      tasks: ['Writes sprint briefs', 'Spawns parallel agents', 'Sequences by dependency graph', 'Reviews results & merges'],
     },
     agents: [
-      { name: 'Sonnet Agent A', task: 'Backend tickets in worktree-a' },
-      { name: 'Sonnet Agent B', task: 'Frontend tickets in worktree-b' },
-      { name: 'Sonnet Agent C', task: 'Docs & config in worktree-c' },
+      { roleLabel: 'Agent A', task: 'Backend tickets in worktree-a' },
+      { roleLabel: 'Agent B', task: 'Frontend tickets in worktree-b' },
+      { roleLabel: 'Agent C', task: 'Docs & config in worktree-c' },
     ],
     benefits: ['Clean main context', 'Parallel execution', 'Isolated worktrees'],
-    parallelExecution: {
-      description: 'Double your velocity with parallel AI agents',
-      agents: [
-        { name: 'Agent A', role: 'Backend Lead', tickets: ['1.1 - Create users table', '1.2 - Auth service', '1.4 - User API'], color: 'blue' },
-        { name: 'Agent B', role: 'Frontend Lead', tickets: ['1.3 - Login form', '1.5 - Dashboard', '1.6 - Profile page'], color: 'green' },
-      ],
-      savings: '~45% time savings',
-    },
+    callout: 'Same specs. Same pattern. Different models.',
   },
 
   // 12. modelOptimization
@@ -324,37 +323,9 @@ export const slidesEN = [
     },
   },
 
-  // 13. environmentProof
-  {
-    type: 'environmentProof',
-    title: 'Environment Agnostic: Proof',
-    environments: [
-      {
-        name: 'Claude Code',
-        accent: 'cyan',
-        mockup: 'terminal',
-        commands: ['$ claude', '> /sprint-run', 'Loading CLAUDE.md...', 'Loading specs/*.md...', 'Sprint 3 executing...'],
-      },
-      {
-        name: 'GitHub Copilot',
-        accent: 'purple',
-        mockup: 'ide',
-        commands: ['CLAUDE.md loaded in workspace', 'specs/ folder indexed', '@workspace /sprint-run'],
-      },
-      {
-        name: 'Air-Gapped / Continue',
-        accent: 'amber',
-        mockup: 'local',
-        commands: ['Ollama running locally', 'Same specs/ folder', 'No cloud required'],
-      },
-    ],
-    callout: 'Same CLAUDE.md. Same specs/. Same methodology.',
-    bottomText: 'Works in any environment — even without internet.',
-  },
-
   // ── ACT 5 — PROOF ────────────────────────────────────────────────────────────
 
-  // 14. viewer
+  // 13. viewer
   {
     type: 'viewer',
     title: 'Live Viewer Dashboard',
@@ -363,7 +334,7 @@ export const slidesEN = [
     linkText: 'Try it live →',
   },
 
-  // 15. example
+  // 14. example
   {
     type: 'example',
     title: 'Real Example: ShopFlow E-Commerce',
@@ -393,7 +364,7 @@ export const slidesEN = [
     ],
   },
 
-  // 16. results
+  // 15. results
   {
     type: 'results',
     title: 'Proven Results',
@@ -411,7 +382,7 @@ export const slidesEN = [
     },
   },
 
-  // 17. demo
+  // 16. demo
   {
     type: 'demo',
     title: 'Live Demo',
@@ -428,7 +399,7 @@ export const slidesEN = [
 
   // ── ACT 6 — FUTURE ───────────────────────────────────────────────────────────
 
-  // 18. futureWaterfall
+  // 17. futureWaterfall
   {
     type: 'futureWaterfall',
     title: 'The Future: Planning-First Development',
@@ -442,7 +413,7 @@ export const slidesEN = [
     callout: "The future developer spends more time thinking than typing. That's not slower — it's smarter.",
   },
 
-  // 19. futureMonolith
+  // 18. futureMonolith
   {
     type: 'futureMonolith',
     title: 'The Future: Monolith Renaissance',
@@ -474,7 +445,7 @@ export const slidesEN = [
 
   // ── ACT 7 — CLOSE ────────────────────────────────────────────────────────────
 
-  // 20. closing
+  // 19. closing
   {
     type: 'closing',
     title: 'Get Started Today',
@@ -491,7 +462,7 @@ export const slidesEN = [
     tagline: 'From requirements to running code.',
   },
 
-  // 21. finalTagline
+  // 20. finalTagline
   {
     type: 'finalTagline',
     title: 'AutoSpec',

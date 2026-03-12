@@ -22,7 +22,6 @@ import ScrollProgressBar from '../components/pipeline/ScrollProgressBar';
 import RolesSlide from '../components/RolesSlide';
 import OrchestratorSlide from '../components/OrchestratorSlide';
 import ModelOptimizationSlide from '../components/ModelOptimizationSlide';
-import EnvironmentProofSlide from '../components/EnvironmentProofSlide';
 import ViewerSlide from '../components/ViewerSlide';
 import ExampleSlide from '../components/ExampleSlide';
 import ResultsSlide from '../components/ResultsSlide';
@@ -46,7 +45,6 @@ const slideComponents = {
   roles: RolesSlide,
   orchestrator: OrchestratorSlide,
   modelOptimization: ModelOptimizationSlide,
-  environmentProof: EnvironmentProofSlide,
   viewer: ViewerSlide,
   example: ExampleSlide,
   results: ResultsSlide,

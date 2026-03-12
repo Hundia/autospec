@@ -273,37 +273,36 @@ export const slidesHE = [
     agentDistinction: {
       subtitle: 'תפקיד הוא תיאור תפקיד. סוכן הוא העובד. סוכן אחד יכול ללבוש כמה כובעים.',
       lanes: [
-        { agent: 'Opus Orchestrator', roles: ['מנהל מוצר', 'ליד עסקי'] },
-        { agent: 'Sonnet Agent A', roles: ['ליד Backend', 'ארכיטקט DB', 'ליד DevOps'] },
-        { agent: 'Sonnet Agent B', roles: ['ליד Frontend', 'ליד QA', 'מעצב UI'] },
+        { agent: 'Orchestrator', roles: ['מנהל מוצר', 'ליד עסקי'] },
+        { agent: 'Agent A', roles: ['ליד Backend', 'ארכיטקט DB', 'ליד DevOps'] },
+        { agent: 'Agent B', roles: ['ליד Frontend', 'ליד QA', 'מעצב UI'] },
       ],
     },
     insight: 'גם מפתחים יחידים נהנים מחשיבה בתפקידים.',
   },
 
-  // 11. orchestrator (with multiagent parallelExecution merged in)
+  // 11. orchestrator (provider-agnostic with selector)
   {
     type: 'orchestrator',
     title: 'תבנית ה-Orchestrator',
+    subtitle: 'אותה תבנית, כל ספק AI',
+    providers: [
+      { id: 'claude', name: 'Claude Code', icon: '🟣', accent: 'indigo', orchestratorModel: 'Opus 4.6', agentModel: 'Sonnet 4.6' },
+      { id: 'copilot', name: 'GitHub Copilot', icon: '🔵', accent: 'blue', orchestratorModel: 'GPT 5.4', agentModel: 'GPT 5.2' },
+      { id: 'gemini', name: 'Gemini', icon: '🟡', accent: 'amber', orchestratorModel: 'Gemini Ultra', agentModel: 'Gemini Pro' },
+      { id: 'local', name: 'Continue (Local)', icon: '🟢', accent: 'green', orchestratorModel: 'Llama 4 70B', agentModel: 'Llama 4 8B' },
+    ],
     orchestrator: {
-      name: 'מנהל מוצר (Opus)',
-      subtitle: 'ה-Orchestrator הוא סוכן AI עם תפקיד מנהל המוצר מ-specs/01_product_manager.md',
-      tasks: ['כותב briefs לספרינט', 'משגר סוכנים מקביליים', 'מסדר ספרינטים לפי גרף תלויות', 'סוקר תוצאות ומאחד'],
+      roleLabel: 'מנהל מוצר',
+      tasks: ['כותב briefs לספרינט', 'משגר סוכנים מקביליים', 'מסדר לפי גרף תלויות', 'סוקר תוצאות ומאחד'],
     },
     agents: [
-      { name: 'Sonnet Agent A', task: 'משימות Backend ב-worktree-a' },
-      { name: 'Sonnet Agent B', task: 'משימות Frontend ב-worktree-b' },
-      { name: 'Sonnet Agent C', task: 'דוקומנטציה וקונפיגורציה ב-worktree-c' },
+      { roleLabel: 'Agent A', task: 'טיקטים של Backend ב-worktree-a' },
+      { roleLabel: 'Agent B', task: 'טיקטים של Frontend ב-worktree-b' },
+      { roleLabel: 'Agent C', task: 'מסמכים והגדרות ב-worktree-c' },
     ],
-    benefits: ['הקשר ראשי נקי', 'ביצוע מקבילי', 'worktrees מבודדים'],
-    parallelExecution: {
-      description: 'הכפל את המהירות עם סוכני AI מקביליים',
-      agents: [
-        { name: 'סוכן A', role: 'ליד Backend', tickets: ['1.1 - צור טבלת users', '1.2 - שירות אימות', '1.4 - User API'], color: 'blue' },
-        { name: 'סוכן B', role: 'ליד Frontend', tickets: ['1.3 - טופס התחברות', '1.5 - דשבורד', '1.6 - דף פרופיל'], color: 'green' },
-      ],
-      savings: '~45% חיסכון בזמן',
-    },
+    benefits: ['הקשר ראשי נקי', 'הרצה מקבילית', 'worktrees מבודדים'],
+    callout: 'אותם specs. אותה תבנית. מודלים שונים.',
   },
 
   // 12. modelOptimization
@@ -324,37 +323,9 @@ export const slidesHE = [
     },
   },
 
-  // 13. environmentProof
-  {
-    type: 'environmentProof',
-    title: 'אגנוסטי לסביבה: הוכחה',
-    environments: [
-      {
-        name: 'Claude Code',
-        accent: 'cyan',
-        mockup: 'terminal',
-        commands: ['$ claude', '> /sprint-run', 'Loading CLAUDE.md...', 'Loading specs/*.md...', 'Sprint 3 executing...'],
-      },
-      {
-        name: 'GitHub Copilot',
-        accent: 'purple',
-        mockup: 'ide',
-        commands: ['CLAUDE.md loaded in workspace', 'specs/ folder indexed', '@workspace /sprint-run'],
-      },
-      {
-        name: 'Air-Gapped / Continue',
-        accent: 'amber',
-        mockup: 'local',
-        commands: ['Ollama running locally', 'Same specs/ folder', 'No cloud required'],
-      },
-    ],
-    callout: 'אותו CLAUDE.md. אותו specs/. אותה מתודולוגיה.',
-    bottomText: 'עובד בכל סביבה — גם בלי אינטרנט.',
-  },
-
   // ── ACT 5 — PROOF ────────────────────────────────────────────────────────────
 
-  // 14. viewer
+  // 13. viewer
   {
     type: 'viewer',
     title: 'דשבורד Viewer חי',
@@ -363,7 +334,7 @@ export const slidesHE = [
     linkText: 'נסה אותו חי →',
   },
 
-  // 15. example
+  // 14. example
   {
     type: 'example',
     title: 'דוגמה אמיתית: ShopFlow מסחר אלקטרוני',
@@ -393,7 +364,7 @@ export const slidesHE = [
     ],
   },
 
-  // 16. results
+  // 15. results
   {
     type: 'results',
     title: 'תוצאות מוכחות',
@@ -411,7 +382,7 @@ export const slidesHE = [
     },
   },
 
-  // 17. demo
+  // 16. demo
   {
     type: 'demo',
     title: 'הדגמה חיה',
@@ -428,7 +399,7 @@ export const slidesHE = [
 
   // ── ACT 6 — FUTURE ───────────────────────────────────────────────────────────
 
-  // 18. futureWaterfall
+  // 17. futureWaterfall
   {
     type: 'futureWaterfall',
     title: 'העתיד: פיתוח Planning-First',
@@ -442,7 +413,7 @@ export const slidesHE = [
     callout: 'המפתח של העתיד מבלה יותר זמן בחשיבה מאשר בהקלדה. זה לא יותר איטי — זה יותר חכם.',
   },
 
-  // 19. futureMonolith
+  // 18. futureMonolith
   {
     type: 'futureMonolith',
     title: 'העתיד: רנסנס המונוליט',
@@ -474,7 +445,7 @@ export const slidesHE = [
 
   // ── ACT 7 — CLOSE ────────────────────────────────────────────────────────────
 
-  // 20. closing
+  // 19. closing
   {
     type: 'closing',
     title: 'התחל היום',
@@ -491,7 +462,7 @@ export const slidesHE = [
     tagline: 'מדרישות לקוד עובד.',
   },
 
-  // 21. finalTagline
+  // 20. finalTagline
   {
     type: 'finalTagline',
     title: 'AutoSpec',
