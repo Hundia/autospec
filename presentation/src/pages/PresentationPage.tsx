@@ -9,28 +9,18 @@ import { slidesHE } from '../data/slides-he';
 
 // Components
 import TitleSlide from '../components/TitleSlide';
-import EraTraditionalSlide from '../components/EraTraditionalSlide';
-import EraAssistantSlide from '../components/EraAssistantSlide';
-import EraAgenticSlide from '../components/EraAgenticSlide';
+import ThreeErasSlide from '../components/ThreeErasSlide';
 import ContextPoisoningSlide from '../components/ContextPoisoningSlide';
 import ReverseTaxSlide from '../components/ReverseTaxSlide';
 import BreakingPointSlide from '../components/BreakingPointSlide';
 import BridgeSlide from '../components/BridgeSlide';
 import SolutionSlide from '../components/SolutionSlide';
-import SDDMethodologySlide from '../components/SDDMethodologySlide';
 import SDDCostOfChaosSlide from '../components/SDDCostOfChaosSlide';
-import SDDThreePillarsSlide from '../components/SDDThreePillarsSlide';
-import DocsFolderSlide from '../components/DocsFolderSlide';
 import WorkflowSlide from '../components/WorkflowSlide';
 import PipelineSlide from '../components/pipeline/PipelineSlide';
 import ScrollProgressBar from '../components/pipeline/ScrollProgressBar';
 import RolesSlide from '../components/RolesSlide';
-import TicketExecutionSlide from '../components/TicketExecutionSlide';
-import MultiAgentSlide from '../components/MultiAgentSlide';
-import BacklogSlide from '../components/BacklogSlide';
 import OrchestratorSlide from '../components/OrchestratorSlide';
-import QAMethodologySlide from '../components/QAMethodologySlide';
-import SprintSummarySlide from '../components/SprintSummarySlide';
 import ModelOptimizationSlide from '../components/ModelOptimizationSlide';
 import EnvironmentProofSlide from '../components/EnvironmentProofSlide';
 import ViewerSlide from '../components/ViewerSlide';
@@ -39,33 +29,22 @@ import ResultsSlide from '../components/ResultsSlide';
 import DemoSlide from '../components/DemoSlide';
 import FutureWaterfallSlide from '../components/FutureWaterfallSlide';
 import FutureMonolithSlide from '../components/FutureMonolithSlide';
-import BeforeAfterSlide from '../components/BeforeAfterSlide';
 import ClosingSlide from '../components/ClosingSlide';
 import FinalTaglineSlide from '../components/FinalTaglineSlide';
 
 const slideComponents = {
   title: TitleSlide,
-  eraTraditional: EraTraditionalSlide,
-  eraAssistant: EraAssistantSlide,
-  eraAgentic: EraAgenticSlide,
+  threeEras: ThreeErasSlide,
   contextPoisoning: ContextPoisoningSlide,
   reverseTax: ReverseTaxSlide,
   breakingPoint: BreakingPointSlide,
   bridge: BridgeSlide,
-  sddMethodology: SDDMethodologySlide,
   sddCostOfChaos: SDDCostOfChaosSlide,
-  sddThreePillars: SDDThreePillarsSlide,
   solution: SolutionSlide,
-  docsFolder: DocsFolderSlide,
   workflow: WorkflowSlide,
   pipeline: PipelineSlide,
   roles: RolesSlide,
-  ticketExecution: TicketExecutionSlide,
-  backlog: BacklogSlide,
   orchestrator: OrchestratorSlide,
-  multiagent: MultiAgentSlide,
-  qaMethodology: QAMethodologySlide,
-  sprintSummary: SprintSummarySlide,
   modelOptimization: ModelOptimizationSlide,
   environmentProof: EnvironmentProofSlide,
   viewer: ViewerSlide,
@@ -74,7 +53,6 @@ const slideComponents = {
   demo: DemoSlide,
   futureWaterfall: FutureWaterfallSlide,
   futureMonolith: FutureMonolithSlide,
-  beforeAfter: BeforeAfterSlide,
   closing: ClosingSlide,
   finalTagline: FinalTaglineSlide,
 };

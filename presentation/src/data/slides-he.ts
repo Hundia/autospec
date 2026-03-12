@@ -1,4 +1,6 @@
 export const slidesHE = [
+  // ── ACT 1 — PROBLEM ──────────────────────────────────────────────────────────
+
   // 1. title
   {
     type: 'title',
@@ -7,53 +9,53 @@ export const slidesHE = [
     tagline: 'אל תן ל-AI לחשוב. תן לו מפרטים.',
     presenter: 'אלי חונדיה',
   },
-  // 2. eraTraditional
+
+  // 2. threeEras — NEW (replaces eraTraditional + eraAssistant + eraAgentic)
   {
-    type: 'eraTraditional',
-    title: 'עידן הפיתוח המסורתי',
-    subtitle: 'הפיתוח היה איטי אך צפוי',
-    characteristics: [
-      { icon: '⌨️', title: 'קידוד ידני', description: 'כל שורה נכתבת ביד' },
-      { icon: '👥', title: 'סקירות קוד', description: 'שמירת איכות על ידי בני אדם' },
-      { icon: '📖', title: 'תיעוד', description: 'קיים כי בני אדם כתבו אותו' },
-      { icon: '🧠', title: 'זיכרון ארגוני', description: 'הידע נשמר אצל אנשים' },
-    ],
-    metrics: { speed: 'נמוכה', predictability: 'גבוהה', docs: 'מקיף', knowledge: 'שמור' },
-  },
-  // 3. eraAssistant
-  {
-    type: 'eraAssistant',
-    title: 'עידן עוזר הקוד',
-    subtitle: 'AI עזר לך להקליד מהר יותר, לא לחשוב טוב יותר',
-    tools: ['GitHub Copilot', 'TabNine', 'Kite'],
-    gains: [
-      { title: 'מהירות הקלדה', description: 'השלמה אוטומטית מהירה פי 3' },
-      { title: 'קוד שגרתי', description: 'קוד חוזר הוסר' },
-    ],
-    unchanged: [
-      { title: 'החלטות עיצוב', description: 'עדיין לגמרי אנושיות' },
-      { title: 'ארכיטקטורה', description: 'אין מעורבות AI' },
-    ],
-    decisionAuthority: 'אנושי',
-  },
-  // 4. eraAgentic
-  {
-    type: 'eraAgentic',
-    title: 'עידן הסוכנים',
-    subtitle: 'כוח מהפכני, אוטונומיה מסוכנת',
-    tools: ['Claude Code', 'Cursor', 'Devin'],
-    power: [
-      { title: 'פיצ\'רים מלאים', description: 'מודולים שלמים בפרומפט אחד' },
-      { title: 'כל המחסנית', description: 'Frontend + Backend + DB יחד' },
-      { title: 'אוטונומי', description: 'AI מקבל החלטות מימוש' },
-    ],
-    danger: [
-      { title: 'אין זיכרון', description: 'כל סשן מתחיל מאפס' },
-      { title: 'סחיפת הקשר', description: 'שיחות ארוכות משחיתות החלטות' },
-      { title: 'אפס תיעוד', description: 'לוגי צ\'אט אינם תיעוד' },
+    type: 'threeEras',
+    title: 'שלושת העידנים של הפיתוח',
+    subtitle: 'מקידוד ידני לסוכנים אוטונומיים — כל עידן הרוויח מהירות אך איבד משהו קריטי',
+    eras: [
+      {
+        name: 'מסורתי',
+        period: '2000-2020',
+        tools: ['קידוד ידני', 'סקירות קוד', 'תיעוד'],
+        traits: [
+          { text: 'כל שורה נכתבת ביד', type: 'neutral' },
+          { text: 'תיעוד מקיף', type: 'positive' },
+          { text: 'זיכרון ארגוני שמור', type: 'positive' },
+        ],
+        verdict: 'איטי אך צפוי',
+        color: 'slate',
+      },
+      {
+        name: 'עוזרי קוד',
+        period: '2021-2023',
+        tools: ['GitHub Copilot', 'TabNine', 'Kite'],
+        traits: [
+          { text: 'השלמה אוטומטית מהירה פי 3', type: 'positive' },
+          { text: 'החלטות עיצוב עדיין אנושיות', type: 'neutral' },
+          { text: 'ארכיטקטורה ללא שינוי', type: 'neutral' },
+        ],
+        verdict: 'הקלדה מהירה יותר, אותה חשיבה',
+        color: 'blue',
+      },
+      {
+        name: 'AI אג\'נטי',
+        period: '2024+',
+        tools: ['Claude Code', 'Cursor', 'Devin'],
+        traits: [
+          { text: 'מודולים שלמים בפרומפט אחד', type: 'positive' },
+          { text: 'אין זיכרון בין סשנים', type: 'negative' },
+          { text: 'אפס תיעוד נוצר', type: 'negative' },
+        ],
+        verdict: 'כוח מהפכני, אוטונומיה מסוכנת',
+        color: 'cyan',
+      },
     ],
   },
-  // 5. contextPoisoning
+
+  // 3. contextPoisoning
   {
     type: 'contextPoisoning',
     title: 'הרעלת הקשר',
@@ -65,7 +67,8 @@ export const slidesHE = [
       { turn: 'תור 100', status: 'כאוס', color: 'red', snippet: 'TypeError: Cannot read undefined', description: 'שגיאות מצטברות מהקשר אבוד' },
     ],
   },
-  // 6. reverseTax
+
+  // 4. reverseTax
   {
     type: 'reverseTax',
     title: 'מס ההנדסה לאחור',
@@ -80,7 +83,8 @@ export const slidesHE = [
     },
     cost: { hours: 40, label: 'שעות אבודות להנדסה לאחור בכל רבעון' },
   },
-  // 7. breakingPoint
+
+  // 5. breakingPoint
   {
     type: 'breakingPoint',
     title: 'נקודת השבר',
@@ -94,34 +98,10 @@ export const slidesHE = [
     ],
     bottomLine: 'פיתוח אג\'נטי ללא מבנה הוא חוב טכני במהירות AI.',
   },
-  // 8. bridge
-  {
-    type: 'bridge',
-    title: 'מה אם...',
-    question: 'מה אם ל-AI היה כל ההקשר לפני שכתב שורת קוד אחת?',
-    points: [
-      'מה אם כל החלטה תועדה, לא רק הקוד?',
-      'מה אם סשנים חדשים ירשו את כל הידע הקודם?',
-      'מה אם סוכני AI עבדו ממפרטים, לא משיחות?',
-    ],
-  },
-  // 9. sddMethodology
-  {
-    type: 'sddMethodology',
-    title: 'SDD: המתודולוגיה',
-    principles: [
-      { title: 'מפרטים לפני קוד', description: 'לכוד כוונה פעם אחת, בצע פעמים רבות', icon: '📐' },
-      { title: 'תיעוד חי', description: 'הדוקומנטציה גדלה עם הפרויקט, לא מתיישנת', icon: '📖' },
-      { title: 'חשיבה מבוססת תפקידים', description: '10 נקודות מבט מונעות נקודות עיוורון', icon: '🎭' },
-      { title: 'ביצוע אג\'נטי', description: 'מפרטים ברורים מסירים עמימות לסוכני AI', icon: '🤖' },
-    ],
-    implementations: [
-      { name: 'AutoSpec', description: 'מסגרת SDD מלאה עם CLI + viewer', status: 'featured' },
-      { name: 'OpenSpec', description: 'פורמט מפרטים פתוח מונחה קהילה', status: 'alternative' },
-      { name: 'המסגרת שלך', description: 'SDD היא מתודולוגיה, לא מוצר', status: 'custom' },
-    ],
-  },
-  // 10. sddCostOfChaos — NEW
+
+  // ── ACT 2 — TURNING POINT ────────────────────────────────────────────────────
+
+  // 6. sddCostOfChaos (moved from old position 10)
   {
     type: 'sddCostOfChaos',
     title: 'המחיר של בלי מפרטים',
@@ -150,56 +130,22 @@ export const slidesHE = [
     },
     callout: 'מפרטים הם הזיכרון ש-AI מעולם לא קיבל.',
   },
-  // 11. sddThreePillars — REWORKED: Five Pillars
+
+  // 7. bridge (moved from old position 8)
   {
-    type: 'sddThreePillars',
-    title: 'חמשת עמודי התווך של SDD',
-    subtitle: 'הכללים שגורמים ל-SDD לעבוד — תוצרים קונקרטיים, תהליך אכיף',
-    pillars: [
-      { number: '01', title: 'פיתוח Backlog-First', description: 'מקור אמת יחיד. כל שינוי מתועד במשימה לפני המימוש. עקיבות מלאה מרעיון ל-commit.', artifact: 'specs/backlog.md', icon: '📋', color: 'teal' },
-      { number: '02', title: 'תיעוד חי', description: 'תיקיית docs/ גדלה עם כל משימה. לא נכתב בנפרד — נוצר אוטומטית יחד עם הקוד.', artifact: 'docs/auth/01-architecture.md', icon: '📖', color: 'emerald' },
-      { number: '03', title: 'קישור ספרינט ↔ דוקומנטציה', description: 'סיכומי ספרינט מצליבים דוקומנטציה, משימות, תוצאות QA ו-commits. שום דבר לא יתום.', artifact: 'sprints/sprint-15/summary.md', icon: '🔗', color: 'cyan' },
-      { number: '04', title: 'QA לפני Done', description: 'אימות מקצה לקצה. באגים משוחזרים קודם. עומק הבדיקות מותאם לסוג השינוי.', artifact: 'scripts/agent-team-tests.ts', icon: '🧪', color: 'amber' },
-      { number: '05', title: 'מפרטים מבוססי תפקידים', description: '10 נקודות מבט מבטיחות שאין נקודות עיוורון. מנהל מוצר, Backend, QA — כל אחד כותב מהתמחותו.', artifact: 'specs/01_product_manager.md', icon: '🎭', color: 'violet' },
+    type: 'bridge',
+    title: 'מה אם...',
+    question: 'מה אם ל-AI היה כל ההקשר לפני שכתב שורת קוד אחת?',
+    points: [
+      'מה אם כל החלטה תועדה, לא רק הקוד?',
+      'מה אם סשנים חדשים ירשו את כל הידע הקודם?',
+      'מה אם סוכני AI עבדו ממפרטים, לא משיחות?',
     ],
   },
-  // 12. solution — REWORKED
-  {
-    type: 'solution',
-    title: 'AutoSpec: ערכת הכלים שלך ל-SDD',
-    subtitle: 'פרומפט אחד. עשרה מפרטים. אפס אובדן הקשר.',
-    capabilities: [
-      { number: '01', title: '10 מפרטים שנוצרו ב-AI', description: 'מסמך דרישות אחד מייצר 10 קבצי מפרט מבוססי תפקידים — מנהל מוצר, Backend, Frontend, DB, QA, DevOps ועוד.', artifact: '$ autospec init → specs/*.md', icon: '📐' },
-      { number: '02', title: 'הרצת ספרינטים מתואמת', description: 'סוכן PM של Opus מתאם סוכני Sonnet שרצים ב-worktrees מקביליים. לכל סוכן הקשר מלא מהמפרטים.', artifact: 'Opus → [Agent A, B, C] → merge', icon: '🎯' },
-      { number: '03', title: 'מערכת ידע חיה', description: 'כל משימה מעדכנת docs/, באקלוג וסיכומי ספרינט. הידע מצטבר עם כל ספרינט.', artifact: 'docs/ (100+ קבצים אחרי ספרינט 10)', icon: '📖' },
-      { number: '04', title: 'סוקר ויזואלי (אפליקציית Viewer)', description: 'דשבורד שנוצר אוטומטית מאפשר לסקור ארכיטקטורה, באקלוג kanban, תהליכים ומסכי דמו ויזואלית — לפני כתיבת שורת קוד אחת. הסכם על העיצוב קודם.', artifact: 'viewer/ (React SPA)', icon: '👁️' },
-    ],
-    keyInsight: 'AutoSpec מממש SDD כדי שתפסיק לדון במתודולוגיה ותתחיל לשלוח.',
-  },
-  // 13. docsFolder
-  {
-    type: 'docsFolder',
-    title: 'תיקיית docs/',
-    subtitle: 'הזיכרון הארגוני שלך — לא תיעוד, ידע חי',
-    tree: [
-      { name: 'docs/', type: 'folder', depth: 0 },
-      { name: 'auth/', type: 'folder', depth: 1, annotation: 'JWT, משמרים, middleware' },
-      { name: 'database/', type: 'folder', depth: 1, annotation: 'סכמה, ERD, מיגרציות' },
-      { name: 'frontend/', type: 'folder', depth: 1, annotation: 'ניתובים, חנויות, שירותים' },
-      { name: 'scheduling/', type: 'folder', depth: 1, annotation: 'שיעורים, קיבולת, תצוגות' },
-      { name: 'bookings/', type: 'folder', depth: 1, annotation: 'מכונת מצבים, רשימת המתנה' },
-    ],
-    growth: [
-      { sprint: 'ספרינט 0', docs: 10 },
-      { sprint: 'ספרינט 5', docs: 45 },
-      { sprint: 'ספרינט 10', docs: 100 },
-    ],
-    comparison: {
-      without: 'ידע בלוגי צ\'אט — אובד כשהסשן מסתיים',
-      with: 'ידע במסמכים מנוהלי גרסאות — גדל לנצח',
-    },
-  },
-  // 14. pipeline (was workflow)
+
+  // ── ACT 3 — THE REVEAL ───────────────────────────────────────────────────────
+
+  // 8. pipeline (moved from old position 14)
   {
     type: 'pipeline',
     scrollable: true,
@@ -290,7 +236,24 @@ export const slidesHE = [
       },
     ],
   },
-  // 15. roles
+
+  // 9. solution (moved from old position 12)
+  {
+    type: 'solution',
+    title: 'AutoSpec: ערכת הכלים שלך ל-SDD',
+    subtitle: 'פרומפט אחד. עשרה מפרטים. אפס אובדן הקשר.',
+    capabilities: [
+      { number: '01', title: '10 מפרטים שנוצרו ב-AI', description: 'מסמך דרישות אחד מייצר 10 קבצי מפרט מבוססי תפקידים — מנהל מוצר, Backend, Frontend, DB, QA, DevOps ועוד.', artifact: '$ autospec init → specs/*.md', icon: '📐' },
+      { number: '02', title: 'הרצת ספרינטים מתואמת', description: 'סוכן PM של Opus מתאם סוכני Sonnet שרצים ב-worktrees מקביליים. לכל סוכן הקשר מלא מהמפרטים.', artifact: 'Opus → [Agent A, B, C] → merge', icon: '🎯' },
+      { number: '03', title: 'מערכת ידע חיה', description: 'כל משימה מעדכנת docs/, באקלוג וסיכומי ספרינט. הידע מצטבר עם כל ספרינט.', artifact: 'docs/ (100+ קבצים אחרי ספרינט 10)', icon: '📖' },
+      { number: '04', title: 'סוקר ויזואלי (אפליקציית Viewer)', description: 'דשבורד שנוצר אוטומטית מאפשר לסקור ארכיטקטורה, באקלוג kanban, תהליכים ומסכי דמו ויזואלית — לפני כתיבת שורת קוד אחת. הסכם על העיצוב קודם.', artifact: 'viewer/ (React SPA)', icon: '👁️' },
+    ],
+    keyInsight: 'AutoSpec מממש SDD כדי שתפסיק לדון במתודולוגיה ותתחיל לשלוח.',
+  },
+
+  // ── ACT 4 — ZOOM-INS ─────────────────────────────────────────────────────────
+
+  // 10. roles
   {
     type: 'roles',
     title: 'מודל 10 התפקידים',
@@ -317,49 +280,8 @@ export const slidesHE = [
     },
     insight: 'גם מפתחים יחידים נהנים מחשיבה בתפקידים.',
   },
-  // 16. ticketExecution
-  {
-    type: 'ticketExecution',
-    title: 'צלילה עמוקה לביצוע משימה',
-    stages: [
-      { stage: 1, title: 'משימה מהבאקלוג', description: 'מזהה משימה, כותרת, נקודות סיפור, קריטריוני קבלה', icon: '🎫', time: '0 דק\'‎' },
-      { stage: 2, title: 'מנהל מוצר מקצה הקשר', description: 'מפרט תפקיד מתיקיית specs/ + חלקי docs/ רלוונטיים + סיכומי ספרינטים קודמים מוזרקים ל-brief', icon: '📋', time: '2 דק\'‎' },
-      { stage: 3, title: 'סוכן פיתוח מבצע', description: 'מממש קוד, כותב בדיקות, מעדכן דוקומנטציה — הכל ב-worktree מבודד', icon: '⚙️', time: '15-45 דק\'‎' },
-      { stage: 4, title: 'סוכן QA סוקר', description: 'סוכן נפרד עם תפקיד ליד QA (specs/05_qa_lead.md) מתכנן בדיקות, מאמת תהליך משתמש, מאשר או חוסם', icon: '🧪', time: '5-10 דק\'‎' },
-      { stage: 5, title: 'מיזוג + סיכום', description: 'הבאקלוג מתעדכן ל-✅, נכתב סיכום ספרינט, docs/ מתעדכן', icon: '✅', time: '2 דק\'‎' },
-    ],
-    callout: 'סוכן מנהל המוצר מתזמר את כל התהליך.',
-  },
-  // 17. backlog
-  {
-    type: 'backlog',
-    title: 'מערכת הבאקלוג',
-    description: 'ניהול משימות מובנה עם תהליכי עבודה ברורים',
-    statuses: [
-      { status: 'todo', label: 'לביצוע', description: 'מוכן להתחלה', color: 'gray' },
-      { status: 'in-progress', label: 'בעבודה', description: 'נמצא כעת בפיתוח', color: 'blue' },
-      { status: 'qa-review', label: 'בדיקת QA', description: 'הקוד מוכן, צריך בדיקות', color: 'yellow' },
-      { status: 'done', label: 'הושלם', description: 'נבדק ומוזג', color: 'green' },
-      { status: 'blocked', label: 'חסום', description: 'ממתין לתלות', color: 'red' },
-    ],
-    ticketStructure: [
-      'מזהה: מזהה ייחודי (למשל SF-042)',
-      'כותרת: תיאור ברור וניתן לביצוע',
-      'נקודות סיפור: הערכת מורכבות (1-8)',
-      'תלויות: קישורים למשימות חוסמות',
-      'קריטריונים לקבלה: הגדרת סיום',
-    ],
-    bugWorkflow: {
-      title: 'ניהול באגים',
-      steps: [
-        'באגים מקבלים קידומת [BUG]',
-        'דירוג חומרה: קריטי/גבוה/בינוני/נמוך',
-        'באגים קריטיים חוסמים השלמת ספרינט',
-        'באגים מקושרים למשימה המקורית',
-      ],
-    },
-  },
-  // 18. orchestrator
+
+  // 11. orchestrator (with multiagent parallelExecution merged in)
   {
     type: 'orchestrator',
     title: 'תבנית ה-Orchestrator',
@@ -374,62 +296,17 @@ export const slidesHE = [
       { name: 'Sonnet Agent C', task: 'דוקומנטציה וקונפיגורציה ב-worktree-c' },
     ],
     benefits: ['הקשר ראשי נקי', 'ביצוע מקבילי', 'worktrees מבודדים'],
+    parallelExecution: {
+      description: 'הכפל את המהירות עם סוכני AI מקביליים',
+      agents: [
+        { name: 'סוכן A', role: 'ליד Backend', tickets: ['1.1 - צור טבלת users', '1.2 - שירות אימות', '1.4 - User API'], color: 'blue' },
+        { name: 'סוכן B', role: 'ליד Frontend', tickets: ['1.3 - טופס התחברות', '1.5 - דשבורד', '1.6 - דף פרופיל'], color: 'green' },
+      ],
+      savings: '~45% חיסכון בזמן',
+    },
   },
-  // 19. multiagent
-  {
-    type: 'multiagent',
-    title: 'הרצה מרובת סוכנים',
-    description: 'הכפל את המהירות עם סוכני AI מקביליים',
-    agents: [
-      {
-        name: 'סוכן A',
-        role: 'ליד Backend',
-        tickets: ['1.1 - צור טבלת users', '1.2 - שירות אימות', '1.4 - User API'],
-        color: 'blue',
-      },
-      {
-        name: 'סוכן B',
-        role: 'ליד Frontend',
-        tickets: ['1.3 - טופס התחברות', '1.5 - דשבורד', '1.6 - דף פרופיל'],
-        color: 'green',
-      },
-    ],
-    benefits: [
-      '~45% חיסכון בזמן',
-      'גבולות ברורים מונעים קונפליקטים',
-      'לכל סוכן הקשר ממוקד',
-      'תלויות מנוהלות בבאקלוג',
-    ],
-  },
-  // 20. qaMethodology
-  {
-    type: 'qaMethodology',
-    title: 'מתודולוגיית QA',
-    pyramid: [
-      { level: 'E2E', percentage: '10%', description: 'בדיקות תהליך מלא' },
-      { level: 'Integration', percentage: '30%', description: 'בדיקות API ושירותים' },
-      { level: 'Unit / API', percentage: '60%', description: 'בדיקות פונקציות ו-endpoints' },
-    ],
-    bugProtocol: [
-      'שחזר את תהליך המשתמש המדויק',
-      'תקן את הקוד',
-      'אמת בהרצה חוזרת של התהליך',
-    ],
-    callout: 'כל משימה מאומתת לפני Done. בלי יוצאים מן הכלל.',
-  },
-  // 21. sprintSummary
-  {
-    type: 'sprintSummary',
-    title: 'סיכומי ספרינט',
-    sections: [
-      { icon: '✅', title: 'משימות שהושלמו', example: '5.1 שירות אימות ✅, 5.2 דף התחברות ✅' },
-      { icon: '📄', title: 'דוקומנטציה שעודכנה', example: 'docs/auth/01-architecture.md, docs/frontend/routing.md' },
-      { icon: '📁', title: 'קבצים ששונו', example: 'src/auth/auth.service.ts, src/pages/Login.tsx' },
-      { icon: '🧪', title: 'תוצאות QA', example: 'API: 17/17 עובר, UI: 6/6 עובר' },
-    ],
-    callout: 'סוכנים עתידיים קוראים סיכומים כדי להבין מה נבנה.',
-  },
-  // 22. modelOptimization
+
+  // 12. modelOptimization
   {
     type: 'modelOptimization',
     title: 'אופטימיזציית מודלים',
@@ -446,7 +323,8 @@ export const slidesHE = [
       savings: '~60% חיסכון',
     },
   },
-  // 23. environmentProof
+
+  // 13. environmentProof
   {
     type: 'environmentProof',
     title: 'אגנוסטי לסביבה: הוכחה',
@@ -473,7 +351,10 @@ export const slidesHE = [
     callout: 'אותו CLAUDE.md. אותו specs/. אותה מתודולוגיה.',
     bottomText: 'עובד בכל סביבה — גם בלי אינטרנט.',
   },
-  // 24. viewer
+
+  // ── ACT 5 — PROOF ────────────────────────────────────────────────────────────
+
+  // 14. viewer
   {
     type: 'viewer',
     title: 'דשבורד Viewer חי',
@@ -481,7 +362,8 @@ export const slidesHE = [
     features: ['דפדפן מפרטים', 'באקלוג Kanban', 'דוקומנטציה חיה'],
     linkText: 'נסה אותו חי →',
   },
-  // 25. example
+
+  // 15. example
   {
     type: 'example',
     title: 'דוגמה אמיתית: ShopFlow מסחר אלקטרוני',
@@ -510,7 +392,8 @@ export const slidesHE = [
       'דשבורד אדמין',
     ],
   },
-  // 26. results
+
+  // 16. results
   {
     type: 'results',
     title: 'תוצאות מוכחות',
@@ -527,7 +410,8 @@ export const slidesHE = [
       source: 'נבדק בקרב על אפליקציות בפרודקשן',
     },
   },
-  // 27. demo
+
+  // 17. demo
   {
     type: 'demo',
     title: 'הדגמה חיה',
@@ -541,7 +425,10 @@ export const slidesHE = [
     ],
     note: 'זמן הדגמה: ~5 דקות',
   },
-  // 28. futureWaterfall — NEW
+
+  // ── ACT 6 — FUTURE ───────────────────────────────────────────────────────────
+
+  // 18. futureWaterfall
   {
     type: 'futureWaterfall',
     title: 'העתיד: פיתוח Planning-First',
@@ -554,7 +441,8 @@ export const slidesHE = [
     ],
     callout: 'המפתח של העתיד מבלה יותר זמן בחשיבה מאשר בהקלדה. זה לא יותר איטי — זה יותר חכם.',
   },
-  // 29. futureMonolith — NEW
+
+  // 19. futureMonolith
   {
     type: 'futureMonolith',
     title: 'העתיד: רנסנס המונוליט',
@@ -583,21 +471,10 @@ export const slidesHE = [
     },
     callout: 'הפרדה הגיונית לצוותים אנושיים. לסוכנים עם חלון הקשר של 200K, מונוליט הוא כוח-על.',
   },
-  // 30. beforeAfter
-  {
-    type: 'beforeAfter',
-    title: 'לפני ואחרי',
-    subtitle: 'אותה צוות, אותם כלי AI. ההבדל היחיד: מבנה.',
-    rows: [
-      { aspect: 'הקשר', before: 'אובד בכל סשן', after: 'שמור לנצח ב-docs/' },
-      { aspect: 'תיעוד', before: 'אין — רק לוגי צ\'אט', after: '100+ מסמכים חיים' },
-      { aspect: 'קליטה', before: 'שבועות של הנדסה לאחור', after: 'קרא מפרטים, התחל לקודד' },
-      { aspect: 'דיוק AI', before: 'מתדרדר במהלך השיחה', after: 'עקבי מהמפרט' },
-      { aspect: 'עלות', before: '$47/ספרינט (כל Opus)', after: '$19/ספרינט (ניתוב מודלים)' },
-      { aspect: 'מסירה', before: 'בלתי אפשרי בלי המפתח המקורי', after: 'כל אחד יכול לקרוא את המפרטים' },
-    ],
-  },
-  // 31. closing
+
+  // ── ACT 7 — CLOSE ────────────────────────────────────────────────────────────
+
+  // 20. closing
   {
     type: 'closing',
     title: 'התחל היום',
@@ -613,7 +490,8 @@ export const slidesHE = [
     },
     tagline: 'מדרישות לקוד עובד.',
   },
-  // 32. finalTagline
+
+  // 21. finalTagline
   {
     type: 'finalTagline',
     title: 'AutoSpec',
