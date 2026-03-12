@@ -10,52 +10,56 @@ export const slidesHE = [
     presenter: 'אלי חונדיה',
   },
 
-  // 2. threeEras — NEW (replaces eraTraditional + eraAssistant + eraAgentic)
+  // 2. eraTraditional
   {
-    type: 'threeEras',
-    title: 'שלושת העידנים של הפיתוח',
-    subtitle: 'מקידוד ידני לסוכנים אוטונומיים — כל עידן הרוויח מהירות אך איבד משהו קריטי',
-    eras: [
-      {
-        name: 'מסורתי',
-        period: '2000-2020',
-        tools: ['קידוד ידני', 'סקירות קוד', 'תיעוד'],
-        traits: [
-          { text: 'כל שורה נכתבת ביד', type: 'neutral' },
-          { text: 'תיעוד מקיף', type: 'positive' },
-          { text: 'זיכרון ארגוני שמור', type: 'positive' },
-        ],
-        verdict: 'איטי אך צפוי',
-        color: 'slate',
-      },
-      {
-        name: 'עוזרי קוד',
-        period: '2021-2023',
-        tools: ['GitHub Copilot', 'TabNine', 'Kite'],
-        traits: [
-          { text: 'השלמה אוטומטית מהירה פי 3', type: 'positive' },
-          { text: 'החלטות עיצוב עדיין אנושיות', type: 'neutral' },
-          { text: 'ארכיטקטורה ללא שינוי', type: 'neutral' },
-        ],
-        verdict: 'הקלדה מהירה יותר, אותה חשיבה',
-        color: 'blue',
-      },
-      {
-        name: 'AI אג\'נטי',
-        period: '2024+',
-        tools: ['Claude Code', 'Cursor', 'Devin'],
-        traits: [
-          { text: 'מודולים שלמים בפרומפט אחד', type: 'positive' },
-          { text: 'אין זיכרון בין סשנים', type: 'negative' },
-          { text: 'אפס תיעוד נוצר', type: 'negative' },
-        ],
-        verdict: 'כוח מהפכני, אוטונומיה מסוכנת',
-        color: 'cyan',
-      },
+    type: 'eraTraditional',
+    title: 'עידן הפיתוח המסורתי',
+    subtitle: 'הפיתוח היה איטי אך צפוי',
+    characteristics: [
+      { icon: '⌨️', title: 'קידוד ידני', description: 'כל שורה נכתבת ביד' },
+      { icon: '👥', title: 'סקירות קוד', description: 'שמירת איכות על ידי בני אדם' },
+      { icon: '📖', title: 'תיעוד', description: 'קיים כי בני אדם כתבו אותו' },
+      { icon: '🧠', title: 'זיכרון ארגוני', description: 'הידע נשמר אצל אנשים' },
+    ],
+    metrics: { speed: 'נמוכה', predictability: 'גבוהה', docs: 'מקיף', knowledge: 'שמור' },
+  },
+
+  // 3. eraAssistant
+  {
+    type: 'eraAssistant',
+    title: 'עידן עוזר הקוד',
+    subtitle: 'AI עזר לך להקליד מהר יותר, לא לחשוב טוב יותר',
+    tools: ['GitHub Copilot', 'TabNine', 'Kite'],
+    gains: [
+      { title: 'מהירות הקלדה', description: 'השלמה אוטומטית מהירה פי 3' },
+      { title: 'קוד שגרתי', description: 'קוד חוזר הוסר' },
+    ],
+    unchanged: [
+      { title: 'החלטות עיצוב', description: 'עדיין לגמרי אנושיות' },
+      { title: 'ארכיטקטורה', description: 'אין מעורבות AI' },
+    ],
+    decisionAuthority: 'אנושי',
+  },
+
+  // 4. eraAgentic
+  {
+    type: 'eraAgentic',
+    title: 'עידן הסוכנים',
+    subtitle: 'כוח מהפכני, אוטונומיה מסוכנת',
+    tools: ['Claude Code', 'Cursor', 'Devin'],
+    power: [
+      { title: 'פיצ\'רים מלאים', description: 'מודולים שלמים בפרומפט אחד' },
+      { title: 'כל המחסנית', description: 'Frontend + Backend + DB יחד' },
+      { title: 'אוטונומי', description: 'AI מקבל החלטות מימוש' },
+    ],
+    danger: [
+      { title: 'אין זיכרון', description: 'כל סשן מתחיל מאפס' },
+      { title: 'סחיפת הקשר', description: 'שיחות ארוכות משחיתות החלטות' },
+      { title: 'אפס תיעוד', description: 'לוגי צ\'אט אינם תיעוד' },
     ],
   },
 
-  // 3. contextPoisoning
+  // 5. contextPoisoning
   {
     type: 'contextPoisoning',
     title: 'הרעלת הקשר',
@@ -68,7 +72,7 @@ export const slidesHE = [
     ],
   },
 
-  // 4. reverseTax
+  // 6. reverseTax
   {
     type: 'reverseTax',
     title: 'מס ההנדסה לאחור',
@@ -84,7 +88,7 @@ export const slidesHE = [
     cost: { hours: 40, label: 'שעות אבודות להנדסה לאחור בכל רבעון' },
   },
 
-  // 5. breakingPoint
+  // 7. breakingPoint
   {
     type: 'breakingPoint',
     title: 'נקודת השבר',
@@ -101,7 +105,7 @@ export const slidesHE = [
 
   // ── ACT 2 — TURNING POINT ────────────────────────────────────────────────────
 
-  // 6. sddCostOfChaos (moved from old position 10)
+  // 8. sddCostOfChaos
   {
     type: 'sddCostOfChaos',
     title: 'המחיר של בלי מפרטים',
@@ -131,7 +135,7 @@ export const slidesHE = [
     callout: 'מפרטים הם הזיכרון ש-AI מעולם לא קיבל.',
   },
 
-  // 7. bridge (moved from old position 8)
+  // 9. bridge
   {
     type: 'bridge',
     title: 'מה אם...',
@@ -145,7 +149,7 @@ export const slidesHE = [
 
   // ── ACT 3 — THE REVEAL ───────────────────────────────────────────────────────
 
-  // 8. pipeline (moved from old position 14)
+  // 10. pipeline
   {
     type: 'pipeline',
     scrollable: true,
@@ -237,7 +241,7 @@ export const slidesHE = [
     ],
   },
 
-  // 9. solution (moved from old position 12)
+  // 11. solution
   {
     type: 'solution',
     title: 'AutoSpec: ערכת הכלים שלך ל-SDD',
@@ -253,7 +257,7 @@ export const slidesHE = [
 
   // ── ACT 4 — ZOOM-INS ─────────────────────────────────────────────────────────
 
-  // 10. roles
+  // 12. roles
   {
     type: 'roles',
     title: 'מודל 10 התפקידים',
@@ -281,7 +285,7 @@ export const slidesHE = [
     insight: 'גם מפתחים יחידים נהנים מחשיבה בתפקידים.',
   },
 
-  // 11. orchestrator (provider-agnostic with selector)
+  // 13. orchestrator (provider-agnostic with selector)
   {
     type: 'orchestrator',
     title: 'תבנית ה-Orchestrator',
@@ -305,7 +309,7 @@ export const slidesHE = [
     callout: 'אותם specs. אותה תבנית. מודלים שונים.',
   },
 
-  // 12. modelOptimization
+  // 14. modelOptimization
   {
     type: 'modelOptimization',
     title: 'אופטימיזציית מודלים',
@@ -325,7 +329,7 @@ export const slidesHE = [
 
   // ── ACT 5 — PROOF ────────────────────────────────────────────────────────────
 
-  // 13. viewer
+  // 15. viewer
   {
     type: 'viewer',
     title: 'דשבורד Viewer חי',
@@ -334,7 +338,7 @@ export const slidesHE = [
     linkText: 'נסה אותו חי →',
   },
 
-  // 14. example
+  // 16. example
   {
     type: 'example',
     title: 'דוגמה אמיתית: ShopFlow מסחר אלקטרוני',
@@ -364,7 +368,7 @@ export const slidesHE = [
     ],
   },
 
-  // 15. results
+  // 17. results
   {
     type: 'results',
     title: 'תוצאות מוכחות',
@@ -382,7 +386,7 @@ export const slidesHE = [
     },
   },
 
-  // 16. demo
+  // 18. demo
   {
     type: 'demo',
     title: 'הדגמה חיה',
@@ -399,7 +403,7 @@ export const slidesHE = [
 
   // ── ACT 6 — FUTURE ───────────────────────────────────────────────────────────
 
-  // 17. futureWaterfall
+  // 19. futureWaterfall
   {
     type: 'futureWaterfall',
     title: 'העתיד: פיתוח Planning-First',
@@ -413,7 +417,7 @@ export const slidesHE = [
     callout: 'המפתח של העתיד מבלה יותר זמן בחשיבה מאשר בהקלדה. זה לא יותר איטי — זה יותר חכם.',
   },
 
-  // 18. futureMonolith
+  // 20. futureMonolith
   {
     type: 'futureMonolith',
     title: 'העתיד: רנסנס המונוליט',
@@ -445,7 +449,7 @@ export const slidesHE = [
 
   // ── ACT 7 — CLOSE ────────────────────────────────────────────────────────────
 
-  // 19. closing
+  // 21. closing
   {
     type: 'closing',
     title: 'התחל היום',
@@ -462,7 +466,7 @@ export const slidesHE = [
     tagline: 'מדרישות לקוד עובד.',
   },
 
-  // 20. finalTagline
+  // 22. finalTagline
   {
     type: 'finalTagline',
     title: 'AutoSpec',

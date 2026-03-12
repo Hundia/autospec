@@ -10,52 +10,56 @@ export const slidesEN = [
     presenter: 'Eli Hundia',
   },
 
-  // 2. threeEras — NEW (replaces eraTraditional + eraAssistant + eraAgentic)
+  // 2. eraTraditional
   {
-    type: 'threeEras',
-    title: 'The Three Eras of Development',
-    subtitle: 'From manual coding to autonomous agents — each era gained speed but lost something critical',
-    eras: [
-      {
-        name: 'Traditional',
-        period: '2000-2020',
-        tools: ['Manual Coding', 'Code Reviews', 'Documentation'],
-        traits: [
-          { text: 'Every line written by hand', type: 'neutral' },
-          { text: 'Comprehensive documentation', type: 'positive' },
-          { text: 'Institutional memory preserved', type: 'positive' },
-        ],
-        verdict: 'Slow but predictable',
-        color: 'slate',
-      },
-      {
-        name: 'Code Assistants',
-        period: '2021-2023',
-        tools: ['GitHub Copilot', 'TabNine', 'Kite'],
-        traits: [
-          { text: '3x faster autocomplete', type: 'positive' },
-          { text: 'Design decisions still human', type: 'neutral' },
-          { text: 'Architecture unchanged', type: 'neutral' },
-        ],
-        verdict: 'Faster typing, same thinking',
-        color: 'blue',
-      },
-      {
-        name: 'Agentic AI',
-        period: '2024+',
-        tools: ['Claude Code', 'Cursor', 'Devin'],
-        traits: [
-          { text: 'Entire modules in one prompt', type: 'positive' },
-          { text: 'No memory between sessions', type: 'negative' },
-          { text: 'Zero documentation generated', type: 'negative' },
-        ],
-        verdict: 'Revolutionary power, dangerous autonomy',
-        color: 'cyan',
-      },
+    type: 'eraTraditional',
+    title: 'The Traditional Era',
+    subtitle: 'Development was slow but predictable',
+    characteristics: [
+      { icon: '⌨️', title: 'Manual Coding', description: 'Every line written by hand' },
+      { icon: '👥', title: 'Code Reviews', description: 'Human gatekeeping quality' },
+      { icon: '📖', title: 'Documentation', description: 'Existed because humans wrote it' },
+      { icon: '🧠', title: 'Institutional Memory', description: 'Knowledge lived in people' },
+    ],
+    metrics: { speed: 'Low', predictability: 'High', docs: 'Comprehensive', knowledge: 'Preserved' },
+  },
+
+  // 3. eraAssistant
+  {
+    type: 'eraAssistant',
+    title: 'The Code Assistant Era',
+    subtitle: 'AI helped you type faster, not think better',
+    tools: ['GitHub Copilot', 'TabNine', 'Kite'],
+    gains: [
+      { title: 'Typing Speed', description: '3x faster autocomplete' },
+      { title: 'Boilerplate', description: 'Repetitive code eliminated' },
+    ],
+    unchanged: [
+      { title: 'Design Decisions', description: 'Still entirely human' },
+      { title: 'Architecture', description: 'No AI involvement' },
+    ],
+    decisionAuthority: 'Human',
+  },
+
+  // 4. eraAgentic
+  {
+    type: 'eraAgentic',
+    title: 'The Agentic Era',
+    subtitle: 'Revolutionary power, dangerous autonomy',
+    tools: ['Claude Code', 'Cursor', 'Devin'],
+    power: [
+      { title: 'Full Features', description: 'Entire modules in one prompt' },
+      { title: 'Cross-Stack', description: 'Frontend + Backend + DB together' },
+      { title: 'Autonomous', description: 'AI makes implementation decisions' },
+    ],
+    danger: [
+      { title: 'No Memory', description: 'Every session starts from zero' },
+      { title: 'Context Drift', description: 'Long conversations corrupt decisions' },
+      { title: 'Zero Documentation', description: 'Chat logs are not docs' },
     ],
   },
 
-  // 3. contextPoisoning
+  // 5. contextPoisoning
   {
     type: 'contextPoisoning',
     title: 'Context Poisoning',
@@ -68,7 +72,7 @@ export const slidesEN = [
     ],
   },
 
-  // 4. reverseTax
+  // 6. reverseTax
   {
     type: 'reverseTax',
     title: 'The Reverse Engineering Tax',
@@ -84,7 +88,7 @@ export const slidesEN = [
     cost: { hours: 40, label: 'Hours lost to reverse engineering per quarter' },
   },
 
-  // 5. breakingPoint
+  // 7. breakingPoint
   {
     type: 'breakingPoint',
     title: 'The Breaking Point',
@@ -101,7 +105,7 @@ export const slidesEN = [
 
   // ── ACT 2 — TURNING POINT ────────────────────────────────────────────────────
 
-  // 6. sddCostOfChaos (moved from old position 10)
+  // 8. sddCostOfChaos
   {
     type: 'sddCostOfChaos',
     title: 'The Cost of No Specifications',
@@ -131,7 +135,7 @@ export const slidesEN = [
     callout: 'Specifications are the memory that AI was never given.',
   },
 
-  // 7. bridge (moved from old position 8)
+  // 9. bridge
   {
     type: 'bridge',
     title: 'What if...',
@@ -145,7 +149,7 @@ export const slidesEN = [
 
   // ── ACT 3 — THE REVEAL ───────────────────────────────────────────────────────
 
-  // 8. pipeline (moved from old position 14)
+  // 10. pipeline
   {
     type: 'pipeline',
     scrollable: true,
@@ -237,7 +241,7 @@ export const slidesEN = [
     ],
   },
 
-  // 9. solution (moved from old position 12)
+  // 11. solution
   {
     type: 'solution',
     title: 'AutoSpec: Your SDD Toolkit',
@@ -253,7 +257,7 @@ export const slidesEN = [
 
   // ── ACT 4 — ZOOM-INS ─────────────────────────────────────────────────────────
 
-  // 10. roles
+  // 12. roles
   {
     type: 'roles',
     title: 'The 10-Role Model',
@@ -281,7 +285,7 @@ export const slidesEN = [
     insight: 'Even solo developers benefit from thinking in roles.',
   },
 
-  // 11. orchestrator (provider-agnostic with selector)
+  // 13. orchestrator (provider-agnostic with selector)
   {
     type: 'orchestrator',
     title: 'Orchestrator Pattern',
@@ -305,7 +309,7 @@ export const slidesEN = [
     callout: 'Same specs. Same pattern. Different models.',
   },
 
-  // 12. modelOptimization
+  // 14. modelOptimization
   {
     type: 'modelOptimization',
     title: 'Model Optimization',
@@ -325,7 +329,7 @@ export const slidesEN = [
 
   // ── ACT 5 — PROOF ────────────────────────────────────────────────────────────
 
-  // 13. viewer
+  // 15. viewer
   {
     type: 'viewer',
     title: 'Live Viewer Dashboard',
@@ -334,7 +338,7 @@ export const slidesEN = [
     linkText: 'Try it live →',
   },
 
-  // 14. example
+  // 16. example
   {
     type: 'example',
     title: 'Real Example: ShopFlow E-Commerce',
@@ -364,7 +368,7 @@ export const slidesEN = [
     ],
   },
 
-  // 15. results
+  // 17. results
   {
     type: 'results',
     title: 'Proven Results',
@@ -382,7 +386,7 @@ export const slidesEN = [
     },
   },
 
-  // 16. demo
+  // 18. demo
   {
     type: 'demo',
     title: 'Live Demo',
@@ -399,7 +403,7 @@ export const slidesEN = [
 
   // ── ACT 6 — FUTURE ───────────────────────────────────────────────────────────
 
-  // 17. futureWaterfall
+  // 19. futureWaterfall
   {
     type: 'futureWaterfall',
     title: 'The Future: Planning-First Development',
@@ -413,7 +417,7 @@ export const slidesEN = [
     callout: "The future developer spends more time thinking than typing. That's not slower — it's smarter.",
   },
 
-  // 18. futureMonolith
+  // 20. futureMonolith
   {
     type: 'futureMonolith',
     title: 'The Future: Monolith Renaissance',
@@ -445,7 +449,7 @@ export const slidesEN = [
 
   // ── ACT 7 — CLOSE ────────────────────────────────────────────────────────────
 
-  // 19. closing
+  // 21. closing
   {
     type: 'closing',
     title: 'Get Started Today',
@@ -462,7 +466,7 @@ export const slidesEN = [
     tagline: 'From requirements to running code.',
   },
 
-  // 20. finalTagline
+  // 22. finalTagline
   {
     type: 'finalTagline',
     title: 'AutoSpec',

@@ -9,7 +9,9 @@ import { slidesHE } from '../data/slides-he';
 
 // Components
 import TitleSlide from '../components/TitleSlide';
-import ThreeErasSlide from '../components/ThreeErasSlide';
+import EraTraditionalSlide from '../components/EraTraditionalSlide';
+import EraAssistantSlide from '../components/EraAssistantSlide';
+import EraAgenticSlide from '../components/EraAgenticSlide';
 import ContextPoisoningSlide from '../components/ContextPoisoningSlide';
 import ReverseTaxSlide from '../components/ReverseTaxSlide';
 import BreakingPointSlide from '../components/BreakingPointSlide';
@@ -33,7 +35,9 @@ import FinalTaglineSlide from '../components/FinalTaglineSlide';
 
 const slideComponents = {
   title: TitleSlide,
-  threeEras: ThreeErasSlide,
+  eraTraditional: EraTraditionalSlide,
+  eraAssistant: EraAssistantSlide,
+  eraAgentic: EraAgenticSlide,
   contextPoisoning: ContextPoisoningSlide,
   reverseTax: ReverseTaxSlide,
   breakingPoint: BreakingPointSlide,
@@ -154,16 +158,21 @@ export default function PresentationPage() {
         <span className="text-sm">Home</span>
       </Link>
 
-      {/* Language Toggle - always in top corner */}
-      <button
-        onClick={() => setLang(lang === 'en' ? 'he' : 'en')}
-        className={`fixed top-4 z-50 flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors ${
-          isRTL ? 'left-4' : 'right-4'
-        }`}
-      >
-        <Globe size={18} />
-        <span>{lang === 'en' ? 'עברית' : 'English'}</span>
-      </button>
+      {/* Language Selector - small dropdown in top corner */}
+      <div className={`fixed top-4 z-50 ${isRTL ? 'left-4' : 'right-4'}`}>
+        <div className="relative flex items-center gap-1.5 bg-white/10 hover:bg-white/20 rounded-full px-3 py-1.5 transition-colors">
+          <Globe size={14} className="text-white/60" />
+          <select
+            value={lang}
+            onChange={(e) => setLang(e.target.value as 'en' | 'he')}
+            className="bg-transparent text-xs text-white/80 appearance-none cursor-pointer outline-none pr-3"
+          >
+            <option value="en" className="bg-slate-800 text-white">EN</option>
+            <option value="he" className="bg-slate-800 text-white">HE</option>
+          </select>
+          <ChevronRight size={10} className="absolute right-2.5 text-white/40 rotate-90 pointer-events-none" />
+        </div>
+      </div>
 
       {/* Slide Counter - center top */}
       <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 text-sm text-white/60">
