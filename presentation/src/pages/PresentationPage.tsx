@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Globe, Home, Monitor } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Globe, Home } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import BackgroundEffect, { backgrounds } from '../components/backgrounds/BackgroundEffects';
+import BackgroundEffect from '../components/backgrounds/BackgroundEffects';
 import PresentationDropdown from '../components/ui/PresentationDropdown';
 
 // Slide data
@@ -65,7 +65,6 @@ export default function PresentationPage() {
   const [lang, setLang] = useState<'en' | 'he'>('en');
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
-  const [bgEffect, setBgEffect] = useState('none');
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const slides = lang === 'en' ? slidesEN : slidesHE;
@@ -154,7 +153,7 @@ export default function PresentationPage() {
       <style>{`@keyframes floatingGrid { 0% { background-position: 0 0; } 100% { background-position: 40px 40px; } }`}</style>
 
       {/* Animated Background */}
-      <BackgroundEffect activeId={bgEffect} />
+      <BackgroundEffect activeId="particles" />
 
       {/* Back to Home */}
       <Link
@@ -167,17 +166,8 @@ export default function PresentationPage() {
         <span className="text-sm">Home</span>
       </Link>
 
-      {/* Background + Language Selectors - top corner */}
-      <div className={`fixed top-4 z-50 flex items-center gap-2 ${isRTL ? 'left-4' : 'right-4'}`}>
-        {/* Background Effect Selector */}
-        <PresentationDropdown
-          value={bgEffect}
-          onChange={setBgEffect}
-          icon={<Monitor size={14} />}
-          align="right"
-          options={backgrounds.map((bg) => ({ id: bg.id, label: bg.name }))}
-        />
-        {/* Language Selector */}
+      {/* Language Selector - top corner */}
+      <div className={`fixed top-4 z-50 ${isRTL ? 'left-4' : 'right-4'}`}>
         <PresentationDropdown
           value={lang}
           onChange={(v) => setLang(v as 'en' | 'he')}
@@ -256,7 +246,12 @@ export default function PresentationPage() {
         </button>
       </div>
 
-      {/* Keyboard hint */}
+      {/* Trademark - bottom left */}
+      <div className={`fixed bottom-4 text-xs text-white/30 ${isRTL ? 'right-4' : 'left-4'}`}>
+        AutoSpec™ by Eli Hundia
+      </div>
+
+      {/* Keyboard hint - bottom right */}
       <div className={`fixed bottom-4 text-xs text-white/40 ${isRTL ? 'left-4' : 'right-4'}`}>
         {lang === 'en' ? '← → to navigate' : '← → לניווט'}
       </div>
