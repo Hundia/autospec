@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Globe, Home } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Globe, Home, Monitor } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import BackgroundEffect, { backgrounds } from '../components/backgrounds/BackgroundEffects';
 
 // Slide data
 import { slidesEN } from '../data/slides-en';
@@ -63,6 +64,7 @@ export default function PresentationPage() {
   const [lang, setLang] = useState<'en' | 'he'>('en');
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [bgEffect, setBgEffect] = useState('none');
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const slides = lang === 'en' ? slidesEN : slidesHE;
@@ -145,8 +147,14 @@ export default function PresentationPage() {
     <div
       ref={scrollRef}
       dir={isRTL ? 'rtl' : 'ltr'}
-      className={`bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white ${isScrollable ? 'h-screen overflow-y-auto overflow-x-hidden' : 'min-h-screen overflow-hidden'}`}
+      className={`relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white ${isScrollable ? 'h-screen overflow-y-auto overflow-x-hidden' : 'min-h-screen overflow-hidden'}`}
     >
+      {/* Floating Grid keyframe */}
+      <style>{`@keyframes floatingGrid { 0% { background-position: 0 0; } 100% { background-position: 40px 40px; } }`}</style>
+
+      {/* Animated Background */}
+      <BackgroundEffect activeId={bgEffect} />
+
       {/* Back to Home */}
       <Link
         to="/"
@@ -158,8 +166,25 @@ export default function PresentationPage() {
         <span className="text-sm">Home</span>
       </Link>
 
-      {/* Language Selector - small dropdown in top corner */}
-      <div className={`fixed top-4 z-50 ${isRTL ? 'left-4' : 'right-4'}`}>
+      {/* Language Selector + Background Selector - top corner */}
+      <div className={`fixed top-4 z-50 flex items-center gap-2 ${isRTL ? 'left-4' : 'right-4'}`}>
+        {/* Background Effect Selector */}
+        <div className="relative flex items-center gap-1.5 bg-white/10 hover:bg-white/20 rounded-full px-3 py-1.5 transition-colors">
+          <Monitor size={14} className="text-white/60" />
+          <select
+            value={bgEffect}
+            onChange={(e) => setBgEffect(e.target.value)}
+            className="bg-transparent text-xs text-white/80 appearance-none cursor-pointer outline-none pr-3"
+          >
+            {backgrounds.map((bg) => (
+              <option key={bg.id} value={bg.id} className="bg-slate-800 text-white">
+                {bg.name}
+              </option>
+            ))}
+          </select>
+          <ChevronRight size={10} className="absolute right-2.5 text-white/40 rotate-90 pointer-events-none" />
+        </div>
+        {/* Language Selector */}
         <div className="relative flex items-center gap-1.5 bg-white/10 hover:bg-white/20 rounded-full px-3 py-1.5 transition-colors">
           <Globe size={14} className="text-white/60" />
           <select

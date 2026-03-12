@@ -67,17 +67,23 @@ Before marking done, verify:
 - [ ] Mobile viewport renders acceptably
 - [ ] Animations use correct trigger pattern (mount vs scroll)
 
-### Phase 6: Commit & Deploy
-After all checks pass, commit and push so changes are visible on GitHub Pages:
-```bash
-cd /opt/FitnessAiManager/autospec
-git add presentation/ skills/claude/plan-presentation.md .claude/commands/plan-presentation.md
-git commit -m "feat(presentation): <descriptive message>
+### Phase 6: Commit & Push for Review
+**This phase is MANDATORY — always run it automatically after Phase 5 passes.**
 
-Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
-git push origin main
-```
-This triggers the GitHub Pages workflow so the presenter can review the slide live.
+Once the quality checklist passes, commit all changed files and push to `origin/main` so the user can review the live result on GitHub Pages:
+
+1. Stage all presentation-related files: `git add presentation/ skills/claude/ .claude/commands/`
+2. Also stage any other files touched (slide data, components, backgrounds, etc.)
+3. Commit with a descriptive message:
+   ```bash
+   git commit -m "feat(presentation): <what was done>
+
+   Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
+   ```
+4. Push: `git push origin main`
+5. Inform the user the push is done and they can review the live deployment.
+
+This triggers the GitHub Pages workflow so the presenter can review the slide live at the deployed URL.
 
 ## File Structure Convention
 ```
