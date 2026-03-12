@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Globe, Home, Monitor } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import BackgroundEffect, { backgrounds } from '../components/backgrounds/BackgroundEffects';
+import PresentationDropdown from '../components/ui/PresentationDropdown';
 
 // Slide data
 import { slidesEN } from '../data/slides-en';
@@ -166,37 +167,28 @@ export default function PresentationPage() {
         <span className="text-sm">Home</span>
       </Link>
 
-      {/* Language Selector + Background Selector - top corner */}
+      {/* Background + Language Selectors - top corner */}
       <div className={`fixed top-4 z-50 flex items-center gap-2 ${isRTL ? 'left-4' : 'right-4'}`}>
         {/* Background Effect Selector */}
-        <div className="relative flex items-center gap-1.5 bg-white/10 hover:bg-white/20 rounded-full px-3 py-1.5 transition-colors">
-          <Monitor size={14} className="text-white/60" />
-          <select
-            value={bgEffect}
-            onChange={(e) => setBgEffect(e.target.value)}
-            className="bg-transparent text-xs text-white/80 appearance-none cursor-pointer outline-none pr-3"
-          >
-            {backgrounds.map((bg) => (
-              <option key={bg.id} value={bg.id} className="bg-slate-800 text-white">
-                {bg.name}
-              </option>
-            ))}
-          </select>
-          <ChevronRight size={10} className="absolute right-2.5 text-white/40 rotate-90 pointer-events-none" />
-        </div>
+        <PresentationDropdown
+          value={bgEffect}
+          onChange={setBgEffect}
+          icon={<Monitor size={14} />}
+          align="right"
+          options={backgrounds.map((bg) => ({ id: bg.id, label: bg.name }))}
+        />
         {/* Language Selector */}
-        <div className="relative flex items-center gap-1.5 bg-white/10 hover:bg-white/20 rounded-full px-3 py-1.5 transition-colors">
-          <Globe size={14} className="text-white/60" />
-          <select
-            value={lang}
-            onChange={(e) => setLang(e.target.value as 'en' | 'he')}
-            className="bg-transparent text-xs text-white/80 appearance-none cursor-pointer outline-none pr-3"
-          >
-            <option value="en" className="bg-slate-800 text-white">EN</option>
-            <option value="he" className="bg-slate-800 text-white">HE</option>
-          </select>
-          <ChevronRight size={10} className="absolute right-2.5 text-white/40 rotate-90 pointer-events-none" />
-        </div>
+        <PresentationDropdown
+          value={lang}
+          onChange={(v) => setLang(v as 'en' | 'he')}
+          icon={<Globe size={14} />}
+          animateIcon
+          align="right"
+          options={[
+            { id: 'en', label: 'English' },
+            { id: 'he', label: 'עברית' },
+          ]}
+        />
       </div>
 
       {/* Slide Counter - center top */}
