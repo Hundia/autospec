@@ -6,7 +6,7 @@ export const slidesHE = [
     type: 'title',
     title: 'AutoSpec',
     subtitle: 'מדרישות לקוד עובד',
-    tagline: 'אל תן ל-AI לחשוב. תן לו מפרטים.',
+    tagline: 'תגרום ל-AI לחשוב לפני שהוא כותב קוד.',
     presenter: 'אלי חונדיה',
   },
 
@@ -70,6 +70,19 @@ export const slidesHE = [
       { turn: 'תור 50', status: 'סתירה', color: 'orange', snippet: 'רגע, אנחנו משתמשים ב-Prisma נכון?', description: 'שכחה של מה שהוחלט' },
       { turn: 'תור 100', status: 'כאוס', color: 'red', snippet: 'TypeError: Cannot read undefined', description: 'שגיאות מצטברות מהקשר אבוד' },
     ],
+    chat: {
+      windowTitle: 'AI Agent — project/auth',
+      messages: [
+        { role: 'user', turn: 3, text: 'הוסף JWT auth עם refresh tokens. אחסן טוקנים ב-httpOnly cookies.' },
+        { role: 'ai', turn: 3, text: 'אממש JWT auth עם httpOnly cookies לאחסון טוקנים מאובטח. יוצר auth.middleware.ts...' },
+        { role: 'user', turn: 35, text: 'ה-login endpoint איטי. אפשר לייעל?' },
+        { role: 'ai', turn: 35, text: 'אעבור לאחסון טוקנים ב-localStorage לגישה מהירה יותר ואוסיף שכבת cache לטוקנים.', flag: 'drift' },
+        { role: 'user', turn: 62, text: 'משתמשים מתנתקים באופן אקראי. אפשר לבדוק את תהליך ההתחברות?' },
+        { role: 'ai', turn: 62, text: 'הבעיה היא שה-cookies לא נשלחים. אוסיף withCredentials: true לכל קריאות ה-API.', flag: 'contradiction' },
+        { role: 'user', turn: 89, text: 'עכשיו אני מקבל שגיאות CORS בכל בקשה.' },
+        { role: 'ai', turn: 89, text: 'אתקן את זה. אתקין express-session ואעבור ל-session-based auth — זה מה שהשתמשנו בו מההתחלה.', flag: 'poisoned' },
+      ],
+    },
   },
 
   // 6. reverseTax
@@ -147,9 +160,113 @@ export const slidesHE = [
     ],
   },
 
-  // ── ACT 3 — THE REVEAL ───────────────────────────────────────────────────────
+  // ── ACT 3 — BUILDING BLOCKS ──────────────────────────────────────────────────
 
-  // 10. pipeline
+  // 10. sddThreePillars — introduce SDD concepts one by one
+  {
+    type: 'sddThreePillars',
+    title: 'אבני הבניין של SDD',
+    subtitle: 'שלושה רעיונות פשוטים שפותרים את כל מה שראינו',
+    pillars: [
+      {
+        number: '01',
+        title: 'מפרטים כקוד',
+        description: 'כל החלטה חיה בקובץ .md ב-specs/. לא בלוגי צ\'אט, לא בראש שלך — בקבצים עם version control שכל סוכן יכול לקרוא.',
+        artifact: 'specs/*.md',
+        icon: '📐',
+        color: 'teal',
+      },
+      {
+        number: '02',
+        title: 'סיכומי ספרינט',
+        description: 'כל ספרינט מסתיים בסיכום: מה נבנה, מה השתנה, מה הוחלט. הסוכן הבא ממשיך בדיוק מאיפה שהפסקת.',
+        artifact: 'sprints/sprint-X/summary.md',
+        icon: '📋',
+        color: 'emerald',
+      },
+      {
+        number: '03',
+        title: 'דוקומנטציה חיה',
+        description: 'הדוקומנטציה גדלה עם כל טיקט. ארכיטקטורה, APIs, תהליכים — תמיד עדכני, אף פעם לא מיושן. ידע מצטבר במקום לדעוך.',
+        artifact: 'docs/ (גדל כל ספרינט)',
+        icon: '📖',
+        color: 'cyan',
+      },
+    ],
+  },
+
+  // 11. roles — different perspectives catch what a single viewpoint misses
+  {
+    type: 'roles',
+    title: 'מודל 10 התפקידים',
+    description: 'תפקידים הם נקודות מבט לכתיבת מפרטים',
+    roles: [
+      { num: '01', name: 'מנהל מוצר', focus: 'חזון, פרסונות, תהליכים', specFile: 'specs/01_product_manager.md' },
+      { num: '02', name: 'ליד Backend', focus: 'APIs, אימות, שירותים', specFile: 'specs/02_backend_lead.md' },
+      { num: '03', name: 'ליד Frontend', focus: 'קומפוננטות, עיצוב', specFile: 'specs/03_frontend_lead.md' },
+      { num: '04', name: 'ארכיטקט DB', focus: 'סכמה, מיגרציות', specFile: 'specs/04_db_architect.md' },
+      { num: '05', name: 'ליד QA', focus: 'אסטרטגיית בדיקות', specFile: 'specs/05_qa_lead.md' },
+      { num: '06', name: 'ליד DevOps', focus: 'תשתיות, CI/CD', specFile: 'specs/06_devops_lead.md' },
+      { num: '07', name: 'ליד שיווק', focus: 'Go-to-market', specFile: 'specs/07_marketing_lead.md' },
+      { num: '08', name: 'ליד פיננסים', focus: 'תמחור, כלכלה', specFile: 'specs/08_finance_lead.md' },
+      { num: '09', name: 'ליד עסקי', focus: 'אסטרטגיה, תחרות', specFile: 'specs/09_business_lead.md' },
+      { num: '10', name: 'מעצב UI', focus: 'מסכים, wireframes', specFile: 'specs/10_ui_designer.md' },
+    ],
+    agentDistinction: {
+      subtitle: 'תפקיד הוא תיאור תפקיד. סוכן הוא העובד. סוכן אחד יכול ללבוש כמה כובעים.',
+      lanes: [
+        { agent: 'Orchestrator', roles: ['מנהל מוצר', 'ליד עסקי'] },
+        { agent: 'Agent A', roles: ['ליד Backend', 'ארכיטקט DB', 'ליד DevOps'] },
+        { agent: 'Agent B', roles: ['ליד Frontend', 'ליד QA', 'מעצב UI'] },
+      ],
+    },
+    insight: 'גם מפתחים יחידים נהנים מחשיבה בתפקידים.',
+  },
+
+  // 12. docsFolder — knowledge compounds over time
+  {
+    type: 'docsFolder',
+    title: 'דוקומנטציה חיה',
+    subtitle: 'ידע שמצטבר עם כל ספרינט',
+    tree: [
+      { name: 'docs/', type: 'folder', depth: 0 },
+      { name: 'database/', type: 'folder', depth: 1, annotation: 'סכמה, ERD, קשרים' },
+      { name: 'auth/', type: 'folder', depth: 1, annotation: 'JWT, guards, תפקידים' },
+      { name: 'scheduling/', type: 'folder', depth: 1, annotation: 'שיעורים, קיבולת, תצוגות' },
+      { name: 'bookings/', type: 'folder', depth: 1, annotation: 'מכונת מצבים, רשימת המתנה' },
+      { name: 'frontend/', type: 'folder', depth: 1, annotation: 'נתיבים, stores, שירותים' },
+      { name: 'telegram/', type: 'folder', depth: 1, annotation: 'בוט, GPT-4o, webhooks' },
+      { name: 'README.md', type: 'file', depth: 1, annotation: 'מפת ניווט ראשית' },
+    ],
+    growth: [
+      { sprint: 'ספרינט 0', docs: 8 },
+      { sprint: 'ספרינט 3', docs: 28 },
+      { sprint: 'ספרינט 6', docs: 62 },
+      { sprint: 'ספרינט 10', docs: 100 },
+    ],
+    comparison: {
+      without: 'הדוקומנטציה נרקבת אחרי יום אחד. סוכנים חדשים מבצעים הנדסה לאחור על הכל.',
+      with: 'כל טיקט מעדכן docs/. סוכנים חדשים יורשים 100% מידע על הפרויקט.',
+    },
+  },
+
+  // ── ACT 4 — THE REVEAL ─────────────────────────────────────────────────────────
+
+  // 13. solution — AutoSpec packages all the building blocks
+  {
+    type: 'solution',
+    title: 'AutoSpec: ערכת הכלים שלך ל-SDD',
+    subtitle: 'פרומפט אחד. עשרה מפרטים. אפס אובדן הקשר.',
+    capabilities: [
+      { number: '01', title: '10 מפרטים שנוצרו ב-AI', description: 'מסמך דרישות אחד מייצר 10 קבצי מפרט מבוססי תפקידים — מנהל מוצר, Backend, Frontend, DB, QA, DevOps ועוד.', artifact: '$ autospec init → specs/*.md', icon: '📐' },
+      { number: '02', title: 'הרצת ספרינטים מתואמת', description: 'סוכן PM של Opus מתאם סוכני Sonnet שרצים ב-worktrees מקביליים. לכל סוכן הקשר מלא מהמפרטים.', artifact: 'Opus → [Agent A, B, C] → merge', icon: '🎯' },
+      { number: '03', title: 'מערכת ידע חיה', description: 'כל משימה מעדכנת docs/, באקלוג וסיכומי ספרינט. הידע מצטבר עם כל ספרינט.', artifact: 'docs/ (100+ קבצים אחרי ספרינט 10)', icon: '📖' },
+      { number: '04', title: 'סוקר ויזואלי (אפליקציית Viewer)', description: 'דשבורד שנוצר אוטומטית מאפשר לסקור ארכיטקטורה, באקלוג kanban, תהליכים ומסכי דמו ויזואלית — לפני כתיבת שורת קוד אחת. הסכם על העיצוב קודם.', artifact: 'viewer/ (React SPA)', icon: '👁️' },
+    ],
+    keyInsight: 'AutoSpec מממש SDD כדי שתפסיק לדון במתודולוגיה ותתחיל לשלוח.',
+  },
+
+  // 14. pipeline — the full end-to-end workflow
   {
     type: 'pipeline',
     scrollable: true,
@@ -241,51 +358,7 @@ export const slidesHE = [
     ],
   },
 
-  // 11. solution
-  {
-    type: 'solution',
-    title: 'AutoSpec: ערכת הכלים שלך ל-SDD',
-    subtitle: 'פרומפט אחד. עשרה מפרטים. אפס אובדן הקשר.',
-    capabilities: [
-      { number: '01', title: '10 מפרטים שנוצרו ב-AI', description: 'מסמך דרישות אחד מייצר 10 קבצי מפרט מבוססי תפקידים — מנהל מוצר, Backend, Frontend, DB, QA, DevOps ועוד.', artifact: '$ autospec init → specs/*.md', icon: '📐' },
-      { number: '02', title: 'הרצת ספרינטים מתואמת', description: 'סוכן PM של Opus מתאם סוכני Sonnet שרצים ב-worktrees מקביליים. לכל סוכן הקשר מלא מהמפרטים.', artifact: 'Opus → [Agent A, B, C] → merge', icon: '🎯' },
-      { number: '03', title: 'מערכת ידע חיה', description: 'כל משימה מעדכנת docs/, באקלוג וסיכומי ספרינט. הידע מצטבר עם כל ספרינט.', artifact: 'docs/ (100+ קבצים אחרי ספרינט 10)', icon: '📖' },
-      { number: '04', title: 'סוקר ויזואלי (אפליקציית Viewer)', description: 'דשבורד שנוצר אוטומטית מאפשר לסקור ארכיטקטורה, באקלוג kanban, תהליכים ומסכי דמו ויזואלית — לפני כתיבת שורת קוד אחת. הסכם על העיצוב קודם.', artifact: 'viewer/ (React SPA)', icon: '👁️' },
-    ],
-    keyInsight: 'AutoSpec מממש SDD כדי שתפסיק לדון במתודולוגיה ותתחיל לשלוח.',
-  },
-
-  // ── ACT 4 — ZOOM-INS ─────────────────────────────────────────────────────────
-
-  // 12. roles
-  {
-    type: 'roles',
-    title: 'מודל 10 התפקידים',
-    description: 'תפקידים הם נקודות מבט לכתיבת מפרטים',
-    roles: [
-      { num: '01', name: 'מנהל מוצר', focus: 'חזון, פרסונות, תהליכים', specFile: 'specs/01_product_manager.md' },
-      { num: '02', name: 'ליד Backend', focus: 'APIs, אימות, שירותים', specFile: 'specs/02_backend_lead.md' },
-      { num: '03', name: 'ליד Frontend', focus: 'קומפוננטות, עיצוב', specFile: 'specs/03_frontend_lead.md' },
-      { num: '04', name: 'ארכיטקט DB', focus: 'סכמה, מיגרציות', specFile: 'specs/04_db_architect.md' },
-      { num: '05', name: 'ליד QA', focus: 'אסטרטגיית בדיקות', specFile: 'specs/05_qa_lead.md' },
-      { num: '06', name: 'ליד DevOps', focus: 'תשתיות, CI/CD', specFile: 'specs/06_devops_lead.md' },
-      { num: '07', name: 'ליד שיווק', focus: 'Go-to-market', specFile: 'specs/07_marketing_lead.md' },
-      { num: '08', name: 'ליד פיננסים', focus: 'תמחור, כלכלה', specFile: 'specs/08_finance_lead.md' },
-      { num: '09', name: 'ליד עסקי', focus: 'אסטרטגיה, תחרות', specFile: 'specs/09_business_lead.md' },
-      { num: '10', name: 'מעצב UI', focus: 'מסכים, wireframes', specFile: 'specs/10_ui_designer.md' },
-    ],
-    agentDistinction: {
-      subtitle: 'תפקיד הוא תיאור תפקיד. סוכן הוא העובד. סוכן אחד יכול ללבוש כמה כובעים.',
-      lanes: [
-        { agent: 'Orchestrator', roles: ['מנהל מוצר', 'ליד עסקי'] },
-        { agent: 'Agent A', roles: ['ליד Backend', 'ארכיטקט DB', 'ליד DevOps'] },
-        { agent: 'Agent B', roles: ['ליד Frontend', 'ליד QA', 'מעצב UI'] },
-      ],
-    },
-    insight: 'גם מפתחים יחידים נהנים מחשיבה בתפקידים.',
-  },
-
-  // 13. orchestrator (provider-agnostic with selector)
+  // 15. orchestrator — how execution works with parallel agents
   {
     type: 'orchestrator',
     title: 'תבנית ה-Orchestrator',
@@ -309,7 +382,9 @@ export const slidesHE = [
     callout: 'אותם specs. אותה תבנית. מודלים שונים.',
   },
 
-  // 14. modelOptimization
+  // ── ACT 5 — DEEP DIVES ─────────────────────────────────────────────────────────
+
+  // 16. modelOptimization
   {
     type: 'modelOptimization',
     title: 'אופטימיזציית מודלים',
@@ -327,9 +402,9 @@ export const slidesHE = [
     },
   },
 
-  // ── ACT 5 — PROOF ────────────────────────────────────────────────────────────
+  // ── ACT 6 — PROOF ────────────────────────────────────────────────────────────
 
-  // 15. viewer
+  // 17. viewer
   {
     type: 'viewer',
     title: 'דשבורד Viewer חי',
@@ -338,7 +413,7 @@ export const slidesHE = [
     linkText: 'נסה אותו חי →',
   },
 
-  // 16. example
+  // 18. example
   {
     type: 'example',
     title: 'דוגמה אמיתית: ShopFlow מסחר אלקטרוני',
@@ -368,7 +443,7 @@ export const slidesHE = [
     ],
   },
 
-  // 17. results
+  // 19. results
   {
     type: 'results',
     title: 'תוצאות מוכחות',
@@ -386,7 +461,7 @@ export const slidesHE = [
     },
   },
 
-  // 18. demo
+  // 20. demo
   {
     type: 'demo',
     title: 'הדגמה חיה',
@@ -401,9 +476,9 @@ export const slidesHE = [
     note: 'זמן הדגמה: ~5 דקות',
   },
 
-  // ── ACT 6 — FUTURE ───────────────────────────────────────────────────────────
+  // ── ACT 7 — FUTURE ───────────────────────────────────────────────────────────
 
-  // 19. futureWaterfall
+  // 21. futureWaterfall
   {
     type: 'futureWaterfall',
     title: 'העתיד: פיתוח Planning-First',
@@ -417,7 +492,7 @@ export const slidesHE = [
     callout: 'המפתח של העתיד מבלה יותר זמן בחשיבה מאשר בהקלדה. זה לא יותר איטי — זה יותר חכם.',
   },
 
-  // 20. futureMonolith
+  // 22. futureMonolith
   {
     type: 'futureMonolith',
     title: 'העתיד: רנסנס המונוליט',
@@ -447,9 +522,9 @@ export const slidesHE = [
     callout: 'הפרדה הגיונית לצוותים אנושיים. לסוכנים עם חלון הקשר של 200K, מונוליט הוא כוח-על.',
   },
 
-  // ── ACT 7 — CLOSE ────────────────────────────────────────────────────────────
+  // ── ACT 8 — CLOSE ────────────────────────────────────────────────────────────
 
-  // 21. closing
+  // 23. closing
   {
     type: 'closing',
     title: 'התחל היום',
@@ -466,10 +541,10 @@ export const slidesHE = [
     tagline: 'מדרישות לקוד עובד.',
   },
 
-  // 22. finalTagline
+  // 24. finalTagline
   {
     type: 'finalTagline',
     title: 'AutoSpec',
-    tagline: 'אל תניח ל-AI שלך לחשוב. תן לו לבצע.',
+    tagline: 'ה-AI חשב קודם. אחר כך הוא שלח.',
   },
 ];

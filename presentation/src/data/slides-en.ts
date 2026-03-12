@@ -6,7 +6,7 @@ export const slidesEN = [
     type: 'title',
     title: 'AutoSpec',
     subtitle: 'From Requirements to Running Code',
-    tagline: "Don't let AI think. Give it specs.",
+    tagline: 'Make AI think before it codes.',
     presenter: 'Eli Hundia',
   },
 
@@ -70,6 +70,19 @@ export const slidesEN = [
       { turn: 'Turn 50', status: 'Contradiction', color: 'orange', snippet: "Wait, we're using Prisma right?", description: 'Forgetting what was decided' },
       { turn: 'Turn 100', status: 'Chaos', color: 'red', snippet: 'TypeError: Cannot read undefined', description: 'Compounding errors from lost context' },
     ],
+    chat: {
+      windowTitle: 'AI Agent — project/auth',
+      messages: [
+        { role: 'user', turn: 3, text: 'Add JWT auth with refresh tokens. Store tokens in httpOnly cookies.' },
+        { role: 'ai', turn: 3, text: "I'll implement JWT auth with httpOnly cookies for secure token storage. Creating auth.middleware.ts..." },
+        { role: 'user', turn: 35, text: 'The login endpoint is slow. Can you optimize it?' },
+        { role: 'ai', turn: 35, text: "I'll switch to storing tokens in localStorage for faster access and add a token cache layer.", flag: 'drift' },
+        { role: 'user', turn: 62, text: 'Users are getting logged out randomly. Can you check the auth flow?' },
+        { role: 'ai', turn: 62, text: "The issue is that cookies aren't being sent. I'll add withCredentials: true to all API calls.", flag: 'contradiction' },
+        { role: 'user', turn: 89, text: "Now I'm getting CORS errors on every request." },
+        { role: 'ai', turn: 89, text: "Let me fix that. I'll install express-session and switch to session-based auth — it's what we've been using all along.", flag: 'poisoned' },
+      ],
+    },
   },
 
   // 6. reverseTax
@@ -147,9 +160,113 @@ export const slidesEN = [
     ],
   },
 
-  // ── ACT 3 — THE REVEAL ───────────────────────────────────────────────────────
+  // ── ACT 3 — BUILDING BLOCKS ──────────────────────────────────────────────────
 
-  // 10. pipeline
+  // 10. sddThreePillars — introduce SDD concepts one by one
+  {
+    type: 'sddThreePillars',
+    title: 'The Building Blocks of SDD',
+    subtitle: 'Three simple ideas that solve everything we just saw',
+    pillars: [
+      {
+        number: '01',
+        title: 'Specs as Code',
+        description: 'Every decision lives in a .md file in specs/. Not in chat logs, not in your head — in version-controlled files that any agent can read.',
+        artifact: 'specs/*.md',
+        icon: '📐',
+        color: 'teal',
+      },
+      {
+        number: '02',
+        title: 'Sprint Summaries',
+        description: 'Every sprint ends with a summary: what was built, what changed, what was decided. The next agent picks up exactly where you left off.',
+        artifact: 'sprints/sprint-X/summary.md',
+        icon: '📋',
+        color: 'emerald',
+      },
+      {
+        number: '03',
+        title: 'Living Documentation',
+        description: 'Docs grow with every ticket. Architecture, APIs, flows — always current, never stale. Knowledge compounds instead of decaying.',
+        artifact: 'docs/ (grows every sprint)',
+        icon: '📖',
+        color: 'cyan',
+      },
+    ],
+  },
+
+  // 11. roles — different perspectives catch what a single viewpoint misses
+  {
+    type: 'roles',
+    title: 'The 10-Role Model',
+    description: 'Roles are perspectives for WRITING specifications',
+    roles: [
+      { num: '01', name: 'Product Manager', focus: 'Vision, personas, flows', specFile: 'specs/01_product_manager.md' },
+      { num: '02', name: 'Backend Lead', focus: 'APIs, auth, services', specFile: 'specs/02_backend_lead.md' },
+      { num: '03', name: 'Frontend Lead', focus: 'Components, design system', specFile: 'specs/03_frontend_lead.md' },
+      { num: '04', name: 'DB Architect', focus: 'Schema, migrations', specFile: 'specs/04_db_architect.md' },
+      { num: '05', name: 'QA Lead', focus: 'Testing strategy', specFile: 'specs/05_qa_lead.md' },
+      { num: '06', name: 'DevOps Lead', focus: 'Infrastructure, CI/CD', specFile: 'specs/06_devops_lead.md' },
+      { num: '07', name: 'Marketing Lead', focus: 'Go-to-market', specFile: 'specs/07_marketing_lead.md' },
+      { num: '08', name: 'Finance Lead', focus: 'Pricing, economics', specFile: 'specs/08_finance_lead.md' },
+      { num: '09', name: 'Business Lead', focus: 'Strategy, competition', specFile: 'specs/09_business_lead.md' },
+      { num: '10', name: 'UI Designer', focus: 'Screens, wireframes', specFile: 'specs/10_ui_designer.md' },
+    ],
+    agentDistinction: {
+      subtitle: 'A role is a job description. An agent is the employee. One agent can wear multiple hats.',
+      lanes: [
+        { agent: 'Orchestrator', roles: ['Product Manager', 'Business Lead'] },
+        { agent: 'Agent A', roles: ['Backend Lead', 'DB Architect', 'DevOps Lead'] },
+        { agent: 'Agent B', roles: ['Frontend Lead', 'QA Lead', 'UI Designer'] },
+      ],
+    },
+    insight: 'Even solo developers benefit from thinking in roles.',
+  },
+
+  // 12. docsFolder — knowledge compounds over time
+  {
+    type: 'docsFolder',
+    title: 'Living Documentation',
+    subtitle: 'Knowledge that compounds with every sprint',
+    tree: [
+      { name: 'docs/', type: 'folder', depth: 0 },
+      { name: 'database/', type: 'folder', depth: 1, annotation: 'Schema, ERD, relationships' },
+      { name: 'auth/', type: 'folder', depth: 1, annotation: 'JWT, guards, roles' },
+      { name: 'scheduling/', type: 'folder', depth: 1, annotation: 'Classes, capacity, views' },
+      { name: 'bookings/', type: 'folder', depth: 1, annotation: 'State machine, waitlist' },
+      { name: 'frontend/', type: 'folder', depth: 1, annotation: 'Routes, stores, services' },
+      { name: 'telegram/', type: 'folder', depth: 1, annotation: 'Bot, GPT-4o, webhooks' },
+      { name: 'README.md', type: 'file', depth: 1, annotation: 'Master navigation map' },
+    ],
+    growth: [
+      { sprint: 'Sprint 0', docs: 8 },
+      { sprint: 'Sprint 3', docs: 28 },
+      { sprint: 'Sprint 6', docs: 62 },
+      { sprint: 'Sprint 10', docs: 100 },
+    ],
+    comparison: {
+      without: 'Docs rot after day one. New agents reverse-engineer everything.',
+      with: 'Every ticket updates docs/. New agents inherit 100% of project knowledge.',
+    },
+  },
+
+  // ── ACT 4 — THE REVEAL ─────────────────────────────────────────────────────────
+
+  // 13. solution — AutoSpec packages all the building blocks
+  {
+    type: 'solution',
+    title: 'AutoSpec: Your SDD Toolkit',
+    subtitle: 'One prompt. Ten specs. Zero context loss.',
+    capabilities: [
+      { number: '01', title: '10 AI-Generated Specifications', description: 'One requirements document generates 10 role-based spec files — PM, Backend, Frontend, DB, QA, DevOps, and more.', artifact: '$ autospec init → specs/*.md', icon: '📐' },
+      { number: '02', title: 'Orchestrated Sprint Execution', description: 'Opus PM agent coordinates Sonnet dev agents running in parallel git worktrees. Each agent has full context from specs.', artifact: 'Opus → [Agent A, B, C] → merge', icon: '🎯' },
+      { number: '03', title: 'Living Knowledge System', description: 'Every ticket updates docs/, backlog, and sprint summaries. Knowledge compounds with every sprint.', artifact: 'docs/ (100+ files after Sprint 10)', icon: '📖' },
+      { number: '04', title: 'Visual Reviewer (Viewer App)', description: 'A generated dashboard lets you review architecture, backlog kanban, flows, and mock screens visually — before writing any code. Agree on the design first.', artifact: 'viewer/ (React SPA)', icon: '👁️' },
+    ],
+    keyInsight: 'AutoSpec implements SDD so you can stop arguing about methodology and start shipping.',
+  },
+
+  // 14. pipeline — the full end-to-end workflow
   {
     type: 'pipeline',
     scrollable: true,
@@ -241,51 +358,7 @@ export const slidesEN = [
     ],
   },
 
-  // 11. solution
-  {
-    type: 'solution',
-    title: 'AutoSpec: Your SDD Toolkit',
-    subtitle: 'One prompt. Ten specs. Zero context loss.',
-    capabilities: [
-      { number: '01', title: '10 AI-Generated Specifications', description: 'One requirements document generates 10 role-based spec files — PM, Backend, Frontend, DB, QA, DevOps, and more.', artifact: '$ autospec init → specs/*.md', icon: '📐' },
-      { number: '02', title: 'Orchestrated Sprint Execution', description: 'Opus PM agent coordinates Sonnet dev agents running in parallel git worktrees. Each agent has full context from specs.', artifact: 'Opus → [Agent A, B, C] → merge', icon: '🎯' },
-      { number: '03', title: 'Living Knowledge System', description: 'Every ticket updates docs/, backlog, and sprint summaries. Knowledge compounds with every sprint.', artifact: 'docs/ (100+ files after Sprint 10)', icon: '📖' },
-      { number: '04', title: 'Visual Reviewer (Viewer App)', description: 'A generated dashboard lets you review architecture, backlog kanban, flows, and mock screens visually — before writing any code. Agree on the design first.', artifact: 'viewer/ (React SPA)', icon: '👁️' },
-    ],
-    keyInsight: 'AutoSpec implements SDD so you can stop arguing about methodology and start shipping.',
-  },
-
-  // ── ACT 4 — ZOOM-INS ─────────────────────────────────────────────────────────
-
-  // 12. roles
-  {
-    type: 'roles',
-    title: 'The 10-Role Model',
-    description: 'Roles are perspectives for WRITING specifications',
-    roles: [
-      { num: '01', name: 'Product Manager', focus: 'Vision, personas, flows', specFile: 'specs/01_product_manager.md' },
-      { num: '02', name: 'Backend Lead', focus: 'APIs, auth, services', specFile: 'specs/02_backend_lead.md' },
-      { num: '03', name: 'Frontend Lead', focus: 'Components, design system', specFile: 'specs/03_frontend_lead.md' },
-      { num: '04', name: 'DB Architect', focus: 'Schema, migrations', specFile: 'specs/04_db_architect.md' },
-      { num: '05', name: 'QA Lead', focus: 'Testing strategy', specFile: 'specs/05_qa_lead.md' },
-      { num: '06', name: 'DevOps Lead', focus: 'Infrastructure, CI/CD', specFile: 'specs/06_devops_lead.md' },
-      { num: '07', name: 'Marketing Lead', focus: 'Go-to-market', specFile: 'specs/07_marketing_lead.md' },
-      { num: '08', name: 'Finance Lead', focus: 'Pricing, economics', specFile: 'specs/08_finance_lead.md' },
-      { num: '09', name: 'Business Lead', focus: 'Strategy, competition', specFile: 'specs/09_business_lead.md' },
-      { num: '10', name: 'UI Designer', focus: 'Screens, wireframes', specFile: 'specs/10_ui_designer.md' },
-    ],
-    agentDistinction: {
-      subtitle: 'A role is a job description. An agent is the employee. One agent can wear multiple hats.',
-      lanes: [
-        { agent: 'Orchestrator', roles: ['Product Manager', 'Business Lead'] },
-        { agent: 'Agent A', roles: ['Backend Lead', 'DB Architect', 'DevOps Lead'] },
-        { agent: 'Agent B', roles: ['Frontend Lead', 'QA Lead', 'UI Designer'] },
-      ],
-    },
-    insight: 'Even solo developers benefit from thinking in roles.',
-  },
-
-  // 13. orchestrator (provider-agnostic with selector)
+  // 15. orchestrator — how execution works with parallel agents
   {
     type: 'orchestrator',
     title: 'Orchestrator Pattern',
@@ -309,7 +382,9 @@ export const slidesEN = [
     callout: 'Same specs. Same pattern. Different models.',
   },
 
-  // 14. modelOptimization
+  // ── ACT 5 — DEEP DIVES ─────────────────────────────────────────────────────────
+
+  // 16. modelOptimization
   {
     type: 'modelOptimization',
     title: 'Model Optimization',
@@ -327,9 +402,9 @@ export const slidesEN = [
     },
   },
 
-  // ── ACT 5 — PROOF ────────────────────────────────────────────────────────────
+  // ── ACT 6 — PROOF ────────────────────────────────────────────────────────────
 
-  // 15. viewer
+  // 17. viewer
   {
     type: 'viewer',
     title: 'Live Viewer Dashboard',
@@ -338,7 +413,7 @@ export const slidesEN = [
     linkText: 'Try it live →',
   },
 
-  // 16. example
+  // 18. example
   {
     type: 'example',
     title: 'Real Example: ShopFlow E-Commerce',
@@ -368,7 +443,7 @@ export const slidesEN = [
     ],
   },
 
-  // 17. results
+  // 19. results
   {
     type: 'results',
     title: 'Proven Results',
@@ -386,7 +461,7 @@ export const slidesEN = [
     },
   },
 
-  // 18. demo
+  // 20. demo
   {
     type: 'demo',
     title: 'Live Demo',
@@ -401,9 +476,9 @@ export const slidesEN = [
     note: 'Demo time: ~5 minutes',
   },
 
-  // ── ACT 6 — FUTURE ───────────────────────────────────────────────────────────
+  // ── ACT 7 — FUTURE ───────────────────────────────────────────────────────────
 
-  // 19. futureWaterfall
+  // 21. futureWaterfall
   {
     type: 'futureWaterfall',
     title: 'The Future: Planning-First Development',
@@ -417,7 +492,7 @@ export const slidesEN = [
     callout: "The future developer spends more time thinking than typing. That's not slower — it's smarter.",
   },
 
-  // 20. futureMonolith
+  // 22. futureMonolith
   {
     type: 'futureMonolith',
     title: 'The Future: Monolith Renaissance',
@@ -447,9 +522,9 @@ export const slidesEN = [
     callout: 'Decoupling made sense for human teams. For agents with 200K context windows, a monolith is a superpower.',
   },
 
-  // ── ACT 7 — CLOSE ────────────────────────────────────────────────────────────
+  // ── ACT 8 — CLOSE ────────────────────────────────────────────────────────────
 
-  // 21. closing
+  // 23. closing
   {
     type: 'closing',
     title: 'Get Started Today',
@@ -466,10 +541,10 @@ export const slidesEN = [
     tagline: 'From requirements to running code.',
   },
 
-  // 22. finalTagline
+  // 24. finalTagline
   {
     type: 'finalTagline',
     title: 'AutoSpec',
-    tagline: "Don't let your AI think. Let it execute.",
+    tagline: 'AI thought first. Then it shipped.',
   },
 ];

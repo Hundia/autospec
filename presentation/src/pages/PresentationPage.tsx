@@ -18,6 +18,8 @@ import ContextPoisoningSlide from '../components/ContextPoisoningSlide';
 import ReverseTaxSlide from '../components/ReverseTaxSlide';
 import BreakingPointSlide from '../components/BreakingPointSlide';
 import BridgeSlide from '../components/BridgeSlide';
+import SDDThreePillarsSlide from '../components/SDDThreePillarsSlide';
+import DocsFolderSlide from '../components/DocsFolderSlide';
 import SolutionSlide from '../components/SolutionSlide';
 import SDDCostOfChaosSlide from '../components/SDDCostOfChaosSlide';
 import WorkflowSlide from '../components/WorkflowSlide';
@@ -44,6 +46,8 @@ const slideComponents = {
   reverseTax: ReverseTaxSlide,
   breakingPoint: BreakingPointSlide,
   bridge: BridgeSlide,
+  sddThreePillars: SDDThreePillarsSlide,
+  docsFolder: DocsFolderSlide,
   sddCostOfChaos: SDDCostOfChaosSlide,
   solution: SolutionSlide,
   workflow: WorkflowSlide,
