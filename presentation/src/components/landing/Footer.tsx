@@ -13,7 +13,7 @@ const footerLinks = {
     { label: 'Getting Started', href: '#quickstart' },
     { label: 'The 10 Roles', href: '#roles' },
     { label: 'Sprint Memory', href: '#memory' },
-    { label: 'Academic Paper', href: '#paper' },
+    { label: 'Academic Paper', href: '#/paper' },
   ],
   community: [
     { label: 'GitHub', href: 'https://github.com/Hundia/autospec', external: true },

@@ -1,10 +1,10 @@
 ---
 title: "AutoSpec: A Specification-Driven Framework for Scalable AI-Assisted Software Development"
 author: "Eli Hundia"
-date: "January 2026"
+date: "March 2026"
 abstract: |
-  Large Language Models (LLMs) have transformed software development, yet their application at scale remains problematic due to inconsistent outputs, context limitations, and prohibitive costs. We present AutoSpec, a Specification-Driven Development (SDD) framework that addresses these challenges through three key innovations: (1) a 10-role specification model ensuring comprehensive project coverage, (2) a structured backlog system enabling multi-agent parallel execution, and (3) a FinOps-optimized model selection strategy reducing costs by approximately 40%. We validate AutoSpec through two case studies comprising 263 tickets across 11 sprints: ShopFlow, a full-stack e-commerce platform (174 tickets, 7 sprints), and DataHub, an API gateway service (89 tickets, 4 sprints). Results demonstrate that specifications eliminate implementation ambiguity, multi-agent execution achieves 45% time savings through parallelization, and tiered model selection significantly reduces costs while maintaining quality. AutoSpec provides a reproducible methodology for leveraging AI assistants in production software development.
-keywords: "Large Language Models, AI-Assisted Development, Specification-Driven Development, Multi-Agent Systems, Software Engineering"
+  Large Language Models (LLMs) have transformed software development, yet their application at scale remains problematic due to inconsistent outputs, context limitations, and prohibitive costs. We present AutoSpec, a Specification-Driven Development (SDD) framework that addresses these challenges through four key innovations: (1) a 10-role specification model ensuring comprehensive project coverage, (2) a structured backlog system enabling multi-agent parallel execution, (3) a FinOps-optimized model selection strategy reducing costs by approximately 40%, and (4) an orchestrator+agent pattern combining planning-tier and execution-tier models with operationalized slash-command skills encoding the full 8-phase workflow. We validate AutoSpec through three case studies comprising 837+ tickets across 29 sprints: ShopFlow, a full-stack e-commerce platform (174 tickets, 7 sprints), DataHub, an API gateway service (89 tickets, 4 sprints), and AutoSpec itself (574+ tickets, 18 sprints), which self-validates the framework by building its own viewer app, CLI tooling, and presentation site using its own methodology. Results demonstrate that specifications eliminate implementation ambiguity, multi-agent execution achieves 45% time savings through parallelization, tiered model selection significantly reduces costs while maintaining quality, and the orchestrator+agent pattern enables clean parallel sprint execution across isolated git worktrees. AutoSpec provides a reproducible methodology for leveraging AI assistants in production software development.
+keywords: "Large Language Models, AI-Assisted Development, Specification-Driven Development, Multi-Agent Systems, Software Engineering, Orchestrator Pattern, Operationalized Skills"
 ---
 
 ## 1. Introduction
@@ -27,7 +27,11 @@ This paper makes the following contributions:
 
 4. **FinOps Model Selection**: A cost-optimization strategy matching AI model capability to task complexity, achieving approximately 40% cost reduction.
 
-5. **Empirical Validation**: Evaluation across 263 tickets demonstrating the framework's effectiveness in production-scale development.
+5. **Orchestrator + Agent Pattern**: A two-tier execution model using planning-tier models (Opus) as orchestrators and execution-tier models (Sonnet) as sprint agents, enabling clean context management, anti-hallucination briefings, and full parallel sprint execution.
+
+6. **Operationalized Skills**: Eleven slash commands encoding the complete methodology as executable prompts, with IDE integration via `.claude/commands/`.
+
+7. **Empirical Validation**: Evaluation across 837+ tickets in three case studies — including AutoSpec's self-validation — demonstrating the framework's effectiveness at production scale.
 
 ---
 
@@ -63,13 +67,17 @@ AutoSpec contributes a practical framework for model selection in software devel
 
 ### 3.1 Overview
 
-AutoSpec follows a five-phase workflow:
+AutoSpec follows an eight-phase workflow:
 
 ```
-Requirements → Specifications → Backlog → Sprint Execution → Documentation
+Requirements → Specifications → Backlog → Agent Briefing → Sprint Execution → QA Verification → Documentation → Sprint Close
 ```
 
-Each phase produces artifacts that serve as input to the next, creating a traceable chain from initial requirements to working code.
+Each phase produces artifacts that serve as input to the next, creating a traceable chain from initial requirements to working code. The three phases added since the original five-phase model are:
+
+- **Agent Briefing**: The orchestrator writes a structured `agents/sprint-X-brief.md` file containing exact context — file paths, code snippets, hex values, conventions — before spawning sprint agents. This eliminates hallucination by ensuring agents never invent values.
+- **QA Verification**: No ticket is marked complete without verification scaled to change type: Playwright end-to-end flows for UI changes, API calls for backend changes, and migration tests for schema changes.
+- **Sprint Close**: A structured retrospective and summary (`sprints/sprint-X/summary.md`) formalizes what was built, what documentation was updated, and QA results, enabling the orchestrator to plan subsequent sprints with full context.
 
 ### 3.2 The 10-Role Specification Model
 
@@ -221,11 +229,128 @@ Empirically, we find optimal distribution around:
 
 This achieves approximately 40% cost savings compared to using premium models exclusively.
 
+### 3.6 Orchestrator + Agent Pattern
+
+As AutoSpec projects grew beyond single-sprint scope, a two-tier execution model emerged to address context contamination and enable true parallel execution.
+
+#### 3.6.1 Architecture
+
+The orchestrator+agent pattern separates concerns between two model tiers:
+
+- **Orchestrator (Opus 4.6)**: Responsible for planning, briefing, and review. The orchestrator reads all specifications, synthesizes the backlog, writes agent briefings, and reviews sprint summaries. It never writes production code directly.
+- **Sprint Agent (Sonnet 4.6)**: Responsible for implementation. Each agent receives a focused brief and executes a bounded set of tickets, then reports results. Agents do not maintain cross-sprint context.
+
+This separation ensures that the orchestrator's context remains clean across the full project lifecycle, while agents operate efficiently within a single sprint's scope.
+
+#### 3.6.2 Agent Briefing Files
+
+Before spawning any agent, the orchestrator writes `agents/sprint-X-brief.md` — a structured context package containing:
+
+- **Agent metadata**: Model, role, sprint number, ticket list
+- **Tickets with acceptance criteria**: Full descriptions copied from the backlog
+- **Key source files**: Exact file paths and relevant code snippets
+- **Exact values**: Hex colors, API endpoints, config constants — copy-pasted rather than described
+- **Conventions**: Naming patterns, design system rules, import conventions
+- **Verification checklist**: What the agent must confirm before marking tickets done
+
+The completeness of the briefing file directly determines agent output quality. An agent should never need to invent a value that the orchestrator could have provided.
+
+#### 3.6.3 Anti-Hallucination Strategy
+
+The primary failure mode in long-running AI-assisted projects is value hallucination: agents inventing plausible-but-incorrect file paths, color values, or API shapes. AutoSpec mitigates this through:
+
+1. **Copy-paste over description**: Instead of writing "use the project's primary color", the brief contains `primary: #698472 (sage)`.
+2. **Source file references**: Brief files include exact code snippets from existing files agents will modify.
+3. **Verification checklists**: Agents must confirm specific observable outputs (build exits 0, specific UI text visible) rather than self-certifying correctness.
+
+#### 3.6.4 Parallel Execution with Worktrees
+
+Independent sprints — those touching different file domains — run as parallel agents in isolated git worktrees. This pattern was used extensively in AutoSpec's own development:
+
+- Sprints 2, 3, and 4 ran in parallel (viewer data layer, charts, and CI/CD respectively)
+- Sprints 9-12 ran in parallel (multiple landing page sections)
+- The orchestrator merges results after all parallel agents complete
+
+Git worktree isolation ensures parallel agents cannot produce merge conflicts on shared files.
+
+#### 3.6.5 Benefits
+
+The orchestrator+agent pattern delivers three measurable improvements over single-agent approaches:
+
+| Benefit | Mechanism |
+|---------|-----------|
+| Context cleanliness | Orchestrator never accumulates stale sprint context |
+| Parallelism | Independent sprints execute simultaneously |
+| Reproducibility | Briefing files are version-controlled and auditable |
+
+### 3.7 Operationalized Skills
+
+AutoSpec encodes its methodology as executable slash commands — skills that practitioners invoke directly within Claude Code or compatible IDE environments.
+
+#### 3.7.1 Skill Inventory
+
+AutoSpec ships eleven skills covering the full development lifecycle:
+
+| Skill | Purpose |
+|-------|---------|
+| `/sprint-run` | Encodes the full 8-phase workflow end-to-end |
+| `/plan-sprint` | Decomposes specifications into a sprint backlog |
+| `/execute-ticket` | Implements a single ticket following conventions |
+| `/qa-review` | Runs verification scaled to ticket type |
+| `/sprint-close` | Writes sprint summary and updates documentation |
+| `/sprint-status` | Reports current sprint progress and blockers |
+| `/update-backlog` | Adds or modifies tickets in `specs/backlog.md` |
+| `/create-sprint-docs` | Generates `sprints/sprint-X/summary.md` template |
+| `/create-spec` | Scaffolds a new role specification document |
+| `/plan-presentation` | Generates presentation structure from sprint history |
+| `/help` | Lists available skills with usage guidance |
+
+#### 3.7.2 Skill Anatomy
+
+Each skill is a markdown file in `skills/claude/`, symlinked to `.claude/commands/` for IDE access. A skill file contains:
+
+- **Role context**: Which AutoSpec role the skill embodies
+- **Input parameters**: What the practitioner must supply
+- **Step-by-step instructions**: Encoded methodology as ordered prompts
+- **Output specification**: What artifacts the skill must produce
+- **Quality gates**: What conditions must be true before the skill is complete
+
+#### 3.7.3 IDE Integration
+
+Claude Code reads the `.claude/commands/` directory and surfaces skill files as slash commands in the IDE command palette. This means the methodology is available as first-class tooling: practitioners type `/sprint-run` rather than re-explaining the 8-phase workflow in each session.
+
+Skills encode institutional knowledge — the accumulated lessons of all previous sprints — in a form that persists across sessions and practitioners.
+
+### 3.8 Viewer App
+
+AutoSpec includes a self-referential governance dashboard — a React web application that displays the framework's own specifications, backlog, documentation, sprint history, and skills.
+
+#### 3.8.1 Purpose
+
+The viewer serves two functions:
+
+1. **Governance**: Provides a single-URL view of project health, backlog status, sprint progress, and documentation for stakeholders who do not use the IDE directly.
+2. **Self-validation**: The viewer was built by AutoSpec's own sprint agents using AutoSpec's own methodology, demonstrating that the framework can build non-trivial production UI.
+
+#### 3.8.2 Technical Implementation
+
+The viewer is a static React 18 + Vite + Tailwind CSS application with no backend dependency:
+
+- **Design system**: Warm palette — parchment (`#f5f3ed`), sage (`#698472`), terracotta (`#8e6a59`), sand border (`#d8d0ba`), charcoal text (`#1a1a1a`)
+- **Routing**: 7 routes — Dashboard, Backlog, Docs, Specs, Skills, Environments, Sprint Detail
+- **Data layer**: TypeScript files (`data/backlog.ts`, `data/docs.ts`, `data/specs.ts`, `data/environments.ts`) — static imports, no API calls
+- **Charts**: `AnimatedCounter` and `ProgressRing` components for sprint visualizations
+- **Primitives**: Button, Card, Badge, Input — ported from the FitnessAiManager design system
+
+#### 3.8.3 Self-Referential Content
+
+The viewer's public documentation directory (`viewer/public/docs/`) contains the actual AutoSpec methodology files, meaning the viewer displays documentation about itself. This property — a system built with a framework that documents the framework it was built with — provides a uniquely rigorous test of specification completeness.
+
 ---
 
 ## 4. Evaluation
 
-We evaluate AutoSpec through two case studies representing different project types and scales.
+We evaluate AutoSpec through three case studies representing different project types, scales, and application domains. The third — AutoSpec self-validation — is unique in that the framework was used to build its own tooling, providing a meta-level test of specification completeness.
 
 ### 4.1 Case Study 1: ShopFlow E-Commerce
 
@@ -294,18 +419,54 @@ We evaluate AutoSpec through two case studies representing different project typ
 | Model distribution | Haiku 42%, Sonnet 48%, Opus 10% |
 | Estimated cost savings | 43% vs all-Sonnet |
 
-### 4.3 Combined Analysis
+### 4.3 Case Study 3: AutoSpec Self-Validation
 
-Across both case studies (263 tickets total):
+**Project Description**: AutoSpec building itself — the SDD framework developing its own viewer app, presentation site, CLI tooling, and documentation using its own methodology.
 
-| Metric | ShopFlow | DataHub | Combined |
-|--------|----------|---------|----------|
-| Completion Rate | 100% | 100% | **100%** |
-| Test Coverage | 72% | 78% | **74%** |
-| Haiku Usage | 38% | 42% | **40%** |
-| Sonnet Usage | 47% | 48% | **47%** |
-| Opus Usage | 15% | 10% | **13%** |
-| Cost Savings | 41% | 43% | **~40%** |
+**Technical Stack**: React 18, Vite, Tailwind CSS, TypeScript, Node.js
+
+**Scale**:
+- Sprints: 18
+- Total Tickets: 574+
+- Story Points: ~1,720
+- Specifications: 10 core roles
+
+#### 4.3.1 Sprint Breakdown
+
+| Sprint | Focus | Key Deliverable |
+|--------|-------|-----------------|
+| 0 | Foundation | Spec files, backlog structure |
+| 1 | Viewer Scaffold | React app with routing |
+| 2-4 | Viewer Pages | 7 pages, data layer, charts |
+| 5 | CI/CD & Polish | GitHub Actions, deployment |
+| 6-8 | CLI Tool | autospec init, viewer generation |
+| 9-12 | Presentation | Landing page (20+ sections) |
+| 13-16 | Presentation v2 | Slide deck, advanced sections |
+| 17 | Expert Panel | 4-expert sprint planning |
+| 18 | Paper Update | This paper, showcase page |
+
+#### 4.3.2 Results
+
+| Metric | Value |
+|--------|-------|
+| Specification completeness | Self-referential (specs describe spec system) |
+| Ticket completion rate | 100% |
+| Orchestrator pattern usage | Sprints 2-5 (parallel), 9-18 (parallel) |
+| Skills operationalized | 11 slash commands |
+| Self-validation | Framework built its own tooling |
+
+### 4.4 Combined Analysis
+
+Across all three case studies (837+ tickets total):
+
+| Metric | ShopFlow | DataHub | AutoSpec | Combined |
+|--------|----------|---------|----------|----------|
+| Completion Rate | 100% | 100% | 100% | **100%** |
+| Test Coverage | 72% | 78% | N/A (framework) | **~75%** |
+| Haiku Usage | 38% | 42% | 35% | **~38%** |
+| Sonnet Usage | 47% | 48% | 52% | **~49%** |
+| Opus Usage | 15% | 10% | 13% | **~13%** |
+| Cost Savings | 41% | 43% | 40% | **~41%** |
 
 ---
 
@@ -313,7 +474,7 @@ Across both case studies (263 tickets total):
 
 ### 5.1 Specification Effectiveness
 
-The 10-role model eliminated implementation ambiguity in both case studies:
+The 10-role model eliminated implementation ambiguity across all three case studies:
 
 - **Zero design decisions** required during sprint execution
 - **API endpoints** matched specification exactly
@@ -384,9 +545,9 @@ AutoSpec is most effective when:
 
 ### 6.3 Threats to Validity
 
-**Internal Validity**: Both case studies were conducted by the framework authors, potentially introducing bias. We mitigated this by following the documented methodology exactly and measuring objective metrics.
+**Internal Validity**: All three case studies were conducted by the framework authors, potentially introducing bias. We mitigated this by following the documented methodology exactly and measuring objective metrics. The AutoSpec self-validation case study partially addresses this concern — the framework was its own most demanding client.
 
-**External Validity**: Two case studies, while covering different project types, may not represent all software domains. Enterprise systems, real-time applications, and ML pipelines may have different characteristics.
+**External Validity**: Three case studies, while covering different project types and including a self-referential meta-case, may not represent all software domains. Enterprise systems, real-time applications, and ML pipelines may have different characteristics.
 
 **Construct Validity**: "Time savings" measurements depend on baseline estimates for sequential execution, which have inherent uncertainty.
 
@@ -396,25 +557,32 @@ Several extensions warrant investigation:
 
 1. **Automated Specification Generation**: Using LLMs to generate initial specifications from requirements, with human review and refinement.
 
-2. **Dynamic Model Selection**: Learning optimal model assignments from historical ticket data.
+2. **Continuous Integration**: Adapting the framework for incremental development with evolving requirements.
 
-3. **Continuous Integration**: Adapting the framework for incremental development with evolving requirements.
+3. **Cross-Project Knowledge Transfer**: Mechanisms for AutoSpec instances to share learned conventions, model selection heuristics, and anti-patterns across projects, reducing cold-start overhead for new engagements.
 
-4. **Tool Support**: Building IDE integrations and CLI tools to reduce methodology overhead.
+4. **Tool Support**: **[COMPLETED — Sprints 4-5]** IDE integrations via `.claude/commands/` and CLI tool (`autospec init`) are now operational. Eleven slash commands encode the complete 8-phase methodology and are available as first-class IDE commands.
+
+5. **Automated Specification Generation from Existing Codebases**: Reverse-engineering specifications from production systems — parsing API contracts, schema files, and test suites to bootstrap the 10-role spec model for brownfield projects.
+
+6. **Dynamic Model Selection**: Learning optimal model assignments from historical ticket completion data — using observed retry rates, time-to-completion, and quality signals to refine the Haiku/Sonnet/Opus assignment heuristics across projects.
 
 ---
 
 ## 7. Conclusion
 
-We presented AutoSpec, a specification-driven framework for AI-assisted software development. Through comprehensive specifications, structured backlogs, multi-agent execution patterns, and cost-optimized model selection, AutoSpec addresses the key challenges of scaling LLM-based development.
+We presented AutoSpec, a specification-driven framework for AI-assisted software development. Through comprehensive specifications, structured backlogs, multi-agent execution patterns, cost-optimized model selection, orchestrator+agent coordination, and operationalized slash-command skills, AutoSpec addresses the key challenges of scaling LLM-based development.
 
-Our evaluation across 263 tickets in two case studies demonstrates:
+Our evaluation across 837+ tickets in three case studies — including AutoSpec's self-validation — demonstrates:
 
 - **Specifications work**: Comprehensive specifications eliminate implementation decisions, allowing AI to execute rather than decide.
 - **Multi-agent execution works**: Clear boundaries and synchronization protocols achieve 45% time savings through parallelization.
 - **Model selection works**: Tiered model assignment reduces costs by approximately 40% while maintaining quality.
+- **Orchestrator+agent pattern works**: Separating planning (Opus) from execution (Sonnet) keeps orchestrator context clean across long-running projects and enables full parallel sprint execution in isolated worktrees.
+- **Operationalized skills work**: Encoding methodology as slash commands ensures practitioners apply the full 8-phase workflow consistently across sessions and team members.
+- **Self-validation works**: AutoSpec's most rigorous test was building itself — 574+ tickets producing a viewer app, CLI tool, presentation site, and this paper using its own framework. The 100% ticket completion rate confirms that SDD methodology applies at meta-level.
 
-AutoSpec provides a reproducible methodology for practitioners seeking to leverage AI assistants for production software development. The framework, including templates, examples, and tooling, is available as open-source software.
+AutoSpec provides a reproducible methodology for practitioners seeking to leverage AI assistants for production software development. The framework, including templates, examples, operationalized skills, and tooling, is available as open-source software.
 
 ---
 
@@ -442,7 +610,7 @@ Complete specification templates are available in the AutoSpec repository under 
 
 ## Appendix B: Case Study Data
 
-Detailed ticket data, sprint summaries, and QA reports for both case studies are available under `/examples/ecommerce/` and `/examples/api-service/`.
+Detailed ticket data, sprint summaries, and QA reports for the ShopFlow and DataHub case studies are available under `/examples/ecommerce/` and `/examples/api-service/`. The AutoSpec self-validation case study is documented in the repository's own `sprints/` directory.
 
 ---
 

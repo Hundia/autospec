@@ -240,11 +240,11 @@ export default function HeroSection() {
               className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
             >
               <span className="bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent">
-                The Spec-Driven
+                Make AI Think
               </span>
               <br />
               <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Development Framework
+                Before It Codes
               </span>
             </motion.h1>
 
@@ -255,9 +255,9 @@ export default function HeroSection() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-xl sm:text-2xl text-white/60 max-w-xl mb-8"
             >
-              Transform AI from unpredictable assistant to{' '}
-              <span className="text-white font-medium">precise executor</span>.{' '}
-              From requirements to production code in days, not months.
+              Specifications are the memory that AI was never given.{' '}
+              <span className="text-white font-medium">AutoSpec turns requirements into running code</span>{' '}
+              — with structure, not luck.
             </motion.p>
 
             {/* Install Command */}
@@ -321,18 +321,18 @@ export default function HeroSection() {
               className="flex flex-wrap items-center gap-6 text-sm text-white/40"
             >
               <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-white">263+</span>
+                <span className="text-2xl font-bold text-white">25+</span>
+                <span>Sprints Completed</span>
+              </div>
+              <div className="w-px h-6 bg-white/20 hidden sm:block" />
+              <div className="flex items-center gap-2">
+                <span className="text-2xl font-bold text-white">263</span>
                 <span>Tickets Executed</span>
               </div>
               <div className="w-px h-6 bg-white/20 hidden sm:block" />
               <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-white">~45%</span>
-                <span>Time Savings</span>
-              </div>
-              <div className="w-px h-6 bg-white/20 hidden sm:block" />
-              <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-white">10</span>
-                <span>Role Specs</span>
+                <span className="text-2xl font-bold text-white">~60%</span>
+                <span>Cost Savings</span>
               </div>
             </motion.div>
           </div>

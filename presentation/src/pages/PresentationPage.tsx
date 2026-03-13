@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Globe, Home } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import BackgroundEffect from '../components/backgrounds/BackgroundEffects';
+import PresentationDropdown from '../components/ui/PresentationDropdown';
 
 // Slide data
 import { slidesEN } from '../data/slides-en';
@@ -16,28 +18,24 @@ import ContextPoisoningSlide from '../components/ContextPoisoningSlide';
 import ReverseTaxSlide from '../components/ReverseTaxSlide';
 import BreakingPointSlide from '../components/BreakingPointSlide';
 import BridgeSlide from '../components/BridgeSlide';
-import SolutionSlide from '../components/SolutionSlide';
-import SDDMethodologySlide from '../components/SDDMethodologySlide';
-import SDDCostOfChaosSlide from '../components/SDDCostOfChaosSlide';
 import SDDThreePillarsSlide from '../components/SDDThreePillarsSlide';
 import DocsFolderSlide from '../components/DocsFolderSlide';
+import QATestingSlide from '../components/QATestingSlide';
+import SprintMemorySlide from '../components/SprintMemorySlide';
+import SolutionSlide from '../components/SolutionSlide';
+import SDDCostOfChaosSlide from '../components/SDDCostOfChaosSlide';
 import WorkflowSlide from '../components/WorkflowSlide';
+import PipelineSlide from '../components/pipeline/PipelineSlide';
+import ScrollProgressBar from '../components/pipeline/ScrollProgressBar';
 import RolesSlide from '../components/RolesSlide';
-import TicketExecutionSlide from '../components/TicketExecutionSlide';
-import MultiAgentSlide from '../components/MultiAgentSlide';
-import BacklogSlide from '../components/BacklogSlide';
 import OrchestratorSlide from '../components/OrchestratorSlide';
-import QAMethodologySlide from '../components/QAMethodologySlide';
-import SprintSummarySlide from '../components/SprintSummarySlide';
 import ModelOptimizationSlide from '../components/ModelOptimizationSlide';
-import EnvironmentProofSlide from '../components/EnvironmentProofSlide';
 import ViewerSlide from '../components/ViewerSlide';
 import ExampleSlide from '../components/ExampleSlide';
 import ResultsSlide from '../components/ResultsSlide';
 import DemoSlide from '../components/DemoSlide';
 import FutureWaterfallSlide from '../components/FutureWaterfallSlide';
 import FutureMonolithSlide from '../components/FutureMonolithSlide';
-import BeforeAfterSlide from '../components/BeforeAfterSlide';
 import ClosingSlide from '../components/ClosingSlide';
 import FinalTaglineSlide from '../components/FinalTaglineSlide';
 
@@ -50,28 +48,23 @@ const slideComponents = {
   reverseTax: ReverseTaxSlide,
   breakingPoint: BreakingPointSlide,
   bridge: BridgeSlide,
-  sddMethodology: SDDMethodologySlide,
-  sddCostOfChaos: SDDCostOfChaosSlide,
   sddThreePillars: SDDThreePillarsSlide,
-  solution: SolutionSlide,
   docsFolder: DocsFolderSlide,
+  qaTestingSlide: QATestingSlide,
+  sprintMemorySlide: SprintMemorySlide,
+  sddCostOfChaos: SDDCostOfChaosSlide,
+  solution: SolutionSlide,
   workflow: WorkflowSlide,
+  pipeline: PipelineSlide,
   roles: RolesSlide,
-  ticketExecution: TicketExecutionSlide,
-  backlog: BacklogSlide,
   orchestrator: OrchestratorSlide,
-  multiagent: MultiAgentSlide,
-  qaMethodology: QAMethodologySlide,
-  sprintSummary: SprintSummarySlide,
   modelOptimization: ModelOptimizationSlide,
-  environmentProof: EnvironmentProofSlide,
   viewer: ViewerSlide,
   example: ExampleSlide,
   results: ResultsSlide,
   demo: DemoSlide,
   futureWaterfall: FutureWaterfallSlide,
   futureMonolith: FutureMonolithSlide,
-  beforeAfter: BeforeAfterSlide,
   closing: ClosingSlide,
   finalTagline: FinalTaglineSlide,
 };
@@ -80,6 +73,7 @@ export default function PresentationPage() {
   const [lang, setLang] = useState<'en' | 'he'>('en');
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const slides = lang === 'en' ? slidesEN : slidesHE;
   const isRTL = lang === 'he';
@@ -117,8 +111,11 @@ export default function PresentationPage() {
         prevSlide();
       }
     } else if (e.key === ' ') {
-      e.preventDefault();
-      nextSlide();
+      const isScrollable = !!(slides[currentSlide] as any).scrollable;
+      if (!isScrollable) {
+        e.preventDefault();
+        nextSlide();
+      }
     }
   };
 
@@ -127,7 +124,15 @@ export default function PresentationPage() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentSlide, isRTL]);
 
+  // Reset scroll position when slide changes
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
+  }, [currentSlide]);
+
   const currentSlideData = slides[currentSlide];
+  const isScrollable = !!(currentSlideData as any).scrollable;
   const SlideComponent = slideComponents[currentSlideData.type as keyof typeof slideComponents];
 
   // Animation variants based on direction and RTL
@@ -148,9 +153,16 @@ export default function PresentationPage() {
 
   return (
     <div
+      ref={scrollRef}
       dir={isRTL ? 'rtl' : 'ltr'}
-      className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden"
+      className={`relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white ${isScrollable ? 'h-screen overflow-y-auto overflow-x-hidden' : 'min-h-screen overflow-hidden'}`}
     >
+      {/* Floating Grid keyframe */}
+      <style>{`@keyframes floatingGrid { 0% { background-position: 0 0; } 100% { background-position: 40px 40px; } }`}</style>
+
+      {/* Animated Background */}
+      <BackgroundEffect activeId="particles" />
+
       {/* Back to Home */}
       <Link
         to="/"
@@ -162,16 +174,20 @@ export default function PresentationPage() {
         <span className="text-sm">Home</span>
       </Link>
 
-      {/* Language Toggle - always in top corner */}
-      <button
-        onClick={() => setLang(lang === 'en' ? 'he' : 'en')}
-        className={`fixed top-4 z-50 flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors ${
-          isRTL ? 'left-4' : 'right-4'
-        }`}
-      >
-        <Globe size={18} />
-        <span>{lang === 'en' ? 'עברית' : 'English'}</span>
-      </button>
+      {/* Language Selector - top corner */}
+      <div className={`fixed top-4 z-50 ${isRTL ? 'left-4' : 'right-4'}`}>
+        <PresentationDropdown
+          value={lang}
+          onChange={(v) => setLang(v as 'en' | 'he')}
+          icon={<Globe size={14} />}
+          animateIcon
+          align="right"
+          options={[
+            { id: 'en', label: 'English' },
+            { id: 'he', label: 'עברית' },
+          ]}
+        />
+      </div>
 
       {/* Slide Counter - center top */}
       <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 text-sm text-white/60">
@@ -188,11 +204,13 @@ export default function PresentationPage() {
           animate="center"
           exit="exit"
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="min-h-screen flex items-center justify-center p-8"
+          className={`min-h-screen ${isScrollable ? 'pt-16' : 'flex items-center justify-center'} p-8`}
         >
           <SlideComponent data={currentSlideData} lang={lang} />
         </motion.div>
       </AnimatePresence>
+
+      <ScrollProgressBar containerRef={scrollRef} visible={isScrollable} />
 
       {/* Navigation - centered at bottom */}
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4">
@@ -236,7 +254,12 @@ export default function PresentationPage() {
         </button>
       </div>
 
-      {/* Keyboard hint */}
+      {/* Trademark - bottom left */}
+      <div className={`fixed bottom-4 text-xs text-white/30 ${isRTL ? 'right-4' : 'left-4'}`}>
+        AutoSpec™ by Eli Hundia
+      </div>
+
+      {/* Keyboard hint - bottom right */}
       <div className={`fixed bottom-4 text-xs text-white/40 ${isRTL ? 'left-4' : 'right-4'}`}>
         {lang === 'en' ? '← → to navigate' : '← → לניווט'}
       </div>

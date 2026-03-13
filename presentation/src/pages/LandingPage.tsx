@@ -2,17 +2,21 @@ import React from 'react';
 import Navigation from '../components/landing/Navigation';
 import HeroSection from '../components/landing/HeroSection';
 import EvolutionSection from '../components/landing/EvolutionSection';
-import BeforeAfterSection from '../components/landing/BeforeAfterSection';
-import CompetitiveSection from '../components/landing/CompetitiveSection';
+import ContextPoisoningSection from '../components/landing/ContextPoisoningSection';
+import BreakingPointSection from '../components/landing/BreakingPointSection';
+import CostOfNoSpecsSection from '../components/landing/CostOfNoSpecsSection';
+import ThreePillarsSection from '../components/landing/ThreePillarsSection';
 import RolesSection from '../components/landing/RolesSection';
 import SprintMemorySection from '../components/landing/SprintMemorySection';
-import SprintLifecycleSection from '../components/landing/SprintLifecycleSection';
+import PipelineSection from '../components/landing/PipelineSection';
 import OrchestratorSection from '../components/landing/OrchestratorSection';
 import QASection from '../components/landing/QASection';
 import ViewerSection from '../components/landing/ViewerSection';
 import FinOpsSection from '../components/landing/FinOpsSection';
 import StatsSection from '../components/landing/StatsSection';
+import CompetitiveSection from '../components/landing/CompetitiveSection';
 import CaseStudiesSection from '../components/landing/CaseStudiesSection';
+import FutureVisionSection from '../components/landing/FutureVisionSection';
 import QuickStartSection from '../components/landing/QuickStartSection';
 import ToolsSection from '../components/landing/ToolsSection';
 import DocumentationSection from '../components/landing/DocumentationSection';
@@ -25,17 +29,21 @@ export default function LandingPage() {
       <main>
         <HeroSection />
         <EvolutionSection />
-        <CompetitiveSection />
+        <ContextPoisoningSection />
+        <BreakingPointSection />
+        <CostOfNoSpecsSection />
+        <ThreePillarsSection />
         <RolesSection />
         <SprintMemorySection />
-        <SprintLifecycleSection />
+        <PipelineSection />
         <OrchestratorSection />
         <QASection />
         <ViewerSection />
         <FinOpsSection />
         <StatsSection />
-        <BeforeAfterSection />
+        <CompetitiveSection />
         <CaseStudiesSection />
+        <FutureVisionSection />
         <QuickStartSection />
         <ToolsSection />
         <DocumentationSection />

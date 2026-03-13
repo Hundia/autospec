@@ -1,62 +1,138 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { PiggyBank } from 'lucide-react';
 
-const modelTiers = [
+const providers = [
   {
-    model: 'Haiku',
-    allocation: '40%',
-    tasks: 'Data extraction, doc updates, boilerplate, CRUD',
-    example: '"Extract field names from Prisma schema as TypeScript interface"',
-    cost: '~$0.001/task',
-    color: 'cyan',
+    id: 'claude',
+    name: 'Claude',
+    accent: 'indigo',
+    tiers: [
+      { model: 'Haiku', cost: '~$0.001/task' },
+      { model: 'Sonnet', cost: '~$0.01/task' },
+      { model: 'Opus', cost: '~$0.05/task' },
+    ],
+    before: { label: 'All-Opus', cost: '$47' },
+    after: { label: 'Routed', cost: '$19' },
   },
   {
-    model: 'Sonnet',
-    allocation: '45%',
-    tasks: 'State machines, multi-file refactors, component synthesis',
-    example: '"Implement waitlist promotion: cancel → promote → deduct credit → notify"',
-    cost: '~$0.01/task',
-    color: 'purple',
+    id: 'copilot',
+    name: 'Copilot',
+    accent: 'blue',
+    tiers: [
+      { model: 'GPT-4o mini', cost: '~$0.002/task' },
+      { model: 'GPT-4o', cost: '~$0.015/task' },
+      { model: 'GPT-5.4', cost: '~$0.06/task' },
+    ],
+    before: { label: 'All-GPT-5.4', cost: '$52' },
+    after: { label: 'Routed', cost: '$21' },
   },
   {
-    model: 'Opus',
-    allocation: '15%',
-    tasks: 'Architecture decisions, security audits, complex debugging',
-    example: '"Analyze booking/membership/notification race conditions"',
-    cost: '~$0.05/task',
-    color: 'amber',
+    id: 'gemini',
+    name: 'Gemini',
+    accent: 'amber',
+    tiers: [
+      { model: 'Flash', cost: '~$0.0005/task' },
+      { model: 'Pro', cost: '~$0.008/task' },
+      { model: 'Ultra', cost: '~$0.04/task' },
+    ],
+    before: { label: 'All-Ultra', cost: '$38' },
+    after: { label: 'Routed', cost: '$15' },
+  },
+  {
+    id: 'local',
+    name: 'Local',
+    accent: 'green',
+    tiers: [
+      { model: 'GPT OSS 7B', cost: '$0 (self-hosted)' },
+      { model: 'GPT OSS 30B', cost: '$0 (self-hosted)' },
+      { model: 'GPT OSS 120B', cost: '$0 (self-hosted)' },
+    ],
+    before: { label: 'All-120B', cost: '$0' },
+    after: { label: 'Routed', cost: '$0' },
   },
 ];
 
-const colorClasses: Record<
-  string,
-  { bg: string; border: string; text: string; badge: string; dot: string }
-> = {
-  cyan: {
+const tierDescriptions = [
+  {
+    allocation: '40%',
+    tasks: 'Data extraction, doc updates, boilerplate, CRUD',
+    example: '"Extract field names from Prisma schema as TypeScript interface"',
+  },
+  {
+    allocation: '45%',
+    tasks: 'State machines, multi-file refactors, component synthesis',
+    example: '"Implement waitlist promotion: cancel → promote → deduct credit → notify"',
+  },
+  {
+    allocation: '15%',
+    tasks: 'Architecture decisions, security audits, complex debugging',
+    example: '"Analyze booking/membership/notification race conditions"',
+  },
+];
+
+const tierColors = [
+  {
     bg: 'bg-cyan-500/10',
     border: 'border-cyan-500/20',
     text: 'text-cyan-400',
     badge: 'bg-cyan-500/20 text-cyan-300',
     dot: 'bg-cyan-500',
   },
-  purple: {
+  {
     bg: 'bg-purple-500/10',
     border: 'border-purple-500/20',
     text: 'text-purple-400',
     badge: 'bg-purple-500/20 text-purple-300',
     dot: 'bg-purple-500',
   },
-  amber: {
+  {
     bg: 'bg-amber-500/10',
     border: 'border-amber-500/20',
     text: 'text-amber-400',
     badge: 'bg-amber-500/20 text-amber-300',
     dot: 'bg-amber-500',
   },
+];
+
+const accentMap: Record<string, { bg: string; border: string; text: string; solid: string }> = {
+  indigo: {
+    bg: 'bg-indigo-500/10',
+    border: 'border-indigo-500/20',
+    text: 'text-indigo-400',
+    solid: 'bg-indigo-500',
+  },
+  blue: {
+    bg: 'bg-blue-500/10',
+    border: 'border-blue-500/20',
+    text: 'text-blue-400',
+    solid: 'bg-blue-500',
+  },
+  amber: {
+    bg: 'bg-amber-500/10',
+    border: 'border-amber-500/20',
+    text: 'text-amber-400',
+    solid: 'bg-amber-500',
+  },
+  green: {
+    bg: 'bg-emerald-500/10',
+    border: 'border-emerald-500/20',
+    text: 'text-emerald-400',
+    solid: 'bg-emerald-500',
+  },
+};
+
+const fadeSlide = {
+  initial: { opacity: 0, y: 4 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -4 },
+  transition: { duration: 0.2 },
 };
 
 export default function FinOpsSection() {
+  const [activeId, setActiveId] = useState('claude');
+  const active = providers.find((p) => p.id === activeId)!;
+
   return (
     <section id="finops" className="py-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
@@ -66,7 +142,7 @@ export default function FinOpsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
           <span className="inline-flex items-center gap-2 px-4 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-sm text-emerald-400 mb-4">
             <PiggyBank size={14} />
@@ -79,8 +155,35 @@ export default function FinOpsSection() {
             </span>
           </h2>
           <p className="text-white/60 max-w-2xl mx-auto">
-            AutoSpec's FinOps layer routes each task to the cheapest model that can handle it.
+            Smart task routing sends each job to the cheapest model that can handle it — across any provider.
           </p>
+        </motion.div>
+
+        {/* Provider selector pills */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="flex flex-wrap justify-center gap-2 mb-12"
+        >
+          {providers.map((p) => {
+            const isActive = p.id === activeId;
+            const colors = accentMap[p.accent];
+            return (
+              <button
+                key={p.id}
+                onClick={() => setActiveId(p.id)}
+                className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-all duration-200 ${
+                  isActive
+                    ? `${colors.bg} ${colors.border} ${colors.text}`
+                    : 'bg-white/5 border border-white/10 text-white/40 hover:text-white/60 hover:bg-white/10'
+                }`}
+              >
+                {p.name}
+              </button>
+            );
+          })}
         </motion.div>
 
         {/* Part 1: Donut chart + tier cards */}
@@ -112,28 +215,34 @@ export default function FinOpsSection() {
 
             {/* Legend below chart */}
             <div className="flex justify-center gap-6 mt-6">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-cyan-500 rounded-full" />
-                <span className="text-sm text-white/60">Haiku 40%</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-purple-500 rounded-full" />
-                <span className="text-sm text-white/60">Sonnet 45%</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-amber-500 rounded-full" />
-                <span className="text-sm text-white/60">Opus 15%</span>
-              </div>
+              {tierColors.map((tc, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <div className={`w-3 h-3 rounded-full ${tc.dot}`} />
+                  <span className="text-sm text-white/60">
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={active.tiers[i].model}
+                        {...fadeSlide}
+                        className="inline-block"
+                      >
+                        {active.tiers[i].model}
+                      </motion.span>
+                    </AnimatePresence>
+                    {' '}
+                    {tierDescriptions[i].allocation}
+                  </span>
+                </div>
+              ))}
             </div>
           </motion.div>
 
           {/* Right: 3 tier cards */}
           <div className="space-y-4">
-            {modelTiers.map((tier, index) => {
-              const colors = colorClasses[tier.color];
+            {tierDescriptions.map((desc, index) => {
+              const colors = tierColors[index];
               return (
                 <motion.div
-                  key={tier.model}
+                  key={index}
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
@@ -143,15 +252,35 @@ export default function FinOpsSection() {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <div className={`w-2.5 h-2.5 rounded-full ${colors.dot}`} />
-                      <span className={`font-bold text-white`}>{tier.model}</span>
+                      <span className="font-bold text-white">
+                        <AnimatePresence mode="wait">
+                          <motion.span
+                            key={active.tiers[index].model}
+                            {...fadeSlide}
+                            className="inline-block"
+                          >
+                            {active.tiers[index].model}
+                          </motion.span>
+                        </AnimatePresence>
+                      </span>
                     </div>
                     <span className={`text-xs font-semibold px-2 py-0.5 rounded-md ${colors.badge}`}>
-                      {tier.allocation}
+                      {desc.allocation}
                     </span>
                   </div>
-                  <p className="text-white/60 text-sm mb-2">{tier.tasks}</p>
-                  <p className={`text-xs font-mono italic ${colors.text} mb-2`}>{tier.example}</p>
-                  <span className="text-xs text-white/40">{tier.cost}</span>
+                  <p className="text-white/60 text-sm mb-2">{desc.tasks}</p>
+                  <p className={`text-xs font-mono italic ${colors.text} mb-2`}>{desc.example}</p>
+                  <span className="text-xs text-white/40">
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={active.tiers[index].cost}
+                        {...fadeSlide}
+                        className="inline-block"
+                      >
+                        {active.tiers[index].cost}
+                      </motion.span>
+                    </AnimatePresence>
+                  </span>
                 </motion.div>
               );
             })}
@@ -168,12 +297,44 @@ export default function FinOpsSection() {
         >
           <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-6 text-center">
             <div className="text-red-400 text-sm font-medium mb-2">Without FinOps</div>
-            <div className="text-3xl font-bold text-white">$47</div>
-            <div className="text-white/40 text-sm">per sprint (all-Opus)</div>
+            <div className="text-3xl font-bold text-white">
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={active.before.cost}
+                  {...fadeSlide}
+                  className="inline-block"
+                >
+                  {active.before.cost}
+                </motion.span>
+              </AnimatePresence>
+            </div>
+            <div className="text-white/40 text-sm">
+              per sprint (
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={active.before.label}
+                  {...fadeSlide}
+                  className="inline-block"
+                >
+                  {active.before.label}
+                </motion.span>
+              </AnimatePresence>
+              )
+            </div>
           </div>
           <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-6 text-center">
             <div className="text-emerald-400 text-sm font-medium mb-2">With AutoSpec FinOps</div>
-            <div className="text-3xl font-bold text-white">$19</div>
+            <div className="text-3xl font-bold text-white">
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={active.after.cost}
+                  {...fadeSlide}
+                  className="inline-block"
+                >
+                  {active.after.cost}
+                </motion.span>
+              </AnimatePresence>
+            </div>
             <div className="text-white/40 text-sm">per sprint (routed)</div>
           </div>
         </motion.div>

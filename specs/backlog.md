@@ -307,7 +307,83 @@
 
 ---
 
-## Sprint 16: Continue Extension + Complete Environment Skills (~37 pts)
+## Sprint 16: Landing Page Upgrade — Presentation Insights (~45 pts)
+
+**Theme:** Port presentation's strongest insights back to landing page: problem narrative, pipeline, three pillars, future vision, updated messaging.
+**Status:** ✅ Done
+
+### Agent 1: Hero & Messaging (~10 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 16.1 | Update hero heading to "Make AI Think Before It Codes" + new subtitle | Frontend | 3 | ✅ | — |
+| 16.2 | Update hero stats to "25+ Sprints / 263 Tickets / ~60% Cost Savings" | Frontend | 2 | ✅ | — |
+| 16.3 | Add "Presentation" nav link pointing to `#/presentation` | Frontend | 2 | ✅ | — |
+| 16.4 | Update callout quotes in EvolutionSection and SprintMemorySection | Frontend | 3 | ✅ | — |
+
+### Agent 2: Pipeline & Three Pillars (~13 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 16.5 | Create `PipelineSection.tsx` — 9-step pipeline in 3x3 grid | Frontend | 8 | ✅ | — |
+| 16.6 | Create `ThreePillarsSection.tsx` — 3 pillar cards with artifacts | Frontend | 5 | ✅ | — |
+
+### Agent 3: Problem Narrative (~14 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 16.7 | Create `ContextPoisoningSection.tsx` — timeline + chat window | Frontend | 6 | ✅ | — |
+| 16.8 | Create `BreakingPointSection.tsx` — balance beam + stat cards | Frontend | 5 | ✅ | — |
+| 16.9 | Create `CostOfNoSpecsSection.tsx` — two-column comparison | Frontend | 3 | ✅ | — |
+
+### Agent 4: Future Vision & Stats (~8 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 16.10 | Create `FutureVisionSection.tsx` — planning bars + monolith comparison | Frontend | 6 | ✅ | — |
+| 16.11 | Update `StatsSection.tsx` metrics to match presentation results | Frontend | 2 | ✅ | — |
+
+### Orchestrator Post-Merge
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 16.12 | Update `LandingPage.tsx` — new section order, remove BeforeAfter/SprintLifecycle | PM | 2 | ✅ | 16.1–16.11 |
+| 16.13 | Build verification — `npm run build` exits 0 | QA | 1 | ✅ | 16.12 |
+
+---
+
+## Sprint 17: Landing Page Visual Fixes — Timeline + Provider-Agnostic (~24 pts)
+
+**Theme:** Fix timeline bar alignment, make Orchestrator and FinOps sections provider-agnostic with interactive provider selectors.
+**Status:** ✅ Done
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 17.1 | Fix EvolutionSection timeline bar position — `top-[3.25rem]` → `top-[0.625rem]` so bar crosses through dot centers | Frontend | 2 | ✅ | — |
+| 17.2 | Fix SprintMemorySection timeline bar position — `top-12` → `top-[0.625rem]` so bar crosses through dot centers | Frontend | 2 | ✅ | — |
+| 17.3 | Rewrite OrchestratorSection with 4-provider selector (Claude, Copilot, Gemini, Local) — dynamic model names, accent colors, AnimatePresence transitions, benefits pills | Frontend | 10 | ✅ | — |
+| 17.4 | Rewrite FinOpsSection with 4-provider selector — dynamic model tiers/costs, animated before/after comparison, provider-specific data | Frontend | 10 | ✅ | — |
+
+---
+
+## Sprint 18: Academic Paper Update + Showcase (~16 pts)
+
+**Theme:** Update `docs/ACADEMIC_PAPER.md` to reflect AutoSpec's evolution through 29 sprints and 837+ tickets; add new methodology sections and third case study.
+**Status:** ✅ Done
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 18.1 | Update paper metadata — date March 2026, abstract 837+ tickets/3 case studies, keywords | Docs | 2 | ✅ | — | `docs/ACADEMIC_PAPER.md` |
+| 18.2 | Update Section 3.1 — eight-phase workflow, describe 3 new phases | Docs | 2 | ✅ | 18.1 | `docs/ACADEMIC_PAPER.md` |
+| 18.3 | Add Section 3.6 — Orchestrator + Agent Pattern (architecture, briefing files, anti-hallucination, parallel worktrees) | Docs | 3 | ✅ | 18.2 | `docs/ACADEMIC_PAPER.md` |
+| 18.4 | Add Section 3.7 — Operationalized Skills (11 slash commands, skill anatomy, IDE integration) | Docs | 2 | ✅ | 18.3 | `docs/ACADEMIC_PAPER.md` |
+| 18.5 | Add Section 3.8 — Viewer App (self-referential governance dashboard, design system, 7 routes) | Docs | 2 | ✅ | 18.4 | `docs/ACADEMIC_PAPER.md` |
+| 18.6 | Add Section 4.3 Case Study 3 AutoSpec Self-Validation + update Section 4.4 Combined Analysis | Docs | 3 | ✅ | 18.5 | `docs/ACADEMIC_PAPER.md` |
+| 18.7 | Update Section 6.4 Future Work, Section 7 Conclusion, Section 1.1 Contributions | Docs | 2 | ✅ | 18.6 | `docs/ACADEMIC_PAPER.md` |
+
+---
+
+## Sprint 19: Continue Extension + Complete Environment Skills (~37 pts)
 
 **Theme:** Replace Aider with Continue VS Code extension, create skill files for all environments (Continue, Cursor, Windsurf, JetBrains), environment setup docs, update compatibility matrix
 **Status:** ✅ Done
@@ -316,24 +392,24 @@
 
 | ID | Ticket | Owner | Pts | Status | Deps | Docs |
 |----|--------|-------|-----|--------|------|------|
-| 16.1 | Replace Aider→Continue in `environments.ts`, update compatibility matrix | Frontend | 3 | ✅ | — | `docs/viewer/05_advanced_pages.md` |
-| 16.2 | Create `skills/continue/` — 3 rules + 10 prompts adapted from Claude skills | Backend | 8 | ✅ | — | `docs/environments/vscode/continue.md` |
-| 16.3 | Create `skills/cursor/` — SDD rules + 6 skill MDC files | Backend | 5 | ✅ | — | `docs/environments/vscode/cursor.md` |
+| 19.1 | Replace Aider→Continue in `environments.ts`, update compatibility matrix | Frontend | 3 | ✅ | — | `docs/viewer/05_advanced_pages.md` |
+| 19.2 | Create `skills/continue/` — 3 rules + 10 prompts adapted from Claude skills | Backend | 8 | ✅ | — | `docs/environments/vscode/continue.md` |
+| 19.3 | Create `skills/cursor/` — SDD rules + 6 skill MDC files | Backend | 5 | ✅ | — | `docs/environments/vscode/cursor.md` |
 
 ### Phase B: Remaining Skills + Docs (PARALLEL)
 
 | ID | Ticket | Owner | Pts | Status | Deps | Docs |
 |----|--------|-------|-----|--------|------|------|
-| 16.4 | Create `skills/windsurf/instructions.md` + `skills/jetbrains/instructions.md` | Backend | 5 | ✅ | — | `docs/environments/vscode/windsurf.md`, `docs/environments/jetbrains/setup.md` |
-| 16.5 | Create 4 environment docs: continue, cursor, windsurf, jetbrains | Docs | 8 | ✅ | — | `docs/environments/` |
+| 19.4 | Create `skills/windsurf/instructions.md` + `skills/jetbrains/instructions.md` | Backend | 5 | ✅ | — | `docs/environments/vscode/windsurf.md`, `docs/environments/jetbrains/setup.md` |
+| 19.5 | Create 4 environment docs: continue, cursor, windsurf, jetbrains | Docs | 8 | ✅ | — | `docs/environments/` |
 
 ### Phase C: Integration + QA (SERIAL)
 
 | ID | Ticket | Owner | Pts | Status | Deps | Docs |
 |----|--------|-------|-----|--------|------|------|
-| 16.6 | Update all Aider references across codebase → Continue | Frontend | 3 | ✅ | 16.1 | — |
-| 16.7 | Viewer build + QA | QA | 3 | ✅ | 16.1, 16.6 | — |
-| 16.8 | Sprint 16 summary + backlog update | PM | 2 | ✅ | 16.1–16.7 | `sprints/sprint-16/summary.md` |
+| 19.6 | Update all Aider references across codebase → Continue | Frontend | 3 | ✅ | 19.1 | — |
+| 19.7 | Viewer build + QA | QA | 3 | ✅ | 19.1, 19.6 | — |
+| 19.8 | Sprint 19 summary + backlog update | PM | 2 | ✅ | 19.1–19.7 | `sprints/sprint-19/summary.md` |
 
 ---
 
@@ -377,5 +453,8 @@
 | Sprint 13B | 24 | ✅ Done |
 | Sprint 14 | 32 | ✅ Done |
 | Sprint 15 | 81 | ✅ Done |
-| Sprint 16 | 37 | ✅ Done |
-| **Total** | **566** | 🔄 **IN PROGRESS** |
+| Sprint 16 | 45 | ✅ Done |
+| Sprint 17 | 24 | ✅ Done |
+| Sprint 18 | 16 | ✅ Done |
+| Sprint 19 | 37 | ✅ Done |
+| **Total** | **651** | 🔄 **IN PROGRESS** |
