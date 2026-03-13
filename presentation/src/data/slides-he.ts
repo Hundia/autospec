@@ -73,14 +73,14 @@ export const slidesHE = [
     chat: {
       windowTitle: 'AI Agent — project/auth',
       messages: [
-        { role: 'user', turn: 3, text: 'הוסף JWT auth עם refresh tokens. אחסן טוקנים ב-httpOnly cookies.' },
-        { role: 'ai', turn: 3, text: 'אממש JWT auth עם httpOnly cookies לאחסון טוקנים מאובטח. יוצר auth.middleware.ts...' },
-        { role: 'user', turn: 35, text: 'ה-login endpoint איטי. אפשר לייעל?' },
-        { role: 'ai', turn: 35, text: 'אעבור לאחסון טוקנים ב-localStorage לגישה מהירה יותר ואוסיף שכבת cache לטוקנים.', flag: 'drift' },
-        { role: 'user', turn: 62, text: 'משתמשים מתנתקים באופן אקראי. אפשר לבדוק את תהליך ההתחברות?' },
-        { role: 'ai', turn: 62, text: 'הבעיה היא שה-cookies לא נשלחים. אוסיף withCredentials: true לכל קריאות ה-API.', flag: 'contradiction' },
-        { role: 'user', turn: 89, text: 'עכשיו אני מקבל שגיאות CORS בכל בקשה.' },
-        { role: 'ai', turn: 89, text: 'אתקן את זה. אתקין express-session ואעבור ל-session-based auth — זה מה שהשתמשנו בו מההתחלה.', flag: 'poisoned' },
+        { role: 'user', turn: 1, text: 'הוסף JWT auth עם refresh tokens. אחסן טוקנים ב-httpOnly cookies.' },
+        { role: 'ai', turn: 1, text: 'אממש JWT auth עם httpOnly cookies לאחסון טוקנים מאובטח. יוצר auth.middleware.ts...' },
+        { role: 'user', turn: 25, text: 'ה-login endpoint איטי. אפשר לייעל?' },
+        { role: 'ai', turn: 25, text: 'אעבור לאחסון טוקנים ב-localStorage לגישה מהירה יותר ואוסיף שכבת cache לטוקנים.', flag: 'drift' },
+        { role: 'user', turn: 50, text: 'משתמשים מתנתקים באופן אקראי. אפשר לבדוק את תהליך ההתחברות?' },
+        { role: 'ai', turn: 50, text: 'הבעיה היא שה-cookies לא נשלחים. אוסיף withCredentials: true לכל קריאות ה-API.', flag: 'contradiction' },
+        { role: 'user', turn: 100, text: 'עכשיו אני מקבל שגיאות CORS בכל בקשה.' },
+        { role: 'ai', turn: 100, text: 'אתקן את זה. אתקין express-session ואעבור ל-session-based auth — זה מה שהשתמשנו בו מההתחלה.', flag: 'poisoned' },
       ],
     },
   },
@@ -250,9 +250,65 @@ export const slidesHE = [
     },
   },
 
+  // 13. qaTestingSlide — בדיקות E2E מונעות AI
+  {
+    type: 'qaTestingSlide',
+    title: 'QA: בדיקות End-to-End מונעות AI',
+    subtitle: 'הסוכן לא רק כותב קוד — הוא מאמת את העבודה שלו',
+    workflow: [
+      { step: '01', title: 'תכנן בדיקות', icon: '📋', description: 'הסוכן קורא מפרטים ומתכנן אסטרטגיית בדיקות', color: 'blue' },
+      { step: '02', title: 'הגדר Mocks', icon: '🔧', description: 'הגדרת בסיס נתונים לבדיקות, API stubs, fixtures', color: 'violet' },
+      { step: '03', title: 'הרץ Playwright', icon: '🎭', description: 'הרצת בדיקות E2E מול סביבת preprod', color: 'green' },
+      { step: '04', title: 'תעד תוצאות', icon: '📝', description: 'עדכון סיכום ספרינט עם עקיבות pass/fail', color: 'teal' },
+    ],
+    terminal: {
+      title: 'playwright — test suite',
+      lines: [
+        { text: '> npx playwright test --project=chromium', type: 'command' },
+        { text: '  Running 23 tests using 3 workers', type: 'info' },
+        { text: '  ✓ TC-01 Admin login with valid credentials (1.2s)', type: 'pass' },
+        { text: '  ✓ TC-02 JWT refresh token rotation (0.8s)', type: 'pass' },
+        { text: '  ✓ TC-03 Create class via API (0.5s)', type: 'pass' },
+        { text: '  ✓ TC-07 Booking with credit deduction (1.1s)', type: 'pass' },
+        { text: '  ✗ TC-12 Waitlist promotion on cancel (2.3s)', type: 'fail' },
+        { text: '    → Expected: status "confirmed", Received: "waitlisted"', type: 'error' },
+        { text: '  ✓ TC-18 Schedule page renders classes (1.8s)', type: 'pass' },
+        { text: '  ✓ TC-21 My Bookings displays correctly (1.4s)', type: 'pass' },
+        { text: '  22 passed, 1 failed (18.4s)', type: 'summary' },
+      ],
+    },
+    providers: ['Claude Code', 'GitHub Copilot', 'Gemini', 'Continue'],
+    callout: 'כל סוכן AI שיכול לקרוא מפרטים יכול להריץ את חבילת הבדיקות שלך. אגנוסטי לספק מעצם תכנונו.',
+  },
+
+  // 14. sprintMemorySlide — סיכומי ספרינט כזיכרון הרצה
+  {
+    type: 'sprintMemorySlide',
+    title: 'זיכרון ספרינט: לעולם לא לאבד הקשר',
+    subtitle: 'סיכומי ספרינט הם מסמך המסירה שמעולם לא היה קיים',
+    summary: {
+      command: '> /sprint-close',
+      progress: 'סוגר ספרינט 11... מייצר סיכום...',
+      result: '✓ sprints/sprint-11/summary.md נוצר',
+      sections: [
+        { label: 'Release Notes', color: 'blue', items: ['הוספת JWT auth עם refresh tokens', 'עמוד התחברות עם OTP', '3 API endpoints חדשים'] },
+        { label: 'דוקומנטציה מקושרת', color: 'violet', items: ['docs/auth/01-architecture.md', 'docs/auth/02-jwt-flow.md', 'docs/frontend/03-login-page.md'] },
+        { label: 'קבצים ששונו', color: 'green', items: ['+ src/auth/auth.service.ts', '+ src/auth/auth.guard.ts', '~ src/pages/Login.tsx', '... 12 נוספים'] },
+        { label: 'Commit סגירה', color: 'amber', items: ['a3f7c21 feat(sprint-11): auth + login'] },
+      ],
+    },
+    benefits: [
+      { icon: '⚡', title: 'הקשר מיידי', description: 'הסוכן קורא סיכום → הקשר מלא ב-30 שניות' },
+      { icon: '🔍', title: 'השוואת ספרינטים', description: 'השווה ספרינט 3 מול ספרינט 7 → ראה בדיוק מה השתנה' },
+      { icon: '🚫', title: 'ללא קריאת קוד', description: 'הכל מקושר — אין צורך בהנדסה לאחור' },
+      { icon: '🤝', title: 'מסירה מושלמת', description: 'כל סוכן, כל ספק, ממשיך מאיפה שעצרת' },
+    ],
+    callout: 'סיכום הספרינט הוא הזיכרון ש-AI מעולם לא קיבל.',
+  },
+
   // ── ACT 4 — THE REVEAL ─────────────────────────────────────────────────────────
 
-  // 13. solution — AutoSpec packages all the building blocks
+  // 15. solution — AutoSpec packages all the building blocks
   {
     type: 'solution',
     title: 'AutoSpec: ערכת הכלים שלך ל-SDD',

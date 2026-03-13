@@ -73,14 +73,14 @@ export const slidesEN = [
     chat: {
       windowTitle: 'AI Agent — project/auth',
       messages: [
-        { role: 'user', turn: 3, text: 'Add JWT auth with refresh tokens. Store tokens in httpOnly cookies.' },
-        { role: 'ai', turn: 3, text: "I'll implement JWT auth with httpOnly cookies for secure token storage. Creating auth.middleware.ts..." },
-        { role: 'user', turn: 35, text: 'The login endpoint is slow. Can you optimize it?' },
-        { role: 'ai', turn: 35, text: "I'll switch to storing tokens in localStorage for faster access and add a token cache layer.", flag: 'drift' },
-        { role: 'user', turn: 62, text: 'Users are getting logged out randomly. Can you check the auth flow?' },
-        { role: 'ai', turn: 62, text: "The issue is that cookies aren't being sent. I'll add withCredentials: true to all API calls.", flag: 'contradiction' },
-        { role: 'user', turn: 89, text: "Now I'm getting CORS errors on every request." },
-        { role: 'ai', turn: 89, text: "Let me fix that. I'll install express-session and switch to session-based auth — it's what we've been using all along.", flag: 'poisoned' },
+        { role: 'user', turn: 1, text: 'Add JWT auth with refresh tokens. Store tokens in httpOnly cookies.' },
+        { role: 'ai', turn: 1, text: "I'll implement JWT auth with httpOnly cookies for secure token storage. Creating auth.middleware.ts..." },
+        { role: 'user', turn: 25, text: 'The login endpoint is slow. Can you optimize it?' },
+        { role: 'ai', turn: 25, text: "I'll switch to storing tokens in localStorage for faster access and add a token cache layer.", flag: 'drift' },
+        { role: 'user', turn: 50, text: 'Users are getting logged out randomly. Can you check the auth flow?' },
+        { role: 'ai', turn: 50, text: "The issue is that cookies aren't being sent. I'll add withCredentials: true to all API calls.", flag: 'contradiction' },
+        { role: 'user', turn: 100, text: "Now I'm getting CORS errors on every request." },
+        { role: 'ai', turn: 100, text: "Let me fix that. I'll install express-session and switch to session-based auth — it's what we've been using all along.", flag: 'poisoned' },
       ],
     },
   },
@@ -250,9 +250,65 @@ export const slidesEN = [
     },
   },
 
+  // 13. qaTestingSlide — AI-driven E2E testing
+  {
+    type: 'qaTestingSlide',
+    title: 'QA: AI-Driven End-to-End Testing',
+    subtitle: "The agent doesn't just write code — it verifies its own work",
+    workflow: [
+      { step: '01', title: 'Plan Tests', icon: '📋', description: 'Agent reads specs and designs test strategy', color: 'blue' },
+      { step: '02', title: 'Set Up Mocks', icon: '🔧', description: 'Configure test database, API stubs, fixtures', color: 'violet' },
+      { step: '03', title: 'Run Playwright', icon: '🎭', description: 'Execute E2E tests against preprod environment', color: 'green' },
+      { step: '04', title: 'Document Results', icon: '📝', description: 'Update sprint summary with pass/fail traceability', color: 'teal' },
+    ],
+    terminal: {
+      title: 'playwright — test suite',
+      lines: [
+        { text: '> npx playwright test --project=chromium', type: 'command' },
+        { text: '  Running 23 tests using 3 workers', type: 'info' },
+        { text: '  ✓ TC-01 Admin login with valid credentials (1.2s)', type: 'pass' },
+        { text: '  ✓ TC-02 JWT refresh token rotation (0.8s)', type: 'pass' },
+        { text: '  ✓ TC-03 Create class via API (0.5s)', type: 'pass' },
+        { text: '  ✓ TC-07 Booking with credit deduction (1.1s)', type: 'pass' },
+        { text: '  ✗ TC-12 Waitlist promotion on cancel (2.3s)', type: 'fail' },
+        { text: '    → Expected: status "confirmed", Received: "waitlisted"', type: 'error' },
+        { text: '  ✓ TC-18 Schedule page renders classes (1.8s)', type: 'pass' },
+        { text: '  ✓ TC-21 My Bookings displays correctly (1.4s)', type: 'pass' },
+        { text: '  22 passed, 1 failed (18.4s)', type: 'summary' },
+      ],
+    },
+    providers: ['Claude Code', 'GitHub Copilot', 'Gemini', 'Continue'],
+    callout: 'Any AI agent that can read specs can run your test suite. Provider-agnostic by design.',
+  },
+
+  // 14. sprintMemorySlide — sprint summaries as execution memory
+  {
+    type: 'sprintMemorySlide',
+    title: 'Sprint Memory: Never Lose Context Again',
+    subtitle: "Sprint summaries are the handoff document that never existed before",
+    summary: {
+      command: '> /sprint-close',
+      progress: 'Closing Sprint 11... Generating summary...',
+      result: '✓ sprints/sprint-11/summary.md created',
+      sections: [
+        { label: 'Release Notes', color: 'blue', items: ['Added JWT auth with refresh tokens', 'Login page with OTP', '3 new API endpoints'] },
+        { label: 'Linked Documentation', color: 'violet', items: ['docs/auth/01-architecture.md', 'docs/auth/02-jwt-flow.md', 'docs/frontend/03-login-page.md'] },
+        { label: 'Files Modified', color: 'green', items: ['+ src/auth/auth.service.ts', '+ src/auth/auth.guard.ts', '~ src/pages/Login.tsx', '... 12 more'] },
+        { label: 'Closing Commit', color: 'amber', items: ['a3f7c21 feat(sprint-11): auth + login'] },
+      ],
+    },
+    benefits: [
+      { icon: '⚡', title: 'Instant Context', description: 'Agent reads summary → Full context in 30 seconds' },
+      { icon: '🔍', title: 'Sprint Comparison', description: 'Compare Sprint 3 vs Sprint 7 → See exactly what changed' },
+      { icon: '🚫', title: 'No Code Reading', description: 'Everything linked — no reverse engineering needed' },
+      { icon: '🤝', title: 'Perfect Handoff', description: 'Any agent, any provider, picks up where you left off' },
+    ],
+    callout: 'The sprint summary is the memory that AI was never given.',
+  },
+
   // ── ACT 4 — THE REVEAL ─────────────────────────────────────────────────────────
 
-  // 13. solution — AutoSpec packages all the building blocks
+  // 15. solution — AutoSpec packages all the building blocks
   {
     type: 'solution',
     title: 'AutoSpec: Your SDD Toolkit',

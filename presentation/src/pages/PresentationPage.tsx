@@ -20,6 +20,8 @@ import BreakingPointSlide from '../components/BreakingPointSlide';
 import BridgeSlide from '../components/BridgeSlide';
 import SDDThreePillarsSlide from '../components/SDDThreePillarsSlide';
 import DocsFolderSlide from '../components/DocsFolderSlide';
+import QATestingSlide from '../components/QATestingSlide';
+import SprintMemorySlide from '../components/SprintMemorySlide';
 import SolutionSlide from '../components/SolutionSlide';
 import SDDCostOfChaosSlide from '../components/SDDCostOfChaosSlide';
 import WorkflowSlide from '../components/WorkflowSlide';
@@ -48,6 +50,8 @@ const slideComponents = {
   bridge: BridgeSlide,
   sddThreePillars: SDDThreePillarsSlide,
   docsFolder: DocsFolderSlide,
+  qaTestingSlide: QATestingSlide,
+  sprintMemorySlide: SprintMemorySlide,
   sddCostOfChaos: SDDCostOfChaosSlide,
   solution: SolutionSlide,
   workflow: WorkflowSlide,
