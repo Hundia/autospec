@@ -411,6 +411,37 @@
 | 19.7 | Viewer build + QA | QA | 3 | ✅ | 19.1, 19.6 | — |
 | 19.8 | Sprint 19 summary + backlog update | PM | 2 | ✅ | 19.1–19.7 | `sprints/sprint-19/summary.md` |
 
+### Phase 19A: autospec-starter Template (PARALLEL)
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 19.9 | Create `autospec-starter/` directory with all template files | Frontend | 5 | ✅ | 19.8 | — |
+| 19.10 | Create `autospec-starter/QUICKSTART.md` — master generation prompt | PM | 8 | ✅ | 19.9 | — |
+| 19.11 | Create IDE integration files (Cursor, Windsurf, Copilot) | Backend | 5 | ✅ | 19.9 | — |
+| 19.12 | Update `QUICKSTART.md` (root) — link to autospec-starter | PM | 2 | ✅ | 19.10 | — |
+
+### Phase 19B: Landing Page Redesign (PARALLEL)
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 19.8b | Redesign `LandingPage.tsx` — provider-agnostic, 6 sections | Frontend | 8 | ✅ | 19.8 | — |
+
+### Phase 19C: Examples + Verification (SERIAL)
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 19.13 | Create `examples/todo-app/` with sample SRS requirements | Frontend | 3 | ✅ | 19.9 | — |
+| 19.14 | Create `scripts/verify.sh` smoke test for autospec-starter template | QA | 3 | ✅ | 19.9 | — |
+| 19.15 | E2E test: Run QUICKSTART.md against example project | QA | 3 | 🔲 | 19.13 | — |
+| 19.16 | Build verification — `cd presentation && npm run build` exits 0 | QA | 1 | ✅ | 19.8 | — |
+
+### Orchestrator Post-Merge (~2 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 19.17 | Update `specs/backlog.md` with Sprint 19 | PM | 1 | ✅ | — | — |
+| 19.18 | Playwright screenshots of redesigned landing page | QA | 1 | ✅ | 19.16 | `viewer/review-screenshots/sprint-19-*.png` |
+
 ---
 
 ## Bug Tracker

@@ -1,63 +1,60 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Copy, Check, Terminal, MessageSquare, Package } from 'lucide-react';
+import { Copy, Check, Github, Download, Wrench } from 'lucide-react';
 
 const options = [
   {
-    title: 'The Prompt Method',
-    subtitle: 'Zero-Install',
+    title: 'GitHub Template',
+    subtitle: 'Recommended',
     time: '30 seconds',
-    icon: MessageSquare,
+    icon: Github,
     color: 'blue',
     featured: true,
-    description: 'Paste this into Claude, Cursor, Copilot, or any AI assistant. No installation needed.',
-    code: `I want you to follow the AutoSpec methodology. Create a specs/ directory with 10 role-based spec files. Create specs/backlog.md for sprint tracking with emoji statuses. Create CLAUDE.md with project conventions and memory rules. Start with Sprint 0.`,
-    codeLabel: 'Copy Prompt',
-  },
-  {
-    title: 'The Quick Way',
-    subtitle: 'CLI',
-    time: '30 seconds',
-    icon: Terminal,
-    color: 'green',
-    featured: false,
-    description: 'One command generates the full AutoSpec structure with sensible defaults.',
-    code: 'npx autospec init',
+    description: 'Click "Use this template" on GitHub. Skills pre-installed for Claude Code, Cursor, Copilot, and Windsurf. Zero dependencies.',
+    code: 'gh repo create my-project --template Hundia/autospec-starter',
     codeLabel: 'Copy Command',
   },
   {
-    title: 'The Complete Toolkit',
-    subtitle: 'Full Setup',
+    title: 'Download QUICKSTART.md',
+    subtitle: 'Existing Projects',
+    time: '1 minute',
+    icon: Download,
+    color: 'green',
+    featured: false,
+    description: 'Add QUICKSTART.md to any existing project. Place your requirements in a folder and tell your AI: "Run @QUICKSTART.md".',
+    code: 'curl -o QUICKSTART.md https://raw.githubusercontent.com/Hundia/autospec/main/QUICKSTART.md\nmkdir -p requirements',
+    codeLabel: 'Copy Commands',
+  },
+  {
+    title: 'CLI Tools',
+    subtitle: 'Optional',
     time: '2 minutes',
-    icon: Package,
+    icon: Wrench,
     color: 'purple',
     featured: false,
-    description: 'Install globally for the CLI, viewer, and FinOps dashboard.',
-    code: `npm install -g autospec\nautospec init --with-viewer\nautospec viewer`,
+    description: 'Install the CLI for sprint status, viewer dashboard, and FinOps tracking. Not required for core workflow.',
+    code: 'npm install -g autospec\nautospec status\nautospec viewer',
     codeLabel: 'Copy Commands',
   },
 ];
 
-const colorClasses: Record<string, { bg: string; border: string; icon: string; badge: string; time: string }> = {
+const colorClasses: Record<string, { bg: string; border: string; icon: string; time: string }> = {
   blue: {
     bg: 'bg-blue-500/10',
     border: 'border-blue-500/50',
     icon: 'text-blue-400',
-    badge: 'bg-blue-500/10 text-blue-400',
     time: 'bg-blue-500/10 text-blue-400',
   },
   green: {
     bg: 'bg-green-500/10',
     border: 'border-green-500/30',
     icon: 'text-green-400',
-    badge: 'bg-green-500/10 text-green-400',
     time: 'bg-green-500/10 text-green-400',
   },
   purple: {
     bg: 'bg-purple-500/10',
     border: 'border-purple-500/30',
     icon: 'text-purple-400',
-    badge: 'bg-purple-500/10 text-purple-400',
     time: 'bg-purple-500/10 text-purple-400',
   },
 };
@@ -89,7 +86,7 @@ export default function QuickStartSection() {
             Start in 30 Seconds. Pick Your Path.
           </h2>
           <p className="text-white/60 max-w-2xl mx-auto">
-            Whether you want zero dependencies, a CLI, or the full toolkit — AutoSpec meets you where you are.
+            Use the GitHub template for new projects, download QUICKSTART.md for existing ones, or add CLI tools for dashboards.
           </p>
         </motion.div>
 
@@ -114,7 +111,7 @@ export default function QuickStartSection() {
                 {option.featured && (
                   <div className="absolute -top-3 right-4">
                     <span className="bg-blue-500 text-white text-xs px-3 py-1 rounded-full font-medium">
-                      Easiest
+                      Recommended
                     </span>
                   </div>
                 )}

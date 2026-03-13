@@ -1,183 +1,89 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Copy, Check, ArrowRight, Terminal, Github } from 'lucide-react';
+import { Copy, Check, ArrowRight, Github } from 'lucide-react';
 
-// Terminal animation data
-interface TerminalScene {
-  prompt: string;
-  lines: { text: string; color: string }[];
-  pauseAfter: number;
+// Conversation-style animation data
+interface ConversationLine {
+  speaker: 'user' | 'ai';
+  text: string;
+  delay: number; // ms before this line appears
 }
 
-const SCENES: TerminalScene[] = [
-  {
-    prompt: 'npx autospec init',
-    lines: [
-      { text: '', color: '' },
-      { text: '  AutoSpec v1.0 — Initializing project...', color: 'text-blue-400' },
-      { text: '', color: '' },
-      { text: '  [1/4] Creating specs directory...', color: 'text-white/60' },
-      { text: '    ✓ specs/01_product_manager.md', color: 'text-green-400' },
-      { text: '    ✓ specs/02_architect.md', color: 'text-green-400' },
-      { text: '    ✓ specs/03_design_system.md', color: 'text-green-400' },
-      { text: '    ✓ specs/04_frontend_architect.md', color: 'text-green-400' },
-      { text: '    ✓ specs/05_backend_architect.md', color: 'text-green-400' },
-      { text: '    ✓ specs/06_database_architect.md', color: 'text-green-400' },
-      { text: '    ✓ specs/07_qa_engineer.md', color: 'text-green-400' },
-      { text: '    ✓ specs/08_devops.md', color: 'text-green-400' },
-      { text: '    ✓ specs/09_security_auditor.md', color: 'text-green-400' },
-      { text: '    ✓ specs/10_technical_writer.md', color: 'text-green-400' },
-      { text: '', color: '' },
-      { text: '  [2/4] Creating sprint backlog...', color: 'text-white/60' },
-      { text: '    ✓ specs/backlog.md', color: 'text-green-400' },
-      { text: '', color: '' },
-      { text: '  [3/4] Creating CLAUDE.md memory file...', color: 'text-white/60' },
-      { text: '    ✓ CLAUDE.md configured', color: 'text-green-400' },
-      { text: '', color: '' },
-      { text: '  [4/4] Configuring model routing...', color: 'text-white/60' },
-      { text: '    ✓ .autospec/finops.yml', color: 'text-green-400' },
-      { text: '', color: '' },
-      { text: '  ✅ AutoSpec initialized. 10 roles. 1 backlog. 0 ambiguity.', color: 'text-emerald-400' },
-    ],
-    pauseAfter: 2500,
-  },
-  {
-    prompt: 'autospec build-team',
-    lines: [
-      { text: '', color: '' },
-      { text: '  Generating specs from 10 perspectives...', color: 'text-blue-400' },
-      { text: '', color: '' },
-      { text: '  ✓ product_manager.md      (Vision & Stories)', color: 'text-green-400' },
-      { text: '  ✓ backend_lead.md         (API & Services)', color: 'text-green-400' },
-      { text: '  ✓ frontend_lead.md        (Components & UX)', color: 'text-green-400' },
-      { text: '  ✓ database_architect.md   (Schema & Migrations)', color: 'text-green-400' },
-      { text: '  ✓ qa_lead.md              (Testing Strategy)', color: 'text-green-400' },
-      { text: '  ✓ devops_lead.md          (Infrastructure)', color: 'text-green-400' },
-      { text: '  ✓ marketing_lead.md       (Go-to-Market)', color: 'text-green-400' },
-      { text: '  ✓ finance_lead.md         (Pricing & Economics)', color: 'text-green-400' },
-      { text: '  ✓ business_lead.md        (Strategy)', color: 'text-green-400' },
-      { text: '  ✓ ui_designer.md          (Screens & Wireframes)', color: 'text-green-400' },
-      { text: '', color: '' },
-      { text: '  Generated 10 specs with 8,500+ lines of docs.', color: 'text-purple-400' },
-    ],
-    pauseAfter: 2000,
-  },
-  {
-    prompt: 'autospec sprint 0',
-    lines: [
-      { text: '', color: '' },
-      { text: '  Sprint 0: Foundation Setup', color: 'text-cyan-400' },
-      { text: '  ═══════════════════════════', color: 'text-cyan-400/50' },
-      { text: '', color: '' },
-      { text: '  12 tickets generated | Est: 4-6 hours', color: 'text-white/60' },
-      { text: '  ✓ Prompt generated: prompts/sprint-0.md', color: 'text-green-400' },
-      { text: '', color: '' },
-      { text: '  Ready to ship. Paste prompt into your AI →', color: 'text-emerald-400' },
-    ],
-    pauseAfter: 2500,
-  },
+const CONVERSATION: ConversationLine[] = [
+  { speaker: 'user', text: 'Run @QUICKSTART.md', delay: 0 },
+  { speaker: 'ai', text: 'Reading requirements/my-app.md...', delay: 1200 },
+  { speaker: 'ai', text: '', delay: 800 },
+  { speaker: 'ai', text: 'Generating 10 expert specifications...', delay: 600 },
+  { speaker: 'ai', text: '  ✓ Product Manager    (Vision & Stories)', delay: 400 },
+  { speaker: 'ai', text: '  ✓ Backend Lead       (API & Services)', delay: 300 },
+  { speaker: 'ai', text: '  ✓ Frontend Lead      (Components & UX)', delay: 300 },
+  { speaker: 'ai', text: '  ✓ Database Architect (Schema & Migrations)', delay: 300 },
+  { speaker: 'ai', text: '  ✓ QA Lead            (Testing Strategy)', delay: 250 },
+  { speaker: 'ai', text: '  ✓ DevOps Lead        (Infrastructure)', delay: 250 },
+  { speaker: 'ai', text: '  ✓ Marketing Lead     (Go-to-Market)', delay: 250 },
+  { speaker: 'ai', text: '  ✓ Finance Lead       (Pricing & Economics)', delay: 250 },
+  { speaker: 'ai', text: '  ✓ Business Lead      (Strategy)', delay: 250 },
+  { speaker: 'ai', text: '  ✓ UI Designer        (Screens & Wireframes)', delay: 250 },
+  { speaker: 'ai', text: '', delay: 400 },
+  { speaker: 'ai', text: 'Generating sprint backlog...', delay: 500 },
+  { speaker: 'ai', text: '  ✓ 8 sprints | 47 tickets | 186 pts', delay: 600 },
+  { speaker: 'ai', text: '', delay: 400 },
+  { speaker: 'ai', text: 'Ready. Run /sprint-run 0 to begin.', delay: 500 },
 ];
 
-const CHAR_DELAY = 45;
-const LINE_DELAY = 80;
-
-type Phase = 'typing' | 'outputting' | 'paused';
-
-interface HistoryScene {
-  prompt: string;
-  lines: { text: string; color: string }[];
-}
-
-function useTerminalAnimation() {
-  const [sceneIndex, setSceneIndex] = useState(0);
-  const [typedChars, setTypedChars] = useState(0);
+function useConversationAnimation() {
   const [visibleLines, setVisibleLines] = useState(0);
-  const [phase, setPhase] = useState<Phase>('typing');
-  const [history, setHistory] = useState<HistoryScene[]>([]);
+  const [userTypedChars, setUserTypedChars] = useState(0);
+  const [isTypingUser, setIsTypingUser] = useState(true);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const clearTimer = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-  };
+  const totalLines = CONVERSATION.length;
 
   useEffect(() => {
-    clearTimer();
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
-    const currentScene = SCENES[sceneIndex];
-
-    if (phase === 'typing') {
-      const promptLength = currentScene.prompt.length;
-      if (typedChars < promptLength) {
+    // Phase 1: Type out user message character by character
+    if (isTypingUser) {
+      const userMsg = CONVERSATION[0].text;
+      if (userTypedChars < userMsg.length) {
         timeoutRef.current = setTimeout(() => {
-          setTypedChars((c) => c + 1);
-        }, CHAR_DELAY);
+          setUserTypedChars((c) => c + 1);
+        }, 50);
       } else {
-        // Pause 300ms then start outputting
+        // Done typing user message, start showing AI lines
         timeoutRef.current = setTimeout(() => {
-          setPhase('outputting');
-        }, 300);
+          setIsTypingUser(false);
+          setVisibleLines(1); // User line is "done"
+        }, 600);
       }
-    } else if (phase === 'outputting') {
-      const totalLines = currentScene.lines.length;
-      if (visibleLines < totalLines) {
-        timeoutRef.current = setTimeout(() => {
-          setVisibleLines((l) => l + 1);
-        }, LINE_DELAY);
-      } else {
-        // All lines shown — pause
-        timeoutRef.current = setTimeout(() => {
-          setPhase('paused');
-        }, currentScene.pauseAfter);
-      }
-    } else if (phase === 'paused') {
-      const isLastScene = sceneIndex === SCENES.length - 1;
-
-      if (isLastScene) {
-        // After last scene, wait 3s, clear history, restart
-        timeoutRef.current = setTimeout(() => {
-          setHistory([]);
-          setSceneIndex(0);
-          setTypedChars(0);
-          setVisibleLines(0);
-          setPhase('typing');
-        }, 3000);
-      } else {
-        // Move current scene to history, advance to next
-        setHistory((h) => [
-          ...h,
-          {
-            prompt: currentScene.prompt,
-            lines: currentScene.lines,
-          },
-        ]);
-        setSceneIndex((i) => i + 1);
-        setTypedChars(0);
-        setVisibleLines(0);
-        setPhase('typing');
-      }
+      return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); };
     }
 
-    return clearTimer;
-  }, [phase, typedChars, visibleLines, sceneIndex]);
+    // Phase 2: Show AI response lines one by one
+    if (visibleLines < totalLines) {
+      const nextLine = CONVERSATION[visibleLines];
+      timeoutRef.current = setTimeout(() => {
+        setVisibleLines((v) => v + 1);
+      }, nextLine.delay);
+    } else {
+      // All lines shown, wait then restart
+      timeoutRef.current = setTimeout(() => {
+        setVisibleLines(0);
+        setUserTypedChars(0);
+        setIsTypingUser(true);
+      }, 4000);
+    }
 
-  return {
-    sceneIndex,
-    typedChars,
-    visibleLines,
-    phase,
-    history,
-    currentScene: SCENES[sceneIndex],
-  };
+    return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); };
+  }, [visibleLines, userTypedChars, isTypingUser, totalLines]);
+
+  return { visibleLines, userTypedChars, isTypingUser };
 }
 
 export default function HeroSection() {
   const [copied, setCopied] = useState(false);
-  const installCommand = 'npx autospec init';
-  const terminal = useTerminalAnimation();
-  const terminalBodyRef = useRef<HTMLDivElement>(null);
+  const installCommand = 'gh repo create my-project --template Hundia/autospec-starter';
+  const animation = useConversationAnimation();
+  const chatRef = useRef<HTMLDivElement>(null);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(installCommand);
@@ -185,23 +91,20 @@ export default function HeroSection() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Auto-scroll terminal to bottom
+  // Auto-scroll chat to bottom
   useEffect(() => {
-    if (terminalBodyRef.current) {
-      terminalBodyRef.current.scrollTop = terminalBodyRef.current.scrollHeight;
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
-  }, [terminal.visibleLines, terminal.sceneIndex, terminal.history.length]);
+  }, [animation.visibleLines, animation.userTypedChars]);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0">
-        {/* Gradient orbs */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-3xl" />
-
-        {/* Grid pattern */}
         <div
           className="absolute inset-0 opacity-[0.02]"
           style={{
@@ -255,9 +158,9 @@ export default function HeroSection() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-xl sm:text-2xl text-white/60 max-w-xl mb-8"
             >
-              Specifications are the memory that AI was never given.{' '}
-              <span className="text-white font-medium">AutoSpec turns requirements into running code</span>{' '}
-              — with structure, not luck.
+              Drop <span className="text-white font-medium font-mono">@QUICKSTART.md</span> into
+              your AI assistant. It generates 10 expert specs, a sprint backlog, and full
+              documentation — from your requirements, in one pass.
             </motion.p>
 
             {/* Install Command */}
@@ -269,8 +172,8 @@ export default function HeroSection() {
             >
               <div className="inline-flex items-center gap-2 bg-slate-800/80 border border-white/10 rounded-xl p-2 backdrop-blur-sm">
                 <div className="flex items-center gap-3 px-4 py-2 bg-slate-900/80 rounded-lg">
-                  <Terminal size={18} className="text-white/40" />
-                  <code className="text-sm sm:text-base font-mono text-white/90">
+                  <Github size={18} className="text-white/40" />
+                  <code className="text-xs sm:text-sm font-mono text-white/90">
                     {installCommand}
                   </code>
                 </div>
@@ -299,7 +202,7 @@ export default function HeroSection() {
                 href="#quickstart"
                 className="group flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105"
               >
-                Get Started
+                Get the Template
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </a>
               <a
@@ -337,7 +240,7 @@ export default function HeroSection() {
             </motion.div>
           </div>
 
-          {/* Right: Animated Terminal */}
+          {/* Right: Conversation Animation */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
@@ -347,9 +250,9 @@ export default function HeroSection() {
             {/* Glow behind terminal */}
             <div className="absolute inset-0 -m-4 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-2xl blur-2xl" />
 
-            {/* Terminal Window */}
+            {/* Chat Window */}
             <div className="relative bg-slate-950 rounded-xl border border-white/10 shadow-2xl overflow-hidden">
-              {/* macOS Chrome */}
+              {/* Window Chrome */}
               <div className="flex items-center gap-2 px-4 py-3 bg-slate-900/80 border-b border-white/10">
                 <div className="flex items-center gap-1.5">
                   <div className="w-3 h-3 rounded-full bg-red-500" />
@@ -361,54 +264,59 @@ export default function HeroSection() {
                 </div>
               </div>
 
-              {/* Terminal Body */}
+              {/* Chat Body */}
               <div
-                ref={terminalBodyRef}
-                className="h-[360px] lg:h-[420px] overflow-hidden font-mono text-sm p-4 space-y-0"
+                ref={chatRef}
+                className="h-[360px] lg:h-[420px] overflow-hidden p-4 space-y-3"
               >
-                {/* History */}
-                {terminal.history.map((scene, hIdx) => (
-                  <div key={hIdx} className="mb-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-green-400">$</span>
-                      <span className="text-white">{scene.prompt}</span>
-                    </div>
-                    {scene.lines.map((line, lIdx) => (
-                      <div key={lIdx} className={`${line.color || 'text-white/60'} leading-5`}>
-                        {line.text || '\u00A0'}
-                      </div>
-                    ))}
+                {/* User message (typing animation) */}
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-7 h-7 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+                    <span className="text-xs text-blue-400 font-bold">U</span>
                   </div>
-                ))}
-
-                {/* Current scene */}
-                <div>
-                  {/* Prompt line with typewriter */}
-                  <div className="flex items-center gap-2">
-                    <span className="text-green-400">$</span>
-                    <span className="text-white">
-                      {terminal.currentScene.prompt.slice(0, terminal.typedChars)}
+                  <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg rounded-tl-none px-4 py-2 max-w-[85%]">
+                    <span className="font-mono text-sm text-blue-300">
+                      {animation.isTypingUser
+                        ? CONVERSATION[0].text.slice(0, animation.userTypedChars)
+                        : CONVERSATION[0].text}
                     </span>
-                    {terminal.phase === 'typing' && (
-                      <span className="inline-block w-2 h-4 bg-white/80 animate-pulse" />
+                    {animation.isTypingUser && (
+                      <span className="inline-block w-1.5 h-4 bg-blue-400/80 animate-pulse ml-0.5 align-middle" />
                     )}
                   </div>
-
-                  {/* Output lines */}
-                  {terminal.currentScene.lines.slice(0, terminal.visibleLines).map((line, lIdx) => (
-                    <div key={lIdx} className={`${line.color || 'text-white/60'} leading-5`}>
-                      {line.text || '\u00A0'}
-                    </div>
-                  ))}
-
-                  {/* Cursor after output done */}
-                  {terminal.phase === 'paused' && (
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-green-400">$</span>
-                      <span className="inline-block w-2 h-4 bg-white/80 animate-pulse" />
-                    </div>
-                  )}
                 </div>
+
+                {/* AI response lines */}
+                {!animation.isTypingUser && animation.visibleLines > 1 && (
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-7 h-7 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+                      <span className="text-xs text-purple-400 font-bold">AI</span>
+                    </div>
+                    <div className="bg-white/5 border border-white/10 rounded-lg rounded-tl-none px-4 py-3 max-w-[90%]">
+                      <div className="font-mono text-sm space-y-0.5">
+                        {CONVERSATION.slice(1, animation.visibleLines).map((line, idx) => {
+                          if (line.text === '') return <div key={idx} className="h-2" />;
+
+                          // Color the checkmarks green, "Ready" line emerald
+                          let textClass = 'text-white/70';
+                          if (line.text.startsWith('  ✓')) textClass = 'text-green-400';
+                          else if (line.text.startsWith('Reading')) textClass = 'text-blue-400';
+                          else if (line.text.startsWith('Generating')) textClass = 'text-purple-400';
+                          else if (line.text.startsWith('Ready')) textClass = 'text-emerald-400';
+
+                          return (
+                            <div key={idx} className={`${textClass} leading-5 whitespace-pre`}>
+                              {line.text}
+                            </div>
+                          );
+                        })}
+                        {animation.visibleLines < CONVERSATION.length && (
+                          <span className="inline-block w-1.5 h-4 bg-purple-400/60 animate-pulse" />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>

@@ -8,7 +8,7 @@ const aiTools = [
   { name: 'Cursor', status: 'full', description: 'Optimized for AI-first IDE' },
   { name: 'GPT-4', status: 'partial', description: 'Good for simpler tasks' },
   { name: 'Gemini', status: 'partial', description: 'Improving support' },
-  { name: 'Windsurf', status: 'coming', description: 'Coming soon' },
+  { name: 'Windsurf', status: 'full', description: 'Flow-based, context-aware' },
 ];
 
 const ides = [
@@ -112,19 +112,19 @@ export default function ToolsSection() {
               <ol className="space-y-2 text-sm text-white/70">
                 <li className="flex items-start gap-2">
                   <span className="flex-shrink-0 w-5 h-5 bg-blue-500/20 rounded-full flex items-center justify-center text-xs text-blue-400">1</span>
-                  <span>AutoSpec generates markdown prompts</span>
+                  <span>Add your requirements to <code className="text-blue-300">requirements/</code></span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="flex-shrink-0 w-5 h-5 bg-blue-500/20 rounded-full flex items-center justify-center text-xs text-blue-400">2</span>
-                  <span>Copy prompt to your AI assistant</span>
+                  <span>Tell your AI: <code className="text-blue-300">Run @QUICKSTART.md</code></span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="flex-shrink-0 w-5 h-5 bg-blue-500/20 rounded-full flex items-center justify-center text-xs text-blue-400">3</span>
-                  <span>AI executes with full context</span>
+                  <span>AI generates specs, backlog, and docs</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="flex-shrink-0 w-5 h-5 bg-blue-500/20 rounded-full flex items-center justify-center text-xs text-blue-400">4</span>
-                  <span>Update backlog, repeat</span>
+                  <span>Run <code className="text-blue-300">/sprint-run 0</code> to start building</span>
                 </li>
               </ol>
             </div>
