@@ -111,7 +111,7 @@ export default function EvolutionSection() {
         {/* Timeline */}
         <div className="relative">
           {/* Horizontal connecting bar (desktop) */}
-          <div className="hidden md:block absolute top-[3.25rem] left-0 right-0 h-1 bg-gradient-to-r from-slate-400 via-blue-400 via-amber-400 to-emerald-400 rounded-full z-0 opacity-50" />
+          <div className="hidden md:block absolute top-[0.625rem] left-0 right-0 h-1 bg-gradient-to-r from-slate-400 via-blue-400 via-amber-400 to-emerald-400 rounded-full z-0 opacity-50" />
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
             {/* Vertical bar (mobile) */}
@@ -179,7 +179,7 @@ export default function EvolutionSection() {
           className="mt-12 bg-gradient-to-br from-emerald-500/10 to-blue-500/10 border border-emerald-500/20 rounded-xl p-8 text-center"
         >
           <p className="text-white/80 text-lg italic max-w-3xl mx-auto leading-relaxed">
-            "The evolution demanded a new approach. AutoSpec is that approach."
+            "Every era brought more AI power. Only SDD brings the structure to harness it."
           </p>
         </motion.div>
       </div>

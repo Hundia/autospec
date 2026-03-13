@@ -88,7 +88,7 @@ export default function SprintMemorySection() {
         {/* Sprint Timeline — Desktop horizontal, mobile vertical */}
         <div className="relative">
           {/* Horizontal memory thread bar (desktop) */}
-          <div className="hidden md:block absolute top-12 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 rounded-full z-0" />
+          <div className="hidden md:block absolute top-[0.625rem] left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 rounded-full z-0" />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
             {/* Vertical bar (mobile) */}
@@ -214,8 +214,7 @@ export default function SprintMemorySection() {
           className="mt-12 bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-purple-500/20 rounded-xl p-8 text-center"
         >
           <p className="text-white/80 text-lg italic max-w-3xl mx-auto leading-relaxed">
-            "No more reverse engineering your own code. Come back next month. Your AI reads the
-            specs, summaries, and docs — and picks up exactly where you left off."
+            "The sprint summary is the memory that AI was never given."
           </p>
         </motion.div>
       </div>

@@ -26,7 +26,7 @@ const docs = [
     description: 'Peer-review style paper with full methodology & data',
     time: '20 min read',
     color: 'green',
-    link: '#paper',
+    link: '#/paper',
   },
 ];
 
@@ -154,11 +154,11 @@ export default function DocumentationSection() {
               including case studies and empirical results.
             </p>
             <a
-              href="#"
+              href="#/paper"
               className="inline-flex items-center gap-2 px-6 py-3 bg-green-500/20 hover:bg-green-500/30 border border-green-500/30 text-green-400 rounded-lg transition-colors"
             >
-              <FileText size={18} />
-              Download Paper (PDF)
+              <ArrowRight size={18} />
+              View Academic Paper
             </a>
           </div>
         </motion.div>
