@@ -57,30 +57,29 @@ You are generating a self-contained React project called "${name} Viewer".
 ╔══════════════════════════════════════════════════════════════════╗
 ║  CRITICAL: This is a FULL VISUAL WEBSITE — NOT a markdown       ║
 ║  reader. Every page must include interactive charts, diagrams,  ║
-║  and rich UI with the warm FitnessAiManager design system.      ║
-║  If a page only renders raw markdown text, it is WRONG.         ║
+║  animated components, and rich UI built with shadcn/ui.         ║
+║  Think of it as an executive PRESENTATION of the project.       ║
+║  If a page just renders raw markdown text, it is WRONG.         ║
 ╚══════════════════════════════════════════════════════════════════╝
 
 It is a read-only, client-side dashboard that renders the AutoSpec artefacts
 for "${name}" — ${desc}.
 
 Tech stack for the VIEWER (not the project itself):
-  React 18 + TypeScript + Vite 5 + Tailwind CSS v3 + React Router v6
-
-  UI Primitives: FitnessAiManager design system (REQUIRED — port from source)
-    Source: /opt/FitnessAiManager/apps/web/src/design-system/components/primitives/
-    Components to port: Button.tsx, Card.tsx, Badge.tsx, Input.tsx
-    Remove: RTL classes (dir-rtl, text-right), Hebrew fonts (Heebo/Rubik/Assistant)
-    Keep: all variant logic, shadow system, transition classes
-
+  React 18 + TypeScript + Vite + Tailwind CSS v4 + React Router
+  shadcn/ui — component library (Button, Card, Badge, Tabs, Dialog,
+              Tooltip, Table, DropdownMenu, Sheet, Separator, etc.)
+              Initialize with: npx shadcn@latest init -d
+              Then add components: npx shadcn@latest add button card badge
+              tabs dialog tooltip table dropdown-menu sheet separator
+              select command popover scroll-area toggle-group avatar
   Additional libraries (install via npm):
-    - recharts — charts and data visualisation (REQUIRED for every data page):
-                PieChart, BarChart, LineChart, AreaChart
-    - @xyflow/react (React Flow v12) — workflow graph visualisation (optional)
-    - fuse.js — fuzzy search across docs, specs, and backlog
-    - lucide-react — icons
-    - react-markdown + remark-gfm — Markdown rendering
-    - mermaid — render Mermaid diagram blocks embedded in markdown
+    - @xyflow/react (React Flow v12) — graph / workflow visualisation
+    - recharts — charts and data visualisation (pie, bar, line, area, radar)
+    - framer-motion — panel transitions and micro-interactions ONLY
+    - lucide-react — icons (used by shadcn/ui)
+    - react-markdown + remark-gfm — render Markdown specs
+    - react-syntax-highlighter — code block highlighting
 
 All project data lives as static imports (JSON / Markdown files copied into
 src/data/). The viewer has NO backend; it reads from local files at build time.
@@ -177,10 +176,9 @@ viewer/
 │   │   │   ├── ResponsivePreview.tsx    # Breakpoint visualizer
 │   │   │   └── AccessibilityMatrix.tsx  # A11y compliance checklist
 │   │   │
-│   │   └── primitives/             # FitnessAiManager ported primitives
-│   │       # Button.tsx, Card.tsx, Badge.tsx, Input.tsx
-│   │       # Ported from: /opt/FitnessAiManager/apps/web/src/design-system/components/primitives/
-│   │       # Do NOT install shadcn/ui — use these ports instead
+│   │   └── ui/                     # shadcn/ui components (auto-generated)
+│   │       # Use: npx shadcn@latest add button card badge tabs ...
+│   │       # All primitives come from shadcn/ui — do NOT build custom ones
 │   │
 │   ├── pages/
 │   │   ├── DashboardPage.tsx       # "/"  — project overview with charts
@@ -210,49 +208,36 @@ viewer/
 └── package.json
 
 ────────────────────────────────────────────────────────
-2. DESIGN SYSTEM (Warm FitnessAiManager Palette)
+2. DESIGN SYSTEM (shadcn/ui + Tailwind tokens)
 ────────────────────────────────────────────────────────
 
-**Source:** Port primitives from FitnessAiManager design system.
-Do NOT use shadcn/ui. Do NOT use dark slate colors.
+Use shadcn/ui "new-york" style with dark theme as default.
+Configure shadcn/ui with these CSS variables in globals.css / index.css:
 
-**tailwind.config.js colors:**
-\`\`\`javascript
-colors: {
-  parchment: '#f5f3ed',  // Page background
-  cream: '#faf9f5',       // Card/surface background
-  sage: {
-    DEFAULT: '#698472',   // Primary actions
-    600: '#536a5b',       // Hover
-    700: '#44564a',       // Active
-  },
-  terracotta: {
-    DEFAULT: '#8e6a59',   // Accent, headings
-    700: '#76574a',
-  },
-  sand: {
-    DEFAULT: '#d8d0ba',   // Borders
-    200: '#e8e4d8',       // Subtle fills
-  },
-  charcoal: '#1a1a1a',    // Body text
-}
-\`\`\`
+Colour palette (dark theme, required as default):
 
-**Typography:**
-- Body: Inter (Google Fonts, weights: 300/400/500/600/700)
-- Code: JetBrains Mono (Google Fonts, weights: 400/500)
-- Load via <link> in index.html (no self-hosted)
-- font-family body: 'Inter', sans-serif
-- font-family code: 'JetBrains Mono', monospace
+  --color-bg:           #0f172a   (slate-950)
+  --color-surface:      #1e293b   (slate-800)
+  --color-surface-2:    #334155   (slate-700)
+  --color-border:       rgba(255,255,255,0.08)
+  --color-text:         #f1f5f9   (slate-100)
+  --color-text-muted:   #94a3b8   (slate-400)
+  --color-primary:      #3b82f6   (blue-500)
+  --color-secondary:    #a855f7   (purple-500)
+  --color-success:      #10b981   (emerald-500)
+  --color-warning:      #f59e0b   (amber-500)
+  --color-error:        #ef4444   (red-500)
+  --color-info:         #06b6d4   (cyan-500)
 
 Recharts theme colours (for consistent chart styling):
-  const CHART_COLORS = ['#698472', '#8e6a59', '#536a5b', '#b08a79',
-                         '#a08c72', '#44564a', '#d9b9a8', '#d8d0ba'];
+  const CHART_COLORS = ['#3b82f6', '#a855f7', '#10b981', '#f59e0b',
+                         '#ef4444', '#06b6d4', '#ec4899', '#8b5cf6'];
 
-**Shadows (copy from source):**
-  subtle:   0 2px 8px rgba(142, 106, 89, 0.08)
-  soft:     0 4px 16px rgba(142, 106, 89, 0.12)
-  elevated: 0 8px 32px rgba(142, 106, 89, 0.16)
+Typography:
+  - Headings: Inter, 600–700 weight
+  - Body: Inter, 400
+  - Code / mono: JetBrains Mono, 400
+  - Base size: 16 px, scale: 1.25 (major third)
 
 Spacing scale: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 px
 Border radius: sm 6px, md 10px, lg 16px, full 9999px
@@ -263,32 +248,24 @@ Layout:
   - Main content: fluid, max-width 1400 px centred
   - Breakpoints: sm 640, md 768, lg 1024, xl 1280
 
-**Primitives to port** (from /opt/FitnessAiManager/apps/web/src/design-system/components/primitives/):
-- Button.tsx → remove font-hebrew, keep all variants (primary/secondary/outline/ghost)
-- Card.tsx + CardHeader/CardContent/CardFooter → direct port, remove RTL
-- Badge.tsx → port + extend with done/in-progress/todo/blocked/haiku/sonnet/opus variants
-- Input.tsx → direct port, remove direction-ltr forced and RTL padding
-
 Component usage rules:
-  - ALL buttons → FitnessAiManager <Button> variants: primary(sage)/secondary(terracotta)/outline/ghost
-  - ALL cards → FitnessAiManager <Card> with CardHeader, CardContent, CardFooter
-  - ALL badges → FitnessAiManager <Badge> with warm variants (not shadcn)
-  - ALL charts → Recharts with CHART_COLORS warm theme
-  - NEVER use shadcn/ui — port primitives from FitnessAiManager source
-  - NEVER use dark slate (#0f172a) as background
-
-FORBIDDEN (must NOT appear anywhere):
-  - shadcn/ui (npx shadcn@latest) — do NOT install
-  - @radix-ui imports (shadcn dependency)
-  - RTL CSS (dir-rtl, text-right as default layout)
-  - Dark slate colors: #0f172a, slate-950, zinc-900, gray-950
+  - ALL buttons → shadcn/ui Button (variant: default, outline, ghost, etc.)
+  - ALL cards → shadcn/ui Card (with CardHeader, CardContent, CardFooter)
+  - ALL badges → shadcn/ui Badge (variant: default, secondary, destructive, outline)
+  - ALL tabs → shadcn/ui Tabs (TabsList, TabsTrigger, TabsContent)
+  - ALL tables → shadcn/ui Table (TableHeader, TableBody, TableRow, TableCell)
+  - ALL tooltips → shadcn/ui Tooltip
+  - ALL dropdowns → shadcn/ui DropdownMenu or Select
+  - ALL dialogs → shadcn/ui Dialog
+  - ALL charts → Recharts (PieChart, BarChart, LineChart, AreaChart)
+  - NEVER build custom UI primitives. Use shadcn/ui for everything.
 
 ────────────────────────────────────────────────────────
 3. PAGE-BY-PAGE GENERATION SPEC
 ────────────────────────────────────────────────────────
 
-CRITICAL: Each page MUST be a rich visual experience. Use FitnessAiManager
-Card, Badge, and Tabs primitives everywhere. Use Recharts for every metric.
+CRITICAL: Each page MUST be a rich visual experience. Use shadcn/ui Card,
+Badge, Tabs, Table components everywhere. Use Recharts for every metric.
 Do NOT just render markdown. Parse markdown content into structured data
 and render it with proper UI components, charts, and interactive elements.
 
@@ -305,7 +282,7 @@ This is the landing page. It must look like an executive project dashboard.
   - **Recharts PieChart**: Model distribution (haiku/sonnet/opus usage)
   - **AnimatedCounter**: Stat cards with counting animation for:
     Total Tickets, Done, In Progress, QA Review, Blocked
-  - **Table**: Top 5 in-progress tickets with status Badge
+  - **shadcn/ui Table**: Top 5 in-progress tickets with status Badge
   - Quick-links grid: 10 spec cards (role icon + name), clickable
   - Quick-links grid: doc folder cards (folder icon + file count)
   - **MiniArchitecture**: Clickable mini system diagram → /architecture
@@ -323,7 +300,7 @@ This is the landing page. It must look like an executive project dashboard.
   Parse data from: specs/10_ui_designer.md + docs/ui-design-system/ files
   + design-system.json for structured rendering.
 
-  Tabs navigation across sections (FitnessAiManager Tabs primitive):
+  shadcn/ui Tabs navigation across sections:
 
   **Tab 1: Colour Palette** (ColorPalette.tsx)
     - Render every project colour as a large interactive swatch card
@@ -367,7 +344,7 @@ This is the landing page. It must look like an executive project dashboard.
       - Which components are used on this screen
     - Screen navigation map: visual flow diagram showing how screens connect
       (use React Flow or a simple graph to show screen → screen transitions)
-    - Screen state matrix: data Table with all screens × all states
+    - Screen state matrix: shadcn/ui Table with all screens × all states
 
   **Tab 5: Spacing & Layout** (SpacingScale.tsx)
     - Visual spacing scale: 4px → 8px → 12px → 16px → 24px → 32px → 48px → 64px
@@ -402,7 +379,7 @@ This is the landing page. It must look like an executive project dashboard.
 ### 3.3 Specs  ("/specs" and "/specs/:slug")
 
 List view:
-  - FitnessAiManager Card grid: 2-col md, 3-col lg
+  - shadcn/ui Card grid: 2-col md, 3-col lg
   - Each Card: lucide-react role icon, title, excerpt, Badge (word count),
     Badge (reading time), animated hover state
   - Progress indicator per spec (sections covered)
@@ -413,7 +390,7 @@ Detail view ("/specs/:slug"):
   - Reading progress bar at top (scroll-based)
   - Mermaid code blocks → rendered as actual diagrams (parse and visualize)
   - JSON blocks → syntax highlighted with copy button
-  - "Back to all specs" breadcrumb with FitnessAiManager components
+  - "Back to all specs" breadcrumb with shadcn/ui components
 
 ### 3.4 Docs  ("/docs" and "/docs/:section/:slug")
 
@@ -435,7 +412,7 @@ Detail view: Same rendering as Specs detail (Markdown + code + diagrams)
   - **AnimatedCounter cards**: Total, Done, In Progress, Blocked
   - **ProgressBar**: Overall project completion with animated fill
 
-  Main content (Tabs via FitnessAiManager primitives):
+  Main content (Tabs via shadcn/ui):
   - **Tab: Kanban Board** (default view)
     - 5 columns: Todo | In Progress | QA Review | Done | Blocked
     - Each column: header with count Badge, cards below
@@ -446,55 +423,127 @@ Detail view: Same rendering as Specs detail (Markdown + code + diagrams)
   - **Tab: Sprint Table** (per sprint)
     - Sprint selector Tabs (Sprint 0, 1, 2, …)
     - Per-sprint: goal description, **animated ProgressBar**, points summary
-    - Data Table with:
-      - Status Badge (colour-coded): 🔲 todo=sand, 🔄 in-progress=sage,
-        🧪 qa=terracotta, ✅ done=sage-700, ⏸️ blocked=red
+    - shadcn/ui Table with:
+      - Status Badge (colour-coded): 🔲 todo=slate, 🔄 in-progress=blue,
+        🧪 qa=purple, ✅ done=emerald, ⏸️ blocked=red
       - Owner Badge with role colour
-      - Model Badge (haiku=green, sonnet=sage, opus=terracotta)
+      - Model Badge (haiku=green, sonnet=blue, opus=purple)
       - Points column
       - Dependency links (clickable)
     - **Recharts**: Sprint burndown chart (ideal vs actual line)
 
-  - Filters bar: status, owner, model (using FitnessAiManager Select/Input)
+  - Filters bar: status, owner, model (using shadcn/ui Select)
   - Search: instant filter with input highlighting
 
 ### 3.6 Workflows  ("/workflows")  ← ANIMATED GRAPH
 
   - Full-screen React Flow canvas (see Section 4 below)
-  - Workflow selector dropdown to switch between graphs
+  - Workflow selector dropdown (shadcn/ui Select) to switch between graphs
   - Top toolbar: AnimationController + WorkflowSearch + filters
   - Bottom-right: WorkflowLegend overlay (collapsible)
   - Export as PNG/SVG button
   - Left sidebar collapses automatically to maximise canvas
 
-### 3.7 Flows  ("/flows")  — VISUAL FLOW DIAGRAMS
+### 3.7 Flows  ("/flows")  — REACT FLOW DIAGRAMS (NEVER TEXT)
 
-  - Flow selector (Tabs or Select from FitnessAiManager primitives) to switch between:
-    1. User Journey — horizontal swimlane diagram
-    2. Authentication Flow — animated sequence diagram
-    3. Core Features Flow — multi-lane process diagram
-    4. Data Flow — React Flow graph with colour-coded data types
-    5. Error Handling — decision tree with severity colours
-    6. State Transitions — state machine diagram
-  - Each flow: interactive, clickable nodes, animated on play
-  - Play/Pause controls
-  - Export as PNG/SVG
+╔══════════════════════════════════════════════════════════════════╗
+║  CRITICAL: Every flow MUST render as <ReactFlow> with nodes     ║
+║  and edges from flows.json. NEVER render as markdown text,      ║
+║  bullet lists, ASCII art, or numbered steps.                    ║
+║                                                                 ║
+║  WRONG: "1. User visits app  2. User clicks login  3. ..."     ║
+║  RIGHT: <ReactFlow nodes={flow.nodes} edges={flow.edges} />    ║
+╚══════════════════════════════════════════════════════════════════╝
 
-### 3.8 Architecture  ("/architecture")  — INTERACTIVE DIAGRAMS
+  Data source: flows.json (each flow has nodes[] with positions + edges[])
 
-  NOT just markdown. Must render actual visual diagrams.
+  shadcn/ui Tabs to switch between flow diagrams.
+  Each tab renders a full React Flow canvas:
 
-  - Tab navigation (FitnessAiManager Tabs primitive) between:
-    1. **System Architecture** — React Flow graph showing components,
-       services, databases, and their connections
-    2. **Database ERD** — Tables as Card components with columns listed,
-       relationship lines with cardinality labels
-    3. **Frontend Component Tree** — Collapsible tree diagram
-    4. **Backend Layers** — Layered diagram: Routes → Middleware →
-       Controllers → Services → Repositories → DB
-    5. **Security Flow** — Auth flow, token lifecycle, permission checks
-  - Each tab: "View Source" toggle to show underlying markdown
-  - Export diagrams as PNG/SVG
+  - **User Journey** (type: "swimlane")
+    - React Flow graph with horizontal swim lane background rows
+    - Lane headers: "User", "Frontend", "API", "Database"
+    - Custom SwimLaneNode positioned within lane Y ranges
+    - Animated edges showing request/response between lanes
+    - Click node → Sheet with step details
+
+  - **Authentication Flow** (type: "sequence")
+    - React Flow graph with participant columns
+    - Nodes arranged vertically in time order within columns
+    - Animated request (→) and response (←) edges
+    - Edge labels: "POST /login", "200 OK + JWT"
+
+  - **Data Flow** (type: "dataflow")
+    - React Flow graph with colour-coded data type nodes
+    - Edge labels show data transformations
+    - Animated flow direction
+
+  - **State Transitions** (type: "state-machine")
+    - React Flow graph with state nodes (rounded rectangles)
+    - Transition edges with event labels: "submit()", "approve()"
+    - Click state → highlight valid transitions
+
+  - **Error Handling** (type: "decision-tree")
+    - React Flow decision tree with Yes/No branches
+    - Colour-coded: warning=amber, error=red, fatal=dark red
+
+  - **Core Features Flow** (type: "process")
+    - React Flow process graph with decision diamonds
+    - Clickable nodes link to relevant specs
+
+  Each tab: Play/Pause for animations, Export PNG/SVG
+  Custom node component per flow type (SwimLaneNode, SequenceNode, etc.)
+  All nodes wrapped in React.memo
+
+### 3.8 Architecture  ("/architecture")  — REACT FLOW DIAGRAMS (NEVER TEXT)
+
+╔══════════════════════════════════════════════════════════════════╗
+║  CRITICAL: Every architecture diagram MUST render as <ReactFlow>║
+║  with nodes and edges from architecture.json. NEVER render as   ║
+║  markdown text, ASCII boxes (┌──┐), bullet hierarchies, or      ║
+║  <pre> blocks. Every tab = a React Flow canvas users can        ║
+║  zoom, pan, and click.                                          ║
+║                                                                 ║
+║  WRONG: "- Client (React SPA)  - API Gateway  - DB"            ║
+║  WRONG: ┌──────┐───▶┌──────┐───▶┌──────┐                      ║
+║  RIGHT: <ReactFlow nodes={diagram.nodes} edges={diagram.edges}  ║
+║           nodeTypes={customNodeTypes} fitView />                 ║
+╚══════════════════════════════════════════════════════════════════╝
+
+  Data source: architecture.json (each diagram has nodes[] with positions + edges[])
+
+  shadcn/ui Tabs navigation. Each tab renders a React Flow canvas:
+
+  **Tab 1: System Architecture** (id: "system-architecture")
+    - Custom node components per type:
+      "frontend" → blue, Monitor icon | "backend" → purple, Server icon
+      "database" → green, Database icon | "cache" → amber, Zap icon
+      "queue" → cyan, List icon | "external" → grey dashed, Globe icon
+    - Each node: rounded Card with icon + label + tech Badge
+    - Click node → Sheet with tech stack, description, endpoints
+    - Animated edges with protocol labels ("HTTP", "SQL", "Redis")
+
+  **Tab 2: Database ERD** (id: "database-erd")
+    - Custom ERD node: Card header = table name, body = column list
+      with type Badges, PK key icon, FK link icon
+    - Edges = relationships with "1:N", "N:M", "1:1" labels
+    - Click table → Sheet with full schema + indexes
+
+  **Tab 3: Frontend Component Tree** (id: "frontend-tree")
+    - Tree layout (top-down): App → Layouts → Pages → Components
+    - Nodes as rounded Cards, edges as parent→child arrows
+
+  **Tab 4: Backend Layers** (id: "backend-layers")
+    - Layered layout: Routes → Middleware → Controllers → Services → DB
+    - Animated request flow top → bottom on play
+    - Layer background colours for visual grouping
+
+  **Tab 5: Security Flow** (id: "security-flow")
+    - Auth flow graph: login → validation → token → storage → verify
+    - Nodes colour-coded: auth=blue, token=green, permission=amber
+
+  Each tab: "View Source" toggle, Export PNG/SVG
+  All custom nodes wrapped in React.memo, fitView on load
 
 ### 3.9 Sprints  ("/sprints")  — SPRINT RESULTS
 
@@ -507,7 +556,7 @@ Detail view: Same rendering as Specs detail (Markdown + code + diagrams)
 ### 3.10 Requirements  ("/requirements")  — TRACEABILITY
 
   - Rendered SRS/PRD markdown
-  - **Requirements Traceability Matrix**: data Table mapping
+  - **Requirements Traceability Matrix**: shadcn/ui Table mapping
     requirement → spec → ticket, colour-coded by status
   - Functional vs Non-functional sections with Badge indicators
   - **ProgressBar**: Coverage (% of requirements with assigned tickets)
@@ -720,12 +769,13 @@ Global sidebar navigation (in this exact order):
 The generated viewer code MUST:
 
   ✓ Build with zero TypeScript errors (strict mode).
-  ✓ Use FitnessAiManager primitives for ALL UI components — no shadcn/ui.
+  ✓ Use shadcn/ui for ALL UI primitives — no custom Button/Card/Badge etc.
   ✓ Use Recharts for ALL charts and data visualizations.
   ✓ Have at least 3 different Recharts chart types across the app.
   ✓ Dashboard page has at least 5 visual components (charts + cards + ring).
   ✓ Backlog page has both kanban AND table views with charts.
-  ✓ Architecture page has interactive diagrams, not just markdown text.
+  ✓ Architecture page renders React Flow graphs, NOT markdown/text/ASCII.
+  ✓ Flows page renders React Flow graphs, NOT markdown/text/ASCII.
   ✓ Every page has at least one non-text visual element.
   ✓ Respect prefers-reduced-motion (tested).
   ✓ Render on mobile (responsive, no horizontal scroll).
@@ -733,6 +783,15 @@ The generated viewer code MUST:
   ✓ Use React.memo on every node and edge component.
   ✓ Use zero setInterval / setTimeout for animation (CSS only).
   ✓ Look like a premium, polished SaaS dashboard — NOT a markdown reader.
+
+DIAGRAM RENDERING RULES (Architecture, Flows, Workflows):
+  ✗ NEVER render diagrams as markdown text, ASCII boxes, bullet lists,
+    numbered steps, or <pre> blocks. These are ALL wrong.
+  ✓ ALWAYS use <ReactFlow nodes={data.nodes} edges={data.edges} />
+  ✓ ALWAYS define custom nodeTypes for each diagram type.
+  ✓ ALWAYS ensure every node in JSON has position: { x, y }.
+  ✓ ALWAYS enable zoom, pan, fitView on every graph.
+  ✓ ALWAYS open a detail Sheet/panel when user clicks a node.
 
 ────────────────────────────────────────────────────────
 8. FILES TO GENERATE
@@ -754,11 +813,33 @@ For data files (src/data/), generate COMPLETE realistic content:
       4. "CI/CD Pipeline" (8-10 nodes)
       5. "User Authentication Flow" (8-10 nodes)
       6. One project-specific user flow (8-10 nodes)
-  - architecture.json: parsed from docs/architecture/ with:
-    { system: { components, connections }, database: { tables, relationships },
-      frontend: { components, hierarchy }, backend: { layers, flow } }
-  - flows.json: parsed from docs/flows/ with:
-    { userJourneys, authFlow, dataFlow, stateMachines }
+  - architecture.json: REACT FLOW GRAPH DATA parsed from docs/architecture/:
+    { diagrams: [
+      { id: "system-architecture", name, description,
+        nodes: [{ id, label, type, icon, metadata, position: { x, y } }],
+        edges: [{ id, source, target, label, animated }] },
+      { id: "database-erd", name, nodes (table nodes with columns in metadata), edges },
+      { id: "backend-layers", name, nodes, edges },
+      { id: "frontend-tree", name, nodes, edges },
+      { id: "security-flow", name, nodes, edges }
+    ] }
+    Node types: "frontend"|"backend"|"database"|"cache"|"queue"|"external"|
+                "table"|"service"|"middleware"
+    EVERY node MUST have position: { x, y } — React Flow requires this.
+
+  - flows.json: REACT FLOW GRAPH DATA parsed from docs/flows/:
+    { flows: [
+      { id: "user-journey", name, type: "swimlane", lanes: [...],
+        nodes: [{ id, label, lane, type, position: { x, y } }],
+        edges: [{ id, source, target, label, animated }] },
+      { id: "auth-flow", name, type: "sequence", participants: [...], nodes, edges },
+      { id: "data-flow", name, type: "dataflow", nodes, edges },
+      { id: "state-machine-*", name, type: "state-machine", nodes, edges },
+      { id: "error-flow", name, type: "decision-tree", nodes, edges },
+      { id: "core-features", name, type: "process", nodes, edges }
+    ] }
+    Flow types: "swimlane"|"sequence"|"dataflow"|"state-machine"|"decision-tree"|"process"
+    EVERY node MUST have position: { x, y } — React Flow requires this.
   - metrics.json: computed from backlog.json with:
     { velocity, modelDistribution, coverage, burndown }
   - design-system.json: parsed from specs/10_ui_designer.md +
@@ -790,8 +871,10 @@ Setup instructions that MUST be included in package.json scripts:
 
 After generating package.json, include a setup note:
   npm install
-  # No shadcn init needed — primitives are ported from FitnessAiManager source:
-  # /opt/FitnessAiManager/apps/web/src/design-system/components/primitives/
+  npx shadcn@latest init -d
+  npx shadcn@latest add button card badge tabs dialog tooltip table
+    dropdown-menu sheet separator select command popover scroll-area
+    toggle-group avatar
 
 ────────────────────────────────────────────────────────
 9. VIEWER QUALITY CHECKLIST (MUST PASS ALL)
@@ -813,10 +896,14 @@ Before considering the viewer complete, verify:
   ✓ Backlog has BOTH kanban board view AND table view
   ✓ Backlog has at least 2 charts (status distribution, burndown)
   ✓ Workflows page renders React Flow graphs with animated edges
-  ✓ Architecture page has interactive diagrams (not just markdown)
-  ✓ All pages use FitnessAiManager primitives (Card, Badge, Tabs, etc.)
+  ✓ Architecture page renders React Flow graphs from architecture.json
+    (NOT markdown text, NOT ASCII boxes, NOT bullet lists)
+  ✓ Flows page renders React Flow graphs from flows.json
+    (NOT markdown text, NOT numbered steps, NOT bullet lists)
+  ✓ All diagram pages (Architecture, Flows, Workflows) use <ReactFlow>
+  ✓ All pages use shadcn/ui components (Card, Badge, Tabs, Table, etc.)
   ✓ Every page has at least one interactive/visual element beyond text
-  ✓ Warm palette (parchment background, sage primary) — NOT dark slate
+  ✓ Dark theme is the default with proper contrast
   ✓ Sidebar navigation works for all 10 pages
   ✓ Build succeeds with zero TypeScript errors
   ✓ The app is visually impressive — it looks like a premium dashboard
@@ -1167,11 +1254,11 @@ Read on mount. Write on every change (debounced 500 ms).
 H. UI POLISH CHECKLIST
 ═══════════════════════════════════════════════════════
 
-  ✓ All UI primitives use FitnessAiManager ported components (never shadcn/ui).
-  ✓ All charts use Recharts with warm CHART_COLORS theme.
+  ✓ All UI primitives use shadcn/ui components (never custom implementations).
+  ✓ All charts use Recharts with consistent colour theme.
   ✓ All interactive elements have visible focus ring.
   ✓ Buttons have min-height 44 px (touch target).
-  ✓ Cards use FitnessAiManager Card with warm shadow + parchment background.
+  ✓ Cards use shadcn/ui Card with subtle border + shadow.
   ✓ Scrollable regions have styled scrollbar (thin, semi-transparent).
   ✓ Empty states have illustration/message ("No tickets in this sprint").
   ✓ Loading states use skeleton placeholders, not spinners.

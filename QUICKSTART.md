@@ -26,7 +26,7 @@ Choose the environment that matches your AI-assisted development setup:
 | `cursor` | Cursor IDE with AI | Claude/GPT-4 | Composer-style, multi-file edits |
 | `windsurf` | Windsurf/Codeium IDE | Various | Flow-based, context-aware |
 | `jetbrains-ai` | JetBrains IDEs with AI Assistant | Various | IDE-native, refactoring-focused |
-| `continue` | Continue VS Code extension | Claude/GPT-4/Local | Open-source, custom rules + prompts |
+| `aider` | Aider CLI tool | Claude/GPT-4 | Git-integrated, diff-based |
 
 **Environment affects:**
 - Sprint prompt formatting (how instructions are structured)
@@ -49,11 +49,11 @@ Read ALL documents in the input folder. Use them as the single source of truth.
 
 ## Input
 
-Read every file in: requirnments
+Read every file in: {{INPUT_FOLDER}}
 These are the project's SRS, PRD, and/or requirements documents.
 
-Development Environment: vscode-copilot
-(Options: claude-code, vscode-copilot, cursor, windsurf, jetbrains-ai, continue)
+Development Environment: {{ENVIRONMENT}}
+(Options: claude-code, vscode-copilot, cursor, windsurf, jetbrains-ai, aider)
 
 Extract from them:
   - Project name and description
@@ -193,23 +193,7 @@ project/
 │       ├── summary.md                  # Contains git tag: sprint-N-complete
 │       └── dod_verified.md             # DoD verification with pass/fail per item
 │
-├── .claude/commands/                   # Claude Code skills (if environment = claude-code)
-│   ├── help.md                        # /help — Command menu
-│   ├── plan-sprint.md                 # /plan-sprint [goal] — Expert agents plan sprint → 3-PM review → backlog
-│   ├── execute-ticket.md              # /execute-ticket X.Y — 9-step ticket execution
-│   ├── sprint-run.md                  # /sprint-run X — Full sprint lifecycle (6 phases)
-│   ├── sprint-status.md               # /sprint-status X — Progress + health + FinOps
-│   ├── sprint-close.md                # /sprint-close X — Close with docs cross-references
-│   ├── qa-review.md                   # /qa-review X.Y — Change-type-scaled QA
-│   ├── update-backlog.md              # /update-backlog — Tickets, bugs, docs linking
-│   ├── create-spec.md                 # /create-spec [name] — New feature specification
-│   └── create-sprint-docs.md          # /create-sprint-docs X — Sprint summary generation
-│
-├── .github/copilot-instructions.md    # Copilot instructions (if environment = vscode-copilot)
-│
-├── CLAUDE.md                          # Project instructions with mandatory SDD workflow rules
-│
-└── viewer/                            # Project monitor website (React app)
+└── viewer/                             # Project monitor website (React app)
     └── (see Section 7 for full spec)
 
 ══════════════════════════════════════════════════════════════
@@ -1665,10 +1649,12 @@ SECTION 7 — VIEWER / PROJECT MONITOR WEBSITE
 ══════════════════════════════════════════════════════════════
 
 ╔══════════════════════════════════════════════════════════════════╗
-║  CRITICAL: This is a FULL VISUAL WEBSITE — NOT a markdown       ║
-║  reader. Every page must include interactive charts, diagrams,  ║
-║  and rich UI with the warm FitnessAiManager design system.      ║
-║  If a page only renders raw markdown text, it is WRONG.         ║
+║  CRITICAL: The viewer is a FULL VISUAL WEBSITE — NOT a simple   ║
+║  markdown file reader. Every page MUST include interactive       ║
+║  charts, diagrams, animated components, and rich UI built with  ║
+║  shadcn/ui + Recharts. Think of it as an executive PRESENTATION ║
+║  of the entire project. If a page only renders raw markdown     ║
+║  text without visualizations, it is WRONG and must be redone.   ║
 ╚══════════════════════════════════════════════════════════════════╝
 
 Generate a complete, self-contained React application in viewer/ that
@@ -1677,46 +1663,20 @@ provides a visually impressive dashboard for ALL generated artefacts
 
 ### 7.1 Tech Stack
 
-  React 18 + TypeScript + Vite 5 + Tailwind CSS v3 + React Router v6
-
-  UI Primitives: FitnessAiManager design system (REQUIRED — port from source)
-    Source: /opt/FitnessAiManager/apps/web/src/design-system/components/primitives/
-    Components to port: Button.tsx, Card.tsx, Badge.tsx, Input.tsx
-    Remove: RTL classes (dir-rtl, text-right), Hebrew fonts (Heebo/Rubik/Assistant)
-    Keep: all variant logic, shadow system, transition classes
-
-  Additional libraries (install via npm):
-    - recharts — charts and data visualisation (REQUIRED for every data page):
-                PieChart, BarChart, LineChart, AreaChart
-    - @xyflow/react (React Flow v12) — workflow graph visualisation (optional)
-    - fuse.js — fuzzy search across docs, specs, and backlog
-    - lucide-react — icons
-    - react-markdown + remark-gfm — Markdown rendering
-    - mermaid — render Mermaid diagram blocks embedded in markdown
-
-### 7.1.1 Framework Lockdown (MANDATORY)
-
-Use ONLY the framework/component mapping below. Do not substitute alternatives.
-
-  - App shell + routing: React Router (`Layout`, `Sidebar`, `Header`, nested routes)
-  - UI primitives: FitnessAiManager primitives ONLY (`src/components/primitives/*`)
-  - Charts and KPI visuals: Recharts ONLY
-  - Workflow/graph canvases: `@xyflow/react` ONLY (if used)
-  - Markdown rendering: `react-markdown` + `remark-gfm` ONLY
-  - Icons: `lucide-react` ONLY
-
-FORBIDDEN (must NOT appear anywhere):
-  - shadcn/ui — incompatible with warm palette, do NOT install
-  - @radix-ui imports (shadcn dependency)
-  - Chart.js, Nivo, ECharts, ApexCharts
-  - MUI, Ant Design, Chakra, Mantine, Bootstrap
-  - Any RTL CSS classes (dir-rtl, text-right as default layout)
-  - Dark slate colors: #0f172a, slate-950, zinc-900, gray-950
-
-Enforcement checks (must be explicitly validated):
-  - `package.json` does NOT include shadcn, @radix-ui, or dark theme packages
-  - `src/components/primitives/` has Button, Card, Badge, Input
-  - No forbidden libraries in `package.json` or imports
+  React 18 + TypeScript + Vite + Tailwind CSS v4 + React Router
+  shadcn/ui — complete component library (REQUIRED — do NOT build custom
+              UI primitives). Initialize:
+                npx shadcn@latest init -d
+                npx shadcn@latest add button card badge tabs dialog
+                tooltip table dropdown-menu sheet separator select
+                command popover scroll-area toggle-group avatar
+  recharts — charts and data visualisation (REQUIRED for every data page):
+              PieChart, BarChart, LineChart, AreaChart, RadarChart
+  @xyflow/react (React Flow v12) — workflow graph visualisation
+  framer-motion — panel transitions ONLY (NOT for mass edge animation)
+  lucide-react — icons (used by shadcn/ui)
+  react-markdown + remark-gfm — Markdown rendering
+  react-syntax-highlighter — code block highlighting
 
 ### 7.2 Project Structure
 
@@ -1726,79 +1686,188 @@ viewer/
 ├── src/
 │   ├── App.tsx
 │   ├── main.tsx
-│   ├── index.css                    # Tailwind + global tokens
+│   ├── index.css                    # Tailwind + global tokens + @keyframes
 │   │
 │   ├── data/                        # Static artefacts (import at build time)
 │   │   ├── specs/                   # All 10 spec .md files
 │   │   ├── docs/                    # All docs .md files (mirrored structure)
-│   │   ├── backlog.ts               # Typed backlog data (sprints + tickets)
-│   │   ├── environments.ts          # 6×N compatibility matrix
+│   │   │   ├── architecture/        # 8 files including diagrams.md
+│   │   │   ├── flows/               # 6 flow definition files (NEW)
+│   │   │   ├── workflows/           # 8 files
+│   │   │   ├── environments/        # 5 files
+│   │   │   ├── api/                 # 5 files including curl-examples.md
+│   │   │   ├── testing/             # 6 files including api-test-suite.md
+│   │   │   ├── ui-design-system/    # 6 files including screens.md
+│   │   │   └── project/             # 4 files including dependencies.md
+│   │   ├── sprints/                 # Sprint result folders (NEW)
+│   │   │   └── sprint_X/            # qa_result.md, release_notes.md, summary.md
+│   │   ├── backlog.json             # Parsed backlog (sprints + tickets)
+│   │   ├── workflows.json           # Graph definitions (nodes + edges)
+│   │   ├── architecture.json        # Parsed architecture diagrams (NEW)
+│   │   ├── flows.json               # Parsed flow definitions (NEW)
 │   │   └── requirements.md          # Original SRS
 │   │
 │   ├── pages/
-│   │   ├── DashboardPage.tsx        # "/" — KPI cards + Recharts charts
-│   │   ├── DesignSystemPage.tsx     # "/design-system" — component gallery
+│   │   ├── DashboardPage.tsx        # "/" — with visual charts
+│   │   ├── DesignSystemPage.tsx     # "/design-system" — FULL design system showcase
 │   │   ├── SpecsPage.tsx            # "/specs" + "/specs/:slug"
 │   │   ├── DocsPage.tsx             # "/docs" + "/docs/:section/:slug"
-│   │   ├── BacklogPage.tsx          # "/backlog" — kanban + table
-│   │   ├── SkillsPage.tsx           # "/skills/:slug" — skill cards
-│   │   └── EnvironmentsPage.tsx     # "/environments" — compatibility matrix
+│   │   ├── BacklogPage.tsx          # "/backlog" — kanban + charts
+│   │   ├── WorkflowsPage.tsx        # "/workflows" — animated flows
+│   │   ├── FlowsPage.tsx            # "/flows" — user/system flows
+│   │   ├── ArchitecturePage.tsx     # "/architecture" — interactive diagrams
+│   │   ├── SprintsPage.tsx          # "/sprints" — sprint results
+│   │   └── RequirementsPage.tsx     # "/requirements" — traceability matrix
 │   │
 │   ├── components/
-│   │   ├── primitives/              # FitnessAiManager ports (Button, Card, Badge, Input)
-│   │   ├── layout/                  # Sidebar, Header, Layout
-│   │   └── charts/                  # Recharts wrappers (BarChart, PieChart, etc.)
+│   │   ├── layout/
+│   │   │   ├── Sidebar.tsx          # Collapsible nav (260 px → 64 px)
+│   │   │   ├── Header.tsx           # Search, breadcrumb, theme toggle
+│   │   │   ├── DetailsPanel.tsx     # Right drawer (380 px, slide-in)
+│   │   │   └── Layout.tsx           # Three-column shell
+│   │   │
+│   │   ├── specs/
+│   │   │   ├── SpecViewer.tsx       # Markdown renderer + sticky TOC
+│   │   │   ├── SpecCard.tsx         # Grid card for spec list
+│   │   │   └── MermaidRenderer.tsx  # Mermaid diagram rendering (NEW)
+│   │   │
+│   │   ├── docs/
+│   │   │   ├── DocViewer.tsx        # Markdown renderer for docs
+│   │   │   ├── DocTree.tsx          # Nested folder tree navigation
+│   │   │   ├── DocCard.tsx          # Card with visual preview
+│   │   │   └── CodeBlock.tsx        # Syntax highlighted code (NEW)
+│   │   │
+│   │   ├── backlog/
+│   │   │   ├── BacklogBoard.tsx     # Tab per sprint + table
+│   │   │   ├── KanbanBoard.tsx      # Visual kanban view (NEW)
+│   │   │   ├── BurndownChart.tsx    # Sprint burndown (NEW)
+│   │   │   ├── SprintTab.tsx
+│   │   │   ├── TicketRow.tsx
+│   │   │   └── TicketCard.tsx       # Kanban card (NEW)
+│   │   │
+│   │   ├── workflows/
+│   │   │   ├── WorkflowCanvas.tsx   # React Flow wrapper
+│   │   │   ├── AnimatedEdge.tsx     # SVG stroke-dashoffset animation
+│   │   │   ├── WorkflowNode.tsx     # Memoised node component
+│   │   │   ├── AnimationController.tsx  # Play/Pause/Speed/Focus toolbar
+│   │   │   ├── WorkflowLegend.tsx   # Collapsible legend overlay
+│   │   │   ├── WorkflowSearch.tsx   # Search + filter bar
+│   │   │   ├── WorkflowSelector.tsx # Dropdown to select flow (NEW)
+│   │   │   └── PlayTour.tsx         # Auto-walk critical path
+│   │   │
+│   │   ├── flows/                   # NEW — Flow visualization components
+│   │   │   ├── UserJourneyDiagram.tsx    # Swimlane user journey
+│   │   │   ├── SequenceDiagram.tsx       # Request/response sequence
+│   │   │   ├── DataFlowDiagram.tsx       # Data movement visualization
+│   │   │   ├── StateMachine.tsx          # State transition diagram
+│   │   │   └── FlowSelector.tsx          # Flow type selector
+│   │   │
+│   │   ├── architecture/            # NEW — Architecture visualization
+│   │   │   ├── SystemDiagram.tsx         # Main architecture view
+│   │   │   ├── ERDiagram.tsx             # Database ERD
+│   │   │   ├── ComponentTree.tsx         # Frontend component hierarchy
+│   │   │   ├── LayerDiagram.tsx          # Backend layer visualization
+│   │   │   ├── SecurityFlowDiagram.tsx   # Auth/security flow
+│   │   │   ├── CloudDiagram.tsx          # Infrastructure visualization
+│   │   │   └── DiagramExport.tsx         # Export as PNG/SVG
+│   │   │
+│   │   ├── sprints/                 # Sprint results components
+│   │   │   ├── SprintSummaryCard.tsx     # Sprint overview card
+│   │   │   ├── SprintCompletionChart.tsx # Pie chart completion
+│   │   │   ├── QAResultsViewer.tsx       # Test results with badges
+│   │   │   ├── ReleaseNotesViewer.tsx    # Feature highlights
+│   │   │   └── VelocityChart.tsx         # Velocity over sprints
+│   │   │
+│   │   ├── design-system/          # Design System showcase components
+│   │   │   ├── ColorPalette.tsx         # Interactive colour swatch grid
+│   │   │   ├── TypographyScale.tsx      # Font scale + weight showcase
+│   │   │   ├── SpacingScale.tsx         # Visual spacing/sizing reference
+│   │   │   ├── ComponentGallery.tsx     # Live rendered component examples
+│   │   │   ├── ScreenInventory.tsx      # Screen wireframes / mockups gallery
+│   │   │   ├── IconLibrary.tsx          # Icon grid with search
+│   │   │   ├── ResponsivePreview.tsx    # Breakpoint visualizer
+│   │   │   └── AccessibilityMatrix.tsx  # A11y compliance checklist
+│   │   │
+│   │   ├── dashboard/
+│   │   │   ├── OverviewCards.tsx         # Stat cards with AnimatedCounter
+│   │   │   ├── ProgressRing.tsx          # SVG animated circular progress
+│   │   │   ├── SprintTimeline.tsx        # Recharts BarChart (stacked)
+│   │   │   ├── ModelDistribution.tsx     # Recharts PieChart
+│   │   │   ├── VelocityMini.tsx          # Recharts LineChart
+│   │   │   ├── MiniArchitecture.tsx      # Clickable mini diagram → /arch
+│   │   │   └── RecentTickets.tsx         # shadcn/ui Table with Badges
+│   │   │
+│   │   ├── charts/                  # Reusable Recharts wrappers
+│   │   │   ├── PieChart.tsx              # Recharts PieChart wrapper
+│   │   │   ├── BarChart.tsx              # Recharts BarChart wrapper
+│   │   │   ├── LineChart.tsx             # Recharts LineChart wrapper
+│   │   │   ├── AreaChart.tsx             # Recharts AreaChart wrapper
+│   │   │   ├── ProgressBar.tsx           # Animated progress bar
+│   │   │   └── AnimatedCounter.tsx       # Count-up number animation
+│   │   │
+│   │   └── ui/                      # shadcn/ui components (auto-generated)
+│   │       # Generated by: npx shadcn@latest add button card badge tabs
+│   │       # dialog tooltip table dropdown-menu sheet separator select
+│   │       # command popover scroll-area toggle-group avatar
+│   │       # Do NOT build custom UI primitives — use shadcn/ui
 │   │
-│   └── hooks/
-│       └── useBacklogData.ts        # Parse and filter backlog
+│   ├── hooks/
+│   │   ├── useAnimationEngine.ts    # Central animation state
+│   │   ├── useAnimationSettings.ts  # localStorage persistence
+│   │   ├── useReducedMotion.ts      # prefers-reduced-motion
+│   │   ├── useBacklogData.ts        # Parse and filter backlog (NEW)
+│   │   └── useDiagramExport.ts      # Export diagrams (NEW)
+│   │
+│   └── lib/
+│       ├── animation.ts             # Constants, easing, helpers
+│       ├── graph.ts                 # BFS, critical path, subgraph
+│       ├── theme.ts                 # Design tokens
+│       ├── mermaid.ts               # Mermaid parsing helpers (NEW)
+│       ├── markdown.ts              # Markdown parsing with diagrams (NEW)
+│       └── export.ts                # PNG/SVG export utilities (NEW)
 │
 ├── tailwind.config.js
 ├── vite.config.ts
 ├── tsconfig.json
 └── package.json
 
-### 7.3 Design System (Warm FitnessAiManager Palette)
+### 7.3 Design System (shadcn/ui Dark Theme)
 
-Port the warm design system from FitnessAiManager. Do NOT use dark mode.
+Use shadcn/ui "new-york" style. Configure dark theme as default.
 
-Source tailwind.config.js:
-  /opt/FitnessAiManager/apps/web/tailwind.config.js
-
-Colours (exact hex values — copy these into tailwind.config.js):
-  parchment:      #f5f3ed   ← PAGE BACKGROUND (body bg-color)
-  cream:          #faf9f5   ← CARD/SURFACE background
-  sage:           #698472   ← PRIMARY actions, active nav, buttons
-  sage-600:       #536a5b   ← hover state
-  sage-700:       #44564a   ← active/pressed state
-  terracotta:     #8e6a59   ← ACCENT, headings, error states
-  terracotta-700: #76574a   ← terracotta hover
-  sand:           #d8d0ba   ← BORDERS, dividers
-  sand-200:       #e8e4d8   ← subtle fills, code backgrounds
-  charcoal:       #1a1a1a   ← BODY TEXT
+Colours (CSS variables for shadcn/ui):
+  --bg:           #0f172a   (slate-950)
+  --surface:      #1e293b   (slate-800)
+  --surface-2:    #334155   (slate-700)
+  --border:       rgba(255,255,255,0.08)
+  --text:         #f1f5f9   (slate-100)
+  --text-muted:   #94a3b8   (slate-400)
+  --primary:      #3b82f6   (blue-500)
+  --secondary:    #a855f7   (purple-500)
+  --success:      #10b981   (emerald-500)
+  --warning:      #f59e0b   (amber-500)
+  --error:        #ef4444   (red-500)
+  --info:         #06b6d4   (cyan-500)
 
 Recharts theme (use consistently across ALL charts):
-  CHART_COLORS = ['#698472', '#8e6a59', '#536a5b', '#b08a79',
-                   '#a08c72', '#44564a', '#d9b9a8', '#d8d0ba']
+  CHART_COLORS = ['#3b82f6', '#a855f7', '#10b981', '#f59e0b',
+                   '#ef4444', '#06b6d4', '#ec4899', '#8b5cf6']
 
-Typography:
-  Body: Inter (Google Fonts, weights: 300/400/500/600/700)
-  Code: JetBrains Mono (Google Fonts, weights: 400/500)
-  Load via <link> in index.html (no self-hosted)
-  font-family body: 'Inter', sans-serif
-  font-family code: 'JetBrains Mono', monospace
-
-Shadows (copy from source):
-  subtle:   0 2px 8px rgba(142, 106, 89, 0.08)
-  soft:     0 4px 16px rgba(142, 106, 89, 0.12)
-  elevated: 0 8px 32px rgba(142, 106, 89, 0.16)
+Typography: Inter (headings 600–700, body 400), JetBrains Mono (code)
+Base: 16 px, scale: 1.25
+Spacing: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 px
+Radii: sm 6, md 10, lg 16, full 9999
 
 Component rules (MANDATORY):
-  - ALL buttons → FitnessAiManager <Button> variants: primary(sage)/secondary(terracotta)/outline/ghost
-  - ALL cards → FitnessAiManager <Card> with CardHeader, CardContent, CardFooter
-  - ALL badges → FitnessAiManager <Badge> with warm variants (not shadcn)
-  - ALL charts → Recharts with CHART_COLORS warm theme
-  - NEVER use shadcn/ui — port primitives from FitnessAiManager source
-  - NEVER use dark slate (#0f172a) as background
+  - ALL buttons → shadcn/ui <Button> (never custom)
+  - ALL cards → shadcn/ui <Card> with CardHeader, CardContent, CardFooter
+  - ALL badges → shadcn/ui <Badge> (variant: default, secondary, destructive, outline)
+  - ALL tabs → shadcn/ui <Tabs> with TabsList, TabsTrigger, TabsContent
+  - ALL tables → shadcn/ui <Table> with proper header/body/row/cell
+  - ALL tooltips → shadcn/ui <Tooltip>
+  - ALL dropdowns → shadcn/ui <Select> or <DropdownMenu>
+  - ALL charts → Recharts with CHART_COLORS theme
+  - NEVER build custom UI primitives — use shadcn/ui for everything
 
 ### 7.4 Pages
 
@@ -1934,64 +2003,78 @@ Docs ("/docs"):
     📁 ui-design-system/ — colour swatch preview
     📁 project/ — folder tree icon
   - Nested tree navigation with expand/collapse (shadcn/ui Collapsible)
-  - REQUIRED: documentation search bar at top of page:
-    - debounced input (200–300ms)
-    - searches title, path, headings, and markdown content excerpt
-    - keyboard support: `/` focuses search, `Esc` clears
-    - result count badge + highlighted match snippets
-    - selecting result navigates to `/docs/:section/:slug` and scrolls to heading
-    - empty-state and no-result states with helpful suggestions
   - Detail ("/docs/:section/:slug"): full Markdown rendered with:
     - **VISUAL: Mermaid diagrams rendered** (flowcharts, sequence, ERD)
     - **VISUAL: Tables** using shadcn/ui Table with alternating rows
     - **VISUAL: Code blocks** with react-syntax-highlighter + copy Button
     - Breadcrumb: Docs > Architecture > Security
 
-Global Search (Header.tsx):
-  - REQUIRED global command/search trigger in header (shadcn/ui Command + Dialog)
-  - Searches across specs, docs, backlog tickets, and sprint files
-  - Keyboard shortcut: `Ctrl/Cmd + K`
-  - Each result shows type badge (Spec/Doc/Ticket/Sprint) + path
-  - Selecting result navigates directly to page/detail route
-
-Flows ("/flows") — **CUSTOM SVG FLOW DIAGRAMS (NOT MARKDOWN)**:
+Flows ("/flows") — **REACT FLOW DIAGRAMS (NEVER TEXT)**:
   ╔══════════════════════════════════════════════════════════════════╗
-  ║  Use CUSTOM SVG components (dagre-based) for clean, animated   ║
-  ║  flow diagrams. Two reusable diagram types cover all flows:    ║
-  ║  StateMachineDiagram (state → state) and SequenceDiagram       ║
-  ║  (participant → participant over time).                        ║
+  ║  CRITICAL: Every flow MUST render as a React Flow <ReactFlow>  ║
+  ║  graph with nodes and edges. Read from flows.json which has    ║
+  ║  pre-computed node positions. NEVER render flows as markdown   ║
+  ║  text, bullet lists, ASCII art, or numbered steps.             ║
+  ║                                                                ║
+  ║  ANTI-PATTERN (WRONG):                                         ║
+  ║    1. User visits app                                          ║
+  ║    2. User clicks login → shows form                           ║
+  ║    3. User submits credentials → API validates                 ║
+  ║                                                                ║
+  ║  CORRECT PATTERN:                                              ║
+  ║    <ReactFlow nodes={flow.nodes} edges={flow.edges} />         ║
+  ║    with styled custom nodes, animated edges, and interactivity ║
   ╚══════════════════════════════════════════════════════════════════╝
 
-  shadcn/ui Tabs to switch between flow types:
+  Data source: flows.json (each flow has nodes[] with positions + edges[])
 
-  - **State Transitions** (StateMachineDiagram component):
-    - Dagre-based auto-layout with configurable rank direction (TB/LR)
-    - State pills: icon + label centred, border colour + fill from palette
-    - Initial state: black dot + arrow; final state: double circle border
-    - Transitions: cubic bezier curves with label badges at midpoint
-    - Coloured by transition type
-    - Component accepts: states[] (id, label, icon, colour) + transitions[] (from/to/label/colour)
+  shadcn/ui Tabs to switch between flow diagrams:
 
-  - **Authentication Flow** (SequenceDiagram component):
-    - Participants as vertical lifelines with headers (icon + label)
-    - Messages: horizontal arrows (solid=request, dashed=response, self-loop=internal)
-    - Groups: `alt` (if/else), `opt` (optional), `loop` (repetition), `note` (annotation)
-    - Token lifecycle: issue → validate → refresh → expire
-    - Component accepts: participants[] + messages[] + groups[]
+  **Each flow renders as a full React Flow canvas:**
 
-  - **Core Feature Flows** (SequenceDiagram or StateMachineDiagram):
-    - Project-specific user flows derived from specs/01_product_manager.md
-    - Clickable nodes link to relevant specs
+  - **User Journey** (type: "swimlane")
+    - React Flow graph with horizontal swim lanes (coloured background rows)
+    - Lane headers on the left: "User", "Frontend", "API", "Database"
+    - Custom nodes positioned within their lane's Y range
+    - Animated edges showing request/response flow between lanes
+    - Persona icon on the start node
+    - Click node → Sheet with step details
 
-  - **Data Flow** (LayeredArchDiagram variant):
-    - Data movement visualization: frontend → API → services → DB → cache
-    - Colour-coded by data type (user data, business data, analytics)
+  - **Authentication Flow** (type: "sequence")
+    - React Flow graph with participant columns (Client, API, Auth, DB)
+    - Column headers at top
+    - Nodes arranged vertically in time order within columns
+    - Animated edges as request arrows (→) and response arrows (←)
+    - Edge labels: "POST /login", "200 OK + JWT", "SELECT user"
+    - Token lifecycle shown as node colour transitions
 
-  - **Error Handling** (StateMachineDiagram variant):
-    - Decision tree with severity colours (warning=amber, error=red, fatal=dark red)
-    - Recovery paths and fallback flows
+  - **Core Features Flow** (type: "process")
+    - React Flow graph of main feature workflows
+    - Decision nodes (diamond shape) for branching
+    - Clickable nodes link to relevant spec files
+    - Colour-coded by feature area
 
-  Play/Pause controls, Export as PNG/SVG via shadcn/ui Button
+  - **Data Flow** (type: "dataflow")
+    - React Flow graph showing data movement between components
+    - Node colour indicates data type (user data=blue, config=green, etc.)
+    - Edge labels show data transformation descriptions
+    - Animated edges showing direction of data flow
+
+  - **Error Handling** (type: "decision-tree")
+    - React Flow decision tree diagram
+    - Decision nodes with Yes/No branches
+    - Colour-coded by severity: warning=amber, error=red, fatal=dark red
+    - Leaf nodes show recovery actions
+
+  - **State Transitions** (type: "state-machine")
+    - React Flow graph with state nodes (rounded rectangles)
+    - Transition edges with event labels: "submit()", "approve()", "reject()"
+    - Click state → highlight valid transitions (dim others)
+    - Current/initial state highlighted with accent ring
+
+  Each flow tab: Play/Pause for edge animations, Export PNG/SVG
+  Custom node component per flow type (SwimLaneNode, SequenceNode, StateNode, etc.)
+  All nodes use React.memo for performance
 
 Backlog ("/backlog"):
   THIS IS THE MOST DATA-RICH PAGE — must be highly visual and interactive.
@@ -2044,57 +2127,96 @@ Workflows ("/workflows"):
   - Bottom-right: legend overlay (collapsible)
   - Export graph as PNG/SVG via shadcn/ui Button
 
-Architecture ("/architecture") — **INTERACTIVE SVG DIAGRAMS (NOT MARKDOWN)**:
+Architecture ("/architecture") — **REACT FLOW DIAGRAMS (NEVER TEXT)**:
   ╔══════════════════════════════════════════════════════════════════╗
-  ║  PRODUCTION-TESTED APPROACH: Use custom SVG components with     ║
-  ║  @dagrejs/dagre for auto-layout. This produces cleaner, more   ║
-  ║  readable diagrams than React Flow with better animation control║
-  ║  and smaller bundle size. See component patterns below.         ║
+  ║  CRITICAL: Every architecture diagram MUST render as a React   ║
+  ║  Flow <ReactFlow> graph with nodes and edges. Read from        ║
+  ║  architecture.json which has pre-computed node positions.      ║
+  ║  NEVER render architecture as markdown text, bullet lists,     ║
+  ║  ASCII boxes, or <pre> blocks. Every tab must show a visual    ║
+  ║  interactive graph that users can zoom, pan, and click.        ║
+  ║                                                                ║
+  ║  ANTI-PATTERN (WRONG):                                         ║
+  ║    ## System Architecture                                      ║
+  ║    - Client (React SPA)                                        ║
+  ║      - API Gateway (Express)                                   ║
+  ║        - Auth Service                                          ║
+  ║        - User Service                                          ║
+  ║                                                                ║
+  ║  ALSO WRONG:                                                   ║
+  ║    ┌──────────┐    ┌──────────┐    ┌──────────┐               ║
+  ║    │  Client  │───▶│   API    │───▶│    DB    │               ║
+  ║    └──────────┘    └──────────┘    └──────────┘               ║
+  ║                                                                ║
+  ║  CORRECT PATTERN:                                              ║
+  ║    <ReactFlow nodes={diagram.nodes} edges={diagram.edges}      ║
+  ║      nodeTypes={customNodeTypes} fitView />                    ║
   ╚══════════════════════════════════════════════════════════════════╝
 
-  Additional dependency: `@dagrejs/dagre` for graph layout algorithms.
+  Data source: architecture.json (each diagram has nodes[] with positions + edges[])
 
-  shadcn/ui Tabs navigation between 5 diagram types:
+  shadcn/ui Tabs navigation. Each tab renders a React Flow canvas:
 
-  **Tab 1: System Architecture** (LayeredArchDiagram component)
-    - Custom SVG with horizontal layer bands (Client → Proxy → App → Data)
-    - Nodes as rounded rectangles with gradients, icons, and labels
-    - Cubic bezier connection paths with arrows and labels
-    - Dagre-free manual layering: nodes organized by tier, centered
-    - Animations:
-      - `archFadeSlideUp`: nodes slide up with staggered delay (index × 80ms)
-      - `archPathDraw`: connection paths draw via stroke-dashoffset
-      - Hover: glow filter + scale(1.02)
-    - Pre-built configs: SYSTEM_ARCH, FRONTEND_ARCH, BACKEND_ARCH, SECURITY_ARCH
-    - Component accepts: layers[] (label + nodes[]) and connections[] (from/to/label)
+  **Tab 1: System Architecture** (id: "system-architecture", default view)
+    - React Flow graph with custom node components per type:
+      - "frontend" nodes: blue background, Monitor icon
+      - "backend" nodes: purple background, Server icon
+      - "database" nodes: green background, Database icon
+      - "cache" nodes: amber background, Zap icon
+      - "queue" nodes: cyan background, List icon
+      - "external" nodes: grey dashed border, Globe icon
+    - Each node: rounded Card with icon + label + tech badge
+    - Click node → shadcn/ui Sheet with metadata (tech stack, description,
+      endpoints, responsibilities)
+    - Animated edges showing data flow direction
+    - Edge labels: "HTTP/REST", "WebSocket", "SQL", "Redis", "gRPC"
+    - Zoom, pan, fitView enabled
 
-  **Tab 2: Database ERD** (ERDDiagram component — most complex)
-    - Dagre-based auto-layout minimizing edge crossings
-    - Entity boxes with: header (icon + name + colour), fields with alternating rows,
-      PK badges (🔑), FK badges (🔗), type annotations (right-aligned, monospace)
-    - Crow's foot notation for cardinality: 1:1, 1:N, N:1, N:M
-    - Interactive: hover entity → highlight connected relationships, dim others to 30%
-    - Zoom controls (0.25x–2x), minimap (bottom-left), Ctrl+Wheel zoom
-    - Grid background pattern
-    - Animations: `erdScaleIn` (entities), `erdFadeIn` (relationship lines)
-    - Component accepts: entities[] (id, name, colour, fields[]) and relations[] (from/to/type/label)
+  **Tab 2: Database ERD** (id: "database-erd")
+    - React Flow graph with custom ERD node component:
+      - Each node = one database table
+      - Node renders as a Card with:
+        - Header: table name (bold, coloured)
+        - Body: list of columns with type badges
+        - PK columns marked with key icon
+        - FK columns marked with link icon
+    - Edges = relationships with cardinality labels ("1:N", "N:M", "1:1")
+    - Edge style: different colours per relationship type
+    - Click table node → Sheet with full schema, indexes, constraints
 
-  **Tab 3: Frontend Component Tree** (LayeredArchDiagram variant)
-    - Reuse LayeredArchDiagram with frontend-specific config:
-      Layers: Router → Pages → Components → Design System → API Services
-    - Click component → shadcn/ui Sheet with props/state info
+  **Tab 3: Frontend Component Tree** (id: "frontend-tree")
+    - React Flow graph with tree layout (top-down):
+      - Root: App
+      - Level 1: Layout components
+      - Level 2: Page components
+      - Level 3: Feature components
+      - Level 4: UI primitives
+    - Nodes as rounded Cards with component name
+    - Edges as parent→child arrows
+    - Click node → Sheet with props, state, children info
+    - Collapsible subtrees (click group to expand/collapse)
 
-  **Tab 4: Backend Layers** (LayeredArchDiagram variant)
-    - Layers: Routes → Guards/Middleware → Controllers → Services → Prisma/ORM → Database
-    - Animated request flow with stroke-dashoffset
+  **Tab 4: Backend Layers** (id: "backend-layers")
+    - React Flow graph showing layered architecture:
+      - Horizontal layers (top to bottom): Routes → Middleware →
+        Controllers → Services → Repositories → Database
+      - Multiple nodes per layer (one per route/controller/service)
+      - Animated request flow on play button (edge pulse top → bottom)
+      - Response flow (edge pulse bottom → top) in different colour
+    - Layer background colours for visual grouping
 
-  **Tab 5: Security Flow** (SequenceDiagram component)
-    - Sequence diagram with participants, messages, and groups (alt/opt/loop)
-    - Auth flow: login → token generation → refresh → permission checks
-    - Rate limiting, CORS, JWT validation visualized as sequence steps
+  **Tab 5: Security Flow** (id: "security-flow")
+    - React Flow graph showing auth flow:
+      - Login request → credential validation → token generation →
+        token storage → subsequent request → token verification →
+        permission check → resource access
+    - Nodes colour-coded: auth=blue, token=green, permission=amber
+    - Edge labels: "JWT", "bcrypt", "RBAC check"
+    - Animated flow on play
 
-  - Each tab: "View Source" toggle to show raw architecture markdown
-  - Export diagrams as PNG/SVG via shadcn/ui Button
+  Each tab: "View Source" toggle (shows raw markdown), Export PNG/SVG
+  All custom nodes wrapped in React.memo
+  All diagrams must be zoomable, pannable, and responsive
 
 Sprints ("/sprints") — **SPRINT RESULTS WITH CHARTS**:
   View completed sprint documentation from sprints/ folder.
@@ -2370,23 +2492,157 @@ viewer/src/data/
 │                                 #     edges: [{ id, source, target, label, animated, priority }]
 │                                 #   }]
 │
-├── architecture.json             # NEW — Structured architecture data:
+├── architecture.json             # Structured architecture data AS REACT FLOW GRAPHS:
 │                                 #   {
-│                                 #     system: { components: [...], connections: [...] },
-│                                 #     database: { tables: [...], relationships: [...] },
-│                                 #     frontend: { components: [...], hierarchy: [...] },
-│                                 #     backend: { layers: [...], flow: [...] },
-│                                 #     security: { authFlow: [...], permissions: [...] },
-│                                 #     cloud: { services: [...], network: [...] }
+│                                 #     "diagrams": [
+│                                 #       {
+│                                 #         "id": "system-architecture",
+│                                 #         "name": "System Architecture",
+│                                 #         "description": "High-level system components",
+│                                 #         "nodes": [
+│                                 #           {
+│                                 #             "id": "client",
+│                                 #             "label": "React SPA",
+│                                 #             "type": "frontend",
+│                                 #             "icon": "monitor",
+│                                 #             "metadata": { "tech": "React 18", "desc": "..." },
+│                                 #             "position": { "x": 400, "y": 0 }
+│                                 #           },
+│                                 #           {
+│                                 #             "id": "api-gateway",
+│                                 #             "label": "API Gateway",
+│                                 #             "type": "backend",
+│                                 #             "icon": "server",
+│                                 #             "metadata": { "tech": "Express.js", "desc": "..." },
+│                                 #             "position": { "x": 400, "y": 150 }
+│                                 #           }
+│                                 #           // ... more nodes for each component
+│                                 #         ],
+│                                 #         "edges": [
+│                                 #           {
+│                                 #             "id": "e-client-api",
+│                                 #             "source": "client",
+│                                 #             "target": "api-gateway",
+│                                 #             "label": "HTTP/REST",
+│                                 #             "animated": true
+│                                 #           }
+│                                 #           // ... more edges for each connection
+│                                 #         ]
+│                                 #       },
+│                                 #       {
+│                                 #         "id": "database-erd",
+│                                 #         "name": "Database ERD",
+│                                 #         "nodes": [
+│                                 #           {
+│                                 #             "id": "users-table",
+│                                 #             "label": "users",
+│                                 #             "type": "table",
+│                                 #             "metadata": {
+│                                 #               "columns": [
+│                                 #                 { "name": "id", "type": "UUID", "pk": true },
+│                                 #                 { "name": "email", "type": "VARCHAR(255)" },
+│                                 #                 { "name": "name", "type": "VARCHAR(100)" }
+│                                 #               ]
+│                                 #             },
+│                                 #             "position": { "x": 0, "y": 0 }
+│                                 #           }
+│                                 #         ],
+│                                 #         "edges": [
+│                                 #           {
+│                                 #             "id": "e-users-orders",
+│                                 #             "source": "users-table",
+│                                 #             "target": "orders-table",
+│                                 #             "label": "1:N",
+│                                 #             "animated": false
+│                                 #           }
+│                                 #         ]
+│                                 #       },
+│                                 #       { "id": "backend-layers", ... },
+│                                 #       { "id": "frontend-tree", ... },
+│                                 #       { "id": "security-flow", ... }
+│                                 #     ]
 │                                 #   }
+│                                 #
+│                                 #   Node types: "frontend"|"backend"|"database"|"cache"|
+│                                 #     "queue"|"external"|"table"|"service"|"middleware"
+│                                 #   Every diagram MUST have nodes with positions + edges.
+│                                 #   This is what React Flow renders — not text!
 │
-├── flows.json                    # NEW — Structured flow data:
+├── flows.json                    # Structured flow data AS REACT FLOW GRAPHS:
 │                                 #   {
-│                                 #     userJourneys: [{ persona, steps: [...] }],
-│                                 #     authFlow: { steps: [...], tokens: [...] },
-│                                 #     dataFlow: { sources: [...], transforms: [...], sinks: [...] },
-│                                 #     stateMachines: [{ entity, states: [...], transitions: [...] }]
+│                                 #     "flows": [
+│                                 #       {
+│                                 #         "id": "user-journey",
+│                                 #         "name": "User Journey",
+│                                 #         "type": "swimlane",
+│                                 #         "description": "End-to-end user journey",
+│                                 #         "lanes": ["User", "Frontend", "API", "Database"],
+│                                 #         "nodes": [
+│                                 #           {
+│                                 #             "id": "visit-app",
+│                                 #             "label": "Visit Application",
+│                                 #             "lane": "User",
+│                                 #             "type": "start",
+│                                 #             "position": { "x": 0, "y": 50 }
+│                                 #           },
+│                                 #           {
+│                                 #             "id": "render-page",
+│                                 #             "label": "Render Landing Page",
+│                                 #             "lane": "Frontend",
+│                                 #             "type": "process",
+│                                 #             "position": { "x": 250, "y": 50 }
+│                                 #           }
+│                                 #         ],
+│                                 #         "edges": [
+│                                 #           {
+│                                 #             "id": "e-visit-render",
+│                                 #             "source": "visit-app",
+│                                 #             "target": "render-page",
+│                                 #             "label": "HTTP GET /",
+│                                 #             "animated": true
+│                                 #           }
+│                                 #         ]
+│                                 #       },
+│                                 #       {
+│                                 #         "id": "auth-flow",
+│                                 #         "name": "Authentication Flow",
+│                                 #         "type": "sequence",
+│                                 #         "participants": ["Client", "API", "Auth Service", "DB"],
+│                                 #         "nodes": [...],
+│                                 #         "edges": [...]
+│                                 #       },
+│                                 #       {
+│                                 #         "id": "data-flow",
+│                                 #         "name": "Data Flow",
+│                                 #         "type": "dataflow",
+│                                 #         "nodes": [...],
+│                                 #         "edges": [...]
+│                                 #       },
+│                                 #       {
+│                                 #         "id": "state-machine-order",
+│                                 #         "name": "Order State Machine",
+│                                 #         "type": "state-machine",
+│                                 #         "nodes": [
+│                                 #           { "id": "draft", "label": "Draft", "type": "state",
+│                                 #             "position": { "x": 0, "y": 100 } },
+│                                 #           { "id": "submitted", "label": "Submitted", "type": "state",
+│                                 #             "position": { "x": 250, "y": 100 } }
+│                                 #         ],
+│                                 #         "edges": [
+│                                 #           { "id": "e-draft-submit", "source": "draft",
+│                                 #             "target": "submitted", "label": "submit()",
+│                                 #             "animated": true }
+│                                 #         ]
+│                                 #       },
+│                                 #       { "id": "error-flow", ... },
+│                                 #       { "id": "core-features", ... }
+│                                 #     ]
 │                                 #   }
+│                                 #
+│                                 #   Flow types: "swimlane"|"sequence"|"dataflow"|
+│                                 #     "state-machine"|"decision-tree"|"process"
+│                                 #   Every flow MUST have nodes with positions + edges.
+│                                 #   This is what React Flow renders — not text!
 │
 ├── metrics.json                  # Project metrics for dashboard:
 │                                 #   {
@@ -2431,10 +2687,47 @@ Import strategy:
 - These JSON files enable the visual diagram rendering (not just text)
 
 JSON Generation Rules:
-- Parse Mermaid blocks from markdown and convert to node/edge format
-- Extract tables and convert to structured data
-- Parse ASCII diagrams and infer component relationships
+- Parse Mermaid blocks from markdown and convert to React Flow node/edge format
+- Extract tables and convert to structured data with positions
+- Parse ASCII diagrams and infer component relationships as nodes + edges
+- ALL diagram JSON files (architecture.json, flows.json, workflows.json) MUST
+  use React Flow-compatible format: nodes[] with { id, label, type, position }
+  and edges[] with { id, source, target, label, animated }
+- Every node MUST have a position: { x, y } — this is what React Flow needs
+  to render the graph. Without positions, React Flow cannot display nodes.
 - All JSON must be valid and complete — no placeholders
+
+╔══════════════════════════════════════════════════════════════════╗
+║  DIAGRAM RENDERING RULES — READ THIS CAREFULLY                  ║
+╠══════════════════════════════════════════════════════════════════╣
+║                                                                  ║
+║  The Architecture, Flows, and Workflows pages MUST render        ║
+║  diagrams using <ReactFlow> components reading from JSON data.   ║
+║                                                                  ║
+║  NEVER DO ANY OF THESE (these are ALL wrong):                    ║
+║  ✗ Render markdown text and call it a "diagram"                  ║
+║  ✗ Render ASCII art boxes (┌──────┐) in <pre> tags              ║
+║  ✗ Render numbered step lists ("1. User logs in, 2. API…")      ║
+║  ✗ Render bullet-point hierarchies as the diagram                ║
+║  ✗ Render Mermaid source code as text instead of a graph         ║
+║  ✗ Show a markdown file with "```mermaid" blocks unrendered     ║
+║  ✗ Use only <div> boxes with CSS borders to fake a diagram       ║
+║                                                                  ║
+║  ALWAYS DO THIS (the only correct approach):                     ║
+║  ✓ Use <ReactFlow nodes={data.nodes} edges={data.edges} />      ║
+║  ✓ Define custom nodeTypes for each diagram type                 ║
+║  ✓ Every node has position: { x, y } from the JSON              ║
+║  ✓ Edges connect nodes with animated or styled lines             ║
+║  ✓ Users can zoom, pan, and click on nodes                       ║
+║  ✓ Click node → opens Sheet/panel with metadata details          ║
+║  ✓ Diagrams have fitView for auto-zoom on load                   ║
+║                                                                  ║
+║  Architecture → architecture.json → React Flow per tab           ║
+║  Flows → flows.json → React Flow per tab                         ║
+║  Workflows → workflows.json → React Flow per tab                 ║
+║                                                                  ║
+║  If a diagram renders as text, it is WRONG. Fix it.              ║
+╚══════════════════════════════════════════════════════════════════╝
 
 ══════════════════════════════════════════════════════════════
 SECTION 8 — QUALITY GATES
@@ -2469,208 +2762,21 @@ VIEWER-SPECIFIC QUALITY GATES (all must pass):
   ✓ Docs page shows folder Cards with file count Badges
   ✓ Backlog page has BOTH kanban board view AND table view
   ✓ Backlog page has at least 2 charts (status distribution, burndown)
-  ✓ Workflows page renders React Flow graphs with animated edges
-  ✓ Architecture page has interactive diagrams (NOT just markdown text)
-  ✓ Flows page has visual diagrams (NOT just markdown text)
-  ✓ Docs page includes working debounced search (title/path/content)
-  ✓ Header includes global command search (Ctrl/Cmd + K) across artefacts
+  ✓ Workflows page renders <ReactFlow> graphs with animated edges
+  ✓ Architecture page renders <ReactFlow> graphs from architecture.json
+    (NOT markdown text, NOT ASCII boxes, NOT bullet lists — React Flow only)
+  ✓ Flows page renders <ReactFlow> graphs from flows.json
+    (NOT markdown text, NOT numbered steps, NOT bullet lists — React Flow only)
   ✓ Every page has at least one interactive/visual element beyond text
   ✓ Dark theme is the default with proper contrast ratios
   ✓ Sidebar navigation links to all 10 pages and works correctly
   ✓ The app looks like a premium SaaS dashboard, NOT a markdown reader
 
-MANDATORY CONSISTENCY RULES (to reduce broken/low-quality viewer output):
-
-  ✓ NO hardcoded demo arrays inside page components for backlog/spec/doc metrics
-    (all page data must come from `src/data/*.json` and/or `?raw` markdown imports)
-  ✓ Every route in App.tsx has a matching sidebar navigation item and page export
-  ✓ Every visual component referenced by a page must exist as a concrete file
-  ✓ No placeholder sections like "TODO", "coming soon", "sample data", "mock data"
-  ✓ No page may be only markdown rendering; each page must include visual widgets
-  ✓ No direct hex color hardcoding inside page components; use shared theme tokens
-
-VISUAL ACCEPTANCE MATRIX (must be satisfied before final output):
-
-  - Dashboard: ≥ 4 charts + stat cards + recent table + quick links
-  - Design System: 7 interactive tabs + live component previews + screen inventory
-  - Specs: card grid + spec progress visualization + detailed spec viewer
-  - Docs: folder cards + structured doc tree + enhanced markdown rendering
-  - Backlog: chart summary + kanban + sprint table + filters + ticket detail panel
-  - Workflows: selectable graphs + animated edges + controls + legend + export
-  - Flows: at least 4 distinct visual flow diagrams + selector + export
-  - Architecture: at least 5 visual diagram tabs + drill-down details + export
-  - Sprints: sprint cards + completion chart + velocity trend + QA/release views
-  - Requirements: traceability matrix + coverage/progress visualization
-
-BUILD + VALIDATION PROTOCOL (REQUIRED BEFORE RETURNING RESULTS):
-
-  1. Install dependencies in `viewer/`.
-  2. Run (in order):
-     - `npm run typecheck`
-     - `npm run build`
-  3. If either command fails, fix errors and re-run both commands.
-  4. Repeat repair loop until both pass (max 3 full repair attempts).
-  5. If still failing after 3 attempts, output:
-     - exact failing files,
-     - exact error messages,
-     - what was attempted,
-     - smallest remaining manual fix required.
-
-STRUCTURAL SELF-CHECKLIST (MUST EXECUTE IN-PROMPT):
-
-  - Verify all required files from Section 7.2 exist.
-  - Verify all 10 page routes render without runtime import errors.
-  - Verify chart components use shared CHART_COLORS/theme tokens.
-  - Verify `src/data/backlog.json`, `workflows.json`, `architecture.json`,
-    `flows.json`, `metrics.json`, and `design-system.json` are valid JSON.
-  - Verify sidebar order starts with Dashboard, then Design System.
-  - Verify framework lockdown: required libs present, forbidden libs absent.
-  - Verify docs search returns results and deep-links to doc detail pages.
-  - Verify global search opens with Ctrl/Cmd+K and navigates correctly.
-  - Verify no TypeScript `any` in newly generated viewer page/component files
-    unless unavoidable (must justify inline if used).
-
-FAIL-SAFE REGENERATION RULE:
-
-  If visual acceptance matrix or build protocol fails, regenerate only the
-  failing viewer files with stricter constraints (do not rewrite successful
-  files), then re-run validation until pass.
-
-══════════════════════════════════════════════════════════════
-SECTION 8 — ENVIRONMENT SKILLS / COMMANDS
-══════════════════════════════════════════════════════════════
-
-Generate environment-specific skill/command files that let the AI assistant
-manage sprints, tickets, QA, and documentation using slash commands.
-
-These skills encode the SDD workflow into reusable commands — they are the
-operational layer that makes spec-driven development practical at scale.
-
-### 8.1 Claude Code Commands (if {{ENVIRONMENT}} = claude-code)
-
-Generate `.claude/commands/` directory with these markdown command files:
-
-```
-.claude/commands/
-├── help.md              # /help — Display all available commands
-├── plan-sprint.md       # /plan-sprint [goal] — Expert agents plan sprint → 3-PM review → backlog
-├── execute-ticket.md    # /execute-ticket X.Y — Execute single ticket with QA + docs
-├── sprint-run.md        # /sprint-run X — Full sprint: plan → implement → QA → docs → close
-├── sprint-status.md     # /sprint-status X — Sprint progress with health indicators
-├── sprint-close.md      # /sprint-close X — Close sprint, generate summary + docs linkage
-├── qa-review.md         # /qa-review X.Y — QA review with change-type scaling
-├── update-backlog.md    # /update-backlog [action] — Add/update tickets, link docs, bugs
-├── create-spec.md       # /create-spec [name] — Generate new feature specification
-└── create-sprint-docs.md # /create-sprint-docs X — Generate sprint summary docs
-```
-
-**Command design principles (battle-tested on 263+ tickets):**
-
-1. **Backlog-first**: Every command reads `specs/backlog.md` as source of truth
-2. **Docs-first**: Commands read `docs/` before touching code
-3. **QA-scaled**: QA effort scales to change type (bug fix vs full-stack vs docs-only)
-4. **FinOps-aware**: Commands reference the Model column for cost-efficient model selection
-5. **Docs-linked**: Every ticket completion triggers docs/ update
-6. **Sprint-lifecycle**: Full lifecycle from planning to closure with cross-references
-
-**Key command: `/plan-sprint [goal]`** (6-phase expert planning):
-```
-Phase 1: Goal Analysis — parse goal, determine next sprint #, select experts
-Phase 2: Expert Analysis (PARALLEL) — Architect + UX/UI + DB + HX produce structured analyses
-Phase 3: PM-A Draft — synthesize expert analyses into phased sprint plan with tickets
-Phase 4: PM-B Review — adversarial review for gaps, risks, model/point adjustments
-Phase 5: PM-C Finalize — merge draft + review into backlog-ready sprint plan
-Phase 6: Present & Commit — show plan, get user confirmation, append to backlog
-```
-
-Experts are conditionally activated: backend-only sprints skip UX/UI and HX;
-frontend-only sprints skip Database. The Architect always participates.
-The 3-PM pattern (maker-checker-resolver) catches blind spots that a single
-pass would miss.
-
-**Key command: `/execute-ticket X.Y`** (9-step workflow):
-```
-1. Read backlog → find ticket, note owner/model/dependencies
-2. Check dependencies → verify prerequisites ✅ Done
-3. Read relevant docs/ FIRST → understand existing architecture
-4. Update backlog → 🔲 → 🔄 In Progress
-5. Read relevant spec file → patterns and conventions
-6. Implement the ticket
-7. QA verification (MANDATORY, scaled to change type)
-8. Update documentation (MANDATORY)
-9. Update backlog → 🔄 → ✅ Done (with docs references)
-```
-
-**Key command: `/sprint-run X`** (6-phase lifecycle):
-```
-Phase 1: Sprint Briefing — read specs, build execution plan, present to user
-Phase 2: Ticket Execution — implement in dependency order, parallelize where possible
-Phase 3: QA Verification — run full test suite, fix regressions
-Phase 4: Documentation Update — update docs/ sections for all changes
-Phase 5: Sprint Close — mark done, generate summary, cross-reference docs
-Phase 6: Final Report — present metrics, files for commit
-```
-
-**Key command: `/sprint-status X`** (with FinOps tracking):
-- Health indicators: 🟢 On Track (≥80%), 🟡 At Risk (60-79%), 🔴 Behind (<60%)
-- Model distribution vs target (haiku 40% / sonnet 45% / opus 15%)
-- Velocity tracking and projected completion
-
-Also generate CLAUDE.md at project root with mandatory workflow rules:
-
-```markdown
-# [Project Name] — Development Workflow
-
-## MANDATORY Rules
-
-### Rule 1: Backlog-First Development
-Every change → ticket in `specs/backlog.md` before implementing.
-Bug = `B.XX`, feature = sprint ticket, enhancement = expand existing.
-
-### Rule 2: Docs-First Reading
-Before modifying code, READ the relevant `docs/` section.
-
-### Rule 3: QA Before Done
-No ticket ✅ without verification (scaled to change type).
-
-### Rule 4: Living Documentation
-Every feature → update relevant `docs/` section → link in sprint summary.
-
-## Model Selection (FinOps)
-- **Haiku**: Migrations, configs, CRUD, boilerplate, docs
-- **Sonnet**: Services, components, tests, forms, state
-- **Opus**: Architecture, security, algorithms, debugging
-```
-
-### 8.2 GitHub Copilot Instructions (if {{ENVIRONMENT}} = vscode-copilot)
-
-Generate `.github/copilot-instructions.md` with the same workflow rules adapted
-for Copilot's instruction format:
-- Same 4 mandatory rules (backlog-first, docs-first, QA, living docs)
-- Same FinOps model selection guidance
-- Sprint planning workflow (multi-expert → 3-PM review → backlog)
-- Ticket implementation workflow (9 steps)
-- Multi-agent coordination rules (Agent A = Backend, Agent B = Frontend)
-- Sprint closing template with docs cross-references
-
-### 8.3 Cursor Rules (if {{ENVIRONMENT}} = cursor)
-
-Generate `.cursor/rules/` with workspace rules encoding the SDD workflow.
-
-### 8.4 Universal (all environments)
-
-Regardless of environment, generate `docs/workflows/sprint-execution.md` with:
-- The 6-phase sprint lifecycle
-- The 9-step ticket execution workflow
-- QA scaling table (change type → verification level)
-- Sprint summary template with mandatory docs cross-references
-- FinOps model selection guide
-
 ══════════════════════════════════════════════════════════════
 BEGIN GENERATION
 ══════════════════════════════════════════════════════════════
 
-Read all documents in requirnments.
+Read all documents in {{INPUT_FOLDER}}.
 Generate every file listed above.
 Start now.
 ```
@@ -2698,11 +2804,8 @@ Once the AI has generated everything, your project folder contains:
 | `prompts/` | Multi-agent, finops, Gemini diagrams, Remotion video | 4 |
 | `sprints/sprint_X/` | Per-sprint results: qa_result, release_notes, summary | 3 per sprint |
 | `viewer/` | React monitor app with visual dashboards | Full project |
-| `.claude/commands/` | Claude Code slash commands (if claude-code env) | 10 |
-| `.github/` | Copilot instructions (if vscode-copilot env) | 1 |
-| `CLAUDE.md` | Project instructions with mandatory SDD workflow | 1 |
 
-**Total: 10 specs + ~50 docs + prompts for ALL sprints + viewer + 10 skills**
+**Total: 10 specs + ~50 docs + prompts for ALL sprints + viewer**
 
 **Next steps:**
 
@@ -2726,29 +2829,6 @@ Once the AI has generated everything, your project folder contains:
 
 ## Quick Reference — Sprint Execution
 
-### Option A: Using Slash Commands (Claude Code / Copilot)
-
-```
-# Plan a sprint with expert AI agents
-/plan-sprint Add user auth with JWT and social login
-
-# Full sprint lifecycle (one command)
-/sprint-run 1              # Plan → implement → QA → docs → close
-
-# Or step-by-step
-/sprint-status 1           # Check progress
-/execute-ticket 1.3        # Execute single ticket
-/qa-review 1.3             # QA review a ticket
-/sprint-close 1            # Close sprint with summary
-
-# Utilities
-/update-backlog add 1 "New ticket" Backend sonnet
-/update-backlog bug "Login fails on Safari"
-/help                      # Show all commands
-```
-
-### Option B: Using Prompt Files (Any Environment)
-
 ```
 # Sprint 0 (Foundation)
 1. Review: prompts/sprint_0/sprint_plan_0.md
@@ -2762,16 +2842,12 @@ Once the AI has generated everything, your project folder contains:
 2. Execute: prompts/sprint_N/dev_sprint_N.md
 3. Test: prompts/sprint_N/qa_sprint_N.md
 4. Document: prompts/sprint_N/summary_sprint_N.md
-```
 
-### Parallel Execution & Cost Optimisation
+# Parallel execution (Multi-Agent)
+Paste prompts/multi-agent.md — run two AI sessions (Backend + Frontend).
 
-```
-# Multi-Agent: run two AI sessions (Backend + Frontend)
-Paste prompts/multi-agent.md
-
-# FinOps: right model per task (~40% savings)
-Read prompts/finops.md — haiku (40%) / sonnet (45%) / opus (15%)
+# Cost optimisation
+Read prompts/finops.md before each sprint for model selection.
 ```
 
 ---
