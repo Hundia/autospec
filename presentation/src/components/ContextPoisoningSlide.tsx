@@ -4,7 +4,7 @@ interface ChatMessage {
   role: 'user' | 'ai';
   turn: number;
   text: string;
-  flag?: 'drift' | 'contradiction' | 'poisoned';
+  flag?: 'drift' | 'contradiction' | 'poisoned' | 'frustrated';
 }
 
 interface ContextPoisoningSlideProps {
@@ -37,6 +37,7 @@ const flagStyles: Record<string, string> = {
   drift: 'bg-yellow-500/10 border-l-2 border-l-yellow-500/50',
   contradiction: 'bg-orange-500/10 border-l-2 border-l-orange-500/50',
   poisoned: 'bg-red-500/15 border-l-2 border-l-red-500/60',
+  frustrated: 'bg-red-500/20 border-l-2 border-l-red-400/70',
 };
 
 export default function ContextPoisoningSlide({ data }: ContextPoisoningSlideProps): JSX.Element {

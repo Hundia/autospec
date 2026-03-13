@@ -81,6 +81,7 @@ export const slidesHE = [
         { role: 'ai', turn: 50, text: 'אני רואה את הבעיה — מודלי Prisma שלך לא כוללים קשר activityFeed. אוסיף אותו ל-schema.prisma ואריץ migration.', flag: 'contradiction' },
         { role: 'user', turn: 100, text: 'עכשיו אני מקבל TypeError: Cannot read properties of undefined בכל קריאה לבסיס הנתונים.' },
         { role: 'ai', turn: 100, text: 'הבעיה היא שהקליינט של Prisma לא מאותחל. תן לי להוסיף Mongoose גם לטבלאות הרלציוניות ולאחד הכל תחת ODM אחד.', flag: 'poisoned' },
+        { role: 'user', turn: 100, text: 'אתה פשוט לא מבין... אתה גרוע. אני לעולם לא משתמש בפיתוח אג\'נטי שוב, בזבוז של הזמן שלי!', flag: 'frustrated' },
       ],
     },
   },
