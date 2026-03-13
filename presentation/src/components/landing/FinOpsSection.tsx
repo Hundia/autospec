@@ -44,11 +44,11 @@ const providers = [
     name: 'Local',
     accent: 'green',
     tiers: [
-      { model: 'Qwen 7B', cost: '$0 (self-hosted)' },
-      { model: 'Llama 70B', cost: '$0 (self-hosted)' },
-      { model: 'Llama 405B', cost: '$0 (self-hosted)' },
+      { model: 'GPT OSS 7B', cost: '$0 (self-hosted)' },
+      { model: 'GPT OSS 30B', cost: '$0 (self-hosted)' },
+      { model: 'GPT OSS 120B', cost: '$0 (self-hosted)' },
     ],
-    before: { label: 'All-405B', cost: '$0' },
+    before: { label: 'All-120B', cost: '$0' },
     after: { label: 'Routed', cost: '$0' },
   },
 ];

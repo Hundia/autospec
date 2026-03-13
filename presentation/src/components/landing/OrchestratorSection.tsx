@@ -6,7 +6,7 @@ const providers = [
   { id: 'claude', name: 'Claude Code', orchestrator: 'Opus 4.6', agent: 'Sonnet 4.6', accent: 'indigo' },
   { id: 'copilot', name: 'GitHub Copilot', orchestrator: 'GPT 5.4', agent: 'GPT 5.2', accent: 'blue' },
   { id: 'gemini', name: 'Gemini', orchestrator: 'Gemini Ultra', agent: 'Gemini Pro', accent: 'amber' },
-  { id: 'local', name: 'Continue (Local)', orchestrator: 'Llama 4 70B', agent: 'Llama 4 8B', accent: 'green' },
+  { id: 'local', name: 'Continue (Local)', orchestrator: 'GPT OSS 120B', agent: 'GPT OSS 7B', accent: 'green' },
 ];
 
 const accentMap: Record<string, { bg: string; border: string; text: string; solid: string }> = {
