@@ -1,62 +1,38 @@
 # AutoSpec Examples
 
-Complete worked examples showing the AutoSpec methodology in action.
+Spec-only starter projects showing the input format for the AutoSpec SDD pipeline.
+
+Each example contains only the **requirements document** and **role specifications** — the raw inputs that AutoSpec's agents consume to produce working software.
 
 ---
 
 ## Available Examples
 
-### 1. ShopFlow E-Commerce
+### 1. TaskFlow (Minimal)
 
-**Path:** [`ecommerce/`](./ecommerce/)
+**Path:** [`taskflow/`](./taskflow/)
 
-A full-featured e-commerce platform demonstrating the complete AutoSpec workflow.
+A simple task management app — the recommended starting point.
 
-| Metric | Value |
-|--------|-------|
-| Total Sprints | 7 |
-| Total Tickets | 174 |
-| Complexity | High |
-| Tech Stack | React, Node.js, PostgreSQL |
-
-**Features Built:**
-- User authentication (register, login, password reset)
-- Product catalog with search and filtering
-- Shopping cart with persistence
-- Checkout flow with payments
-- Order management and history
-- Admin dashboard
+| Attribute | Value |
+|-----------|-------|
+| Sprints | 2 (Foundation + Auth/CRUD) |
+| Tickets | ~54 |
+| Complexity | Low |
+| Tech Stack | Express, React, PostgreSQL, Drizzle ORM, Tailwind CSS |
 
 **Contents:**
 ```
-ecommerce/
-├── requirements.md          # Input: What we wanted to build
-├── specs/                   # Generated: 10 role specifications
-│   ├── 01_product_manager.md
-│   ├── 02_backend_lead.md
-│   ├── 03_frontend_lead.md
-│   ├── 04_db_architect.md
-│   ├── 05_qa_lead.md
-│   ├── 10_ui_designer.md
-│   └── backlog.md           # All tickets organized by sprint
-├── prompts/                 # Sprint execution prompts
-│   ├── prompt_sprint0.md
-│   └── prompt_sprint1.md
-└── sprints/                 # Sprint documentation
-    ├── sprint-0-foundation/
-    │   ├── summary.md
-    │   └── qa-results.md
-    └── sprint-1-core-shopping/
-        ├── summary.md
-        ├── qa-results.md
-        └── release-notes.md
+taskflow/
+├── requirements.md          # Product requirements document
+└── specs/
+    ├── 01_product_manager.md  # Vision, personas, requirements
+    ├── 02_backend_lead.md     # API design, Express, Drizzle ORM
+    ├── 03_frontend_lead.md    # React, Tailwind, Zustand
+    ├── 04_db_architect.md     # PostgreSQL schema, migrations
+    ├── 05_qa_lead.md          # Testing strategy, Vitest
+    └── backlog.md             # Sprint tickets (0-2)
 ```
-
-**Use this example to see:**
-- How detailed specs should be
-- How to organize a large backlog
-- Multi-agent execution patterns
-- QA report format
 
 ---
 
@@ -66,128 +42,56 @@ ecommerce/
 
 A production-ready API gateway with authentication, rate limiting, and webhooks.
 
-| Metric | Value |
-|--------|-------|
-| Total Sprints | 4 |
-| Total Tickets | 89 |
+| Attribute | Value |
+|-----------|-------|
+| Sprints | 4 |
+| Tickets | 89 |
 | Complexity | Medium |
 | Tech Stack | Node.js, Express, PostgreSQL |
 
-**Features Built:**
-- API key management
-- Rate limiting per key
-- Request logging and analytics
-- Webhook delivery system
-- Health checks and monitoring
+---
 
-**Contents:**
-```
-api-service/
-├── requirements.md          # Input requirements
-├── specs/                   # Role specifications
-├── prompts/                 # Sprint prompts
-├── sprints/                 # Sprint documentation
-├── src/                     # Actual source code!
-│   ├── index.ts
-│   ├── routes/
-│   ├── services/
-│   ├── middleware/
-│   └── models/
-├── tests/                   # Test files
-├── migrations/              # Database migrations
-├── docker-compose.yml       # Container setup
-└── package.json
-```
+### 3. ShopFlow E-Commerce
 
-**Use this example to see:**
-- A complete runnable codebase generated with AutoSpec
-- Backend-focused project structure
-- Database migrations and schema
-- Test organization
+**Path:** [`ecommerce/`](./ecommerce/)
+
+A full-featured e-commerce platform — the most complex example.
+
+| Attribute | Value |
+|-----------|-------|
+| Sprints | 7 |
+| Tickets | 174 |
+| Complexity | High |
+| Tech Stack | React, Node.js, PostgreSQL |
 
 ---
 
-### 3. TaskFlow (Minimal)
+## How to Use
 
-**Path:** [`taskflow/`](./taskflow/)
-
-A simple task management app showing the minimal AutoSpec setup.
-
-| Metric | Value |
-|--------|-------|
-| Total Sprints | 2 |
-| Total Tickets | ~25 |
-| Complexity | Low |
-| Tech Stack | React, Node.js |
-
-**Use this example to see:**
-- Minimal viable spec structure
-- Quick project bootstrapping
-- How to start small and iterate
+1. Pick an example (start with `taskflow/`)
+2. Read `requirements.md` to understand the product
+3. Read `specs/` to see how role specifications break down the work
+4. Read `specs/backlog.md` to see sprint planning and ticket structure
+5. Follow [QUICKSTART.md](../QUICKSTART.md) to run the SDD pipeline on any example
 
 ---
 
-## How to Use These Examples
+## What's Included
 
-### 1. Learning AutoSpec
+Each example contains **only specs** — the inputs to the SDD pipeline:
 
-1. Start with `ecommerce/requirements.md` to see a well-written requirements doc
-2. Read `ecommerce/specs/01_product_manager.md` to see spec quality expectations
-3. Check `ecommerce/specs/backlog.md` to understand ticket organization
-4. Review `ecommerce/sprints/sprint-0-foundation/summary.md` for documentation patterns
+| File | Purpose |
+|------|---------|
+| `requirements.md` | Product requirements document (PRD) |
+| `specs/01_product_manager.md` | Vision, personas, success metrics |
+| `specs/02_backend_lead.md` | API design, architecture, patterns |
+| `specs/03_frontend_lead.md` | UI components, design system, routing |
+| `specs/04_db_architect.md` | Database schema, migrations, queries |
+| `specs/05_qa_lead.md` | Testing strategy, scenarios, coverage |
+| `specs/backlog.md` | Sprint tickets with status tracking |
 
-### 2. Starting Your Own Project
-
-1. Copy `ecommerce/requirements.md` as a starting template
-2. Adapt it to your project
-3. Follow [QUICKSTART.md](../QUICKSTART.md) to generate your own specs
-
-### 3. Running the API Service
-
-The `api-service` example includes runnable code:
-
-```bash
-cd examples/api-service
-
-# Install dependencies
-npm install
-
-# Start database
-docker-compose up -d postgres
-
-# Run migrations
-npm run migrate
-
-# Start server
-npm run dev
-```
+The SDD pipeline (agents) produces everything else: source code, docs, tests, docker config, sprint summaries.
 
 ---
 
-## Example Comparison
-
-| Aspect | E-Commerce | API Service | TaskFlow |
-|--------|------------|-------------|----------|
-| Frontend | Full React app | None (API only) | Simple React |
-| Backend | Express + complex | Express + middleware | Express basic |
-| Database | 15+ tables | 6 tables | 3 tables |
-| Auth | JWT + OAuth ready | API keys | Simple JWT |
-| Tests | Unit + E2E | Unit + Integration | Unit only |
-| Docs | Comprehensive | Good | Minimal |
-
----
-
-## Contributing Examples
-
-Want to add an example? See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines.
-
-Good example projects:
-- Mobile app (React Native/Flutter)
-- CLI tool
-- SaaS with subscriptions
-- Data pipeline
-- ML/AI application
-
----
-
-*These examples are part of [AutoSpec](https://github.com/Hundia/autospec) - AI-powered spec-driven development.*
+*These examples are part of [AutoSpec](https://github.com/Hundia/autospec) — AI-powered spec-driven development.*

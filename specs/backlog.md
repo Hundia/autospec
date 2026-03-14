@@ -110,7 +110,7 @@
 | 6.1 | Define phase type system: `foundation`, `scaffold`, `content`, `polish`, `qa` with ordering + dependency rules in `cli/src/types/phases.ts` | Backend | 2 | 🔲 | — | `docs/cli/orchestration.md` |
 | 6.2 | Define agent type enum + base agent profile schema (`AgentProfile` interface) in `cli/src/types/agents.ts` | Backend | 2 | 🔲 | — | `docs/cli/orchestration.md` |
 | 6.3 | Extend `.autospecrc.json` schema: add `agents`, `phases`, `orchestration` config sections to `cli/src/utils/config.ts` | Backend | 3 | 🔲 | 6.1, 6.2 | `docs/cli/orchestration.md` |
-| 6.4 | Create 6 agent profiles (Claude, Copilot, Gemini, Cline, Continue, Windsurf) + agent registry with lookup in `cli/src/agents/` | Backend | 5 | 🔲 | 6.2 | `docs/cli/agent_profiles.md` |
+| 6.4 | Create 6 agent profiles (Claude, Copilot, Gemini, Cline, Aider, Windsurf) + agent registry with lookup in `cli/src/agents/` | Backend | 5 | 🔲 | 6.2 | `docs/cli/agent_profiles.md` |
 | 6.5 | Auto-detect active AI environment from process/env signals in `cli/src/utils/detect-agent.ts` | Backend | 3 | 🔲 | 6.4 | `docs/cli/orchestration.md` |
 | 6.6 | State manager: track phase progress, file hashes, completion status in `cli/src/orchestration/state.ts` | Backend | 5 | 🔲 | 6.1 | `docs/cli/orchestration.md` |
 | 6.7 | Phase validators: pre/post-condition checks per phase type in `cli/src/orchestration/validators.ts` | Backend | 3 | 🔲 | 6.1, 6.6 | `docs/cli/orchestration.md` |
@@ -366,81 +366,128 @@
 
 ---
 
-## Sprint 18: Academic Paper Update + Showcase (~16 pts)
+## Sprint 18: Academic Paper Update + Paper Showcase Page (~52 pts)
 
-**Theme:** Update `docs/ACADEMIC_PAPER.md` to reflect AutoSpec's evolution through 29 sprints and 837+ tickets; add new methodology sections and third case study.
+**Theme:** Update academic paper to reflect 837+ tickets / 3 case studies / orchestrator pattern; build `/paper` showcase page; fix broken paper links.
 **Status:** ✅ Done
+
+### Phase A: Paper Content Update (13 pts)
 
 | ID | Ticket | Owner | Pts | Status | Deps | Docs |
 |----|--------|-------|-----|--------|------|------|
 | 18.1 | Update paper metadata — date March 2026, abstract 837+ tickets/3 case studies, keywords | Docs | 2 | ✅ | — | `docs/ACADEMIC_PAPER.md` |
-| 18.2 | Update Section 3.1 — eight-phase workflow, describe 3 new phases | Docs | 2 | ✅ | 18.1 | `docs/ACADEMIC_PAPER.md` |
-| 18.3 | Add Section 3.6 — Orchestrator + Agent Pattern (architecture, briefing files, anti-hallucination, parallel worktrees) | Docs | 3 | ✅ | 18.2 | `docs/ACADEMIC_PAPER.md` |
-| 18.4 | Add Section 3.7 — Operationalized Skills (11 slash commands, skill anatomy, IDE integration) | Docs | 2 | ✅ | 18.3 | `docs/ACADEMIC_PAPER.md` |
-| 18.5 | Add Section 3.8 — Viewer App (self-referential governance dashboard, design system, 7 routes) | Docs | 2 | ✅ | 18.4 | `docs/ACADEMIC_PAPER.md` |
-| 18.6 | Add Section 4.3 Case Study 3 AutoSpec Self-Validation + update Section 4.4 Combined Analysis | Docs | 3 | ✅ | 18.5 | `docs/ACADEMIC_PAPER.md` |
-| 18.7 | Update Section 6.4 Future Work, Section 7 Conclusion, Section 1.1 Contributions | Docs | 2 | ✅ | 18.6 | `docs/ACADEMIC_PAPER.md` |
+| 18.2 | Update Section 3.1 — eight-phase workflow, describe 3 new phases | Docs | 2 | ✅ | — | `docs/ACADEMIC_PAPER.md` |
+| 18.3 | Add Section 3.6 — Orchestrator + Agent Pattern | Docs | 3 | ✅ | — | `docs/ACADEMIC_PAPER.md` |
+| 18.4 | Add Section 3.7 — Operationalized Skills (11 slash commands) | Docs | 2 | ✅ | — | `docs/ACADEMIC_PAPER.md` |
+| 18.5 | Add Section 3.8 — Viewer App (self-referential dashboard) | Docs | 2 | ✅ | — | `docs/ACADEMIC_PAPER.md` |
+| 18.6 | Add Section 4.3 AutoSpec Self-Validation case study + update Combined Analysis | Docs | 2 | ✅ | 18.1-18.5 | `docs/ACADEMIC_PAPER.md` |
+| 18.7 | Update Future Work, Conclusion, Contributions | Docs | 1 | ✅ | — | `docs/ACADEMIC_PAPER.md` |
+
+### Phase B: Paper Showcase Page (31 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 18.8 | Create `paper-content.ts` — structured data for all sections | Frontend | 3 | ✅ | — | `presentation/src/data/paper-content.ts` |
+| 18.9 | Create `PaperPage.tsx` + add `/paper` route in `App.tsx` | Frontend | 2 | ✅ | 18.8 | `presentation/src/pages/PaperPage.tsx` |
+| 18.10 | Create `PaperHeroSection.tsx` — emerald hero with animated counters + PDF CTA | Frontend | 5 | ✅ | 18.8 | `presentation/src/components/paper/` |
+| 18.11 | Create `MethodologySection.tsx` — 8-phase pipeline grid | Frontend | 5 | ✅ | 18.8 | `presentation/src/components/paper/` |
+| 18.12 | Create `RoleModelSection.tsx` — 10 role cards grid | Frontend | 3 | ✅ | 18.8 | `presentation/src/components/paper/` |
+| 18.13 | Create `MultiAgentSection.tsx` — Opus→Sonnet two-tier + timeline comparison | Frontend | 4 | ✅ | 18.8 | `presentation/src/components/paper/` |
+| 18.14 | Create `PaperFinOpsSection.tsx` — donut chart + cost comparison | Frontend | 3 | ✅ | 18.8 | `presentation/src/components/paper/` |
+| 18.15 | Create `CaseStudiesSection.tsx` — 3 case study cards with AutoSpec glow | Frontend | 4 | ✅ | 18.8 | `presentation/src/components/paper/` |
+| 18.16 | Create `ResultsConclusionSection.tsx` — stats, BibTeX, dual CTAs | Frontend | 3 | ✅ | 18.8 | `presentation/src/components/paper/` |
+
+### Phase C: Link Fixes + PDF Asset (4 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 18.17 | Fix Navigation.tsx Paper link `#paper` → `#/paper` | Frontend | 1 | ✅ | — | — |
+| 18.18 | Fix DocumentationSection.tsx + Footer.tsx paper links → `#/paper` | Frontend | 1 | ✅ | — | — |
+| 18.19 | Copy `ACADEMIC_PAPER.pdf` to `presentation/public/` | DevOps | 1 | ✅ | — | — |
+| 18.20 | Update StatsSection.tsx — 29+ sprints, 837+ tickets | Frontend | 1 | ✅ | — | — |
+
+### Phase D: QA + Close (4 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 18.21 | Build verification — `npm run build` exits 0, all routes/links work | QA | 2 | ✅ | 18.1-18.20 | — |
+| 18.22 | Backlog update + sprint summary | PM | 2 | ✅ | 18.21 | `sprints/sprint-18/summary.md` |
 
 ---
 
-## Sprint 19: Continue Extension + Complete Environment Skills (~37 pts)
+## Sprint 19: Onboarding Pivot — Template-First, Agent-Native (~50 pts)
 
-**Theme:** Replace Aider with Continue VS Code extension, create skill files for all environments (Continue, Cursor, Windsurf, JetBrains), environment setup docs, update compatibility matrix
-**Status:** ✅ Done
+**Theme:** Replace CLI-first onboarding with template repo + @QUICKSTART.md workflow. Redesign hero, QuickStart, and Tools sections.
+**Status:** 🔄 In Progress
 
-### Phase A: Data + Core Skills (PARALLEL)
-
-| ID | Ticket | Owner | Pts | Status | Deps | Docs |
-|----|--------|-------|-----|--------|------|------|
-| 19.1 | Replace Aider→Continue in `environments.ts`, update compatibility matrix | Frontend | 3 | ✅ | — | `docs/viewer/05_advanced_pages.md` |
-| 19.2 | Create `skills/continue/` — 3 rules + 10 prompts adapted from Claude skills | Backend | 8 | ✅ | — | `docs/environments/vscode/continue.md` |
-| 19.3 | Create `skills/cursor/` — SDD rules + 6 skill MDC files | Backend | 5 | ✅ | — | `docs/environments/vscode/cursor.md` |
-
-### Phase B: Remaining Skills + Docs (PARALLEL)
+### Agent A: Template Repo + QUICKSTART (~18 pts)
 
 | ID | Ticket | Owner | Pts | Status | Deps | Docs |
 |----|--------|-------|-----|--------|------|------|
-| 19.4 | Create `skills/windsurf/instructions.md` + `skills/jetbrains/instructions.md` | Backend | 5 | ✅ | — | `docs/environments/vscode/windsurf.md`, `docs/environments/jetbrains/setup.md` |
-| 19.5 | Create 4 environment docs: continue, cursor, windsurf, jetbrains | Docs | 8 | ✅ | — | `docs/environments/` |
+| 19.1 | Create `autospec-starter/` directory with full template structure | Frontend | 3 | ✅ | — | — |
+| 19.2 | Create `requirements/project-brief.md` guided template | Frontend | 2 | ✅ | — | — |
+| 19.3 | Create `.autospec/config.yml` with environment options | Frontend | 2 | ✅ | — | — |
+| 19.4 | Create `.cursor/rules/autospec.md` — Cursor-compatible rules | Frontend | 3 | ✅ | — | — |
+| 19.5 | Create `.windsurf/rules.md` — Windsurf-compatible rules | Frontend | 2 | ✅ | — | — |
+| 19.6 | Refactor `QUICKSTART.md` — add 50-line human header before AI body | Docs | 3 | ✅ | — | — |
+| 19.7 | Create `autospec-starter/README.md` — 4-step quickstart guide | Docs | 3 | ✅ | — | — |
 
-### Phase C: Integration + QA (SERIAL)
-
-| ID | Ticket | Owner | Pts | Status | Deps | Docs |
-|----|--------|-------|-----|--------|------|------|
-| 19.6 | Update all Aider references across codebase → Continue | Frontend | 3 | ✅ | 19.1 | — |
-| 19.7 | Viewer build + QA | QA | 3 | ✅ | 19.1, 19.6 | — |
-| 19.8 | Sprint 19 summary + backlog update | PM | 2 | ✅ | 19.1–19.7 | `sprints/sprint-19/summary.md` |
-
-### Phase 19A: autospec-starter Template (PARALLEL)
+### Agent B: Landing Page Redesign (~20 pts)
 
 | ID | Ticket | Owner | Pts | Status | Deps | Docs |
 |----|--------|-------|-----|--------|------|------|
-| 19.9 | Create `autospec-starter/` directory with all template files | Frontend | 5 | ✅ | 19.8 | — |
-| 19.10 | Create `autospec-starter/QUICKSTART.md` — master generation prompt | PM | 8 | ✅ | 19.9 | — |
-| 19.11 | Create IDE integration files (Cursor, Windsurf, Copilot) | Backend | 5 | ✅ | 19.9 | — |
-| 19.12 | Update `QUICKSTART.md` (root) — link to autospec-starter | PM | 2 | ✅ | 19.10 | — |
+| 19.8 | Rewrite `HeroSection.tsx` — conversation animation, @QUICKSTART.md workflow | Frontend | 8 | ✅ | — | — |
+| 19.9 | Update hero subtitle + CTA buttons (Template primary, GitHub secondary) | Frontend | 2 | ✅ | — | — |
+| 19.10 | Rewrite `QuickStartSection.tsx` — Template / Download / CLI Tools paths | Frontend | 5 | ✅ | — | — |
+| 19.11 | Move QuickStartSection to position 6 in `LandingPage.tsx` + add secondary CTA before Footer | Frontend | 2 | ✅ | — | — |
+| 19.12 | Update `ToolsSection.tsx` "How It Works" for @QUICKSTART.md flow | Frontend | 3 | ✅ | — | — |
 
-### Phase 19B: Landing Page Redesign (PARALLEL)
-
-| ID | Ticket | Owner | Pts | Status | Deps | Docs |
-|----|--------|-------|-----|--------|------|------|
-| 19.8b | Redesign `LandingPage.tsx` — provider-agnostic, 6 sections | Frontend | 8 | ✅ | 19.8 | — |
-
-### Phase 19C: Examples + Verification (SERIAL)
+### Agent C: Example Project + Validation (~10 pts)
 
 | ID | Ticket | Owner | Pts | Status | Deps | Docs |
 |----|--------|-------|-----|--------|------|------|
-| 19.13 | Create `examples/todo-app/` with sample SRS requirements | Frontend | 3 | ✅ | 19.9 | — |
-| 19.14 | Create `scripts/verify.sh` smoke test for autospec-starter template | QA | 3 | ✅ | 19.9 | — |
+| 19.13 | Create `examples/todo-app/` with sample SRS requirements | Frontend | 3 | 🔲 | 19.1 | — |
+| 19.14 | Create `scripts/verify.sh` smoke test for generated output | QA | 3 | 🔲 | 19.1 | — |
 | 19.15 | E2E test: Run QUICKSTART.md against example project | QA | 3 | 🔲 | 19.13 | — |
-| 19.16 | Build verification — `cd presentation && npm run build` exits 0 | QA | 1 | ✅ | 19.8 | — |
+| 19.16 | Build verification — `cd presentation && npm run build` exits 0 | QA | 1 | 🔲 | 19.8 | — |
 
 ### Orchestrator Post-Merge (~2 pts)
 
 | ID | Ticket | Owner | Pts | Status | Deps | Docs |
 |----|--------|-------|-----|--------|------|------|
 | 19.17 | Update `specs/backlog.md` with Sprint 19 | PM | 1 | ✅ | — | — |
-| 19.18 | Playwright screenshots of redesigned landing page | QA | 1 | ✅ | 19.16 | `viewer/review-screenshots/sprint-19-*.png` |
+| 19.18 | Playwright screenshots of redesigned landing page | QA | 1 | 🔲 | 19.16 | — |
+
+---
+
+## Sprint 23: MealMap Pipeline Review + Viewer Playwright Validation (~48 pts)
+
+**Theme:** Multi-agent quality review of the entire MealMap QUICKSTART pipeline output + Playwright validation of the MealMap viewer
+**Status:** ✅ Done
+
+### Phase A: Playwright Validation
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 23.1 | Playwright viewer validation — 37 tests across 6 pages, 7 screenshots | QA | 8 | ✅ | — |
+
+### Phase B: Multi-Agent Review Team (5 parallel agents)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 23.2 | Product review — SRS + PM spec scoring (8.6/10) | PM | 5 | ✅ | — |
+| 23.3 | Architecture review — backend + DB specs + code (8.6/10) | Backend | 5 | ✅ | — |
+| 23.4 | Frontend/UX review — frontend spec + viewer + web (7.8/10) | Frontend | 5 | ✅ | — |
+| 23.5 | QA coverage review — QA spec + test files (8.2/10) | QA | 5 | ✅ | — |
+| 23.6 | Pipeline process review — briefs + QUICKSTART + GPT-5.4 findings (8.2/10) | PM | 5 | ✅ | — |
+
+### Phase C: Synthesis
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 23.7 | Synthesize main review report | PM | 5 | ✅ | 23.1-23.6 |
+| 23.8 | Write process improvements backlog (10 QS-XX tickets) | PM | 3 | ✅ | 23.7 |
+| 23.9 | Update backlog + sprint summary | PM | 2 | ✅ | 23.8 |
 
 ---
 
@@ -486,6 +533,7 @@
 | Sprint 15 | 81 | ✅ Done |
 | Sprint 16 | 45 | ✅ Done |
 | Sprint 17 | 24 | ✅ Done |
-| Sprint 18 | 16 | ✅ Done |
-| Sprint 19 | 37 | ✅ Done |
-| **Total** | **651** | 🔄 **IN PROGRESS** |
+| Sprint 18 | 52 | ✅ Done |
+| Sprint 19 | 50 | 🔄 In Progress |
+| Sprint 23 | 48 | ✅ Done |
+| **Total** | **748** | 🔄 **IN PROGRESS** |

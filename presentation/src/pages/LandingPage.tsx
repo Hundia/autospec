@@ -1,6 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, Github } from 'lucide-react';
 import Navigation from '../components/landing/Navigation';
 import HeroSection from '../components/landing/HeroSection';
 import EvolutionSection from '../components/landing/EvolutionSection';
@@ -23,47 +21,6 @@ import FutureVisionSection from '../components/landing/FutureVisionSection';
 import ToolsSection from '../components/landing/ToolsSection';
 import DocumentationSection from '../components/landing/DocumentationSection';
 import Footer from '../components/landing/Footer';
-
-function SecondaryCTA() {
-  return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="max-w-4xl mx-auto text-center"
-      >
-        <div className="bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-white/10 rounded-2xl p-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Ready to make AI think before it codes?
-          </h2>
-          <p className="text-white/60 max-w-xl mx-auto mb-8">
-            Get the template, add your requirements, and let your AI generate everything.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="#quickstart"
-              className="group flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105"
-            >
-              Get the Template
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </a>
-            <a
-              href="https://github.com/Hundia/autospec"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center gap-2 px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white font-medium rounded-xl transition-all"
-            >
-              <Github size={18} />
-              Star on GitHub
-            </a>
-          </div>
-        </div>
-      </motion.div>
-    </section>
-  );
-}
 
 export default function LandingPage() {
   return (
@@ -90,7 +47,34 @@ export default function LandingPage() {
         <FutureVisionSection />
         <ToolsSection />
         <DocumentationSection />
-        <SecondaryCTA />
+
+        {/* Secondary CTA */}
+        <section className="py-16 px-4 text-center bg-gradient-to-r from-blue-900/30 via-slate-900/50 to-purple-900/30 border-t border-white/5">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
+            Ready to make AI think before it codes?
+          </h2>
+          <p className="text-white/50 mb-8 max-w-xl mx-auto">
+            Get the template, add your requirements, and let AI generate the full architecture — specs, backlog, and docs.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <a
+              href="https://github.com/Hundia/autospec-starter"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105"
+            >
+              Get the Template
+            </a>
+            <a
+              href="https://github.com/Hundia/autospec"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white font-medium rounded-xl transition-all"
+            >
+              Star on GitHub
+            </a>
+          </div>
+        </section>
       </main>
       <Footer />
     </div>

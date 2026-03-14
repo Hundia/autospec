@@ -1,46 +1,60 @@
-# AutoSpec — Master Generation Prompt
+# QUICKSTART.md — AutoSpec Generation Prompt
 
-**The single prompt that generates everything.** Paste this into your AI assistant alongside your SRS / requirements documents. No CLI needed.
+> **What is this?** The single file that turns your requirements into a complete, AI-ready project structure. No CLI required.
 
----
+## Prerequisites
 
-## How To Use
+- An AI coding assistant (Claude Code, Cursor, Copilot, Windsurf, or any LLM-based IDE)
+- Your requirements document(s) in the `requirements/` folder
+- A `.autospec/config.yml` with your environment set (optional — defaults to `claude-code`)
 
-1. Place your SRS, PRD, or requirements documents in a folder.
-2. **Specify your development environment** (see Environment Options below).
-3. Copy the **Generation Prompt** below into your AI assistant.
-4. Replace `{{INPUT_FOLDER}}` with the path to your documents folder.
-5. Replace `{{ENVIRONMENT}}` with your chosen environment.
-6. The AI generates the complete output structure in one pass.
+## 3 Steps
 
----
+1. **Add your requirements** — Place your SRS, PRD, or project brief in `requirements/`
+2. **Tell your AI** — "Run @QUICKSTART.md" (or paste the content below into any AI assistant)
+3. **Watch it generate** — 10 expert specifications, sprint backlog, docs structure, environment-optimized prompts
+
+## What Gets Generated
+
+```
+your-project/
+├── specs/           # 10 role-based specifications
+│   ├── 01_product_manager.md
+│   ├── 02_backend_lead.md
+│   ├── ...
+│   └── backlog.md   # Sprint tickets with estimates
+├── docs/            # Living documentation
+├── sprints/         # Sprint plans & summaries
+├── prompts/         # Environment-optimized AI prompts
+└── CLAUDE.md        # Project memory & conventions
+```
+
+## What's NOT Generated (pre-installed in template)
+
+- `QUICKSTART.md` (this file)
+- `requirements/` (your input)
+- `.claude/commands/` (11 SDD skills)
+- `.autospec/config.yml` (your settings)
 
 ## Environment Options
 
-Choose the environment that matches your AI-assisted development setup:
-
-| Environment | Description | Recommended Model | Prompt Style |
-|-------------|-------------|-------------------|--------------|
-| `claude-code` | Claude Code CLI (terminal-based) | Claude Sonnet/Opus | Conversational, file-focused |
-| `vscode-copilot` | VS Code with GitHub Copilot | GPT-4/Copilot | IDE-integrated, inline suggestions |
-| `cursor` | Cursor IDE with AI | Claude/GPT-4 | Composer-style, multi-file edits |
-| `windsurf` | Windsurf/Codeium IDE | Various | Flow-based, context-aware |
-| `jetbrains-ai` | JetBrains IDEs with AI Assistant | Various | IDE-native, refactoring-focused |
-| `aider` | Aider CLI tool | Claude/GPT-4 | Git-integrated, diff-based |
-
-**Environment affects:**
-- Sprint prompt formatting (how instructions are structured)
-- Model recommendations in backlog (optimized for your environment's strengths)
-- Multi-agent coordination patterns (parallel sessions vs split windows)
-- QA testing commands (environment-specific execution)
+| Environment | Description | Recommended Model |
+|-------------|-------------|-------------------|
+| `claude-code` | Claude Code CLI | Claude Sonnet/Opus |
+| `cursor` | Cursor IDE | Claude/GPT-4 |
+| `vscode-copilot` | VS Code + GitHub Copilot | GPT-4/Copilot |
+| `windsurf` | Windsurf/Codeium IDE | Various |
+| `jetbrains-ai` | JetBrains AI Assistant | Various |
+| `aider` | Aider CLI | Claude/GPT-4 |
 
 ---
 
-## Generation Prompt
+**Everything below this line is consumed by your AI assistant.**
+**Do not edit unless you know what you're doing.**
 
-Copy everything between the `---START---` and `---END---` markers.
+---
 
----START---
+<!-- GENERATION PROMPT START -->
 
 ```
 You are executing the AutoSpec Spec-Driven Development methodology.

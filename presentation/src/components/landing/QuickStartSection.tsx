@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Copy, Check, Github, Download, Wrench } from 'lucide-react';
+import { Copy, Check, Terminal, Github, Download } from 'lucide-react';
 
 const options = [
   {
@@ -10,51 +10,66 @@ const options = [
     icon: Github,
     color: 'blue',
     featured: true,
-    description: 'Click "Use this template" on GitHub. Skills pre-installed for Claude Code, Cursor, Copilot, and Windsurf. Zero dependencies.',
-    code: 'gh repo create my-project --template Hundia/autospec-starter',
+    badge: 'Recommended',
+    description: 'Click "Use this template" on GitHub. Skills pre-installed, zero dependencies.',
+    code: 'gh repo create my-project --template Hundia/autospec-starter --clone',
     codeLabel: 'Copy Command',
+    steps: [
+      'Edit requirements/project-brief.md',
+      'Tell your AI: "Run @QUICKSTART.md"',
+    ],
   },
   {
     title: 'Download QUICKSTART.md',
-    subtitle: 'Existing Projects',
+    subtitle: 'For Existing Projects',
     time: '1 minute',
     icon: Download,
     color: 'green',
     featured: false,
-    description: 'Add QUICKSTART.md to any existing project. Place your requirements in a folder and tell your AI: "Run @QUICKSTART.md".',
-    code: 'curl -o QUICKSTART.md https://raw.githubusercontent.com/Hundia/autospec/main/QUICKSTART.md\nmkdir -p requirements',
-    codeLabel: 'Copy Commands',
+    badge: null,
+    description: 'For existing projects. Download the generation prompt and add to your repo.',
+    code: 'curl -O https://raw.githubusercontent.com/Hundia/autospec/main/QUICKSTART.md',
+    codeLabel: 'Copy Command',
+    steps: [
+      'Place your requirements in requirements/',
+      'Tell your AI: "Run @QUICKSTART.md"',
+    ],
   },
   {
     title: 'CLI Tools',
     subtitle: 'Optional',
     time: '2 minutes',
-    icon: Wrench,
+    icon: Terminal,
     color: 'purple',
     featured: false,
-    description: 'Install the CLI for sprint status, viewer dashboard, and FinOps tracking. Not required for core workflow.',
+    badge: null,
+    description: 'Status dashboard, viewer generator, and sprint tools. Optional companion to template.',
     code: 'npm install -g autospec\nautospec status\nautospec viewer',
     codeLabel: 'Copy Commands',
+    steps: [],
   },
 ];
 
-const colorClasses: Record<string, { bg: string; border: string; icon: string; time: string }> = {
+const colorClasses: Record<string, { bg: string; border: string; icon: string; badge: string; time: string }> = {
   blue: {
     bg: 'bg-blue-500/10',
     border: 'border-blue-500/50',
     icon: 'text-blue-400',
+    badge: 'bg-blue-500/10 text-blue-400',
     time: 'bg-blue-500/10 text-blue-400',
   },
   green: {
     bg: 'bg-green-500/10',
     border: 'border-green-500/30',
     icon: 'text-green-400',
+    badge: 'bg-green-500/10 text-green-400',
     time: 'bg-green-500/10 text-green-400',
   },
   purple: {
     bg: 'bg-purple-500/10',
     border: 'border-purple-500/30',
     icon: 'text-purple-400',
+    badge: 'bg-purple-500/10 text-purple-400',
     time: 'bg-purple-500/10 text-purple-400',
   },
 };
@@ -83,10 +98,10 @@ export default function QuickStartSection() {
             Get Started
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Start in 30 Seconds. Pick Your Path.
+            Start Building in 30 Seconds
           </h2>
           <p className="text-white/60 max-w-2xl mx-auto">
-            Use the GitHub template for new projects, download QUICKSTART.md for existing ones, or add CLI tools for dashboards.
+            Three paths, one methodology. Pick what fits your workflow.
           </p>
         </motion.div>
 
@@ -108,10 +123,10 @@ export default function QuickStartSection() {
                 }`}
               >
                 {/* Featured Badge */}
-                {option.featured && (
+                {option.badge && (
                   <div className="absolute -top-3 right-4">
                     <span className="bg-blue-500 text-white text-xs px-3 py-1 rounded-full font-medium">
-                      Recommended
+                      {option.badge}
                     </span>
                   </div>
                 )}
@@ -133,12 +148,12 @@ export default function QuickStartSection() {
                 </div>
 
                 {/* Description */}
-                <p className="text-sm text-white/60 mb-4 flex-1">
+                <p className="text-sm text-white/60 mb-4">
                   {option.description}
                 </p>
 
                 {/* Code Block */}
-                <div className="relative">
+                <div className="relative mb-4">
                   <div className="bg-slate-950 rounded-lg p-4 font-mono text-sm text-white/80 whitespace-pre-wrap break-all">
                     {option.code}
                   </div>
@@ -159,6 +174,20 @@ export default function QuickStartSection() {
                     )}
                   </button>
                 </div>
+
+                {/* Steps */}
+                {option.steps.length > 0 && (
+                  <ol className="mt-auto space-y-2">
+                    {option.steps.map((step, sIdx) => (
+                      <li key={sIdx} className="flex items-start gap-2 text-xs text-white/60">
+                        <span className={`flex-shrink-0 w-4 h-4 rounded-full ${colors.bg} flex items-center justify-center text-[10px] ${colors.icon} font-bold`}>
+                          {sIdx + 1}
+                        </span>
+                        <span>{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                )}
               </motion.div>
             );
           })}

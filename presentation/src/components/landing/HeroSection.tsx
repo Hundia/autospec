@@ -2,88 +2,93 @@ import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Copy, Check, ArrowRight, Github } from 'lucide-react';
 
-// Conversation-style animation data
+// Conversation animation data
 interface ConversationLine {
-  speaker: 'user' | 'ai';
+  speaker: 'user' | 'ai' | 'output';
   text: string;
-  delay: number; // ms before this line appears
+  color?: string;
 }
 
-const CONVERSATION: ConversationLine[] = [
-  { speaker: 'user', text: 'Run @QUICKSTART.md', delay: 0 },
-  { speaker: 'ai', text: 'Reading requirements/my-app.md...', delay: 1200 },
-  { speaker: 'ai', text: '', delay: 800 },
-  { speaker: 'ai', text: 'Generating 10 expert specifications...', delay: 600 },
-  { speaker: 'ai', text: '  ✓ Product Manager    (Vision & Stories)', delay: 400 },
-  { speaker: 'ai', text: '  ✓ Backend Lead       (API & Services)', delay: 300 },
-  { speaker: 'ai', text: '  ✓ Frontend Lead      (Components & UX)', delay: 300 },
-  { speaker: 'ai', text: '  ✓ Database Architect (Schema & Migrations)', delay: 300 },
-  { speaker: 'ai', text: '  ✓ QA Lead            (Testing Strategy)', delay: 250 },
-  { speaker: 'ai', text: '  ✓ DevOps Lead        (Infrastructure)', delay: 250 },
-  { speaker: 'ai', text: '  ✓ Marketing Lead     (Go-to-Market)', delay: 250 },
-  { speaker: 'ai', text: '  ✓ Finance Lead       (Pricing & Economics)', delay: 250 },
-  { speaker: 'ai', text: '  ✓ Business Lead      (Strategy)', delay: 250 },
-  { speaker: 'ai', text: '  ✓ UI Designer        (Screens & Wireframes)', delay: 250 },
-  { speaker: 'ai', text: '', delay: 400 },
-  { speaker: 'ai', text: 'Generating sprint backlog...', delay: 500 },
-  { speaker: 'ai', text: '  ✓ 8 sprints | 47 tickets | 186 pts', delay: 600 },
-  { speaker: 'ai', text: '', delay: 400 },
-  { speaker: 'ai', text: 'Ready. Run /sprint-run 0 to begin.', delay: 500 },
+const CONVERSATION_LINES: ConversationLine[] = [
+  { speaker: 'user', text: 'Run @QUICKSTART.md' },
+  { speaker: 'ai', text: 'Reading requirements/my-app.md...' },
+  { speaker: 'output', text: '' },
+  { speaker: 'output', text: 'Generating 10 expert specifications...', color: 'text-blue-400' },
+  { speaker: 'output', text: '  \u2713 Product Manager    (Vision & Stories)', color: 'text-green-400' },
+  { speaker: 'output', text: '  \u2713 Backend Lead       (API & Services)', color: 'text-green-400' },
+  { speaker: 'output', text: '  \u2713 Frontend Lead      (Components & UX)', color: 'text-green-400' },
+  { speaker: 'output', text: '  \u2713 Database Architect  (Schema & Migrations)', color: 'text-green-400' },
+  { speaker: 'output', text: '  \u2713 QA Lead            (Testing Strategy)', color: 'text-green-400' },
+  { speaker: 'output', text: '  \u2713 DevOps Lead        (Infrastructure)', color: 'text-green-400' },
+  { speaker: 'output', text: '  ... +4 more experts', color: 'text-white/50' },
+  { speaker: 'output', text: '' },
+  { speaker: 'output', text: 'Generating sprint backlog...', color: 'text-blue-400' },
+  { speaker: 'output', text: '  \u2713 8 sprints | 47 tickets | 186 pts', color: 'text-green-400' },
+  { speaker: 'output', text: '' },
+  { speaker: 'ai', text: 'Ready. Run /sprint-run 0 to begin.' },
 ];
 
+const CHAR_DELAY = 40;
+const LINE_DELAY = 90;
+const PAUSE_AFTER = 3500;
+const RESET_PAUSE = 2000;
+
+type AnimPhase = 'typing-user' | 'showing-ai-1' | 'showing-lines' | 'paused' | 'resetting';
+
 function useConversationAnimation() {
+  const [phase, setPhase] = useState<AnimPhase>('typing-user');
+  const [typedChars, setTypedChars] = useState(0);
   const [visibleLines, setVisibleLines] = useState(0);
-  const [userTypedChars, setUserTypedChars] = useState(0);
-  const [isTypingUser, setIsTypingUser] = useState(true);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const totalLines = CONVERSATION.length;
+
+  const clearTimer = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  };
 
   useEffect(() => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    clearTimer();
 
-    // Phase 1: Type out user message character by character
-    if (isTypingUser) {
-      const userMsg = CONVERSATION[0].text;
-      if (userTypedChars < userMsg.length) {
-        timeoutRef.current = setTimeout(() => {
-          setUserTypedChars((c) => c + 1);
-        }, 50);
+    const userText = CONVERSATION_LINES[0].text;
+
+    if (phase === 'typing-user') {
+      if (typedChars < userText.length) {
+        timeoutRef.current = setTimeout(() => setTypedChars((c) => c + 1), CHAR_DELAY);
       } else {
-        // Done typing user message, start showing AI lines
-        timeoutRef.current = setTimeout(() => {
-          setIsTypingUser(false);
-          setVisibleLines(1); // User line is "done"
-        }, 600);
+        timeoutRef.current = setTimeout(() => setPhase('showing-ai-1'), 500);
       }
-      return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); };
+    } else if (phase === 'showing-ai-1') {
+      // Show "Reading requirements..." line (index 1), then start showing output lines
+      timeoutRef.current = setTimeout(() => setPhase('showing-lines'), 600);
+    } else if (phase === 'showing-lines') {
+      // Lines 2 onward (index 2+)
+      const remainingLines = CONVERSATION_LINES.slice(2);
+      if (visibleLines < remainingLines.length) {
+        timeoutRef.current = setTimeout(() => setVisibleLines((l) => l + 1), LINE_DELAY);
+      } else {
+        timeoutRef.current = setTimeout(() => setPhase('paused'), PAUSE_AFTER);
+      }
+    } else if (phase === 'paused') {
+      timeoutRef.current = setTimeout(() => setPhase('resetting'), RESET_PAUSE);
+    } else if (phase === 'resetting') {
+      setTypedChars(0);
+      setVisibleLines(0);
+      setPhase('typing-user');
     }
 
-    // Phase 2: Show AI response lines one by one
-    if (visibleLines < totalLines) {
-      const nextLine = CONVERSATION[visibleLines];
-      timeoutRef.current = setTimeout(() => {
-        setVisibleLines((v) => v + 1);
-      }, nextLine.delay);
-    } else {
-      // All lines shown, wait then restart
-      timeoutRef.current = setTimeout(() => {
-        setVisibleLines(0);
-        setUserTypedChars(0);
-        setIsTypingUser(true);
-      }, 4000);
-    }
+    return clearTimer;
+  }, [phase, typedChars, visibleLines]);
 
-    return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); };
-  }, [visibleLines, userTypedChars, isTypingUser, totalLines]);
-
-  return { visibleLines, userTypedChars, isTypingUser };
+  return { phase, typedChars, visibleLines };
 }
 
 export default function HeroSection() {
   const [copied, setCopied] = useState(false);
   const installCommand = 'gh repo create my-project --template Hundia/autospec-starter';
-  const animation = useConversationAnimation();
-  const chatRef = useRef<HTMLDivElement>(null);
+  const { phase, typedChars, visibleLines } = useConversationAnimation();
+  const chatBodyRef = useRef<HTMLDivElement>(null);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(installCommand);
@@ -93,18 +98,28 @@ export default function HeroSection() {
 
   // Auto-scroll chat to bottom
   useEffect(() => {
-    if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    if (chatBodyRef.current) {
+      chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
     }
-  }, [animation.visibleLines, animation.userTypedChars]);
+  }, [phase, typedChars, visibleLines]);
+
+  const userText = CONVERSATION_LINES[0].text;
+  const aiReadingLine = CONVERSATION_LINES[1];
+  const outputLines = CONVERSATION_LINES.slice(2);
+
+  const showAiReading = phase === 'showing-ai-1' || phase === 'showing-lines' || phase === 'paused' || phase === 'resetting';
+  const showOutput = phase === 'showing-lines' || phase === 'paused' || phase === 'resetting';
 
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0">
+        {/* Gradient orbs */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-3xl" />
+
+        {/* Grid pattern */}
         <div
           className="absolute inset-0 opacity-[0.02]"
           style={{
@@ -158,9 +173,9 @@ export default function HeroSection() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-xl sm:text-2xl text-white/60 max-w-xl mb-8"
             >
-              Drop <span className="text-white font-medium font-mono">@QUICKSTART.md</span> into
-              your AI assistant. It generates 10 expert specs, a sprint backlog, and full
-              documentation — from your requirements, in one pass.
+              Your AI assistant generates{' '}
+              <span className="text-white font-medium">10 expert specifications, a sprint backlog, and living docs</span>{' '}
+              — from a single prompt.
             </motion.p>
 
             {/* Install Command */}
@@ -170,16 +185,16 @@ export default function HeroSection() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="mb-8"
             >
-              <div className="inline-flex items-center gap-2 bg-slate-800/80 border border-white/10 rounded-xl p-2 backdrop-blur-sm">
-                <div className="flex items-center gap-3 px-4 py-2 bg-slate-900/80 rounded-lg">
-                  <Github size={18} className="text-white/40" />
-                  <code className="text-xs sm:text-sm font-mono text-white/90">
+              <div className="inline-flex items-center gap-2 bg-slate-800/80 border border-white/10 rounded-xl p-2 backdrop-blur-sm max-w-full">
+                <div className="flex items-center gap-3 px-4 py-2 bg-slate-900/80 rounded-lg overflow-hidden">
+                  <span className="text-white/40 font-mono text-sm flex-shrink-0">$</span>
+                  <code className="text-xs sm:text-sm font-mono text-white/90 truncate">
                     {installCommand}
                   </code>
                 </div>
                 <button
                   onClick={handleCopy}
-                  className="p-2 hover:bg-white/5 rounded-lg transition-colors"
+                  className="p-2 hover:bg-white/5 rounded-lg transition-colors flex-shrink-0"
                   aria-label="Copy command"
                 >
                   {copied ? (
@@ -199,7 +214,9 @@ export default function HeroSection() {
               className="flex flex-col sm:flex-row items-start gap-4 mb-12"
             >
               <a
-                href="#quickstart"
+                href="https://github.com/Hundia/autospec-starter"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105"
               >
                 Get the Template
@@ -240,7 +257,7 @@ export default function HeroSection() {
             </motion.div>
           </div>
 
-          {/* Right: Conversation Animation */}
+          {/* Right: Animated Chat Terminal */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
@@ -250,9 +267,9 @@ export default function HeroSection() {
             {/* Glow behind terminal */}
             <div className="absolute inset-0 -m-4 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-2xl blur-2xl" />
 
-            {/* Chat Window */}
+            {/* Terminal Window */}
             <div className="relative bg-slate-950 rounded-xl border border-white/10 shadow-2xl overflow-hidden">
-              {/* Window Chrome */}
+              {/* macOS Chrome */}
               <div className="flex items-center gap-2 px-4 py-3 bg-slate-900/80 border-b border-white/10">
                 <div className="flex items-center gap-1.5">
                   <div className="w-3 h-3 rounded-full bg-red-500" />
@@ -260,61 +277,89 @@ export default function HeroSection() {
                   <div className="w-3 h-3 rounded-full bg-green-500" />
                 </div>
                 <div className="flex-1 flex justify-center">
-                  <span className="text-xs text-white/40 font-mono">~/my-project</span>
+                  <span className="text-xs text-white/40 font-mono">AI Assistant — ~/my-project</span>
                 </div>
               </div>
 
               {/* Chat Body */}
               <div
-                ref={chatRef}
-                className="h-[360px] lg:h-[420px] overflow-hidden p-4 space-y-3"
+                ref={chatBodyRef}
+                className="h-[360px] lg:h-[420px] overflow-hidden font-mono text-sm p-4 space-y-3"
               >
-                {/* User message (typing animation) */}
+                {/* User message */}
                 <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-7 h-7 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
-                    <span className="text-xs text-blue-400 font-bold">U</span>
-                  </div>
-                  <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg rounded-tl-none px-4 py-2 max-w-[85%]">
-                    <span className="font-mono text-sm text-blue-300">
-                      {animation.isTypingUser
-                        ? CONVERSATION[0].text.slice(0, animation.userTypedChars)
-                        : CONVERSATION[0].text}
+                  <span className="text-xs font-semibold text-cyan-400 flex-shrink-0 mt-0.5 w-8">You</span>
+                  <div className="flex-1">
+                    <span className="text-white">
+                      {userText.slice(0, typedChars)}
                     </span>
-                    {animation.isTypingUser && (
-                      <span className="inline-block w-1.5 h-4 bg-blue-400/80 animate-pulse ml-0.5 align-middle" />
+                    {phase === 'typing-user' && (
+                      <span className="inline-block w-2 h-4 bg-white/80 animate-pulse ml-0.5 align-middle" />
                     )}
                   </div>
                 </div>
 
-                {/* AI response lines */}
-                {!animation.isTypingUser && animation.visibleLines > 1 && (
+                {/* AI: Reading line */}
+                {showAiReading && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex items-start gap-3"
+                  >
+                    <span className="text-xs font-semibold text-purple-400 flex-shrink-0 mt-0.5 w-8">AI</span>
+                    <span className="text-white/80">{aiReadingLine.text}</span>
+                  </motion.div>
+                )}
+
+                {/* Output lines */}
+                {showOutput && (
                   <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-7 h-7 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
-                      <span className="text-xs text-purple-400 font-bold">AI</span>
-                    </div>
-                    <div className="bg-white/5 border border-white/10 rounded-lg rounded-tl-none px-4 py-3 max-w-[90%]">
-                      <div className="font-mono text-sm space-y-0.5">
-                        {CONVERSATION.slice(1, animation.visibleLines).map((line, idx) => {
-                          if (line.text === '') return <div key={idx} className="h-2" />;
-
-                          // Color the checkmarks green, "Ready" line emerald
-                          let textClass = 'text-white/70';
-                          if (line.text.startsWith('  ✓')) textClass = 'text-green-400';
-                          else if (line.text.startsWith('Reading')) textClass = 'text-blue-400';
-                          else if (line.text.startsWith('Generating')) textClass = 'text-purple-400';
-                          else if (line.text.startsWith('Ready')) textClass = 'text-emerald-400';
-
+                    <span className="w-8 flex-shrink-0" />
+                    <div className="flex-1 space-y-0.5">
+                      {outputLines.slice(0, visibleLines).map((line, idx) => {
+                        // Last line ("Ready. Run ...") is AI speaker
+                        const isLastAiLine = idx === outputLines.length - 1;
+                        if (isLastAiLine) {
                           return (
-                            <div key={idx} className={`${textClass} leading-5 whitespace-pre`}>
-                              {line.text}
-                            </div>
+                            <motion.div
+                              key={idx}
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ duration: 0.2 }}
+                              className="flex items-start gap-3 -ml-11 mt-2"
+                            >
+                              <span className="text-xs font-semibold text-purple-400 flex-shrink-0 mt-0.5 w-8">AI</span>
+                              <span className="text-emerald-400 font-medium">{line.text}</span>
+                            </motion.div>
                           );
-                        })}
-                        {animation.visibleLines < CONVERSATION.length && (
-                          <span className="inline-block w-1.5 h-4 bg-purple-400/60 animate-pulse" />
-                        )}
-                      </div>
+                        }
+                        return (
+                          <motion.div
+                            key={idx}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.2 }}
+                            className={`leading-5 ${line.color || 'text-white/60'}`}
+                          >
+                            {line.text || '\u00A0'}
+                          </motion.div>
+                        );
+                      })}
+
+                      {/* Blinking cursor at end */}
+                      {phase === 'showing-lines' && visibleLines < outputLines.length && (
+                        <span className="inline-block w-2 h-4 bg-white/60 animate-pulse" />
+                      )}
                     </div>
+                  </div>
+                )}
+
+                {/* Bottom cursor when paused */}
+                {phase === 'paused' && (
+                  <div className="flex items-center gap-3">
+                    <span className="w-8 flex-shrink-0" />
+                    <span className="inline-block w-2 h-4 bg-white/40 animate-pulse" />
                   </div>
                 )}
               </div>
