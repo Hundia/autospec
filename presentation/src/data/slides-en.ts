@@ -585,7 +585,7 @@ export const slidesEN = [
   {
     type: 'closing',
     title: 'Get Started Today',
-    install: 'git clone https://github.com/Hundia/autospec-starter my-project',
+    install: 'git clone https://github.com/Hundia/autospec my-project',
     commands: [
       { cmd: 'cd my-project', desc: 'Enter your new project' },
       { cmd: 'Add requirements to requirements/', desc: 'Drop in your SRS, PRD, or project brief' },
