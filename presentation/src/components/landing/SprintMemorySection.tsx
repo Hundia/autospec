@@ -7,7 +7,7 @@ const sprintPhases = [
     sprint: 'Sprint 0',
     title: 'Cold Start Eliminated',
     description:
-      'autospec init creates 10 role specs and the backlog. Your AI reads CLAUDE.md and understands the project structure from the first prompt.',
+      'QUICKSTART.md creates 10 role specs and the backlog. Your AI reads CLAUDE.md and understands the project structure from the first prompt.',
     icon: Rocket,
     color: 'blue',
     tickets: ['🔲 Setup project scaffold', '🔲 Configure auth module', '🔲 Design database schema'],

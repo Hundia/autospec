@@ -25,7 +25,7 @@ const footerLinks = {
 
 export default function Footer() {
   const [copied, setCopied] = useState(false);
-  const installCommand = 'npx autospec init';
+  const installCommand = 'git clone https://github.com/Hundia/autospec my-project';
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(installCommand);

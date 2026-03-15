@@ -36,17 +36,20 @@ const options = [
     ],
   },
   {
-    title: 'CLI Tools',
-    subtitle: 'Optional',
-    time: '2 minutes',
+    title: 'Clone & Go',
+    subtitle: 'Full Repo',
+    time: '1 minute',
     icon: Terminal,
     color: 'purple',
     featured: false,
     badge: null,
-    description: 'Status dashboard, viewer generator, and sprint tools. Optional companion to template.',
-    code: 'npm install -g autospec\nautospec status\nautospec viewer',
+    description: 'Clone the full repo with CLI tools, viewer, examples, and starter kit included.',
+    code: 'git clone https://github.com/Hundia/autospec my-project\ncd my-project',
     codeLabel: 'Copy Commands',
-    steps: [],
+    steps: [
+      'Add your requirements to requirements/',
+      'Tell your AI: "Run @QUICKSTART.md"',
+    ],
   },
 ];
 
