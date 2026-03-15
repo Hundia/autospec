@@ -585,11 +585,11 @@ export const slidesHE = [
   {
     type: 'closing',
     title: 'התחל היום',
-    install: 'npm install -g autospec',
+    install: 'git clone https://github.com/Hundia/autospec-starter my-project',
     commands: [
-      { cmd: 'autospec init', desc: 'אתחל פרויקט חדש' },
-      { cmd: 'autospec status', desc: 'צפה בהתקדמות הספרינט' },
-      { cmd: 'autospec sprint 0', desc: 'הפק פרומפט לספרינט' },
+      { cmd: 'cd my-project', desc: 'היכנס לפרויקט החדש' },
+      { cmd: 'הוסף דרישות ל-requirements/', desc: 'שים את ה-SRS, PRD או תיאור הפרויקט' },
+      { cmd: 'הרץ @QUICKSTART.md', desc: 'תגיד ל-AI — ייווצרו ספציפיקציות, בקלוג ודוקומנטציה' },
     ],
     links: {
       github: 'github.com/Hundia/autospec',

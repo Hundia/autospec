@@ -585,11 +585,11 @@ export const slidesEN = [
   {
     type: 'closing',
     title: 'Get Started Today',
-    install: 'npm install -g autospec',
+    install: 'git clone https://github.com/Hundia/autospec-starter my-project',
     commands: [
-      { cmd: 'autospec init', desc: 'Initialize new project' },
-      { cmd: 'autospec status', desc: 'View sprint progress' },
-      { cmd: 'autospec sprint 0', desc: 'Generate sprint prompt' },
+      { cmd: 'cd my-project', desc: 'Enter your new project' },
+      { cmd: 'Add requirements to requirements/', desc: 'Drop in your SRS, PRD, or project brief' },
+      { cmd: 'Run @QUICKSTART.md', desc: 'Tell your AI assistant — specs, backlog & docs generated' },
     ],
     links: {
       github: 'github.com/Hundia/autospec',

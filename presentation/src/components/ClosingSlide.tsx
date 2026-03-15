@@ -39,9 +39,9 @@ export default function ClosingSlide({ data, lang }: ClosingSlideProps) {
       >
         <div className="flex items-center gap-3 mb-2">
           <Terminal className="text-green-400" size={20} />
-          <span className="text-white/50 text-sm">Install</span>
+          <span className="text-white/50 text-sm">Clone the starter kit</span>
         </div>
-        <code className="text-xl sm:text-2xl text-green-400 font-mono">
+        <code className="text-lg sm:text-xl text-green-400 font-mono break-all">
           {data.install}
         </code>
       </motion.div>
