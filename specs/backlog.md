@@ -547,6 +547,21 @@
 
 ---
 
+## Sprint 25: Presentation Live Demo Prep — MealMap + Copilot (~12 pts)
+
+**Theme:** Prepare MealMap example as a live demo environment for the AutoSpec presentation, with full GitHub Copilot (GPT 5.4) integration and presenter tooling.
+**Status:** ✅ Done
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 25.1 | Enhance MealMap `.github/copilot-instructions.md` — GPT 5.4/5.3/5.2 model routing, 11 SDD skill prompts, handoff pattern, full tech stack reference | Frontend | 5 | ✅ | — | `examples/mealmap/.github/copilot-instructions.md` |
+| 25.2 | Create `demo/DEMO-SCRIPT.md` — 5-act presenter script with timing, copilot prompts, talking points, emergency fallbacks | PM | 3 | ✅ | — | `examples/mealmap/demo/DEMO-SCRIPT.md` |
+| 25.3 | Create `demo/setup-demo.sh` — pre-flight checks (Docker, deps, viewer build, key files) | DevOps | 2 | ✅ | — | `examples/mealmap/demo/setup-demo.sh` |
+| 25.4 | Create `.vscode/settings.json` — demo-optimized editor settings | DevOps | 1 | ✅ | — | `examples/mealmap/.vscode/settings.json` |
+| 25.5 | Verify MealMap viewer builds successfully | QA | 1 | ✅ | — | — |
+
+---
+
 ## Sprint 24B: Multi-Agent Orchestration + Multi-Target Expansion (~TBD pts)
 
 **Theme:** Extend Sprint 24 benchmark based on decision gate results. Two possible tracks: (A) if score gap >15pts — implement GPT 5.4→5.3/5.2 multi-agent orchestration mirroring Opus→Sonnet pattern, re-score and compare. (B) if score gap <15pts — expand to MealMap + E-Commerce targets for generalizability, add Gemini CLI runs, test prompt sensitivity.
@@ -601,6 +616,7 @@
 | Sprint 18 | 52 | ✅ Done |
 | Sprint 19 | 50 | 🔄 In Progress |
 | Sprint 23 | 48 | ✅ Done |
-| Sprint 24 | 58 | 🔲 Planned |
+| Sprint 24 | 58 | ✅ Done |
+| Sprint 25 | 12 | ✅ Done |
 | Sprint 24B | TBD | 🔲 Planned |
-| **Total** | **803** | 🔄 **IN PROGRESS** |
+| **Total** | **815** | 🔄 **IN PROGRESS** |
