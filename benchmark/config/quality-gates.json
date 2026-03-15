@@ -1,0 +1,429 @@
+{
+  "version": "1.0",
+  "total_gates": 28,
+  "categories": {
+    "structure": {
+      "weight": 20,
+      "gates": [
+        {
+          "id": "STR-01",
+          "category": "structure",
+          "description": "10 spec files exist in specs/ (01_product_manager.md through 10_ui_designer.md)",
+          "weight": 1,
+          "check_type": "file_exists",
+          "check_config": {
+            "paths": [
+              "specs/01_product_manager.md",
+              "specs/02_backend_lead.md",
+              "specs/03_frontend_lead.md",
+              "specs/04_db_architect.md",
+              "specs/05_qa_engineer.md",
+              "specs/06_devops_engineer.md",
+              "specs/07_security_engineer.md",
+              "specs/08_data_engineer.md",
+              "specs/09_product_analyst.md",
+              "specs/10_ui_designer.md"
+            ]
+          },
+          "conditional": false
+        },
+        {
+          "id": "STR-02",
+          "category": "structure",
+          "description": "specs/backlog.md has 2+ sprint sections (## Sprint N pattern)",
+          "weight": 1,
+          "check_type": "regex",
+          "check_config": {
+            "paths": ["specs/backlog.md"],
+            "pattern": "## Sprint \\d+",
+            "min_count": 2
+          },
+          "conditional": false
+        },
+        {
+          "id": "STR-03",
+          "category": "structure",
+          "description": "docs/ has 8+ subdirectories",
+          "weight": 1,
+          "check_type": "file_count",
+          "check_config": {
+            "path": "docs/",
+            "glob": "docs/*/",
+            "min_count": 8
+          },
+          "conditional": false
+        },
+        {
+          "id": "STR-04",
+          "category": "structure",
+          "description": "prompts/ directory exists in project root",
+          "weight": 1,
+          "check_type": "directory_exists",
+          "check_config": {
+            "path": "prompts/"
+          },
+          "conditional": false
+        },
+        {
+          "id": "STR-05",
+          "category": "structure",
+          "description": "CLAUDE.md exists in project root",
+          "weight": 1,
+          "check_type": "file_exists",
+          "check_config": {
+            "paths": ["CLAUDE.md"]
+          },
+          "conditional": false
+        },
+        {
+          "id": "STR-06",
+          "category": "structure",
+          "description": "agents/ directory exists",
+          "weight": 1,
+          "check_type": "directory_exists",
+          "check_config": {
+            "path": "agents/"
+          },
+          "conditional": false
+        }
+      ]
+    },
+    "specificity": {
+      "weight": 20,
+      "gates": [
+        {
+          "id": "SPC-01",
+          "category": "specificity",
+          "description": "No placeholder text ([insert here], [TODO], [TBD], <placeholder>) in spec files",
+          "weight": 1,
+          "check_type": "regex",
+          "check_config": {
+            "paths": ["specs/*.md"],
+            "pattern": "\\[insert here\\]|\\[TODO\\]|\\[TBD\\]|<placeholder>",
+            "inverse": true,
+            "case_insensitive": true
+          },
+          "conditional": false
+        },
+        {
+          "id": "SPC-02",
+          "category": "specificity",
+          "description": "Spec files contain project-specific references (entity names from requirements)",
+          "weight": 1,
+          "check_type": "content_match",
+          "check_config": {
+            "paths": ["specs/*.md"],
+            "terms": ["user", "class", "booking", "membership", "schedule", "admin", "trainer", "client"],
+            "min_matches": 3
+          },
+          "conditional": false
+        },
+        {
+          "id": "SPC-03",
+          "category": "specificity",
+          "description": "Specs contain concrete examples (real endpoint paths, table names, SQL patterns)",
+          "weight": 1,
+          "check_type": "regex",
+          "check_config": {
+            "paths": ["specs/*.md"],
+            "pattern": "/api/|CREATE TABLE|POST /|GET /|PUT /|DELETE /"
+          },
+          "conditional": false
+        },
+        {
+          "id": "SPC-04",
+          "category": "specificity",
+          "description": "Cross-references between specs exist (See specs/0X_ pattern)",
+          "weight": 1,
+          "check_type": "regex",
+          "check_config": {
+            "paths": ["specs/*.md"],
+            "pattern": "See specs/0\\d_|specs/0\\d_[a-z]"
+          },
+          "conditional": false
+        },
+        {
+          "id": "SPC-05",
+          "category": "specificity",
+          "description": "Average spec file length >100 lines (graded: 0=<50, 1=50-99, 2=100-299, 3=300+)",
+          "weight": 1,
+          "check_type": "graded",
+          "check_config": {
+            "paths": ["specs/0*.md"],
+            "metric": "avg_line_count",
+            "thresholds": [50, 100, 300],
+            "scores": [0, 1, 2, 3]
+          },
+          "conditional": false
+        }
+      ]
+    },
+    "sdd_compliance": {
+      "weight": 25,
+      "gates": [
+        {
+          "id": "SDD-01",
+          "category": "sdd_compliance",
+          "description": "Backlog uses SDD status emojis (🔲, 🔄, ✅)",
+          "weight": 1,
+          "check_type": "regex",
+          "check_config": {
+            "paths": ["specs/backlog.md"],
+            "pattern": "🔲|🔄|✅",
+            "min_count": 1
+          },
+          "conditional": false
+        },
+        {
+          "id": "SDD-02",
+          "category": "sdd_compliance",
+          "description": "Tickets have Definition of Done (graded: 0=none, 1=exists, 2=actionable, 3=references specs)",
+          "weight": 1,
+          "check_type": "graded",
+          "check_config": {
+            "paths": ["specs/backlog.md"],
+            "metric": "definition_of_done_quality",
+            "thresholds": [0, 1, 2],
+            "scores": [0, 1, 2, 3]
+          },
+          "conditional": false
+        },
+        {
+          "id": "SDD-03",
+          "category": "sdd_compliance",
+          "description": "Assumptions documented in specs (Assumption or Constraint keyword)",
+          "weight": 1,
+          "check_type": "content_match",
+          "check_config": {
+            "paths": ["specs/*.md"],
+            "terms": ["Assumption", "Constraint"],
+            "min_matches": 1
+          },
+          "conditional": false
+        },
+        {
+          "id": "SDD-04",
+          "category": "sdd_compliance",
+          "description": "CLAUDE.md has tech stack + commands (npm, docker, npx)",
+          "weight": 1,
+          "check_type": "content_match",
+          "check_config": {
+            "paths": ["CLAUDE.md"],
+            "terms": ["npm", "docker", "npx"],
+            "min_matches": 2
+          },
+          "conditional": false
+        },
+        {
+          "id": "SDD-05",
+          "category": "sdd_compliance",
+          "description": "Ticket descriptions reference spec sections (specs/0N_ pattern)",
+          "weight": 1,
+          "check_type": "regex",
+          "check_config": {
+            "paths": ["specs/backlog.md"],
+            "pattern": "specs/0\\d_"
+          },
+          "conditional": false
+        }
+      ]
+    },
+    "coherence": {
+      "weight": 15,
+      "gates": [
+        {
+          "id": "COH-01",
+          "category": "coherence",
+          "description": "Entity names consistent across specs (mentioned in 3+ files, Jaccard-like scoring)",
+          "weight": 1,
+          "check_type": "graded",
+          "check_config": {
+            "paths": ["specs/0*.md"],
+            "metric": "entity_consistency",
+            "min_files_with_shared_entities": 3,
+            "thresholds": [0, 1, 3],
+            "scores": [0, 1, 2, 3]
+          },
+          "conditional": false
+        },
+        {
+          "id": "COH-02",
+          "category": "coherence",
+          "description": "Backend endpoints match QA test targets (graded cross-spec coherence)",
+          "weight": 1,
+          "check_type": "graded",
+          "check_config": {
+            "paths": ["specs/02_backend_lead.md", "specs/05_qa_engineer.md"],
+            "metric": "endpoint_overlap",
+            "thresholds": [0, 0.25, 0.5],
+            "scores": [0, 1, 2, 3]
+          },
+          "conditional": false
+        },
+        {
+          "id": "COH-03",
+          "category": "coherence",
+          "description": "DB tables referenced in backend spec match DB architect spec (graded)",
+          "weight": 1,
+          "check_type": "graded",
+          "check_config": {
+            "paths": ["specs/02_backend_lead.md", "specs/04_db_architect.md"],
+            "metric": "table_name_overlap",
+            "thresholds": [0, 0.25, 0.5],
+            "scores": [0, 1, 2, 3]
+          },
+          "conditional": false
+        },
+        {
+          "id": "COH-04",
+          "category": "coherence",
+          "description": "Cross-file references resolve (referenced files exist)",
+          "weight": 1,
+          "check_type": "graded",
+          "check_config": {
+            "paths": ["specs/*.md"],
+            "metric": "reference_resolution_rate",
+            "thresholds": [0, 0.5, 0.8],
+            "scores": [0, 1, 2, 3]
+          },
+          "conditional": false
+        }
+      ]
+    },
+    "viewer": {
+      "weight": 10,
+      "gates": [
+        {
+          "id": "VWR-01",
+          "category": "viewer",
+          "description": "Viewer is not a markdown reader — mentions React/Vue/Svelte or a chart library",
+          "weight": 1,
+          "check_type": "content_match",
+          "check_config": {
+            "paths": ["specs/*.md", "CLAUDE.md"],
+            "terms": ["React", "Vue", "Svelte", "Recharts", "D3", "Chart.js", "ECharts"],
+            "min_matches": 1
+          },
+          "conditional": true,
+          "condition": {
+            "type": "directory_exists",
+            "path": "viewer/"
+          }
+        },
+        {
+          "id": "VWR-02",
+          "category": "viewer",
+          "description": "Mentions visualization framework (Recharts/D3/Chart.js/ECharts)",
+          "weight": 1,
+          "check_type": "content_match",
+          "check_config": {
+            "paths": ["specs/*.md", "CLAUDE.md"],
+            "terms": ["Recharts", "D3", "Chart.js", "ECharts", "recharts", "d3"],
+            "min_matches": 1
+          },
+          "conditional": true,
+          "condition": {
+            "type": "directory_exists",
+            "path": "viewer/"
+          }
+        },
+        {
+          "id": "VWR-03",
+          "category": "viewer",
+          "description": "5+ distinct visualizations specified (graded: 0=0, 1=1-2, 2=3-4, 3=5+)",
+          "weight": 1,
+          "check_type": "graded",
+          "check_config": {
+            "paths": ["specs/*.md"],
+            "metric": "visualization_count",
+            "thresholds": [1, 3, 5],
+            "scores": [0, 1, 2, 3]
+          },
+          "conditional": true,
+          "condition": {
+            "type": "directory_exists",
+            "path": "viewer/"
+          }
+        },
+        {
+          "id": "VWR-04",
+          "category": "viewer",
+          "description": "Interactive components specified (not just static renders)",
+          "weight": 1,
+          "check_type": "content_match",
+          "check_config": {
+            "paths": ["specs/*.md"],
+            "terms": ["interactive", "filter", "search", "click", "hover", "toggle", "drill-down"],
+            "min_matches": 1,
+            "case_insensitive": true
+          },
+          "conditional": true,
+          "condition": {
+            "type": "directory_exists",
+            "path": "viewer/"
+          }
+        }
+      ]
+    },
+    "technical_correctness": {
+      "weight": 10,
+      "gates": [
+        {
+          "id": "TC-01",
+          "category": "technical_correctness",
+          "description": "Valid markdown tables in specs (proper | delimiters, header separator)",
+          "weight": 1,
+          "check_type": "regex",
+          "check_config": {
+            "paths": ["specs/*.md"],
+            "pattern": "\\|[-:]+\\|",
+            "min_count": 1
+          },
+          "conditional": false
+        },
+        {
+          "id": "TC-02",
+          "category": "technical_correctness",
+          "description": "No circular dependencies in backlog (graded dependency graph analysis)",
+          "weight": 1,
+          "check_type": "graded",
+          "check_config": {
+            "paths": ["specs/backlog.md"],
+            "metric": "circular_dependency_check",
+            "thresholds": [1, 0, 0],
+            "scores": [0, 3, 3, 3],
+            "note": "Score 3 if no cycles, 0 if cycles detected"
+          },
+          "conditional": false
+        },
+        {
+          "id": "TC-03",
+          "category": "technical_correctness",
+          "description": "Consistent forward-slash paths (no Windows backslash paths in specs)",
+          "weight": 1,
+          "check_type": "regex",
+          "check_config": {
+            "paths": ["specs/*.md", "CLAUDE.md"],
+            "pattern": "\\\\[a-zA-Z]|\\\\\\\\",
+            "inverse": true
+          },
+          "conditional": false
+        },
+        {
+          "id": "TC-04",
+          "category": "technical_correctness",
+          "description": "Internal links/references use valid relative paths (graded resolution rate)",
+          "weight": 1,
+          "check_type": "graded",
+          "check_config": {
+            "paths": ["specs/*.md"],
+            "metric": "internal_link_validity",
+            "thresholds": [0, 0.5, 0.8],
+            "scores": [0, 1, 2, 3]
+          },
+          "conditional": false
+        }
+      ]
+    }
+  }
+}

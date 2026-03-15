@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
-import { LayoutDashboard, FileText, List, BookOpen, Zap, Grid, Palette, ChevronDown, ChevronRight, Layers } from 'lucide-react'
+import { LayoutDashboard, FileText, List, BookOpen, Zap, Grid, Palette, ChevronDown, ChevronRight, Layers, Target } from 'lucide-react'
 import { backlogData } from '../../data/backlog'
 
 const statusEmoji: Record<string, string> = {
@@ -21,6 +21,7 @@ const mainNavItems = [
 const bottomNavItems = [
   { to: '/skills/sprint-run', label: 'Skills', icon: Zap },
   { to: '/environments', label: 'Environments', icon: Grid },
+  { to: '/benchmark', label: 'Benchmark', icon: Target },
   { to: '/design-system', label: 'Design System', icon: Palette },
 ]
 

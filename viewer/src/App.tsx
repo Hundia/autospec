@@ -9,6 +9,8 @@ import { EnvironmentsPage } from './pages/EnvironmentsPage'
 import { DesignSystemPage } from './pages/DesignSystemPage'
 import { SprintPage } from './pages/SprintPage'
 import { SprintsListPage } from './pages/SprintsListPage'
+import { BenchmarkOverviewPage } from './pages/BenchmarkOverviewPage'
+import { BenchmarkResultsPage } from './pages/BenchmarkResultsPage'
 
 export default function App() {
   return (
@@ -23,6 +25,8 @@ export default function App() {
           <Route path="/sprint/:id" element={<SprintPage />} />
           <Route path="/skills/:slug" element={<SkillsPage />} />
           <Route path="/environments" element={<EnvironmentsPage />} />
+          <Route path="/benchmark" element={<BenchmarkOverviewPage />} />
+          <Route path="/benchmark/results" element={<BenchmarkResultsPage />} />
           <Route path="/design-system" element={<DesignSystemPage />} />
         </Routes>
       </Layout>

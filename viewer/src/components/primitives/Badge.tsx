@@ -12,6 +12,10 @@ export type BadgeVariant =
   | 'opus'
   | 'confirmed'
   | 'cancelled'
+  | 'pass'
+  | 'fail'
+  | 'graded'
+  | 'skipped'
 
 export interface BadgeProps {
   variant?: BadgeVariant
@@ -32,6 +36,10 @@ const variantStyles: Record<BadgeVariant, string> = {
   opus: 'bg-orange-100 text-orange-800',
   confirmed: 'bg-sage text-cream',
   cancelled: 'bg-terracotta text-cream',
+  pass: 'bg-sage text-cream',
+  fail: 'bg-terracotta text-cream',
+  graded: 'bg-amber-100 text-amber-800',
+  skipped: 'bg-sand-200 text-sand-700',
 }
 
 const sizeStyles = {

@@ -1,0 +1,131 @@
+# Sprint 24 Beta Brief — Prompt Template (24.5)
+
+**Agent:** Sonnet
+**Sprint:** 24 Beta (5 pts, 1 ticket: 24.5)
+**Theme:** Create the symmetric baseline prompt template for benchmark runs
+
+---
+
+## Working Directory
+
+`/opt/FitnessAiManager/autospec/`
+
+---
+
+## Ticket 24.5: Create `benchmark/prompts/baseline-template.txt` (5 pts)
+
+Create a single prompt template file at `benchmark/prompts/baseline-template.txt`.
+
+### Requirements
+
+1. **ONE symmetric prompt** — identical task instructions for ALL models (Claude, GPT, Gemini)
+2. Contains `{{QUICKSTART_CONTENT}}` placeholder that gets substituted at runtime
+3. Model-agnostic — no model-specific instructions, no "you are Claude/GPT"
+4. Must instruct the model to generate the complete AutoSpec output structure
+
+### Template Content
+
+The prompt should follow this structure:
+
+```
+# AutoSpec SDD Generation Task
+
+You are executing the AutoSpec Spec-Driven Development (SDD) methodology. Your task is to read the project requirements and the QUICKSTART methodology guide below, then generate the complete output structure for the project.
+
+## Instructions
+
+1. Read the QUICKSTART content below carefully — it defines the SDD methodology, the 10 role-based specifications, documentation structure, sprint prompts, and quality gates.
+
+2. Read the project requirements in the `requirements/` directory of your working directory. This contains the Product Requirements Document (PRD) for the target project.
+
+3. Generate the COMPLETE output structure as defined in the QUICKSTART:
+
+   ### Specifications (`specs/`)
+   - `specs/01_product_manager.md` — Product vision, user stories, acceptance criteria
+   - `specs/02_backend_lead.md` — API design, endpoints, middleware, error handling
+   - `specs/03_frontend_lead.md` — Component architecture, routing, state management
+   - `specs/04_db_architect.md` — Database schema, ERD, migrations, indexes
+   - `specs/05_qa_lead.md` — Test strategy, test cases, coverage targets
+   - `specs/06_devops_lead.md` — CI/CD, Docker, deployment, monitoring
+   - `specs/07_marketing_lead.md` — Launch plan, analytics, growth strategy
+   - `specs/08_finance_lead.md` — Cost modeling, pricing, revenue projections
+   - `specs/09_business_lead.md` — Market analysis, competitive landscape, roadmap
+   - `specs/10_ui_designer.md` — Design system, wireframes, component library
+   - `specs/backlog.md` — Sprint-organized ticket backlog with 2+ sprints
+
+   ### Documentation (`docs/`)
+   Generate comprehensive documentation across these sections:
+   - `docs/architecture/` — System architecture, backend, frontend, database, security, cloud
+   - `docs/flows/` — User journeys, authentication flow, core features, data flow, state transitions
+   - `docs/workflows/` — Development, sprint execution, git workflow, CI/CD, bug fix, deployment
+   - `docs/environments/` — Development, Docker, staging, production, environment variables
+   - `docs/api/` — REST API reference, authentication, error codes, rate limiting, curl examples
+   - `docs/testing/` — Test strategy, unit/integration/e2e tests, test data, API test suite
+   - `docs/ui-design-system/` — Tokens, components, layouts, accessibility, icons, screens
+   - `docs/project/` — Setup, coding standards, glossary, dependencies
+
+   ### Sprint Prompts (`prompts/`)
+   - `prompts/sprint_0/` — Foundation sprint: plan, dev, QA, summary, DoD checklist
+   - `prompts/sprint_1/` — First feature sprint: plan, dev, QA, summary, DoD checklist
+   - Additional sprint folders matching backlog sprints
+
+   ### Other Required Files
+   - `CLAUDE.md` — Project-specific instructions with tech stack, commands, architecture summary
+   - `agents/sprint-0-brief.md` — Agent briefing for first sprint execution
+
+4. Follow SDD conventions throughout:
+   - Use status emojis in backlog: 🔲 (planned), 🔄 (in progress), ✅ (done)
+   - Every ticket has a Definition of Done (DoD) that references relevant spec sections
+   - Cross-reference between specs by filename (e.g., "See specs/02_backend_lead.md §3")
+   - Document assumptions and constraints explicitly
+   - Use concrete, project-specific examples — NO generic placeholders like [insert here] or [TODO]
+   - Entity names must be consistent across all specs
+   - Backend endpoints in specs must match QA test targets
+   - Database tables must match across DB architect and product manager specs
+
+5. Quality targets:
+   - Each spec file: 300-800 lines, specific to this project
+   - Each doc file: 100-300 lines with concrete details
+   - All markdown tables must have proper formatting
+   - All cross-references must resolve to real files
+
+---
+
+## QUICKSTART METHODOLOGY
+
+{{QUICKSTART_CONTENT}}
+
+---
+
+## BEGIN GENERATION
+
+Read the project requirements in `requirements/` and generate every file listed above. Start now.
+```
+
+### Key Design Decisions
+
+- The `{{QUICKSTART_CONTENT}}` placeholder is on its own line, surrounded by section headers
+- The prompt explicitly lists all expected output files so models know exactly what to create
+- Quality targets from `quickstart/07-quality-gates.md` are embedded as instructions
+- No model-specific hints — pure task description
+- The "Read requirements/" instruction works because `harness.sh` copies the target project (which has `requirements/`) to a temp dir
+
+### DO NOT create any other files — only `benchmark/prompts/baseline-template.txt`
+
+---
+
+## Backlog Update
+
+After completing the ticket, update `specs/backlog.md`:
+- 24.5: `🔲` → `✅`
+
+---
+
+## Verification
+
+```bash
+grep -c '{{QUICKSTART_CONTENT}}' benchmark/prompts/baseline-template.txt
+# Must output: 1
+wc -l benchmark/prompts/baseline-template.txt
+# Should be 60-100 lines
+```
