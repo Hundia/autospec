@@ -1,147 +1,179 @@
-import React from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '../components/primitives/Card'
+import React, { useState } from 'react'
+import { Card } from '../components/primitives/Card'
+import { SystemDiagram } from '../components/diagrams/SystemDiagram'
+import { DatabaseERD } from '../components/diagrams/DatabaseERD'
+import { SequenceDiagram } from '../components/diagrams/SequenceDiagram'
+import { FlowDiagram } from '../components/diagrams/FlowDiagram'
+import {
+  systemNodes, systemEdges,
+  dbTables, dbRelationships,
+  sequenceFlows,
+  requestLifecycleSteps, requestLifecycleConnections,
+} from '../data/architecture'
 
-const techStack = [
-  { layer: 'Frontend', tech: 'React 18 + Vite 5 + TypeScript', notes: 'SPA, component-based UI' },
-  { layer: 'Styling', tech: 'Tailwind CSS 3', notes: 'Utility-first, brand-500 (#22c55e)' },
-  { layer: 'State', tech: 'Zustand 4', notes: 'Auth store, recipe store' },
-  { layer: 'HTTP Client', tech: 'Axios 1', notes: 'Interceptors for JWT refresh' },
-  { layer: 'Routing', tech: 'React Router 6', notes: 'Client-side routing, protected routes' },
-  { layer: 'Backend', tech: 'Express 4 + TypeScript', notes: 'REST API, modular route structure' },
-  { layer: 'Validation', tech: 'Zod 3', notes: 'Request body + env validation' },
-  { layer: 'Database', tech: 'PostgreSQL 15', notes: '6 tables: users, recipes, ingredients, meal_plans, meal_entries, shopping_lists' },
-  { layer: 'ORM', tech: 'Drizzle ORM 0.29', notes: 'Type-safe queries, migration support' },
-  { layer: 'Auth', tech: 'JWT + bcrypt', notes: 'Access token 15m, refresh token 7d' },
-  { layer: 'Testing', tech: 'Vitest + Supertest', notes: '70% coverage target' },
-  { layer: 'Infrastructure', tech: 'Docker Compose', notes: 'PostgreSQL + API + Web services' },
-]
+const tabs = [
+  { id: 'system', label: 'System', icon: '\u{1F3D7}\uFE0F' },
+  { id: 'database', label: 'Database', icon: '\u{1F5C4}\uFE0F' },
+  { id: 'flows', label: 'Flows', icon: '\u{1F504}' },
+  { id: 'lifecycle', label: 'Request Lifecycle', icon: '\u26A1' },
+] as const
 
-const architectureDiagram = `
-  Browser
-     │
-     ▼
-  React SPA (Vite)
-  ├── /login, /register       ← AuthModule
-  ├── /recipes                ← RecipeListPage
-  ├── /recipes/:id            ← RecipeDetailPage
-  ├── /recipes/new            ← RecipeFormPage
-  ├── /meal-plans             ← MealPlanPage (calendar)
-  └── /shopping-list          ← ShoppingListPage
-     │
-     │  Axios + JWT Bearer
-     ▼
-  Express API
-  ├── POST /api/auth/register
-  ├── POST /api/auth/login
-  ├── POST /api/auth/refresh
-  ├── GET  /api/recipes
-  ├── POST /api/recipes
-  ├── GET  /api/recipes/:id
-  ├── PUT  /api/recipes/:id
-  ├── DELETE /api/recipes/:id
-  ├── GET  /api/ingredients
-  ├── GET  /api/meal-plans
-  ├── POST /api/meal-plans
-  ├── POST /api/meal-plans/:id/entries
-  └── GET  /api/shopping-lists/:mealPlanId
-     │
-     │  Drizzle ORM
-     ▼
-  PostgreSQL 15
-  ├── users
-  ├── recipes
-  ├── ingredients
-  ├── recipe_ingredients (join)
-  ├── meal_plans
-  ├── meal_entries
-  └── shopping_lists
-`
+type TabId = typeof tabs[number]['id']
 
 export const ArchitecturePage: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<TabId>('system')
+  const [activeFlow, setActiveFlow] = useState<string>(sequenceFlows[0]?.id || '')
+
+  const selectedFlow = sequenceFlows.find(f => f.id === activeFlow)
+
   return (
-    <div className="max-w-5xl space-y-6">
-      <div>
-        <h2 className="text-2xl font-light text-gray-900">Architecture</h2>
-        <p className="text-sm text-gray-500 mt-1">System design and technology decisions for MealMap</p>
+    <div className="space-y-6">
+      {/* Tab Bar */}
+      <div className="flex gap-1 bg-gray-100 p-1 rounded-xl">
+        {tabs.map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`flex-1 px-4 py-2.5 text-sm font-medium rounded-lg transition-all ${
+              activeTab === tab.id
+                ? 'bg-white text-gray-900 shadow-sm'
+                : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <span className="mr-1.5">{tab.icon}</span>
+            {tab.label}
+          </button>
+        ))}
       </div>
 
-      {/* Architecture Diagram */}
-      <Card>
-        <CardHeader>
-          <CardTitle>System Diagram</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <pre className="text-xs font-mono text-gray-600 bg-gray-50 p-4 rounded-lg overflow-x-auto leading-relaxed whitespace-pre">
-            {architectureDiagram}
-          </pre>
-        </CardContent>
-      </Card>
+      {/* System Tab */}
+      {activeTab === 'system' && (
+        <div className="space-y-6">
+          <SystemDiagram nodes={systemNodes} edges={systemEdges} title="System Architecture" />
 
-      {/* Tech Stack Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Tech Stack</CardTitle>
-        </CardHeader>
-        <CardContent className="p-0">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-gray-50 border-b border-gray-200">
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-700">Layer</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-700">Technology</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-700">Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {techStack.map((row, i) => (
-                <tr key={i} className="border-t border-gray-100 hover:bg-gray-50">
-                  <td className="px-4 py-2.5 font-medium text-gray-800">{row.layer}</td>
-                  <td className="px-4 py-2.5 font-mono text-xs text-brand-700">{row.tech}</td>
-                  <td className="px-4 py-2.5 text-gray-500 text-xs">{row.notes}</td>
-                </tr>
+          {/* Tech Stack Cards */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900 mb-3">Technology Stack</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {[
+                { label: 'Frontend', items: ['React 18', 'Vite', 'Tailwind CSS', 'Zustand'], color: 'bg-green-50 border-green-200' },
+                { label: 'Backend', items: ['Express', 'TypeScript', 'Zod', 'JWT'], color: 'bg-emerald-50 border-emerald-200' },
+                { label: 'Database', items: ['PostgreSQL 15', 'Drizzle ORM', 'Migrations'], color: 'bg-blue-50 border-blue-200' },
+                { label: 'Testing', items: ['Vitest', 'Supertest', '70% coverage'], color: 'bg-amber-50 border-amber-200' },
+              ].map(group => (
+                <div key={group.label} className={`p-3 rounded-lg border ${group.color}`}>
+                  <div className="text-xs font-semibold text-gray-700 mb-2">{group.label}</div>
+                  {group.items.map(item => (
+                    <div key={item} className="text-xs text-gray-600 py-0.5">{item}</div>
+                  ))}
+                </div>
               ))}
-            </tbody>
-          </table>
-        </CardContent>
-      </Card>
-
-      {/* Key Decisions */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Key Design Decisions</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex gap-3">
-              <div className="w-2 h-2 rounded-full bg-brand-500 mt-1.5 flex-shrink-0" />
-              <div>
-                <div className="text-sm font-medium text-gray-900">Drizzle ORM over Prisma</div>
-                <div className="text-sm text-gray-500">Chosen for lighter bundle size, SQL-like API, and better TypeScript inference without code generation.</div>
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <div className="w-2 h-2 rounded-full bg-brand-500 mt-1.5 flex-shrink-0" />
-              <div>
-                <div className="text-sm font-medium text-gray-900">Zustand over Redux</div>
-                <div className="text-sm text-gray-500">Minimal boilerplate for the auth and recipe state. Stores are co-located with their feature.</div>
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <div className="w-2 h-2 rounded-full bg-brand-500 mt-1.5 flex-shrink-0" />
-              <div>
-                <div className="text-sm font-medium text-gray-900">JWT with refresh token rotation</div>
-                <div className="text-sm text-gray-500">Short-lived access tokens (15m) with secure httpOnly cookie for refresh. Axios interceptor handles token refresh transparently.</div>
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <div className="w-2 h-2 rounded-full bg-brand-500 mt-1.5 flex-shrink-0" />
-              <div>
-                <div className="text-sm font-medium text-gray-900">Shopping list generation as a computed endpoint</div>
-                <div className="text-sm text-gray-500">Rather than storing shopping lists, they are generated on-the-fly by aggregating recipe ingredients for a meal plan week.</div>
-              </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      )}
+
+      {/* Database Tab */}
+      {activeTab === 'database' && (
+        <div className="space-y-6">
+          <DatabaseERD tables={dbTables} relationships={dbRelationships} title="Entity Relationship Diagram" />
+
+          {/* Table Summary Cards */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900 mb-3">Table Details</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {dbTables.map(table => (
+                <Card key={table.name} variant="outlined" hoverable>
+                  <div className="p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: table.color }} />
+                      <span className="font-mono text-sm font-semibold text-gray-900">{table.name}</span>
+                    </div>
+                    <div className="space-y-1">
+                      {table.columns.map(col => (
+                        <div key={col.name} className="flex items-center justify-between text-xs">
+                          <span className="font-mono text-gray-700">
+                            {col.constraint === 'PK' ? '\u{1F511} ' : col.constraint?.startsWith('FK') ? '\u{1F517} ' : '   '}
+                            {col.name}
+                          </span>
+                          <span className="text-gray-400">{col.type}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Flows Tab */}
+      {activeTab === 'flows' && (
+        <div className="space-y-4">
+          {/* Flow Selector */}
+          <div className="flex gap-2">
+            {sequenceFlows.map(flow => (
+              <button
+                key={flow.id}
+                onClick={() => setActiveFlow(flow.id)}
+                className={`px-4 py-2 text-sm rounded-lg transition-colors ${
+                  activeFlow === flow.id
+                    ? 'bg-brand-600 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {flow.title}
+              </button>
+            ))}
+          </div>
+
+          {selectedFlow && (
+            <>
+              <div className="text-sm text-gray-500">{selectedFlow.description}</div>
+              <SequenceDiagram
+                actors={selectedFlow.actors}
+                messages={selectedFlow.messages}
+                activations={selectedFlow.activations}
+              />
+            </>
+          )}
+        </div>
+      )}
+
+      {/* Request Lifecycle Tab */}
+      {activeTab === 'lifecycle' && (
+        <div className="space-y-6">
+          <FlowDiagram
+            steps={requestLifecycleSteps}
+            connections={requestLifecycleConnections}
+            title="Request Processing Pipeline"
+          />
+
+          {/* Step Details */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900 mb-3">Pipeline Steps</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {requestLifecycleSteps.map((step, i) => (
+                <div
+                  key={step.id}
+                  className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg"
+                >
+                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-brand-50 text-brand-700 text-xs font-bold">
+                    {i + 1}
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-gray-900">{step.label}</div>
+                    {step.description && (
+                      <div className="text-xs text-gray-500">{step.description}</div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

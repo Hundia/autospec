@@ -1,166 +1,166 @@
-import React from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '../components/primitives/Card'
+import React, { useState } from 'react'
+import { Card } from '../components/primitives/Card'
 import { Badge } from '../components/primitives/Badge'
+import { BrowserMockup } from '../components/screens/BrowserMockup'
+import { LoginMock } from '../components/screens/LoginMock'
+import { RecipeListMock } from '../components/screens/RecipeListMock'
+import { RecipeDetailMock } from '../components/screens/RecipeDetailMock'
+import { MealPlanMock } from '../components/screens/MealPlanMock'
+import { ShoppingListMock } from '../components/screens/ShoppingListMock'
 
 const brandColors = [
-  { name: 'brand-50', hex: '#f0fdf4', textDark: true },
-  { name: 'brand-100', hex: '#dcfce7', textDark: true },
-  { name: 'brand-200', hex: '#bbf7d0', textDark: true },
-  { name: 'brand-500', hex: '#22c55e', textDark: false },
-  { name: 'brand-600', hex: '#16a34a', textDark: false },
-  { name: 'brand-700', hex: '#15803d', textDark: false },
+  { name: 'brand-50', hex: '#f0fdf4' },
+  { name: 'brand-100', hex: '#dcfce7' },
+  { name: 'brand-200', hex: '#bbf7d0' },
+  { name: 'brand-500', hex: '#22c55e' },
+  { name: 'brand-600', hex: '#16a34a' },
+  { name: 'brand-700', hex: '#15803d' },
 ]
 
 const grayColors = [
-  { name: 'gray-50', hex: '#f9fafb', textDark: true },
-  { name: 'gray-100', hex: '#f3f4f6', textDark: true },
-  { name: 'gray-200', hex: '#e5e7eb', textDark: true },
-  { name: 'gray-500', hex: '#6b7280', textDark: false },
-  { name: 'gray-700', hex: '#374151', textDark: false },
-  { name: 'gray-900', hex: '#111827', textDark: false },
+  { name: 'gray-50', hex: '#f9fafb' },
+  { name: 'gray-100', hex: '#f3f4f6' },
+  { name: 'gray-200', hex: '#e5e7eb' },
+  { name: 'gray-500', hex: '#6b7280' },
+  { name: 'gray-700', hex: '#374151' },
+  { name: 'gray-900', hex: '#111827' },
 ]
 
-const badgeVariants = ['default', 'done', 'in-progress', 'todo', 'blocked', 'qa'] as const
+const screens = [
+  { id: 'login', label: 'Login', icon: '🔐' },
+  { id: 'recipes', label: 'Recipe List', icon: '📖' },
+  { id: 'detail', label: 'Recipe Detail', icon: '🍝' },
+  { id: 'meal-plan', label: 'Meal Plan', icon: '📅' },
+  { id: 'shopping', label: 'Shopping List', icon: '🛒' },
+] as const
+
+type ScreenId = typeof screens[number]['id']
 
 export const DesignSystemPage: React.FC = () => {
+  const [activeScreen, setActiveScreen] = useState<ScreenId>('login')
+
   return (
-    <div className="max-w-4xl space-y-8">
+    <div className="space-y-10">
+      {/* Brand Colors */}
       <div>
-        <h2 className="text-2xl font-light text-gray-900">Design System</h2>
-        <p className="text-sm text-gray-500 mt-1">MealMap visual design tokens and components</p>
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">Brand Colors</h2>
+        <div className="grid grid-cols-6 gap-3">
+          {brandColors.map(c => (
+            <div key={c.name}>
+              <div className="h-16 rounded-lg border border-gray-200" style={{ backgroundColor: c.hex }} />
+              <div className="mt-1.5 text-xs font-medium text-gray-700">{c.name}</div>
+              <div className="text-xs text-gray-400 font-mono">{c.hex}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Color Palette */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Brand Colors</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-6 gap-3">
-            {brandColors.map(color => (
-              <div key={color.name}>
-                <div
-                  className="h-16 rounded-lg mb-2 border border-gray-200"
-                  style={{ backgroundColor: color.hex }}
-                />
-                <div className="text-xs font-mono text-gray-600">{color.name}</div>
-                <div className="text-xs text-gray-400">{color.hex}</div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Gray Scale</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-6 gap-3">
-            {grayColors.map(color => (
-              <div key={color.name}>
-                <div
-                  className="h-16 rounded-lg mb-2 border border-gray-200"
-                  style={{ backgroundColor: color.hex }}
-                />
-                <div className="text-xs font-mono text-gray-600">{color.name}</div>
-                <div className="text-xs text-gray-400">{color.hex}</div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      {/* Gray Scale */}
+      <div>
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">Gray Scale</h2>
+        <div className="grid grid-cols-6 gap-3">
+          {grayColors.map(c => (
+            <div key={c.name}>
+              <div className="h-16 rounded-lg border border-gray-200" style={{ backgroundColor: c.hex }} />
+              <div className="mt-1.5 text-xs font-medium text-gray-700">{c.name}</div>
+              <div className="text-xs text-gray-400 font-mono">{c.hex}</div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Typography */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Typography</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <div>
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">Typography</h2>
+        <div className="space-y-3 bg-white p-4 rounded-lg border border-gray-200">
           <div>
-            <div className="text-xs text-gray-400 mb-1">Heading / 2xl font-light</div>
-            <div className="text-2xl font-light text-gray-900">MealMap — Meal Planning Made Simple</div>
+            <span className="text-xs text-gray-400 font-mono">text-2xl font-light</span>
+            <div className="text-2xl font-light text-gray-900 mt-1">Heading Text</div>
           </div>
           <div>
-            <div className="text-xs text-gray-400 mb-1">Subheading / lg font-semibold</div>
-            <div className="text-lg font-semibold text-gray-900">Recipe Management System</div>
+            <span className="text-xs text-gray-400 font-mono">text-lg font-semibold</span>
+            <div className="text-lg font-semibold text-gray-900 mt-1">Subheading</div>
           </div>
           <div>
-            <div className="text-xs text-gray-400 mb-1">Body / sm</div>
-            <div className="text-sm text-gray-700">Plan meals for the week, generate shopping lists automatically, and scale recipes to any serving size.</div>
+            <span className="text-xs text-gray-400 font-mono">text-sm text-gray-600</span>
+            <div className="text-sm text-gray-600 mt-1">Body text used for general content and descriptions across the application.</div>
           </div>
           <div>
-            <div className="text-xs text-gray-400 mb-1">Mono / xs font-mono</div>
-            <div className="text-xs font-mono text-gray-500">GET /api/recipes?category=dinner&page=1</div>
+            <span className="text-xs text-gray-400 font-mono">text-xs font-mono</span>
+            <div className="text-xs font-mono text-gray-500 mt-1">const mealPlan = await db.query()</div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Badges */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Badges</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-3">
-            {badgeVariants.map(variant => (
-              <Badge key={variant} variant={variant}>{variant}</Badge>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <div>
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">Badge Variants</h2>
+        <div className="flex flex-wrap gap-2">
+          <Badge variant="default">Default</Badge>
+          <Badge variant="done">Done</Badge>
+          <Badge variant="in-progress">In Progress</Badge>
+          <Badge variant="todo">Todo</Badge>
+          <Badge variant="blocked">Blocked</Badge>
+          <Badge variant="qa">QA Review</Badge>
+        </div>
+      </div>
 
       {/* Cards */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Card Variants</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-3 gap-4">
-            <Card variant="default">
-              <CardContent>
-                <div className="text-sm font-medium text-gray-900 mb-1">Default Card</div>
-                <div className="text-xs text-gray-500">With shadow-subtle</div>
-              </CardContent>
-            </Card>
-            <Card variant="outlined">
-              <CardContent>
-                <div className="text-sm font-medium text-gray-900 mb-1">Outlined Card</div>
-                <div className="text-xs text-gray-500">With border</div>
-              </CardContent>
-            </Card>
-            <Card variant="elevated">
-              <CardContent>
-                <div className="text-sm font-medium text-gray-900 mb-1">Elevated Card</div>
-                <div className="text-xs text-gray-500">With shadow-soft</div>
-              </CardContent>
-            </Card>
-          </div>
-        </CardContent>
-      </Card>
+      <div>
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">Card Variants</h2>
+        <div className="grid grid-cols-3 gap-3">
+          <Card><div className="p-4 text-sm text-gray-600">Default Card</div></Card>
+          <Card variant="outlined"><div className="p-4 text-sm text-gray-600">Outlined Card</div></Card>
+          <Card variant="elevated"><div className="p-4 text-sm text-gray-600">Elevated Card</div></Card>
+        </div>
+      </div>
 
       {/* Buttons */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Buttons</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-3">
-            <button className="px-4 py-2 bg-brand-500 text-white text-sm font-medium rounded-lg hover:bg-brand-600 transition-colors">
-              Primary
+      <div>
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">Buttons</h2>
+        <div className="flex flex-wrap gap-3">
+          <button className="px-4 py-2 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-700 transition-colors">Primary</button>
+          <button className="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">Outline</button>
+          <button className="px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors">Secondary</button>
+          <button className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors">Danger</button>
+        </div>
+      </div>
+
+      {/* App Screens */}
+      <div>
+        <h2 className="text-lg font-semibold text-gray-900 mb-1">App Screens</h2>
+        <p className="text-sm text-gray-500 mb-4">Interactive mockups of MealMap application screens</p>
+
+        {/* Screen Selector */}
+        <div className="flex gap-2 mb-4">
+          {screens.map(screen => (
+            <button
+              key={screen.id}
+              onClick={() => setActiveScreen(screen.id)}
+              className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+                activeScreen === screen.id
+                  ? 'bg-brand-600 text-white'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              <span className="mr-1">{screen.icon}</span>
+              {screen.label}
             </button>
-            <button className="px-4 py-2 bg-white text-brand-600 text-sm font-medium rounded-lg border border-brand-500 hover:bg-brand-50 transition-colors">
-              Outline
-            </button>
-            <button className="px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors">
-              Secondary
-            </button>
-            <button className="px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-600 transition-colors">
-              Danger
-            </button>
-          </div>
-        </CardContent>
-      </Card>
+          ))}
+        </div>
+
+        {/* Active Screen */}
+        <BrowserMockup
+          title={screens.find(s => s.id === activeScreen)?.label || ''}
+          url="mealmap.app"
+        >
+          {activeScreen === 'login' && <LoginMock />}
+          {activeScreen === 'recipes' && <RecipeListMock />}
+          {activeScreen === 'detail' && <RecipeDetailMock />}
+          {activeScreen === 'meal-plan' && <MealPlanMock />}
+          {activeScreen === 'shopping' && <ShoppingListMock />}
+        </BrowserMockup>
+      </div>
     </div>
   )
 }

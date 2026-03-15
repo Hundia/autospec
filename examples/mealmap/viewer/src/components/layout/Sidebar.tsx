@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { LayoutDashboard, List, FileText, BookOpen, Palette, Network } from 'lucide-react'
+import { LayoutDashboard, List, FileText, BookOpen, Palette, Network, Info } from 'lucide-react'
 import { backlogData } from '../../data/backlog'
 
 const statusEmoji: Record<string, string> = {
@@ -13,6 +13,7 @@ const statusEmoji: Record<string, string> = {
 
 const navItems = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
+  { to: '/about', label: 'About', icon: Info },
   { to: '/backlog', label: 'Backlog', icon: List },
   { to: '/specs', label: 'Specs', icon: FileText },
   { to: '/docs', label: 'Docs', icon: BookOpen },

@@ -6,6 +6,7 @@ import { SpecsPage } from './pages/SpecsPage'
 import { DocsPage } from './pages/DocsPage'
 import { DesignSystemPage } from './pages/DesignSystemPage'
 import { ArchitecturePage } from './pages/ArchitecturePage'
+import { AboutPage } from './pages/AboutPage'
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<DashboardPage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/backlog" element={<BacklogPage />} />
           <Route path="/specs" element={<SpecsPage />} />
           <Route path="/docs" element={<DocsPage />} />
