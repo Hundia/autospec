@@ -470,36 +470,6 @@ export const slidesHE = [
     linkText: 'נסה אותו חי →',
   },
 
-  // 18. example
-  {
-    type: 'example',
-    title: 'דוגמה אמיתית: ShopFlow מסחר אלקטרוני',
-    project: {
-      name: 'ShopFlow',
-      description: 'פלטפורמת מסחר אלקטרוני מלאה עם תשלומים, מלאי, הזמנות',
-      stats: {
-        specs: 10,
-        tickets: 174,
-        sprints: 7,
-      },
-    },
-    timeline: [
-      { phase: 'דרישות', duration: '3 שעות', output: 'מסמך SRS' },
-      { phase: 'הפקת מפרטים', duration: '15 דק\'', output: '10 קבצי spec, 12000+ שורות' },
-      { phase: 'ספרינט 0-1', duration: '6 שעות', output: 'אימות, DB, קטלוג מוצרים' },
-      { phase: 'ספרינט 2-3', duration: '8 שעות', output: 'עגלה, תשלום, checkout' },
-      { phase: 'סה"כ', duration: '~20 שעות', output: 'חנות מוכנה לפרודקשן' },
-    ],
-    features: [
-      'הרשמה ופרופילי משתמשים',
-      'קטלוג מוצרים עם חיפוש',
-      'עגלת קניות ורשימת משאלות',
-      'אינטגרציית תשלומי Stripe',
-      'ניהול הזמנות ומעקב',
-      'דשבורד אדמין',
-    ],
-  },
-
   // 19. results
   {
     type: 'results',

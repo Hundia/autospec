@@ -31,7 +31,6 @@ import RolesSlide from '../components/RolesSlide';
 import OrchestratorSlide from '../components/OrchestratorSlide';
 import ModelOptimizationSlide from '../components/ModelOptimizationSlide';
 import ViewerSlide from '../components/ViewerSlide';
-import ExampleSlide from '../components/ExampleSlide';
 import ResultsSlide from '../components/ResultsSlide';
 import DemoSlide from '../components/DemoSlide';
 import FutureWaterfallSlide from '../components/FutureWaterfallSlide';
@@ -60,7 +59,6 @@ const slideComponents = {
   orchestrator: OrchestratorSlide,
   modelOptimization: ModelOptimizationSlide,
   viewer: ViewerSlide,
-  example: ExampleSlide,
   results: ResultsSlide,
   demo: DemoSlide,
   futureWaterfall: FutureWaterfallSlide,

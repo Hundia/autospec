@@ -470,36 +470,6 @@ export const slidesEN = [
     linkText: 'Try it live →',
   },
 
-  // 18. example
-  {
-    type: 'example',
-    title: 'Real Example: ShopFlow E-Commerce',
-    project: {
-      name: 'ShopFlow',
-      description: 'Full-stack e-commerce platform with payments, inventory, orders',
-      stats: {
-        specs: 10,
-        tickets: 174,
-        sprints: 7,
-      },
-    },
-    timeline: [
-      { phase: 'Requirements', duration: '3 hours', output: 'SRS document' },
-      { phase: 'Spec Generation', duration: '15 min', output: '10 spec files, 12000+ lines' },
-      { phase: 'Sprint 0-1', duration: '6 hours', output: 'Auth, DB, product catalog' },
-      { phase: 'Sprint 2-3', duration: '8 hours', output: 'Cart, checkout, payments' },
-      { phase: 'Total', duration: '~20 hours', output: 'Production-ready store' },
-    ],
-    features: [
-      'User auth & profiles',
-      'Product catalog with search',
-      'Shopping cart & wishlist',
-      'Stripe payment integration',
-      'Order management & tracking',
-      'Admin dashboard',
-    ],
-  },
-
   // 19. results
   {
     type: 'results',
