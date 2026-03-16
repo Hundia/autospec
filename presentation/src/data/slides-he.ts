@@ -470,38 +470,17 @@ export const slidesHE = [
     linkText: 'נסה אותו חי →',
   },
 
-  // 19. results
-  {
-    type: 'results',
-    title: 'תוצאות מוכחות',
-    metrics: [
-      { label: 'ספרינטים שהושלמו', value: '25+', icon: '🏃' },
-      { label: 'משימות שבוצעו', value: '263', icon: '✅' },
-      { label: 'זמן לפרודקשן', value: '12 ימים', icon: '⚡' },
-      { label: 'כיסוי בדיקות', value: '70%+', icon: '🧪' },
-      { label: 'חיסכון בעלויות', value: '~40%', icon: '💰' },
-      { label: 'חיסכון מרובה סוכנים', value: '~45%', icon: '🤖' },
-    ],
-    testimonial: {
-      quote: 'AutoSpec הפך את AI מכלי בלתי צפוי לשותף פיתוח אמין.',
-      source: 'נבדק בקרב על אפליקציות בפרודקשן',
-    },
-  },
+  // 19. results (hidden — kept for future use)
+  // {
+  //   type: 'results',
+  //   ...
+  // },
 
-  // 20. demo
-  {
-    type: 'demo',
-    title: 'הדגמה חיה',
-    subtitle: 'ShopFlow מסחר אלקטרוני',
-    steps: [
-      '1. הצג קובץ requirements.md',
-      '2. הרץ autospec init',
-      '3. סקור את המפרטים שנוצרו',
-      '4. הרץ ספרינט 0 עם AI',
-      '5. הצג קטלוג מוצרים עובד',
-    ],
-    note: 'זמן הדגמה: ~5 דקות',
-  },
+  // 20. demo (hidden — kept for future use)
+  // {
+  //   type: 'demo',
+  //   ...
+  // },
 
   // ── ACT 7 — FUTURE ───────────────────────────────────────────────────────────
 

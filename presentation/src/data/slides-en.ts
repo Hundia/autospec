@@ -470,38 +470,17 @@ export const slidesEN = [
     linkText: 'Try it live →',
   },
 
-  // 19. results
-  {
-    type: 'results',
-    title: 'Proven Results',
-    metrics: [
-      { label: 'Sprints Completed', value: '25+', icon: '🏃' },
-      { label: 'Tickets Executed', value: '263', icon: '✅' },
-      { label: 'Time to Production', value: '12 days', icon: '⚡' },
-      { label: 'Test Coverage', value: '70%+', icon: '🧪' },
-      { label: 'Cost Savings', value: '~40%', icon: '💰' },
-      { label: 'Multi-Agent Savings', value: '~45%', icon: '🤖' },
-    ],
-    testimonial: {
-      quote: 'AutoSpec turned AI from a unpredictable tool into a reliable development partner.',
-      source: 'Battle-tested on production applications',
-    },
-  },
+  // 19. results (hidden — kept for future use)
+  // {
+  //   type: 'results',
+  //   ...
+  // },
 
-  // 20. demo
-  {
-    type: 'demo',
-    title: 'Live Demo',
-    subtitle: 'ShopFlow E-Commerce',
-    steps: [
-      '1. Show requirements.md input',
-      '2. Run autospec init',
-      '3. Review generated specs',
-      '4. Execute Sprint 0 with AI',
-      '5. Show working product catalog',
-    ],
-    note: 'Demo time: ~5 minutes',
-  },
+  // 20. demo (hidden — kept for future use)
+  // {
+  //   type: 'demo',
+  //   ...
+  // },
 
   // ── ACT 7 — FUTURE ───────────────────────────────────────────────────────────
 
