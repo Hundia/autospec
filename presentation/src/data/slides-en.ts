@@ -491,8 +491,8 @@ export const slidesEN = [
     subtitle: 'The new development time allocation',
     insight: "We're returning to waterfall — but smarter. When specs are clear, agents don't hallucinate. When agents don't hallucinate, you can use cheaper models and get the same results.",
     allocation: [
-      { phase: 'Planning & Specification', percentage: 40, color: 'blue', description: 'Understanding WHAT to build is the big investment. Define it right, agents execute it right.' },
-      { phase: 'Development', percentage: 30, color: 'green', description: 'With clear specs, even smaller models deliver high-end results. The "small chunk" of the future.' },
+      { phase: 'Planning & Specification', percentage: 50, color: 'blue', description: 'Understanding WHAT to build is the big investment. Define it right, agents execute it right.' },
+      { phase: 'Development', percentage: 20, color: 'green', description: 'With clear specs, even smaller models deliver high-end results. The "small chunk" of the future.' },
       { phase: 'Testing & Verification', percentage: 30, color: 'amber', description: 'QA agents verify every ticket. Automated validation ensures nothing ships broken.' },
     ],
     callout: "The future developer spends more time thinking than typing. That's not slower — it's smarter.",
