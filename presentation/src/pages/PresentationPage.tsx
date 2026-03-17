@@ -35,6 +35,7 @@ import ResultsSlide from '../components/ResultsSlide';
 import DemoSlide from '../components/DemoSlide';
 import FutureWaterfallSlide from '../components/FutureWaterfallSlide';
 import FutureMonolithSlide from '../components/FutureMonolithSlide';
+import OneMoreThingSlide from '../components/OneMoreThingSlide';
 import ClosingSlide from '../components/ClosingSlide';
 import FinalTaglineSlide from '../components/FinalTaglineSlide';
 
@@ -63,6 +64,7 @@ const slideComponents = {
   demo: DemoSlide,
   futureWaterfall: FutureWaterfallSlide,
   futureMonolith: FutureMonolithSlide,
+  oneMoreThing: OneMoreThingSlide,
   closing: ClosingSlide,
   finalTagline: FinalTaglineSlide,
 };

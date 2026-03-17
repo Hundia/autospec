@@ -528,6 +528,40 @@ export const slidesEN = [
     callout: 'Decoupling made sense for human teams. For agents with 200K context windows, a monolith is a superpower.',
   },
 
+  // ── ONE MORE THING ──────────────────────────────────────────────────────────
+
+  {
+    type: 'oneMoreThing',
+    title: 'Oh, and one more thing...',
+    subtitle: 'The industry is already building what we just described',
+    insights: [
+      {
+        title: 'TypeScript for Agentic Dev',
+        description: 'Type system = guardrails preventing hallucination drift. Types constrain what AI can generate, catching errors before runtime.',
+        icon: '🔷',
+        color: 'blue',
+      },
+      {
+        title: 'Copilot Multi-Terminal Testing',
+        description: 'Copilot runs multiple terminals, does real E2E — not just unit tests. Full-stack validation from a single prompt.',
+        icon: '🖥️',
+        color: 'green',
+      },
+      {
+        title: 'Playwright E2E for AI Agents',
+        description: 'AI agents test web apps through real browsers. The same tool we use in AutoSpec — now standard practice.',
+        icon: '🎭',
+        color: 'violet',
+      },
+      {
+        title: 'Copilot /fleet',
+        description: 'Parallel subagents — same pattern as AutoSpec\'s orchestrator, built into the CLI. The future is already here.',
+        icon: '🚀',
+        color: 'amber',
+      },
+    ],
+  },
+
   // ── ACT 8 — CLOSE ────────────────────────────────────────────────────────────
 
   // 23. closing
