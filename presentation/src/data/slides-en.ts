@@ -559,6 +559,12 @@ export const slidesEN = [
         icon: '🚀',
         color: 'amber',
       },
+      {
+        title: 'Plan First, Execute Second',
+        description: 'Never execute — not even the simplest task — without a plan. Think, design, validate, then build. This is the core discipline of agentic development.',
+        icon: '🧭',
+        color: 'cyan',
+      },
     ],
   },
 
