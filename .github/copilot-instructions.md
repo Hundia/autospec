@@ -119,6 +119,8 @@ Use the right model for the right task:
 
 ## Available Prompt Commands
 
+> **Note:** These prompt files live in `.github/prompts/` and are generated from `skills/copilot/prompts/` (the source of truth). If you modify them, update `skills/copilot/prompts/` first and sync to `.github/prompts/`.
+
 Use these via Copilot Chat (type `@workspace /prompt-name`):
 
 | Prompt | Description |

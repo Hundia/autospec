@@ -48,9 +48,9 @@ export const compatibilityMatrix: Record<string, Record<string, CompatibilityLev
     'create-spec': 'partial', 'create-sprint-docs': 'partial', 'qa-review': 'partial', 'help': 'none',
   },
   'copilot': {
-    'sprint-run': 'none', 'execute-ticket': 'partial', 'plan-sprint': 'none',
-    'sprint-status': 'none', 'sprint-close': 'none', 'update-backlog': 'partial',
-    'create-spec': 'none', 'create-sprint-docs': 'none', 'qa-review': 'partial', 'help': 'none',
+    'sprint-run': 'full', 'execute-ticket': 'full', 'plan-sprint': 'full',
+    'sprint-status': 'full', 'sprint-close': 'full', 'update-backlog': 'full',
+    'create-spec': 'full', 'create-sprint-docs': 'full', 'qa-review': 'full', 'help': 'full',
   },
   'windsurf': {
     'sprint-run': 'partial', 'execute-ticket': 'full', 'plan-sprint': 'partial',

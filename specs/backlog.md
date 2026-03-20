@@ -608,6 +608,21 @@
 
 ---
 
+## Sprint 28: GitHub Copilot Full Support (~18 pts)
+
+**Theme:** Fix misleading Copilot `none` ratings in the viewer, verify prompt sync, and document Copilot invocation properly.
+**Status:** ✅ Done
+
+| ID | Ticket | Owner | Pts | Status | Docs |
+|----|--------|-------|-----|--------|------|
+| 28.1 | Update Copilot compatibility matrix in viewer | Frontend | 3 | ✅ | `viewer/src/data/environments.ts` |
+| 28.2 | Verify `.github/prompts/` sync with `skills/copilot/prompts/` | DevOps | 5 | ✅ | `.github/copilot-instructions.md` |
+| 28.3 | Update QUICKSTART.md Copilot section | PM | 5 | ✅ | `QUICKSTART.md` |
+| 28.4 | Update `docs/environments/vscode/github_copilot.md` | Docs | 3 | ✅ | `docs/environments/vscode/github_copilot.md` |
+| 28.5 | Rebuild viewer | DevOps | 2 | ✅ | — |
+
+---
+
 ## Bug Tracker
 
 ### B.01 — Separate `/sprint-run` from `/sprint-close`
@@ -656,5 +671,7 @@
 | Sprint 24 | 58 | ✅ Done |
 | Sprint 25 | 12 | ✅ Done |
 | Sprint 26 | 9 | ✅ Done |
+| Sprint 27 | 31 | ✅ Done |
+| Sprint 28 | 18 | ✅ Done |
 | Sprint 24B | TBD | 🔲 Planned |
-| **Total** | **824** | 🔄 **IN PROGRESS** |
+| **Total** | **873** | 🔄 **IN PROGRESS** |

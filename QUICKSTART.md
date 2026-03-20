@@ -47,6 +47,40 @@ your-project/
 | `jetbrains-ai` | JetBrains AI Assistant | Various |
 | `aider` | Aider CLI | Claude/GPT-4 |
 
+### VS Code + GitHub Copilot (`vscode-copilot`)
+
+When you run the AutoSpec pipeline with `vscode-copilot` as your environment, you get:
+
+- **`.github/prompts/`** — 11 skill prompt files, one per SDD command
+- **`.github/copilot-instructions.md`** — project-wide Copilot context (backlog rules, conventions, design system)
+
+**How to invoke skills in Copilot Chat:**
+
+```
+# Reference a specific prompt file directly
+#file:.github/prompts/plan-sprint.prompt.md
+
+# Or by workspace command (if your org enables custom slash commands)
+@workspace /execute-ticket
+```
+
+**Skill compatibility:**
+
+| Skill | Level | Notes |
+|-------|-------|-------|
+| `execute-ticket` | ✅ Full | Agent mode, full file R/W with prompt |
+| `sprint-status` | ✅ Full | Reads backlog, formats output |
+| `sprint-close` | ✅ Full | Reads/synthesizes/writes summary |
+| `update-backlog` | ✅ Full | File edit, status updates |
+| `create-spec` | ✅ Full | Generates spec from SRS |
+| `create-sprint-docs` | ✅ Full | Generates sprint docs |
+| `qa-review` | ✅ Full | Checklist review |
+| `help` | ✅ Full | Displays command reference |
+| `sprint-run` | ✅ Full | Parallel ticket batches via `/fleet`, sequential fallback |
+| `plan-sprint` | ✅ Full | Expert panel via `/fleet`, PM synthesis sequential |
+
+> All 10 skills are fully supported. `sprint-run` and `plan-sprint` use `/fleet` to dispatch parallel subagents — this is built directly into the `.github/prompts/` skill files.
+
 ---
 
 **Everything below this line is consumed by your AI assistant.**

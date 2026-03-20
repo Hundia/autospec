@@ -1,7 +1,8 @@
 # GitHub Copilot for SDD
 
-**Version:** 1.0
-**Last Updated:** 2026-01-21
+**Version:** 1.1
+**Last Updated:** 2026-03-20
+**Sprint:** 28.4
 
 ---
 
@@ -12,6 +13,24 @@ GitHub Copilot is ideal for SDD because:
 - Multi-chat support (Agent A/B)
 - Context from workspace files
 - Inline completions + chat
+- `.github/prompts/` auto-populated by the AutoSpec pipeline — no manual setup
+
+## Skill Compatibility
+
+| Skill | Level | Notes |
+|-------|-------|-------|
+| `execute-ticket` | ✅ Full | Agent mode, full file R/W with prompt |
+| `sprint-status` | ✅ Full | Reads backlog, formats output |
+| `sprint-close` | ✅ Full | Read/synthesize/write summary in agent mode |
+| `update-backlog` | ✅ Full | File edits, status updates |
+| `create-spec` | ✅ Full | Generate spec from SRS |
+| `create-sprint-docs` | ✅ Full | Generate sprint summary documentation |
+| `qa-review` | ✅ Full | Checklist review |
+| `help` | ✅ Full | Display command reference |
+| `sprint-run` | ✅ Full | Parallel ticket batches via `/fleet` + `/tasks` monitoring |
+| `plan-sprint` | ✅ Full | Expert panel via `/fleet`, PM-A/B/C sequential synthesis |
+
+> All 10 skills are **fully supported**. `sprint-run` and `plan-sprint` use Copilot's `/fleet` command to dispatch parallel subagents — this is built directly into the `.github/prompts/` skill files, including DAG-sorted batch planning, file ownership rules to prevent conflicts, and `/tasks` monitoring between batches.
 
 ---
 
@@ -35,6 +54,29 @@ code --install-extension GitHub.copilot-chat
 1. Open any code file
 2. Start typing - should see ghost text suggestions
 3. Open chat with `Ctrl+Shift+I`
+
+### What the AutoSpec Pipeline Creates
+
+When you run QUICKSTART.md with `vscode-copilot` as your environment, the pipeline automatically creates:
+
+- **`.github/prompts/`** — 11 skill prompt files (one per SDD command). No manual copy needed.
+- **`.github/copilot-instructions.md`** — project-wide Copilot context with your backlog rules, conventions, and design system.
+
+The prompt files in `.github/prompts/` are sourced from `skills/copilot/prompts/` in the AutoSpec template. They stay in sync — update `skills/copilot/prompts/` first, then sync to `.github/prompts/`.
+
+### Invoking Skills in Copilot Chat
+
+```
+# Reference a prompt file directly (most reliable)
+#file:.github/prompts/execute-ticket.prompt.md
+
+# Or reference with context
+#file:.github/prompts/sprint-status.prompt.md
+Show me Sprint 6 progress
+
+# Multiple file references for full context
+#file:.github/prompts/plan-sprint.prompt.md #file:specs/backlog.md
+```
 
 ---
 
