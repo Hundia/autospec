@@ -141,7 +141,7 @@
 ## Sprint 11: Presentation Expansion — Methodology Slides + Landing Enhancements (~58 pts)
 
 **Theme:** Expand the 11-slide deck to 18 slides covering sprint lifecycle, orchestrator pattern, QA methodology, sprint summaries, skills/environments, viewer, and FinOps. Add 3 new landing page sections + mobile fixes.
-**Status:** 🔄 In Progress
+**Status:** ✅ Done
 
 | ID | Ticket | Owner | Pts | Status | Deps | Docs |
 |----|--------|-------|-----|--------|------|------|
@@ -562,6 +562,43 @@
 
 ---
 
+## Sprint 26: OpenCode Skill Port for Claude Workflows (~9 pts)
+
+**Theme:** Make the repo's Claude slash-command workflows available as OpenCode skills and project commands.
+**Status:** 🔄 In Progress
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 26.1 | Audit `skills/claude/` workflows and map them to OpenCode skill/command discovery | PM | 1 | ✅ | — | `docs/environments/terminal/opencode.md` |
+| 26.2 | Create `.opencode/skills/` wrappers for the Claude workflow set | PM | 3 | ✅ | 26.1 | `docs/environments/terminal/opencode.md` |
+| 26.3 | Create `.opencode/commands/` wrappers so the workflows are invokable in OpenCode | PM | 2 | ✅ | 26.2 | `docs/environments/terminal/opencode.md` |
+| 26.4 | Document OpenCode setup, command usage, and caveats for AutoSpec users | Docs | 2 | ✅ | 26.2, 26.3 | `docs/environments/terminal/opencode.md` |
+| 26.5 | Verify discovery paths and write Sprint 26 summary | QA | 1 | ✅ | 26.4 | `sprints/sprint-26/summary.md` |
+
+---
+
+## Sprint 27: Landing Page Redesign — Elegant, Minimal, Inviting (~31 pts)
+
+**Theme:** Strip the landing page down to 7 purposeful sections, rewrite copy for clarity, and produce a fast, focused entry point that invites developers to try AutoSpec.
+**Status:** 🔲 Planned
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 27.1 | Create `ProblemSection.tsx` — 2-column section replacing ContextPoisoning/BreakingPoint/CostOfNoSpecs quartet: left col = badge + H2 "Long AI conversations corrupt themselves" + sub-line + 3 orange symptom chips; right col = 4-node static degradation timeline (Turn 1 clean → Turn 25 drift → Turn 50 contradiction → Turn 100 chaos) with dashed vertical connector, staggered fade-in animation. Add `data-testid="problem-section"`, `data-testid="degradation-timeline"`, `data-testid="degradation-node-{0-3}"` | Frontend | 5 | 🔲 | — | — |
+| 27.2 | Fix `Navigation.tsx` — replace dead anchors: `#docs`→`#how-it-works`, `#examples`→`#quickstart`; update navLinks to 4 items: "How It Works" (`#how-it-works`), "Quick Start" (`#quickstart`), "Viewer" (`./viewer/`), "Presentation" (`#/presentation`). Add `focus-visible` ring states on all nav links | Frontend | 1 | 🔲 | — | — |
+| 27.3 | Fix `Footer.tsx` — remap dead anchors: `#viewer`→`./viewer/`, `#finops`→`#/presentation`, `#roles`→`#/presentation`, `#memory`→`#/presentation`, `#docs`→`#how-it-works`. Preserve all other footer content | Frontend | 1 | 🔲 | — | — |
+| 27.4 | Add `id="quickstart"` to root `<section>` in `QuickStartSection.tsx` — fixes the dead anchor that has existed since Sprint 19 | Frontend | 1 | 🔲 | — | — |
+| 27.5 | Modify `HeroSection.tsx` — (1) replace subheadline with "Drop in your requirements. Get a complete AI-ready project structure — specs, backlog, and living docs — in under 5 minutes." (2) Remove 22-line social proof stat row (lines ~237-257). (3) Add inline text link BELOW the CTA buttons: "→ See the full presentation" pointing to `#/presentation`. Preserve conversation animation verbatim — do not change timing, copy, or phases | Frontend | 2 | 🔲 | — | — |
+| 27.6 | Rewrite `PipelineSection.tsx` — replace 9-step 3×3 grid with 4-phase horizontal stepper (desktop flex-row, mobile flex-col). Phases: **Foundation** (~2hrs, `specs/*.md · docs/`), **Visualize** (~5min, `viewer/`), **Build** (2–4hrs/sprint, parallel agents), **Close** (~5min, `summary.md`). Phase 3 must include "parallel agents without collisions." Add `id="how-it-works"` to root `<section>`. Add `data-testid="pipeline-section"` and `data-testid="pipeline-phase-{0-3}"`. Keep existing bottom quote callout. Add `min-w-0` guard on mobile | Frontend | 6 | 🔲 | — | — |
+| 27.7 | Simplify `ViewerSection.tsx` — replace 6-feature list with 3 `border-l-2` benefit blocks: (1) "One URL for your entire project" (2) "Non-technical teammates can follow along" (3) "Auto-generated from your markdown." Add `data-testid="viewer-benefits"`. Keep browser mockup and CTA unchanged | Frontend | 5 | 🔲 | — | — |
+| 27.8 | Update `ThreePillarsSection.tsx` copy — in "Specs as Code" pillar add: "Add AutoSpec to an existing project — your CLAUDE.md enforces conventions for every AI contributor, human or agent." Add "Sprint summaries become your audit trail for compliance reviews." Update CTA to `./viewer/` | Frontend | 1 | 🔲 | — | — |
+| 27.9 | Rewrite `LandingPage.tsx` — keep exactly these 8 imports: `Navigation, HeroSection, ProblemSection, ThreePillarsSection, PipelineSection, ViewerSection, QuickStartSection, Footer`. Remove all other imports. JSX order: Navigation → Hero → Problem → ThreePillars → Pipeline → Viewer → QuickStart → Footer. Remove inline secondary CTA block | Frontend | 4 | 🔲 | 27.1, 27.5, 27.6, 27.7, 27.8 | — |
+| 27.10 | Delete 15 unused component files from `presentation/src/components/landing/`: `EvolutionSection.tsx`, `ContextPoisoningSection.tsx`, `BreakingPointSection.tsx`, `CostOfNoSpecsSection.tsx`, `RolesSection.tsx`, `SprintMemorySection.tsx`, `OrchestratorSection.tsx`, `QASection.tsx`, `FinOpsSection.tsx`, `StatsSection.tsx`, `CompetitiveSection.tsx`, `CaseStudiesSection.tsx`, `FutureVisionSection.tsx`, `ToolsSection.tsx`, `DocumentationSection.tsx` | Frontend | 2 | 🔲 | 27.9 | — |
+| 27.11 | Build + QA verification — run `npm run build` in `presentation/`, assert exit 0. Verify: (a) 7 sections render; (b) `#how-it-works` and `#quickstart` nav links scroll correctly; (c) "→ See the full presentation" link present in hero; (d) 4-phase stepper renders with correct phase names; (e) at 375px viewport no horizontal overflow; (f) none of 15 deleted section names appear in DOM | QA | 2 | 🔲 | 27.10 | — |
+| 27.12 | Update `docs/viewer/01_architecture.md` — document 7-section landing page structure, list 15 removed components, add Sprint 27 redesign rationale | Docs | 1 | 🔲 | 27.11 | `docs/viewer/01_architecture.md` |
+
+---
+
 ## Sprint 24B: Multi-Agent Orchestration + Multi-Target Expansion (~TBD pts)
 
 **Theme:** Extend Sprint 24 benchmark based on decision gate results. Two possible tracks: (A) if score gap >15pts — implement GPT 5.4→5.3/5.2 multi-agent orchestration mirroring Opus→Sonnet pattern, re-score and compare. (B) if score gap <15pts — expand to MealMap + E-Commerce targets for generalizability, add Gemini CLI runs, test prompt sensitivity.
@@ -618,5 +655,6 @@
 | Sprint 23 | 48 | ✅ Done |
 | Sprint 24 | 58 | ✅ Done |
 | Sprint 25 | 12 | ✅ Done |
+| Sprint 26 | 9 | ✅ Done |
 | Sprint 24B | TBD | 🔲 Planned |
-| **Total** | **815** | 🔄 **IN PROGRESS** |
+| **Total** | **824** | 🔄 **IN PROGRESS** |
