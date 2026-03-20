@@ -6,6 +6,25 @@ created: "2026-03-09"
 
 # Viewer Architecture
 
+## Sprint 27 Update (2026-03-20) — Landing Page Redesign
+
+The landing page was redesigned from 22 sections to 7 purposeful sections.
+
+### New 7-Section Structure
+1. Navigation
+2. Hero (terminal animation demo)
+3. Problem (new — context degradation timeline)
+4. Three Pillars (Specs as Code, Sprint Summaries, Living Docs)
+5. How It Works / Pipeline (4-phase stepper: Foundation → Visualize → Build → Close)
+6. Viewer Preview (browser mockup)
+7. Quick Start
+
+### Removed Components (15 files deleted)
+- EvolutionSection, ContextPoisoningSection, BreakingPointSection, CostOfNoSpecsSection
+- RolesSection, SprintMemorySection, OrchestratorSection, QASection
+- FinOpsSection, StatsSection, CompetitiveSection, CaseStudiesSection
+- FutureVisionSection, ToolsSection, DocumentationSection
+
 ## Stack
 - **React 18** + TypeScript 5
 - **Vite 5** (build tool)

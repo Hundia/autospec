@@ -173,9 +173,9 @@ export default function HeroSection() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-xl sm:text-2xl text-white/60 max-w-xl mb-8"
             >
-              Your AI assistant generates{' '}
-              <span className="text-white font-medium">10 expert specifications, a sprint backlog, and living docs</span>{' '}
-              — from a single prompt.
+              Drop in your requirements. Get a complete AI-ready project structure —{' '}
+              <span className="text-white font-medium">specs, backlog, and living docs</span>{' '}
+              — in under 5 minutes.
             </motion.p>
 
             {/* Install Command */}
@@ -211,7 +211,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="flex flex-col sm:flex-row items-start gap-4 mb-12"
+              className="flex flex-col sm:flex-row items-start gap-4 mb-6"
             >
               <a
                 href="https://github.com/Hundia/autospec-starter"
@@ -233,27 +233,20 @@ export default function HeroSection() {
               </a>
             </motion.div>
 
-            {/* Social Proof */}
+            {/* Presentation link */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="flex flex-wrap items-center gap-6 text-sm text-white/40"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.55 }}
+              className="mt-4"
+              data-testid="hero-presentation-link"
             >
-              <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-white">25+</span>
-                <span>Sprints Completed</span>
-              </div>
-              <div className="w-px h-6 bg-white/20 hidden sm:block" />
-              <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-white">263</span>
-                <span>Tickets Executed</span>
-              </div>
-              <div className="w-px h-6 bg-white/20 hidden sm:block" />
-              <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-white">~60%</span>
-                <span>Cost Savings</span>
-              </div>
+              <a
+                href="#/presentation"
+                className="text-sm text-white/40 hover:text-white/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
+              >
+                → See the full presentation
+              </a>
             </motion.div>
           </div>
 

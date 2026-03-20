@@ -1,0 +1,17 @@
+import React from 'react';
+import { HashRouter, Routes, Route } from 'react-router-dom';
+import LandingPage from './pages/LandingPage';
+import PresentationPage from './pages/PresentationPage';
+import PaperPage from './pages/PaperPage';
+
+export default function App() {
+  return (
+    <HashRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/presentation" element={<PresentationPage />} />
+        <Route path="/paper" element={<PaperPage />} />
+      </Routes>
+    </HashRouter>
+  );
+}

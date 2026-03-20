@@ -1,0 +1,46 @@
+# Source files (TypeScript)
+src/
+
+# Test files and configuration
+tests/
+test-project/
+*.test.ts
+*.spec.ts
+vitest.config.ts
+coverage/
+.nyc_output/
+
+# Development configuration
+tsconfig.json
+.eslintrc*
+.prettierrc*
+.editorconfig
+
+# Documentation (handled by main package)
+*.md
+!README.md
+
+# Development artifacts
+.git/
+.github/
+.vscode/
+.idea/
+
+# Environment and local files
+.env
+.env.*
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Temporary files
+*.tmp
+*.temp
+.cache/

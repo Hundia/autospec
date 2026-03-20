@@ -8,7 +8,7 @@ const pillars = [
     title: 'Specs as Code',
     color: 'teal',
     description:
-      'Every decision lives in a .md file in specs/. Not in chat logs, not in your head — in version-controlled files that any agent can read.',
+      'Every decision lives in a .md file in specs/. Not in chat logs, not in your head — in version-controlled files that any agent can read. Add AutoSpec to an existing project — your CLAUDE.md enforces conventions for every AI contributor, human or agent.',
     artifact: 'specs/*.md',
   },
   {
@@ -17,7 +17,7 @@ const pillars = [
     title: 'Sprint Summaries',
     color: 'emerald',
     description:
-      'Every sprint ends with a summary: what was built, what changed, what was decided. The next agent picks up exactly where you left off.',
+      'Every sprint ends with a summary: what was built, what changed, what was decided. The next agent picks up exactly where you left off. Sprint summaries become your audit trail for compliance reviews.',
     artifact: 'sprints/sprint-X/summary.md',
   },
   {
@@ -126,6 +126,22 @@ export default function ThreePillarsSection() {
               "Specifications are the memory that AI was never given."
             </p>
           </div>
+        </motion.div>
+
+        {/* Viewer CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="text-center mt-8"
+        >
+          <a
+            href="./viewer/"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-teal-500/10 hover:bg-teal-500/20 border border-teal-500/30 text-teal-400 font-medium rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+          >
+            See it in action →
+          </a>
         </motion.div>
       </div>
     </section>

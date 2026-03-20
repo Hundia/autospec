@@ -1,0 +1,118 @@
+---
+description: "Expert-driven sprint planning — multi-expert analysis with PM synthesis"
+globs: "specs/backlog.md"
+---
+# Plan Sprint
+
+Plan a sprint using multi-expert analysis and PM synthesis. This produces a prioritized, dependency-aware sprint plan written to `specs/backlog.md`.
+
+## Phase 1: Goal Analysis & Expert Selection
+
+1. Read `specs/backlog.md` to understand the current state
+2. Read `specs/01-project-overview.md` for project goals and constraints
+3. Identify the sprint goal (what should be accomplished)
+4. Select which experts to activate based on the goal
+
+### Expert Activation Criteria
+
+| Expert | Activate When |
+|--------|--------------|
+| Architect | New subsystem, major refactor, integration work |
+| UX/UI | User-facing features, viewer changes, new workflows |
+| Database | Schema changes, data migration, query optimization |
+| Human Experience | Onboarding flows, error messages, documentation UX |
+| Security | Auth changes, input handling, API exposure |
+| Performance | Load concerns, bundle size, query efficiency |
+
+Activate 2-4 experts per sprint. Always include Architect for structural changes.
+
+## Phase 2: Expert Analysis
+
+Each activated expert provides:
+
+1. **Assessment**: What does this sprint goal mean for their domain?
+2. **Risks**: What could go wrong?
+3. **Recommendations**: Specific tickets or approaches
+4. **Dependencies**: What must happen first?
+5. **Effort estimate**: T-shirt size (S/M/L/XL) per recommendation
+
+### Expert Output Format
+
+```
+### Expert: [Role]
+**Assessment**: [1-2 sentences]
+**Risks**: [bulleted list]
+**Recommendations**:
+- [ticket idea] (Size: M, Depends on: none)
+- [ticket idea] (Size: L, Depends on: above)
+**Dependencies**: [cross-expert dependencies]
+```
+
+## Phase 3: PM-A Draft
+
+The first PM synthesizes expert input into a draft sprint plan:
+
+1. Collect all expert recommendations
+2. Resolve conflicting advice (prefer Architect for structure, UX for user-facing)
+3. Order tickets by dependency and priority
+4. Assign ticket numbers (X.1, X.2, etc.)
+5. Write the draft sprint section
+
+### Draft Format
+
+```markdown
+## Sprint X — [Sprint Goal]
+
+- 🔲 **X.1** — [Description] (Size: S)
+- 🔲 **X.2** — [Description] (Size: M, depends on X.1)
+- 🔲 **X.3** — [Description] (Size: L)
+```
+
+## Phase 4: PM-B Review
+
+A second PM reviews the draft for:
+
+- Missing dependencies
+- Incorrect ordering
+- Scope creep (too many tickets for one sprint)
+- Missing QA or documentation tickets
+- Unrealistic effort estimates
+
+**Sprint size guideline**: 4-8 tickets per sprint. Prefer fewer, well-defined tickets.
+
+## Phase 5: PM-C Finalize
+
+A third PM makes final adjustments:
+
+- Incorporate PM-B feedback
+- Add any missing documentation or QA tickets
+- Ensure every ticket has clear acceptance criteria
+- Verify the sprint is achievable in scope
+- Write the final sprint section
+
+## Phase 6: Present & Commit
+
+1. Present the final sprint plan to the user
+2. On approval, write the sprint to `specs/backlog.md`
+3. Create `agents/sprint-X-brief.md` with:
+   - Sprint goal
+   - Ticket list with descriptions
+   - Key dependencies and execution order
+   - Relevant spec and doc files to read
+   - Any special instructions
+
+## Output Format
+
+The final sprint plan in `specs/backlog.md` must follow this format:
+
+```markdown
+## Sprint X — [Goal]
+
+- 🔲 **X.1** — Description (Size: S)
+- 🔲 **X.2** — Description (Size: M, depends on X.1)
+- 🔲 **X.3** — Description (Size: L)
+- 🔲 **X.4** — QA verification for sprint X (Size: S)
+- 🔲 **X.5** — Update docs for sprint X changes (Size: S)
+```
+
+Always include a QA ticket and a docs ticket as the final items in each sprint.

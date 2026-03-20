@@ -1,0 +1,2 @@
+-- Initial database setup for DataHub API Gateway
+-- Intentionally minimal for local development.

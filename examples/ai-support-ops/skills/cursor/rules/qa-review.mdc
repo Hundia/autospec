@@ -1,0 +1,92 @@
+---
+description: "QA verification protocol — apply when reviewing completed work"
+globs: "**/*.{test.ts,spec.ts}"
+---
+# QA Review Protocol
+
+Verify completed work before marking tickets as ✅ Done.
+
+## Scale QA to Change Type
+
+| Change Type | Verification Level |
+|-------------|-------------------|
+| Docs/config only | Review accuracy — no build required |
+| Bug fix | Reproduce → verify fix → run related tests |
+| CLI change | `npm run build` + `npm test` in `cli/` |
+| Viewer change | `npm run build` in `viewer/` + visual check |
+| New feature | Full test suite + new test cases + integration check |
+| Refactor | Full test suite — all existing tests must pass |
+| Security fix | Full test suite + manual verification of the vulnerability |
+
+## Code Quality Checklist
+
+- [ ] TypeScript strict mode — no `any` types without justification
+- [ ] Zod schemas for all external input validation
+- [ ] No hardcoded secrets, API keys, or credentials
+- [ ] Error handling covers edge cases (null, undefined, empty arrays)
+- [ ] No unused imports or dead code
+- [ ] Follows repository → service → controller layering
+- [ ] Component naming matches file naming conventions
+
+## Testing Checklist
+
+- [ ] Existing tests still pass
+- [ ] New tests written for new functionality
+- [ ] Edge cases covered (empty input, large input, invalid input)
+- [ ] Test descriptions are clear and descriptive
+- [ ] No skipped tests without a tracking ticket
+
+## Functionality Checklist
+
+- [ ] Feature matches the ticket description and acceptance criteria
+- [ ] UI changes are visually correct (if applicable)
+- [ ] No regressions in related features
+- [ ] Error messages are user-friendly
+- [ ] Loading and empty states handled
+
+## Security Checklist
+
+- [ ] User input is validated before processing
+- [ ] No SQL injection or XSS vectors
+- [ ] API endpoints check authorization
+- [ ] Sensitive data is not logged or exposed
+- [ ] Dependencies are up to date (no known vulnerabilities)
+
+## Documentation Checklist
+
+- [ ] Relevant `docs/` files updated
+- [ ] Code comments explain non-obvious logic
+- [ ] README or QUICKSTART updated if user-facing behavior changed
+- [ ] API changes reflected in `specs/06-api-surface.md`
+
+## Test Commands
+
+```bash
+# CLI tests
+cd cli && npm run build && npm test
+
+# CLI tests (headless, CI-friendly)
+cd cli && HEADLESS=true npx vitest run
+
+# Viewer build check
+cd viewer && npm run build
+
+# Run specific test file
+cd cli && npx vitest run src/path/to/test.test.ts
+```
+
+## Verdict Format
+
+After completing QA, report your findings:
+
+```
+## QA Verdict: [PASS | FAIL | PARTIAL]
+
+**Ticket**: X.Y — Description
+**Tested**: [what was tested]
+**Result**: [pass/fail details]
+**Issues**: [list any issues found, or "None"]
+**Action**: [mark ✅ | return to 🔄 with notes]
+```
+
+If the verdict is FAIL or PARTIAL, update the ticket status back to 🔄 and add a note in `specs/backlog.md` describing what needs to be fixed.

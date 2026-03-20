@@ -1,0 +1,99 @@
+---
+description: "Core Spec-Driven Development workflow rules — always active"
+globs: "**/*"
+---
+# SDD Workflow Rules
+
+This project uses **Spec-Driven Development (SDD)** — specs and docs are the source of truth, code follows.
+
+## Key Files
+
+| File | Purpose |
+|------|---------|
+| `specs/backlog.md` | Sprint backlog — all tickets, statuses, priorities |
+| `specs/01-project-overview.md` | Project vision, goals, constraints |
+| `specs/02-roles.md` | Role definitions (PM, Architect, Dev, QA) |
+| `specs/03-user-stories.md` | User stories and acceptance criteria |
+| `specs/04-architecture.md` | System architecture and patterns |
+| `specs/05-data-models.md` | Data models and schemas |
+| `specs/06-api-surface.md` | API endpoints and contracts |
+| `specs/10-sdd-methodology.md` | SDD methodology reference |
+
+## Backlog-First Development
+
+Every fix, feature, or change MUST be tracked in `specs/backlog.md`:
+
+1. Check if a ticket already exists for the work
+2. If not, add one with the correct format (see `update-backlog.mdc`)
+3. Set status to 🔄 In Progress when starting
+4. Set status to ✅ Done when complete
+
+### Status Emojis
+
+- 🔲 Not started
+- 🔄 In progress
+- 🧪 In QA / testing
+- ✅ Done
+- ⏸️ Blocked / paused
+
+## Docs-First Rule
+
+Before modifying any code:
+
+1. Read relevant `docs/` files for the subsystem you are changing
+2. Read the relevant spec file (`specs/02-06`, `specs/10`)
+3. Implement the change
+4. Update `docs/` to reflect your changes (living documentation)
+
+Documentation directories:
+- `docs/viewer/` — Viewer app (React)
+- `docs/cli/` — CLI tool (Node/TypeScript)
+- `docs/methodology/` — SDD philosophy and patterns
+- `docs/deployment/` — CI/CD and GitHub Pages
+- `docs/environments/` — IDE and terminal setup
+
+## Code Conventions
+
+- **TypeScript** with strict mode enabled
+- **Zod** for runtime validation and schema definitions
+- **Architecture**: repository → service → controller layering
+- **Frontend**: React + Tailwind CSS + Zustand for state
+- **Testing**: Vitest for unit/integration tests
+
+## Commit Format
+
+```
+type(scope): description
+```
+
+Types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `style`
+Scopes: `cli`, `viewer`, `specs`, `docs`, `skills`, `agents`
+
+## FinOps — Model Selection
+
+Balance cost and capability across AI model tiers:
+
+| Model | Usage | Target % |
+|-------|-------|----------|
+| Haiku | Simple lookups, formatting, status updates | 40% |
+| Sonnet | Feature implementation, code generation, QA | 45% |
+| Opus | Architecture decisions, complex debugging, planning | 15% |
+
+## Multi-Agent Coordination
+
+When multiple agents work in parallel:
+
+- **Agent A** typically handles backend / CLI work
+- **Agent B** typically handles frontend / viewer work
+- Agents read from `agents/sprint-X-brief.md` for instructions
+- Agents write to `sprints/sprint-X/summary.md` on completion
+- Avoid editing the same files — coordinate via specs and docs
+
+## Build Commands
+
+```bash
+cd cli && npm run build      # Build CLI
+cd cli && npm test           # Test CLI
+cd viewer && npm run dev     # Dev server for viewer
+cd viewer && npm run build   # Production build for viewer
+```

@@ -1,0 +1,466 @@
+{
+  "projectName": "AI Support Ops",
+  "generatedAt": "2026-03-14",
+  "environment": "vscode-copilot",
+  "modelDistribution": {
+    "gpt-5.2": 15,
+    "gpt-5.3": 17,
+    "gpt-5.4": 6
+  },
+  "sprints": [
+    {
+      "id": "0",
+      "name": "Foundation and Walking Skeleton",
+      "goal": "Stand up the tenant-aware platform skeleton, baseline auth, queue intake, UI shell, and delivery pipeline.",
+      "points": 20,
+      "tickets": [
+        {
+          "id": "0.1",
+          "title": "Scaffold mono-repo service layout",
+          "description": "Create api, worker, web, and viewer-ready data package skeleton with shared configs.",
+          "points": 5,
+          "status": "todo",
+          "owner": "DevOps",
+          "model": "gpt-5.2",
+          "dependencies": "-"
+        },
+        {
+          "id": "0.2",
+          "title": "Create tenant and identity schema baseline",
+          "description": "Model workspaces, users, roles, queues, and session tables with migration strategy.",
+          "points": 3,
+          "status": "todo",
+          "owner": "DB",
+          "model": "gpt-5.3",
+          "dependencies": "0.1"
+        },
+        {
+          "id": "0.3",
+          "title": "Implement queue and ticket walking skeleton",
+          "description": "Expose health, auth bootstrap, queue list, and basic ticket create/read endpoints.",
+          "points": 5,
+          "status": "todo",
+          "owner": "Backend",
+          "model": "gpt-5.3",
+          "dependencies": "0.2"
+        },
+        {
+          "id": "0.4",
+          "title": "Build support workspace shell",
+          "description": "Create dashboard shell, navigation, queue list view, and shared design tokens.",
+          "points": 3,
+          "status": "todo",
+          "owner": "Frontend",
+          "model": "gpt-5.2",
+          "dependencies": "0.1"
+        },
+        {
+          "id": "0.5",
+          "title": "Add CI, Docker, and quality gates",
+          "description": "Wire lint, typecheck, tests, build, and Docker Compose for local and CI usage.",
+          "points": 4,
+          "status": "todo",
+          "owner": "DevOps",
+          "model": "gpt-5.4",
+          "dependencies": "0.1, 0.2, 0.3, 0.4"
+        }
+      ]
+    },
+    {
+      "id": "1",
+      "name": "Intake, Routing, and SLA Control",
+      "goal": "Ship ticket intake channels, metadata normalization, routing rules, SLA timers, and queue operations dashboards.",
+      "points": 26,
+      "tickets": [
+        {
+          "id": "1.1",
+          "title": "Build multichannel ticket intake adapters",
+          "description": "Support email, web form, chat simulation, and API ingestion with idempotency keys.",
+          "points": 5,
+          "status": "todo",
+          "owner": "Backend",
+          "model": "gpt-5.3",
+          "dependencies": "0.3"
+        },
+        {
+          "id": "1.2",
+          "title": "Extend ticket schema for timeline and metadata",
+          "description": "Add attachments, custom fields, tags, language, sentiment, account tier, and immutable timeline events.",
+          "points": 3,
+          "status": "todo",
+          "owner": "DB",
+          "model": "gpt-5.2",
+          "dependencies": "0.2"
+        },
+        {
+          "id": "1.3",
+          "title": "Implement routing and SLA policy engine",
+          "description": "Classify tickets, assign queues, compute first-response and resolution timers, and flag breach risk.",
+          "points": 5,
+          "status": "todo",
+          "owner": "Backend",
+          "model": "gpt-5.4",
+          "dependencies": "1.1, 1.2"
+        },
+        {
+          "id": "1.4",
+          "title": "Deliver queue workspace and SLA views",
+          "description": "Show queue cards, priority lanes, breach risk badges, and agent assignment actions.",
+          "points": 5,
+          "status": "todo",
+          "owner": "Frontend",
+          "model": "gpt-5.3",
+          "dependencies": "1.1, 1.3"
+        },
+        {
+          "id": "1.5",
+          "title": "Create intake and routing test packs",
+          "description": "Add unit, integration, and curl scenarios for normalization, idempotency, and SLA timers.",
+          "points": 3,
+          "status": "todo",
+          "owner": "QA",
+          "model": "gpt-5.2",
+          "dependencies": "1.1, 1.3"
+        },
+        {
+          "id": "1.6",
+          "title": "Log AI telemetry envelope fields",
+          "description": "Capture model version, template id, latency, token usage, sources, and human outcome for every AI event.",
+          "points": 3,
+          "status": "todo",
+          "owner": "Backend",
+          "model": "gpt-5.2",
+          "dependencies": "1.2"
+        },
+        {
+          "id": "1.7",
+          "title": "Publish viewer backlog and flow seeds",
+          "description": "Generate backlog JSON, intake flow graphs, and SLA state data for viewer validation.",
+          "points": 2,
+          "status": "todo",
+          "owner": "Frontend",
+          "model": "gpt-5.2",
+          "dependencies": "1.3, 1.4"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Agent Workspace and AI Assist",
+      "goal": "Enable grounded AI summaries and reply drafting with required human review and approval-safe outbound flows.",
+      "points": 30,
+      "tickets": [
+        {
+          "id": "2.1",
+          "title": "Assemble unified ticket context service",
+          "description": "Aggregate customer history, entitlements, incidents, related tickets, and recent telemetry into one API.",
+          "points": 5,
+          "status": "todo",
+          "owner": "Backend",
+          "model": "gpt-5.3",
+          "dependencies": "1.1, 1.2"
+        },
+        {
+          "id": "2.2",
+          "title": "Design high-risk AI planning and policy checks",
+          "description": "Add planner-first validation for refunds, policy exceptions, and high-risk reply suggestions.",
+          "points": 5,
+          "status": "todo",
+          "owner": "Backend",
+          "model": "gpt-5.4",
+          "dependencies": "2.1, 1.6"
+        },
+        {
+          "id": "2.3",
+          "title": "Build grounded reply composer",
+          "description": "Show summaries, draft replies, confidence band, citations, warnings, and rewrite actions in the agent workspace.",
+          "points": 5,
+          "status": "todo",
+          "owner": "Frontend",
+          "model": "gpt-5.3",
+          "dependencies": "2.1, 2.2"
+        },
+        {
+          "id": "2.4",
+          "title": "Add approval workflow for outbound replies",
+          "description": "Route selected replies to managers for approval before send and enforce draft-only AI responses.",
+          "points": 5,
+          "status": "todo",
+          "owner": "Frontend",
+          "model": "gpt-5.3",
+          "dependencies": "2.2, 2.3"
+        },
+        {
+          "id": "2.5",
+          "title": "Implement approved knowledge retrieval index",
+          "description": "Index runbooks, macros, and help articles for citation-backed AI suggestions.",
+          "points": 5,
+          "status": "todo",
+          "owner": "Backend",
+          "model": "gpt-5.3",
+          "dependencies": "1.2"
+        },
+        {
+          "id": "2.6",
+          "title": "Create AI assist policy and regression tests",
+          "description": "Test human review gates, citation rendering, approval rules, and latency budgets.",
+          "points": 3,
+          "status": "todo",
+          "owner": "QA",
+          "model": "gpt-5.2",
+          "dependencies": "2.2, 2.3, 2.4, 2.5"
+        },
+        {
+          "id": "2.7",
+          "title": "Package AI assist viewer artifacts",
+          "description": "Add architecture, flow, and screen data for AI draft lifecycle and approval states.",
+          "points": 2,
+          "status": "todo",
+          "owner": "Frontend",
+          "model": "gpt-5.2",
+          "dependencies": "2.3, 2.4"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Knowledge, Automation, and Escalations",
+      "goal": "Operationalize approved knowledge, automation rules, escalations, collaboration, and admin AI controls.",
+      "points": 29,
+      "tickets": [
+        {
+          "id": "3.1",
+          "title": "Ship knowledge lifecycle workflows",
+          "description": "Support article drafts, approvals, ownership, review dates, categories, and stale content flags.",
+          "points": 5,
+          "status": "todo",
+          "owner": "Backend",
+          "model": "gpt-5.3",
+          "dependencies": "2.5"
+        },
+        {
+          "id": "3.2",
+          "title": "Create macro and canned response admin UI",
+          "description": "Provide CRUD views, usage stats, and guardrails for macros and canned replies.",
+          "points": 3,
+          "status": "todo",
+          "owner": "Frontend",
+          "model": "gpt-5.2",
+          "dependencies": "3.1"
+        },
+        {
+          "id": "3.3",
+          "title": "Build automation rule engine with dry-run",
+          "description": "Execute event and scheduled rules, block recursion, and write conflict and execution logs.",
+          "points": 5,
+          "status": "todo",
+          "owner": "Backend",
+          "model": "gpt-5.4",
+          "dependencies": "1.3, 3.1"
+        },
+        {
+          "id": "3.4",
+          "title": "Implement escalations and collaboration",
+          "description": "Support specialist handoffs, internal notes, mentions, watchers, and checklist tasks.",
+          "points": 5,
+          "status": "todo",
+          "owner": "Frontend",
+          "model": "gpt-5.3",
+          "dependencies": "3.3"
+        },
+        {
+          "id": "3.5",
+          "title": "Add queue-level AI control settings",
+          "description": "Allow admins to disable AI by queue, channel, or action type with audit coverage.",
+          "points": 3,
+          "status": "todo",
+          "owner": "Frontend",
+          "model": "gpt-5.2",
+          "dependencies": "2.2, 3.3"
+        },
+        {
+          "id": "3.6",
+          "title": "Create integration and webhook framework",
+          "description": "Connect CRM, billing, incident tooling, and outbound automation hooks.",
+          "points": 5,
+          "status": "todo",
+          "owner": "Backend",
+          "model": "gpt-5.3",
+          "dependencies": "3.3"
+        },
+        {
+          "id": "3.7",
+          "title": "Expand knowledge and automation QA suites",
+          "description": "Cover dry-run logs, escalation transitions, AI disable rules, and webhook retries.",
+          "points": 3,
+          "status": "todo",
+          "owner": "QA",
+          "model": "gpt-5.2",
+          "dependencies": "3.1, 3.3, 3.4, 3.5, 3.6"
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "name": "QA, Compliance, and Analytics",
+      "goal": "Deliver QA sampling, audit visibility, operational analytics, privacy tooling, and production-grade accessibility and performance.",
+      "points": 27,
+      "tickets": [
+        {
+          "id": "4.1",
+          "title": "Implement QA sampling and scorecards",
+          "description": "Sample resolved tickets by policy and score accuracy, empathy, compliance, and completeness.",
+          "points": 5,
+          "status": "todo",
+          "owner": "Backend",
+          "model": "gpt-5.3",
+          "dependencies": "2.4, 3.4"
+        },
+        {
+          "id": "4.2",
+          "title": "Build audit log explorer",
+          "description": "Expose prompt, output, approval, workflow, latency, and override events with tenant-safe filters.",
+          "points": 5,
+          "status": "todo",
+          "owner": "Frontend",
+          "model": "gpt-5.3",
+          "dependencies": "1.6, 2.2, 3.3"
+        },
+        {
+          "id": "4.3",
+          "title": "Launch analytics dashboards and exports",
+          "description": "Show backlog, SLA, reopen, escalation, QA, and AI acceptance metrics with filters and exports.",
+          "points": 5,
+          "status": "todo",
+          "owner": "Frontend",
+          "model": "gpt-5.3",
+          "dependencies": "4.1, 4.2"
+        },
+        {
+          "id": "4.4",
+          "title": "Schedule recurring ops summaries",
+          "description": "Generate and deliver daily and weekly summaries to managers and analysts.",
+          "points": 3,
+          "status": "todo",
+          "owner": "Backend",
+          "model": "gpt-5.2",
+          "dependencies": "4.3"
+        },
+        {
+          "id": "4.5",
+          "title": "Implement privacy retention and redaction controls",
+          "description": "Add retention schedules, export/delete flows, and PII redaction in logs and telemetry.",
+          "points": 5,
+          "status": "todo",
+          "owner": "Backend",
+          "model": "gpt-5.4",
+          "dependencies": "4.2"
+        },
+        {
+          "id": "4.6",
+          "title": "Complete accessibility and performance hardening",
+          "description": "Meet WCAG 2.1 AA for core flows and hold p95 workspace, search, and AI latency targets.",
+          "points": 4,
+          "status": "todo",
+          "owner": "QA",
+          "model": "gpt-5.2",
+          "dependencies": "4.2, 4.3"
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "name": "Production Readiness and Launch",
+      "goal": "Finish enterprise auth, deployment hardening, observability, recovery, and launch validation artifacts.",
+      "points": 25,
+      "tickets": [
+        {
+          "id": "5.1",
+          "title": "Integrate SSO, SAML, and MFA policies",
+          "description": "Support enterprise identity flows, role sync, and session hardening for admin-controlled tenants.",
+          "points": 5,
+          "status": "todo",
+          "owner": "Backend",
+          "model": "gpt-5.4",
+          "dependencies": "0.2, 4.5"
+        },
+        {
+          "id": "5.2",
+          "title": "Finalize AWS-compatible deployment topology",
+          "description": "Publish IaC-ready service topology, autoscaling, backups, and storage controls.",
+          "points": 5,
+          "status": "todo",
+          "owner": "DevOps",
+          "model": "gpt-5.3",
+          "dependencies": "0.5, 4.5"
+        },
+        {
+          "id": "5.3",
+          "title": "Add health views, traces, and alerts",
+          "description": "Track queue lag, SLA breach spikes, AI latency, webhook failures, and auth errors.",
+          "points": 5,
+          "status": "todo",
+          "owner": "DevOps",
+          "model": "gpt-5.3",
+          "dependencies": "5.2"
+        },
+        {
+          "id": "5.4",
+          "title": "Write staging and rollback runbooks",
+          "description": "Document deploy checks, smoke tests, rollback triggers, and recovery drills.",
+          "points": 3,
+          "status": "todo",
+          "owner": "DevOps",
+          "model": "gpt-5.2",
+          "dependencies": "5.2"
+        },
+        {
+          "id": "5.5",
+          "title": "Execute launch verification suite",
+          "description": "Run load, security, integration, and release packaging checks before launch.",
+          "points": 5,
+          "status": "todo",
+          "owner": "QA",
+          "model": "gpt-5.3",
+          "dependencies": "5.1, 5.2, 5.3, 5.4"
+        },
+        {
+          "id": "5.6",
+          "title": "Assemble executive viewer validation pack",
+          "description": "Publish final viewer data, sprint metrics, diagrams, and review checklist for stakeholder signoff.",
+          "points": 2,
+          "status": "todo",
+          "owner": "Frontend",
+          "model": "gpt-5.2",
+          "dependencies": "5.5"
+        }
+      ]
+    }
+  ],
+  "bugs": [
+    {
+      "id": "B.01",
+      "title": "Prevent recursive automation cascade on status updates",
+      "severity": "high",
+      "status": "todo",
+      "sprint": "3",
+      "notes": "Validate loop guards when rules update tickets that trigger sibling rules."
+    },
+    {
+      "id": "B.02",
+      "title": "Reopen window should ignore merged child replies",
+      "severity": "medium",
+      "status": "todo",
+      "sprint": "4",
+      "notes": "Merged child tickets cannot create outbound or reopen parent without correction flow."
+    },
+    {
+      "id": "B.03",
+      "title": "Redact billing account numbers from audit export",
+      "severity": "high",
+      "status": "todo",
+      "sprint": "4",
+      "notes": "Applies to prompt logs, webhook payload snapshots, and CSV exports."
+    }
+  ]
+}

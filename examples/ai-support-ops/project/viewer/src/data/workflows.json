@@ -1,0 +1,706 @@
+{
+  "graphs": [
+    {
+      "id": "feature-development",
+      "name": "Feature Development Flow",
+      "description": "Ticket to merged release flow.",
+      "nodes": [
+        {
+          "id": "start",
+          "label": "Select ticket",
+          "type": "start",
+          "position": {
+            "x": 0,
+            "y": 80
+          }
+        },
+        {
+          "id": "read",
+          "label": "Read specs and docs",
+          "type": "process",
+          "position": {
+            "x": 180,
+            "y": 80
+          }
+        },
+        {
+          "id": "plan",
+          "label": "Plan with gpt-5.4",
+          "type": "process",
+          "position": {
+            "x": 390,
+            "y": 80
+          }
+        },
+        {
+          "id": "build",
+          "label": "Implement with gpt-5.3",
+          "type": "process",
+          "position": {
+            "x": 620,
+            "y": 80
+          }
+        },
+        {
+          "id": "tests",
+          "label": "Tests and docs via gpt-5.2",
+          "type": "process",
+          "position": {
+            "x": 860,
+            "y": 80
+          }
+        },
+        {
+          "id": "review",
+          "label": "QA review",
+          "type": "decision",
+          "position": {
+            "x": 1120,
+            "y": 80
+          }
+        },
+        {
+          "id": "merge",
+          "label": "Merge and update sprint evidence",
+          "type": "end",
+          "position": {
+            "x": 1360,
+            "y": 80
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e1",
+          "source": "start",
+          "target": "read",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "e2",
+          "source": "read",
+          "target": "plan",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "e3",
+          "source": "plan",
+          "target": "build",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "e4",
+          "source": "build",
+          "target": "tests",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "e5",
+          "source": "tests",
+          "target": "review",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "e6",
+          "source": "review",
+          "target": "merge",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        }
+      ]
+    },
+    {
+      "id": "sprint-execution",
+      "name": "Sprint Execution Flow",
+      "description": "Plan, deliver, verify, summarize.",
+      "nodes": [
+        {
+          "id": "sp0",
+          "label": "Sprint plan",
+          "type": "start",
+          "position": {
+            "x": 0,
+            "y": 80
+          }
+        },
+        {
+          "id": "sp1",
+          "label": "Execute tickets",
+          "type": "process",
+          "position": {
+            "x": 220,
+            "y": 80
+          }
+        },
+        {
+          "id": "sp2",
+          "label": "QA prompt",
+          "type": "process",
+          "position": {
+            "x": 460,
+            "y": 80
+          }
+        },
+        {
+          "id": "sp3",
+          "label": "Fix issues",
+          "type": "decision",
+          "position": {
+            "x": 700,
+            "y": 80
+          }
+        },
+        {
+          "id": "sp4",
+          "label": "Summary prompt",
+          "type": "process",
+          "position": {
+            "x": 940,
+            "y": 80
+          }
+        },
+        {
+          "id": "sp5",
+          "label": "Release evidence",
+          "type": "end",
+          "position": {
+            "x": 1180,
+            "y": 80
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "sp-e1",
+          "source": "sp0",
+          "target": "sp1",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "sp-e2",
+          "source": "sp1",
+          "target": "sp2",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "sp-e3",
+          "source": "sp2",
+          "target": "sp3",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "sp-e4",
+          "source": "sp3",
+          "target": "sp4",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "sp-e5",
+          "source": "sp4",
+          "target": "sp5",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        }
+      ]
+    },
+    {
+      "id": "request-lifecycle",
+      "name": "System Request Lifecycle",
+      "description": "From web request to persisted result.",
+      "nodes": [
+        {
+          "id": "r1",
+          "label": "Web client",
+          "type": "start",
+          "position": {
+            "x": 0,
+            "y": 80
+          }
+        },
+        {
+          "id": "r2",
+          "label": "Tenant and auth middleware",
+          "type": "process",
+          "position": {
+            "x": 200,
+            "y": 80
+          }
+        },
+        {
+          "id": "r3",
+          "label": "Controller validation",
+          "type": "process",
+          "position": {
+            "x": 430,
+            "y": 80
+          }
+        },
+        {
+          "id": "r4",
+          "label": "Domain service",
+          "type": "process",
+          "position": {
+            "x": 650,
+            "y": 80
+          }
+        },
+        {
+          "id": "r5",
+          "label": "PostgreSQL",
+          "type": "process",
+          "position": {
+            "x": 880,
+            "y": 20
+          }
+        },
+        {
+          "id": "r6",
+          "label": "Redis or worker",
+          "type": "process",
+          "position": {
+            "x": 880,
+            "y": 140
+          }
+        },
+        {
+          "id": "r7",
+          "label": "Response + audit log",
+          "type": "end",
+          "position": {
+            "x": 1120,
+            "y": 80
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "r-e1",
+          "source": "r1",
+          "target": "r2",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "r-e2",
+          "source": "r2",
+          "target": "r3",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "r-e3",
+          "source": "r3",
+          "target": "r4",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "r-e4",
+          "source": "r4",
+          "target": "r5",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "r-e5",
+          "source": "r4",
+          "target": "r6",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 1
+        },
+        {
+          "id": "r-e6",
+          "source": "r5",
+          "target": "r7",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "r-e7",
+          "source": "r6",
+          "target": "r7",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 1
+        }
+      ]
+    },
+    {
+      "id": "ci-cd",
+      "name": "CI/CD Pipeline",
+      "description": "Checks to deployment flow.",
+      "nodes": [
+        {
+          "id": "c1",
+          "label": "Push or PR",
+          "type": "start",
+          "position": {
+            "x": 0,
+            "y": 80
+          }
+        },
+        {
+          "id": "c2",
+          "label": "Lint",
+          "type": "process",
+          "position": {
+            "x": 180,
+            "y": 20
+          }
+        },
+        {
+          "id": "c3",
+          "label": "Typecheck",
+          "type": "process",
+          "position": {
+            "x": 180,
+            "y": 140
+          }
+        },
+        {
+          "id": "c4",
+          "label": "Unit tests",
+          "type": "process",
+          "position": {
+            "x": 380,
+            "y": 20
+          }
+        },
+        {
+          "id": "c5",
+          "label": "Integration tests",
+          "type": "process",
+          "position": {
+            "x": 380,
+            "y": 140
+          }
+        },
+        {
+          "id": "c6",
+          "label": "Build",
+          "type": "process",
+          "position": {
+            "x": 620,
+            "y": 80
+          }
+        },
+        {
+          "id": "c7",
+          "label": "Deploy",
+          "type": "process",
+          "position": {
+            "x": 860,
+            "y": 80
+          }
+        },
+        {
+          "id": "c8",
+          "label": "Smoke test",
+          "type": "end",
+          "position": {
+            "x": 1080,
+            "y": 80
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "c-e1",
+          "source": "c1",
+          "target": "c2",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "c-e2",
+          "source": "c1",
+          "target": "c3",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "c-e3",
+          "source": "c2",
+          "target": "c4",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "c-e4",
+          "source": "c3",
+          "target": "c5",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "c-e5",
+          "source": "c4",
+          "target": "c6",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "c-e6",
+          "source": "c5",
+          "target": "c6",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "c-e7",
+          "source": "c6",
+          "target": "c7",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "c-e8",
+          "source": "c7",
+          "target": "c8",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        }
+      ]
+    },
+    {
+      "id": "auth-flow",
+      "name": "User Authentication Flow",
+      "description": "Enterprise and local session handling.",
+      "nodes": [
+        {
+          "id": "a1",
+          "label": "Login page",
+          "type": "start",
+          "position": {
+            "x": 0,
+            "y": 80
+          }
+        },
+        {
+          "id": "a2",
+          "label": "Email or SSO",
+          "type": "decision",
+          "position": {
+            "x": 180,
+            "y": 80
+          }
+        },
+        {
+          "id": "a3",
+          "label": "Validate identity",
+          "type": "process",
+          "position": {
+            "x": 400,
+            "y": 20
+          }
+        },
+        {
+          "id": "a4",
+          "label": "Map tenant role",
+          "type": "process",
+          "position": {
+            "x": 400,
+            "y": 140
+          }
+        },
+        {
+          "id": "a5",
+          "label": "Issue access and refresh",
+          "type": "process",
+          "position": {
+            "x": 650,
+            "y": 80
+          }
+        },
+        {
+          "id": "a6",
+          "label": "Protected request",
+          "type": "process",
+          "position": {
+            "x": 900,
+            "y": 80
+          }
+        },
+        {
+          "id": "a7",
+          "label": "Refresh or logout",
+          "type": "end",
+          "position": {
+            "x": 1140,
+            "y": 80
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "a-e1",
+          "source": "a1",
+          "target": "a2",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "a-e2",
+          "source": "a2",
+          "target": "a3",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "a-e3",
+          "source": "a3",
+          "target": "a4",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "a-e4",
+          "source": "a4",
+          "target": "a5",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "a-e5",
+          "source": "a5",
+          "target": "a6",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "a-e6",
+          "source": "a6",
+          "target": "a7",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        }
+      ]
+    },
+    {
+      "id": "reply-approval",
+      "name": "AI Reply Approval Flow",
+      "description": "Grounded draft to approved send.",
+      "nodes": [
+        {
+          "id": "p1",
+          "label": "Open ticket",
+          "type": "start",
+          "position": {
+            "x": 0,
+            "y": 80
+          }
+        },
+        {
+          "id": "p2",
+          "label": "Generate draft",
+          "type": "process",
+          "position": {
+            "x": 180,
+            "y": 80
+          }
+        },
+        {
+          "id": "p3",
+          "label": "Policy check",
+          "type": "decision",
+          "position": {
+            "x": 400,
+            "y": 80
+          }
+        },
+        {
+          "id": "p4",
+          "label": "Manager approval",
+          "type": "process",
+          "position": {
+            "x": 620,
+            "y": 80
+          }
+        },
+        {
+          "id": "p5",
+          "label": "Send response",
+          "type": "end",
+          "position": {
+            "x": 860,
+            "y": 80
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "p-e1",
+          "source": "p1",
+          "target": "p2",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "p-e2",
+          "source": "p2",
+          "target": "p3",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "p-e3",
+          "source": "p3",
+          "target": "p4",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        },
+        {
+          "id": "p-e4",
+          "source": "p4",
+          "target": "p5",
+          "animated": true,
+          "animationDirection": "forward",
+          "priority": 0
+        }
+      ]
+    }
+  ]
+}

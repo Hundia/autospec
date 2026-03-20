@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Github, BookOpen, Zap, Code2, FileText, Monitor, Play } from 'lucide-react';
+import { Menu, X, Github, Terminal, Zap, Monitor, Play } from 'lucide-react';
 
 const navLinks = [
-  { name: 'Docs', href: '#docs', icon: BookOpen },
-  { name: 'Quick Start', href: '#quickstart', icon: Zap },
-  { name: 'Examples', href: '#examples', icon: Code2 },
-  { name: 'Paper', href: '#/paper', icon: FileText },
-  { name: 'Presentation', href: '#/presentation', icon: Play },
+  { name: 'How It Works', href: '#how-it-works', icon: Zap },
+  { name: 'Quick Start', href: '#quickstart', icon: Terminal },
   { name: 'Viewer', href: './viewer/', icon: Monitor },
+  { name: 'Presentation', href: '#/presentation', icon: Play },
 ];
 
 export default function Navigation() {
@@ -53,7 +51,7 @@ export default function Navigation() {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="px-4 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all flex items-center gap-2"
+                  className="px-4 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
                 >
                   <link.icon size={16} />
                   {link.name}

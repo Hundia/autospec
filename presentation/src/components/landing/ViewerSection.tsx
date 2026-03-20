@@ -1,39 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Monitor, BarChart3, Search, TrendingDown, GitBranch, Code2, Palette, Users, ExternalLink } from 'lucide-react';
-
-const viewerFeatures = [
-  {
-    icon: BarChart3,
-    title: 'Project Dashboard',
-    description: 'Sprint velocity, ticket completion, and documentation coverage at a glance.',
-  },
-  {
-    icon: Search,
-    title: 'Spec Browser',
-    description: 'Full-text search across all 10 role specs with syntax highlighting.',
-  },
-  {
-    icon: TrendingDown,
-    title: 'Sprint Burndown',
-    description: 'Visual timeline of every sprint — planned, shipped, and carried over.',
-  },
-  {
-    icon: GitBranch,
-    title: 'Architecture Diagrams',
-    description: 'Auto-rendered system diagrams showing module boundaries and data flow.',
-  },
-  {
-    icon: Code2,
-    title: 'Mermaid Rendering',
-    description: 'Every Mermaid diagram renders as interactive, zoomable SVG.',
-  },
-  {
-    icon: Palette,
-    title: 'Design System',
-    description: 'Live preview of color tokens, typography, and component primitives.',
-  },
-];
+import { Monitor, Users, ExternalLink } from 'lucide-react';
 
 const barHeights = [40, 65, 55, 80, 70, 90, 85];
 
@@ -67,30 +34,40 @@ export default function ViewerSection() {
 
         {/* Main grid: features + browser mockup */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left: Feature list */}
+          {/* Left: 3 benefit blocks */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="space-y-3"
+            className="space-y-8 flex flex-col justify-center"
+            data-testid="viewer-benefits"
           >
-            {viewerFeatures.map((feature, index) => (
+            {[
+              {
+                heading: 'One URL for your entire project',
+                body: 'Specs, sprint history, architecture diagrams, and docs — all in a single browsable interface. Bookmark it. Share it with stakeholders.',
+              },
+              {
+                heading: 'Non-technical teammates can follow along',
+                body: 'No IDE. No git. No command line. Anyone on the team can see what was decided, what was built, and what comes next.',
+              },
+              {
+                heading: 'Auto-generated from your markdown',
+                body: 'Run one command. The Viewer reads your specs/ and docs/ directories and renders everything — no configuration required.',
+              },
+            ].map((benefit, i) => (
               <motion.div
-                key={feature.title}
+                key={i}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="flex items-start gap-4 p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/[0.07] transition-colors"
+                transition={{ duration: 0.4, delay: i * 0.12 }}
+                className="border-l-2 border-cyan-500/40 pl-5"
+                data-testid={`viewer-benefit-${i}`}
               >
-                <div className="w-9 h-9 bg-cyan-500/10 border border-cyan-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <feature.icon className="text-cyan-400" size={18} />
-                </div>
-                <div>
-                  <div className="text-white font-semibold text-sm mb-0.5">{feature.title}</div>
-                  <div className="text-white/50 text-sm">{feature.description}</div>
-                </div>
+                <h3 className="text-white font-semibold mb-1">{benefit.heading}</h3>
+                <p className="text-white/55 text-sm leading-relaxed">{benefit.body}</p>
               </motion.div>
             ))}
           </motion.div>

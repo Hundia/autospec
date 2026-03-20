@@ -1,6 +1,8 @@
 # QUICKSTART.md — AutoSpec Generation Prompt
 
 > **What is this?** The single file that turns your requirements into a complete, AI-ready project structure. No CLI required.
+>
+> **Modular version:** The full AutoSpec project splits this prompt into focused sub-files under `quickstart/` for better agent context management. See the [modular QUICKSTART](https://github.com/Hundia/autospec/blob/main/QUICKSTART.md) for the orchestration map version. This starter template keeps everything in one file for easy copy-paste.
 
 ## Prerequisites
 

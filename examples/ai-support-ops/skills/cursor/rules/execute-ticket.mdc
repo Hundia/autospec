@@ -1,0 +1,92 @@
+---
+description: "Execute a single ticket from the backlog — apply when implementing features or fixes"
+globs: "specs/**/*"
+---
+# Execute Ticket
+
+Follow this procedure to implement a single ticket from the backlog.
+
+## Step 1: Locate the Ticket
+
+1. Open `specs/backlog.md`
+2. Find the ticket by number (e.g., `16.3`)
+3. Read the ticket description, acceptance criteria, and dependencies
+4. If the ticket has unresolved dependencies, stop and report them
+
+## Step 2: Read Context
+
+Before writing any code, read the relevant documentation:
+
+- **Always read**: `specs/backlog.md` (full sprint context)
+- **Feature work**: the relevant spec file (`specs/02-06`, `specs/10`)
+- **Bug fix**: reproduce the bug first, understand the root cause
+- **Viewer changes**: `docs/viewer/` for component patterns
+- **CLI changes**: `docs/cli/` for command structure and patterns
+- **Architecture questions**: `specs/04-architecture.md`
+
+## Step 3: Update Status
+
+In `specs/backlog.md`, change the ticket status:
+
+```
+🔲 → 🔄
+```
+
+This signals that work has started.
+
+## Step 4: Implement
+
+Follow these patterns during implementation:
+
+- **TypeScript strict** — no `any` types, use Zod for validation
+- **Repository → Service → Controller** layering
+- **Frontend**: React components with Tailwind, Zustand for state
+- **Tests**: write or update tests alongside the implementation
+- **Small commits**: commit after each logical unit of work
+
+### File Organization
+
+- CLI source: `cli/src/`
+- Viewer source: `viewer/src/`
+- Specs: `specs/`
+- Docs: `docs/`
+
+## Step 5: QA Verification
+
+Scale QA to the type of change:
+
+| Change Type | QA Steps |
+|-------------|----------|
+| Bug fix | Reproduce → fix → verify the fix → run related tests |
+| CLI change | `cd cli && npm run build && npm test` |
+| Viewer change | `cd viewer && npm run build` + visual check |
+| Docs/config only | Review for accuracy — no build needed |
+| New feature | Full test suite + write new test cases |
+
+## Step 6: Update Documentation
+
+If your change affects behavior visible to users or developers:
+
+1. Update the relevant `docs/` file(s)
+2. If no doc file exists for your subsystem, create one in `docs/<subsystem>/`
+3. Keep docs concise — focus on what changed and why
+
+## Step 7: Close the Ticket
+
+In `specs/backlog.md`, change the ticket status:
+
+```
+🔄 → ✅
+```
+
+Add a brief note if the implementation deviated from the original plan.
+
+## Checklist
+
+- [ ] Ticket found and dependencies checked
+- [ ] Relevant docs and specs read
+- [ ] Status set to 🔄
+- [ ] Implementation complete
+- [ ] QA verification passed
+- [ ] Documentation updated
+- [ ] Status set to ✅

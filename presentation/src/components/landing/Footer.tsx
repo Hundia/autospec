@@ -4,16 +4,16 @@ import { Github, Twitter, Mail, Heart, Copy, Check, Terminal, ArrowRight, Star }
 
 const footerLinks = {
   product: [
-    { label: 'Documentation', href: '#docs' },
-    { label: 'Interactive Viewer', href: '#viewer' },
-    { label: 'FinOps Guide', href: '#finops' },
+    { label: 'How It Works', href: '#how-it-works' },
+    { label: 'Interactive Viewer', href: './viewer/' },
+    { label: 'Presentation', href: '#/presentation' },
     { label: 'Changelog', href: '#' },
   ],
   resources: [
     { label: 'Getting Started', href: '#quickstart' },
-    { label: 'The 10 Roles', href: '#roles' },
-    { label: 'Sprint Memory', href: '#memory' },
     { label: 'Academic Paper', href: '#/paper' },
+    { label: 'GitHub Template', href: 'https://github.com/Hundia/autospec-starter', external: true },
+    { label: 'Contributing', href: 'https://github.com/Hundia/autospec', external: true },
   ],
   community: [
     { label: 'GitHub', href: 'https://github.com/Hundia/autospec', external: true },

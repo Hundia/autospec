@@ -59,6 +59,9 @@ This project uses **Opus 4.6 as Orchestrator + Sonnet 4.6 as Sprint Agents**:
 
 ```
 autospec/
+├── .opencode/               # OpenCode commands + skills
+│   ├── commands/            # OpenCode slash-style command wrappers
+│   └── skills/              # OpenCode skill wrappers pointing to source workflows
 ├── .claude/commands/       # 10 SDD skill files (symlinked from skills/claude/)
 ├── specs/                  # Role spec files (01-10) + backlog.md
 ├── agents/                 # Sprint briefing files (sprint-X-brief.md)
@@ -78,6 +81,9 @@ autospec/
 ## Key Commands
 
 ```bash
+# OpenCode
+opencode
+
 # CLI
 cd cli && npm run build
 cd cli && npm test

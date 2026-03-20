@@ -1,0 +1,494 @@
+{
+  "flows": [
+    {
+      "id": "user-journey",
+      "name": "Agent User Journey",
+      "type": "swimlane",
+      "nodes": [
+        {
+          "id": "uj1",
+          "label": "Open queue",
+          "lane": "User",
+          "position": {
+            "x": 0,
+            "y": 20
+          }
+        },
+        {
+          "id": "uj2",
+          "label": "Render queue data",
+          "lane": "Frontend",
+          "position": {
+            "x": 220,
+            "y": 100
+          }
+        },
+        {
+          "id": "uj3",
+          "label": "Read tickets",
+          "lane": "API",
+          "position": {
+            "x": 420,
+            "y": 180
+          }
+        },
+        {
+          "id": "uj4",
+          "label": "Fetch ticket rows",
+          "lane": "Database",
+          "position": {
+            "x": 620,
+            "y": 260
+          }
+        },
+        {
+          "id": "uj5",
+          "label": "Open ticket and draft",
+          "lane": "User",
+          "position": {
+            "x": 860,
+            "y": 20
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "ufe1",
+          "source": "uj1",
+          "target": "uj2",
+          "label": "navigate"
+        },
+        {
+          "id": "ufe2",
+          "source": "uj2",
+          "target": "uj3",
+          "label": "GET /tickets"
+        },
+        {
+          "id": "ufe3",
+          "source": "uj3",
+          "target": "uj4",
+          "label": "query"
+        },
+        {
+          "id": "ufe4",
+          "source": "uj4",
+          "target": "uj5",
+          "label": "results"
+        }
+      ]
+    },
+    {
+      "id": "authentication-flow",
+      "name": "Authentication Sequence",
+      "type": "sequence",
+      "nodes": [
+        {
+          "id": "af1",
+          "label": "Client login",
+          "lane": "Client",
+          "position": {
+            "x": 0,
+            "y": 20
+          }
+        },
+        {
+          "id": "af2",
+          "label": "POST /auth/login",
+          "lane": "API",
+          "position": {
+            "x": 220,
+            "y": 100
+          }
+        },
+        {
+          "id": "af3",
+          "label": "Validate user",
+          "lane": "Auth",
+          "position": {
+            "x": 420,
+            "y": 180
+          }
+        },
+        {
+          "id": "af4",
+          "label": "Read claims",
+          "lane": "DB",
+          "position": {
+            "x": 620,
+            "y": 260
+          }
+        },
+        {
+          "id": "af5",
+          "label": "Issue tokens",
+          "lane": "API",
+          "position": {
+            "x": 840,
+            "y": 100
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "afe1",
+          "source": "af1",
+          "target": "af2",
+          "label": "request"
+        },
+        {
+          "id": "afe2",
+          "source": "af2",
+          "target": "af3",
+          "label": "validate"
+        },
+        {
+          "id": "afe3",
+          "source": "af3",
+          "target": "af4",
+          "label": "lookup"
+        },
+        {
+          "id": "afe4",
+          "source": "af4",
+          "target": "af5",
+          "label": "claims"
+        }
+      ]
+    },
+    {
+      "id": "core-features",
+      "name": "Core Features",
+      "type": "process",
+      "nodes": [
+        {
+          "id": "cf1",
+          "label": "Ingest ticket",
+          "position": {
+            "x": 0,
+            "y": 80
+          }
+        },
+        {
+          "id": "cf2",
+          "label": "Route and SLA",
+          "position": {
+            "x": 220,
+            "y": 80
+          }
+        },
+        {
+          "id": "cf3",
+          "label": "AI draft",
+          "position": {
+            "x": 440,
+            "y": 80
+          }
+        },
+        {
+          "id": "cf4",
+          "label": "Approval?",
+          "position": {
+            "x": 660,
+            "y": 80
+          }
+        },
+        {
+          "id": "cf5",
+          "label": "Send and resolve",
+          "position": {
+            "x": 900,
+            "y": 80
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "cfe1",
+          "source": "cf1",
+          "target": "cf2",
+          "label": "normalized"
+        },
+        {
+          "id": "cfe2",
+          "source": "cf2",
+          "target": "cf3",
+          "label": "agent opens"
+        },
+        {
+          "id": "cfe3",
+          "source": "cf3",
+          "target": "cf4",
+          "label": "draft ready"
+        },
+        {
+          "id": "cfe4",
+          "source": "cf4",
+          "target": "cf5",
+          "label": "approved or low risk"
+        }
+      ]
+    },
+    {
+      "id": "data-flow",
+      "name": "Data Flow",
+      "type": "dataflow",
+      "nodes": [
+        {
+          "id": "df1",
+          "label": "Channel payload",
+          "position": {
+            "x": 0,
+            "y": 80
+          }
+        },
+        {
+          "id": "df2",
+          "label": "Normalized ticket",
+          "position": {
+            "x": 220,
+            "y": 80
+          }
+        },
+        {
+          "id": "df3",
+          "label": "Knowledge retrieval",
+          "position": {
+            "x": 440,
+            "y": 80
+          }
+        },
+        {
+          "id": "df4",
+          "label": "AI draft payload",
+          "position": {
+            "x": 660,
+            "y": 80
+          }
+        },
+        {
+          "id": "df5",
+          "label": "Audit event",
+          "position": {
+            "x": 900,
+            "y": 80
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "dfe1",
+          "source": "df1",
+          "target": "df2",
+          "label": "normalize"
+        },
+        {
+          "id": "dfe2",
+          "source": "df2",
+          "target": "df3",
+          "label": "context"
+        },
+        {
+          "id": "dfe3",
+          "source": "df3",
+          "target": "df4",
+          "label": "sources"
+        },
+        {
+          "id": "dfe4",
+          "source": "df4",
+          "target": "df5",
+          "label": "telemetry"
+        }
+      ]
+    },
+    {
+      "id": "error-handling",
+      "name": "Error Handling",
+      "type": "decision-tree",
+      "nodes": [
+        {
+          "id": "eh1",
+          "label": "Request fails",
+          "position": {
+            "x": 0,
+            "y": 80
+          }
+        },
+        {
+          "id": "eh2",
+          "label": "Validation issue?",
+          "position": {
+            "x": 220,
+            "y": 80
+          }
+        },
+        {
+          "id": "eh3",
+          "label": "Return 400",
+          "position": {
+            "x": 460,
+            "y": 20
+          }
+        },
+        {
+          "id": "eh4",
+          "label": "Policy issue?",
+          "position": {
+            "x": 460,
+            "y": 140
+          }
+        },
+        {
+          "id": "eh5",
+          "label": "Return 422",
+          "position": {
+            "x": 700,
+            "y": 80
+          }
+        },
+        {
+          "id": "eh6",
+          "label": "Retry worker or dead-letter",
+          "position": {
+            "x": 940,
+            "y": 80
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "ehe1",
+          "source": "eh1",
+          "target": "eh2",
+          "label": "inspect"
+        },
+        {
+          "id": "ehe2",
+          "source": "eh2",
+          "target": "eh3",
+          "label": "yes"
+        },
+        {
+          "id": "ehe3",
+          "source": "eh2",
+          "target": "eh4",
+          "label": "no"
+        },
+        {
+          "id": "ehe4",
+          "source": "eh4",
+          "target": "eh5",
+          "label": "yes"
+        },
+        {
+          "id": "ehe5",
+          "source": "eh4",
+          "target": "eh6",
+          "label": "no"
+        }
+      ]
+    },
+    {
+      "id": "state-transitions",
+      "name": "Ticket State Machine",
+      "type": "state-machine",
+      "nodes": [
+        {
+          "id": "st1",
+          "label": "New",
+          "position": {
+            "x": 0,
+            "y": 80
+          }
+        },
+        {
+          "id": "st2",
+          "label": "Assigned",
+          "position": {
+            "x": 220,
+            "y": 80
+          }
+        },
+        {
+          "id": "st3",
+          "label": "Pending Customer",
+          "position": {
+            "x": 460,
+            "y": 80
+          }
+        },
+        {
+          "id": "st4",
+          "label": "Escalated",
+          "position": {
+            "x": 700,
+            "y": 20
+          }
+        },
+        {
+          "id": "st5",
+          "label": "Resolved",
+          "position": {
+            "x": 700,
+            "y": 140
+          }
+        },
+        {
+          "id": "st6",
+          "label": "Reopened",
+          "position": {
+            "x": 940,
+            "y": 80
+          }
+        },
+        {
+          "id": "st7",
+          "label": "Closed",
+          "position": {
+            "x": 1180,
+            "y": 80
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "ste1",
+          "source": "st1",
+          "target": "st2",
+          "label": "route()"
+        },
+        {
+          "id": "ste2",
+          "source": "st2",
+          "target": "st3",
+          "label": "replySent()"
+        },
+        {
+          "id": "ste3",
+          "source": "st2",
+          "target": "st4",
+          "label": "escalate()"
+        },
+        {
+          "id": "ste4",
+          "source": "st2",
+          "target": "st5",
+          "label": "resolve()"
+        },
+        {
+          "id": "ste5",
+          "source": "st5",
+          "target": "st6",
+          "label": "customerReply()"
+        },
+        {
+          "id": "ste6",
+          "source": "st5",
+          "target": "st7",
+          "label": "close()"
+        }
+      ]
+    }
+  ]
+}

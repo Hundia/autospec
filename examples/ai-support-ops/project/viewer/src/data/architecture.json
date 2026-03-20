@@ -1,0 +1,449 @@
+{
+  "diagrams": [
+    {
+      "id": "system-architecture",
+      "name": "System Architecture",
+      "nodes": [
+        {
+          "id": "web",
+          "label": "React Workspace",
+          "kind": "frontend",
+          "position": {
+            "x": 0,
+            "y": 120
+          }
+        },
+        {
+          "id": "api",
+          "label": "Fastify API",
+          "kind": "backend",
+          "position": {
+            "x": 240,
+            "y": 120
+          }
+        },
+        {
+          "id": "pg",
+          "label": "PostgreSQL",
+          "kind": "database",
+          "position": {
+            "x": 520,
+            "y": 40
+          }
+        },
+        {
+          "id": "redis",
+          "label": "Redis",
+          "kind": "cache",
+          "position": {
+            "x": 520,
+            "y": 200
+          }
+        },
+        {
+          "id": "worker",
+          "label": "BullMQ Worker",
+          "kind": "queue",
+          "position": {
+            "x": 760,
+            "y": 200
+          }
+        },
+        {
+          "id": "ext",
+          "label": "CRM/Billing/Incident",
+          "kind": "external",
+          "position": {
+            "x": 760,
+            "y": 40
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "ar1",
+          "source": "web",
+          "target": "api",
+          "label": "HTTPS"
+        },
+        {
+          "id": "ar2",
+          "source": "api",
+          "target": "pg",
+          "label": "SQL"
+        },
+        {
+          "id": "ar3",
+          "source": "api",
+          "target": "redis",
+          "label": "cache and queue"
+        },
+        {
+          "id": "ar4",
+          "source": "redis",
+          "target": "worker",
+          "label": "jobs"
+        },
+        {
+          "id": "ar5",
+          "source": "api",
+          "target": "ext",
+          "label": "webhooks"
+        }
+      ]
+    },
+    {
+      "id": "database-erd",
+      "name": "Database ERD",
+      "nodes": [
+        {
+          "id": "workspaces",
+          "label": "workspaces",
+          "kind": "table",
+          "position": {
+            "x": 0,
+            "y": 40
+          }
+        },
+        {
+          "id": "users",
+          "label": "users",
+          "kind": "table",
+          "position": {
+            "x": 240,
+            "y": 40
+          }
+        },
+        {
+          "id": "queues",
+          "label": "queues",
+          "kind": "table",
+          "position": {
+            "x": 240,
+            "y": 200
+          }
+        },
+        {
+          "id": "tickets",
+          "label": "tickets",
+          "kind": "table",
+          "position": {
+            "x": 500,
+            "y": 120
+          }
+        },
+        {
+          "id": "approvals",
+          "label": "approvals",
+          "kind": "table",
+          "position": {
+            "x": 780,
+            "y": 40
+          }
+        },
+        {
+          "id": "audit",
+          "label": "audit_events",
+          "kind": "table",
+          "position": {
+            "x": 780,
+            "y": 200
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "de1",
+          "source": "workspaces",
+          "target": "users",
+          "label": "1:N"
+        },
+        {
+          "id": "de2",
+          "source": "workspaces",
+          "target": "queues",
+          "label": "1:N"
+        },
+        {
+          "id": "de3",
+          "source": "queues",
+          "target": "tickets",
+          "label": "1:N"
+        },
+        {
+          "id": "de4",
+          "source": "tickets",
+          "target": "approvals",
+          "label": "1:N"
+        },
+        {
+          "id": "de5",
+          "source": "tickets",
+          "target": "audit",
+          "label": "1:N"
+        }
+      ]
+    },
+    {
+      "id": "frontend-tree",
+      "name": "Frontend Tree",
+      "nodes": [
+        {
+          "id": "app",
+          "label": "App",
+          "kind": "component",
+          "position": {
+            "x": 380,
+            "y": 0
+          }
+        },
+        {
+          "id": "layout",
+          "label": "WorkspaceLayout",
+          "kind": "component",
+          "position": {
+            "x": 380,
+            "y": 120
+          }
+        },
+        {
+          "id": "dashboard",
+          "label": "DashboardPage",
+          "kind": "component",
+          "position": {
+            "x": 120,
+            "y": 260
+          }
+        },
+        {
+          "id": "queue",
+          "label": "QueuePage",
+          "kind": "component",
+          "position": {
+            "x": 380,
+            "y": 260
+          }
+        },
+        {
+          "id": "ticket",
+          "label": "TicketDetailPage",
+          "kind": "component",
+          "position": {
+            "x": 640,
+            "y": 260
+          }
+        },
+        {
+          "id": "composer",
+          "label": "DraftComposer",
+          "kind": "component",
+          "position": {
+            "x": 640,
+            "y": 400
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "ft1",
+          "source": "app",
+          "target": "layout",
+          "label": "root"
+        },
+        {
+          "id": "ft2",
+          "source": "layout",
+          "target": "dashboard",
+          "label": "route"
+        },
+        {
+          "id": "ft3",
+          "source": "layout",
+          "target": "queue",
+          "label": "route"
+        },
+        {
+          "id": "ft4",
+          "source": "layout",
+          "target": "ticket",
+          "label": "route"
+        },
+        {
+          "id": "ft5",
+          "source": "ticket",
+          "target": "composer",
+          "label": "child"
+        }
+      ]
+    },
+    {
+      "id": "backend-layers",
+      "name": "Backend Layers",
+      "nodes": [
+        {
+          "id": "route",
+          "label": "Routes",
+          "kind": "layer",
+          "position": {
+            "x": 0,
+            "y": 40
+          }
+        },
+        {
+          "id": "mw",
+          "label": "Middleware",
+          "kind": "layer",
+          "position": {
+            "x": 200,
+            "y": 40
+          }
+        },
+        {
+          "id": "ctrl",
+          "label": "Controllers",
+          "kind": "layer",
+          "position": {
+            "x": 430,
+            "y": 40
+          }
+        },
+        {
+          "id": "svc",
+          "label": "Services",
+          "kind": "layer",
+          "position": {
+            "x": 680,
+            "y": 40
+          }
+        },
+        {
+          "id": "repo",
+          "label": "Repositories",
+          "kind": "layer",
+          "position": {
+            "x": 930,
+            "y": 40
+          }
+        },
+        {
+          "id": "db",
+          "label": "Database",
+          "kind": "layer",
+          "position": {
+            "x": 1170,
+            "y": 40
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "bl1",
+          "source": "route",
+          "target": "mw",
+          "label": "request"
+        },
+        {
+          "id": "bl2",
+          "source": "mw",
+          "target": "ctrl",
+          "label": "validated"
+        },
+        {
+          "id": "bl3",
+          "source": "ctrl",
+          "target": "svc",
+          "label": "command"
+        },
+        {
+          "id": "bl4",
+          "source": "svc",
+          "target": "repo",
+          "label": "query"
+        },
+        {
+          "id": "bl5",
+          "source": "repo",
+          "target": "db",
+          "label": "sql"
+        }
+      ]
+    },
+    {
+      "id": "security-flow",
+      "name": "Security Flow",
+      "nodes": [
+        {
+          "id": "s1",
+          "label": "Login/SSO",
+          "kind": "security",
+          "position": {
+            "x": 0,
+            "y": 80
+          }
+        },
+        {
+          "id": "s2",
+          "label": "Validate identity",
+          "kind": "security",
+          "position": {
+            "x": 220,
+            "y": 80
+          }
+        },
+        {
+          "id": "s3",
+          "label": "Issue tokens",
+          "kind": "security",
+          "position": {
+            "x": 460,
+            "y": 80
+          }
+        },
+        {
+          "id": "s4",
+          "label": "RBAC check",
+          "kind": "security",
+          "position": {
+            "x": 700,
+            "y": 80
+          }
+        },
+        {
+          "id": "s5",
+          "label": "Resource access",
+          "kind": "security",
+          "position": {
+            "x": 920,
+            "y": 80
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "sf1",
+          "source": "s1",
+          "target": "s2",
+          "label": "credentials"
+        },
+        {
+          "id": "sf2",
+          "source": "s2",
+          "target": "s3",
+          "label": "session"
+        },
+        {
+          "id": "sf3",
+          "source": "s3",
+          "target": "s4",
+          "label": "JWT"
+        },
+        {
+          "id": "sf4",
+          "source": "s4",
+          "target": "s5",
+          "label": "permit/deny"
+        }
+      ]
+    }
+  ]
+}

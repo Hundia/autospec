@@ -1,0 +1,17 @@
+# AutoSpec Configuration — TodoApp Example
+project:
+  name: "TodoApp"
+  description: "A simple todo list web app with user authentication"
+
+environment: claude-code
+# Options: claude-code, cursor, vscode-copilot, windsurf, jetbrains-ai, aider
+
+models:
+  orchestrator: opus    # For planning and coordination
+  agent: sonnet         # For implementation
+  quick: haiku          # For simple tasks
+
+options:
+  generate_viewer: false
+  generate_ci: true
+  language: en          # en | he

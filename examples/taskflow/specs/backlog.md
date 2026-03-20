@@ -50,41 +50,41 @@
 
 ---
 
-## 🔲 Sprint 0: Foundation & Setup — PLANNED
+## ✅ Sprint 0: Foundation & Setup — COMPLETE
 
 **Goal:** Set up project infrastructure and development environment.
 
 | # | Ticket | Status | Owner | Model |
 |---|--------|--------|-------|-------|
-| 0.1 | Initialize git repository with .gitignore and README | 🔲 Todo | DevOps | haiku |
-| 0.2 | Create docker-compose.yml for PostgreSQL | 🔲 Todo | DevOps | sonnet |
-| 0.3 | Create .env.example with all required variables | 🔲 Todo | DevOps | haiku |
-| 0.4 | Initialize backend project (Express + TypeScript) | 🔲 Todo | Backend | sonnet |
-| 0.5 | Configure backend TypeScript with strict settings | 🔲 Todo | Backend | haiku |
-| 0.6 | Set up Drizzle ORM with PostgreSQL connection | 🔲 Todo | Backend | sonnet |
-| 0.7 | Create base error handling middleware | 🔲 Todo | Backend | sonnet |
-| 0.8 | Implement health check endpoint (GET /health) | 🔲 Todo | Backend | haiku |
-| 0.9 | Initialize frontend project (React + Vite + TypeScript) | 🔲 Todo | Frontend | sonnet |
-| 0.10 | Configure frontend TypeScript and path aliases | 🔲 Todo | Frontend | haiku |
-| 0.11 | Set up Tailwind CSS with design system colors | 🔲 Todo | Frontend | sonnet |
-| 0.12 | Create API client with Axios | 🔲 Todo | Frontend | haiku |
-| 0.13 | Create basic Layout component | 🔲 Todo | Frontend | haiku |
-| 0.14 | Configure ESLint and Prettier for both projects | 🔲 Todo | DevOps | haiku |
-| 0.15 | Set up Vitest for backend testing | 🔲 Todo | QA | sonnet |
-| 0.16 | Set up Vitest for frontend testing | 🔲 Todo | QA | sonnet |
-| 0.17 | Write first tests (health check, component render) | 🔲 Todo | QA | haiku |
-| 0.18 | Validate full stack runs locally | 🔲 Todo | QA | sonnet |
+| 0.1 | Initialize git repository with .gitignore and README | ✅ Done | DevOps | haiku |
+| 0.2 | Create docker-compose.yml for PostgreSQL | ✅ Done | DevOps | sonnet |
+| 0.3 | Create .env.example with all required variables | ✅ Done | DevOps | haiku |
+| 0.4 | Initialize backend project (Express + TypeScript) | ✅ Done | Backend | sonnet |
+| 0.5 | Configure backend TypeScript with strict settings | ✅ Done | Backend | haiku |
+| 0.6 | Set up Drizzle ORM with PostgreSQL connection | ✅ Done | Backend | sonnet |
+| 0.7 | Create base error handling middleware | ✅ Done | Backend | sonnet |
+| 0.8 | Implement health check endpoint (GET /health) | ✅ Done | Backend | haiku |
+| 0.9 | Initialize frontend project (React + Vite + TypeScript) | ✅ Done | Frontend | sonnet |
+| 0.10 | Configure frontend TypeScript and path aliases | ✅ Done | Frontend | haiku |
+| 0.11 | Set up Tailwind CSS with design system colors | ✅ Done | Frontend | sonnet |
+| 0.12 | Create API client with Axios | ✅ Done | Frontend | haiku |
+| 0.13 | Create basic Layout component | ✅ Done | Frontend | haiku |
+| 0.14 | Configure ESLint and Prettier for both projects | ✅ Done | DevOps | haiku |
+| 0.15 | Set up Vitest for backend testing | ✅ Done | QA | sonnet |
+| 0.16 | Set up Vitest for frontend testing | ✅ Done | QA | sonnet |
+| 0.17 | Write first tests (health check, component render) | ✅ Done | QA | haiku |
+| 0.18 | Validate full stack runs locally | ✅ Done | QA | sonnet |
 
 ### Dependencies
 - None (this is the first sprint)
 
 ### Definition of Done
-- [ ] `docker-compose up` starts PostgreSQL successfully
-- [ ] Backend starts and responds to GET /health with 200
-- [ ] Frontend builds and displays welcome page
-- [ ] All lint checks pass
-- [ ] All tests pass
-- [ ] README has clear setup instructions
+- [x] `docker-compose up` starts PostgreSQL successfully
+- [x] Backend starts and responds to GET /health with 200
+- [x] Frontend builds and displays welcome page
+- [x] All lint checks pass
+- [x] All tests pass
+- [x] README has clear setup instructions
 
 ---
 
@@ -205,7 +205,7 @@ Bugs discovered during development:
 ## Sprint Retrospectives
 
 ### Sprint 0
-- (TBD after completion)
+- ✅ Complete — All 18 tickets delivered. Full-stack foundation: Express + React + PostgreSQL + Drizzle ORM. Tests pass. See `sprints/sprint-0/summary.md`.
 
 ### Sprint 1
 - (TBD after completion)
