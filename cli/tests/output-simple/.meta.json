@@ -1,0 +1,68 @@
+{
+  "version": "0.2.0",
+  "generatedAt": "2026-03-21T11:03:05.668Z",
+  "provider": "claude-code",
+  "model": "claude-haiku-4-5-20251001",
+  "sourceSrs": "srs-simple.md",
+  "sourceHash": "sha256:7458b2f5b29602d300ec5766ab196f4f026b7aca8470f82fe507d40b7c83ea36",
+  "specs": {
+    "01_product_manager": {
+      "status": "skipped",
+      "lines": 0,
+      "durationMs": 0
+    },
+    "02_backend_lead": {
+      "status": "skipped",
+      "lines": 0,
+      "durationMs": 0
+    },
+    "03_frontend_lead": {
+      "status": "skipped",
+      "lines": 0,
+      "durationMs": 0
+    },
+    "04_db_architect": {
+      "status": "skipped",
+      "lines": 0,
+      "durationMs": 0
+    },
+    "05_qa_lead": {
+      "status": "skipped",
+      "lines": 0,
+      "durationMs": 0
+    },
+    "06_devops_lead": {
+      "status": "skipped",
+      "lines": 0,
+      "durationMs": 0
+    },
+    "07_marketing_lead": {
+      "status": "skipped",
+      "lines": 0,
+      "durationMs": 0
+    },
+    "08_finance_lead": {
+      "status": "skipped",
+      "lines": 0,
+      "durationMs": 0
+    },
+    "09_business_lead": {
+      "status": "skipped",
+      "lines": 0,
+      "durationMs": 0
+    },
+    "10_ui_designer": {
+      "status": "complete",
+      "lines": 1050,
+      "durationMs": 140619
+    },
+    "backlog": {
+      "status": "complete",
+      "lines": 318,
+      "durationMs": 149699
+    }
+  },
+  "totalGeneratedCount": 2,
+  "totalSkippedCount": 9,
+  "totalDurationMs": 290350
+}

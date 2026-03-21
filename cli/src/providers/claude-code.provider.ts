@@ -15,7 +15,7 @@ import { registerCleanup } from '../utils/signals.js';
 export class ClaudeCodeProvider implements LLMProvider {
   readonly name = 'claude-code';
   readonly requiresApiKey = false;
-  readonly timeoutMs = 600_000; // 10 minutes — complex SRS specs can take 3-5 minutes each
+  readonly timeoutMs = 900_000; // 15 minutes — complex SRS specs with accumulated context can take 5-10 minutes
 
   async isAvailable(): Promise<boolean> {
     try {
