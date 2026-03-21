@@ -608,6 +608,157 @@
 
 ---
 
+## Sprint 28A: AutoDeck Core Foundation (~45 pts)
+
+**Theme:** Bootstrap the AutoDeck standalone presentation framework — monorepo scaffold, presentation engine, theme system, background effects, animation presets
+**Status:** 🔲 Planned
+
+### Agent 1: Monorepo & Engine (~16 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 28A.1 | Create monorepo scaffold: `packages/autodeck/`, npm workspaces, turbo.json, root package.json, CLAUDE.md | DevOps | 3 | 🔲 | — |
+| 28A.2 | Scaffold `packages/core/`: package.json (@autodeck/core), tsconfig, vite lib config, Tailwind, barrel export | Frontend | 5 | 🔲 | 28A.1 |
+| 28A.3 | Extract & generalize `PresentationEngine` from PresentationPage.tsx — slide orchestration, keyboard nav, AnimatePresence transitions, progress dots, slide counter, RTL support | Frontend | 8 | 🔲 | 28A.2 |
+
+### Agent 2: Theme & Backgrounds (~13 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 28A.4 | Build theme system: `createTheme()`, dark/light/midnight/sunrise presets, CSS variable injection, per-slide overrides | Frontend | 5 | 🔲 | 28A.2 |
+| 28A.5 | Extract & generalize all 8 background effects from BackgroundEffects.tsx + create 4 new ones (aurora, fireflies, rain, nebula) | Frontend | 8 | 🔲 | 28A.2 |
+
+### Agent 3: Animation & Navigation (~8 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 28A.6 | Build animation preset system: stagger, cascade, reveal, bounce, typewriter + mount/scroll trigger modes | Frontend | 5 | 🔲 | 28A.2 |
+| 28A.7 | Extract navigation components: ScrollProgressBar, PresentationDropdown (language selector), keyboard handler | Frontend | 3 | 🔲 | 28A.3 |
+
+### Orchestrator Post-Merge (~8 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 28A.8 | TypeScript types & public API: SlideProps, ThemeConfig, BackgroundId, AnimationPreset — clean barrel exports | Frontend | 3 | 🔲 | 28A.3-28A.7 |
+| 28A.9 | Build verification + unit tests for engine, theme, backgrounds | QA | 5 | 🔲 | 28A.3-28A.8 |
+
+---
+
+## Sprint 28B: AutoDeck Slide Types + Visualizations (~55 pts)
+
+**Theme:** All 13 built-in slide types + all 15 visualization building-block components
+**Status:** 🔲 Planned
+
+### Agent 1: Core Slide Types (~18 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 28B.1 | `TitleSlide` — gradient text, ambient dots, word-by-word tagline stagger, presenter badge | Frontend | 5 | 🔲 | 28A.9 |
+| 28B.2 | `ContentSlide` + `SplitSlide` + `QuoteSlide` + `ClosingSlide` — simpler layout slides | Frontend | 5 | 🔲 | 28A.9 |
+| 28B.3 | `GridSlide` — N-column card grid with staggered entry, color-coded borders | Frontend | 3 | 🔲 | 28A.9 |
+| 28B.4 | `TimelineSlide` — vertical degradation timeline with colored stages + optional chat window | Frontend | 5 | 🔲 | 28A.9 |
+
+### Agent 2: Advanced Slide Types (~16 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 28B.5 | `PipelineSlide` — scrollable multi-step with visualization slots, scroll hint, vertical gradient line | Frontend | 8 | 🔲 | 28A.9 |
+| 28B.6 | `CodeSlide` — terminal chrome, syntax-colored lines, stagger animation | Frontend | 3 | 🔲 | 28A.9 |
+| 28B.7 | `DiagramSlide` + `BalanceSlide` + `EraSlide` + `MetricsSlide` | Frontend | 5 | 🔲 | 28A.9 |
+
+### Agent 3: Visualization Components (~16 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 28B.8 | `TerminalWindow` + `CodeBlock` + `BrowserMockup` (with 4 tab types: architecture, kanban, flow, mock screen) | Frontend | 8 | 🔲 | 28A.9 |
+| 28B.9 | `FileTree` + `ChatWindow` + `Checklist` + `GradientText` | Frontend | 5 | 🔲 | 28A.9 |
+| 28B.10 | `FlowDiagram` + `ArchitectureDiagram` + `KanbanBoard` + `ProcessLoop` | Frontend | 3 | 🔲 | 28A.9 |
+
+### Orchestrator Post-Merge (~5 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 28B.11 | `AnimatedCounter` + `ProgressRing` + `BalanceBeam` + `ScrollProgressBar` utility components | Frontend | 3 | 🔲 | 28A.9 |
+| 28B.12 | Integration test: build a 10-slide demo presentation using all 13 slide types and key viz components | QA | 5 | 🔲 | 28B.1-28B.11 |
+
+---
+
+## Sprint 28C: AutoDeck CLI + AI Skills + Examples (~40 pts)
+
+**Theme:** CLI scaffold tool, AI agent skills for 6 frameworks, 4 example presentations
+**Status:** 🔲 Planned
+
+### Agent 1: CLI Tool (~16 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 28C.1 | Scaffold `packages/cli/`: package.json (@autodeck/cli), commander.js, chalk, bin entry | DevOps | 3 | 🔲 | 28A.1 |
+| 28C.2 | `autodeck init` command — scaffold new presentation project with Vite + Tailwind + @autodeck/core template | Frontend | 5 | 🔲 | 28C.1 |
+| 28C.3 | `autodeck dev` command — Vite dev server wrapper with HMR | Frontend | 3 | 🔲 | 28C.1 |
+| 28C.4 | `autodeck build` + `autodeck deploy --github-pages` commands | Frontend | 5 | 🔲 | 28C.1 |
+
+### Agent 2: AI Skills (~15 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 28C.5 | Canonical skills: `plan-slide.md`, `create-presentation.md`, `add-visualization.md`, `restyle-presentation.md` | PM | 8 | 🔲 | 28B.12 |
+| 28C.6 | Claude Code adapters (`.claude/commands/`) + OpenCode adapters (`.opencode/skills/`) | PM | 3 | 🔲 | 28C.5 |
+| 28C.7 | Cursor + Continue + Windsurf + GitHub Copilot adapters | PM | 4 | 🔲 | 28C.5 |
+
+### Agent 3: Example Presentations (~9 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 28C.8 | Example: `startup-pitch/` — 5-slide pitch deck (title, problem, solution, demo, closing) | Frontend | 3 | 🔲 | 28B.12 |
+| 28C.9 | Example: `tech-architecture/` — 8-slide technical overview with diagrams, code, pipeline | Frontend | 3 | 🔲 | 28B.12 |
+| 28C.10 | Example: `open-source-showcase/` + `conference-talk/` example decks | Frontend | 3 | 🔲 | 28B.12 |
+
+### Orchestrator Post-Merge
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 28C.11 | Integration QA: `autodeck init` → `autodeck dev` → `autodeck build` full lifecycle verify | QA | 3 | 🔲 | 28C.2-28C.4, 28C.8 |
+
+---
+
+## Sprint 28D: AutoDeck Docs Site + Polish (~35 pts)
+
+**Theme:** Astro/Starlight documentation website, component galleries, final polish and bundle optimization
+**Status:** 🔲 Planned
+
+### Agent 1: Docs Scaffold + Guides (~13 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 28D.1 | Scaffold docs-site with Astro + Starlight theme | Frontend | 5 | 🔲 | 28A.1 |
+| 28D.2 | Getting Started guide: install, init, create first deck, deploy | Docs | 3 | 🔲 | 28C.11 |
+| 28D.3 | Slide type catalog page with code examples for all 13 types | Docs | 5 | 🔲 | 28B.12 |
+
+### Agent 2: Galleries + Deep Docs (~10 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 28D.4 | Visualization component gallery with live previews | Docs | 5 | 🔲 | 28B.12 |
+| 28D.5 | Theme customization guide + built-in theme showcase | Docs | 3 | 🔲 | 28A.4 |
+| 28D.6 | Background effects gallery with live demos | Docs | 2 | 🔲 | 28A.5 |
+
+### Agent 3: Skills Docs + README (~8 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 28D.7 | AI skills documentation — how to use with each of the 6 frameworks | Docs | 3 | 🔲 | 28C.7 |
+| 28D.8 | Animation guide — presets, custom choreography, scroll vs mount triggers | Docs | 2 | 🔲 | 28A.6 |
+| 28D.9 | README.md — hero section, GIF demos, quick start, feature list, badge row | Docs | 3 | 🔲 | 28D.2 |
+
+### Orchestrator Post-Merge (~4 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps |
+|----|--------|-------|-----|--------|------|
+| 28D.10 | Final polish: consistent API naming, tree-shake friendly exports, bundle size < 150KB gzipped | Frontend | 3 | 🔲 | 28C.11 |
+| 28D.11 | Full QA: all examples build, docs site builds, npm pack works, skills lint | QA | 3 | 🔲 | 28D.1-28D.10 |
+
+---
+
 ## Bug Tracker
 
 ### B.01 — Separate `/sprint-run` from `/sprint-close`
@@ -657,4 +808,8 @@
 | Sprint 25 | 12 | ✅ Done |
 | Sprint 26 | 9 | ✅ Done |
 | Sprint 24B | TBD | 🔲 Planned |
-| **Total** | **824** | 🔄 **IN PROGRESS** |
+| Sprint 28A | 45 | 🔲 Planned |
+| Sprint 28B | 55 | 🔲 Planned |
+| Sprint 28C | 40 | 🔲 Planned |
+| Sprint 28D | 35 | 🔲 Planned |
+| **Total** | **999** | 🔄 **IN PROGRESS** |
