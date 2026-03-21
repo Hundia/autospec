@@ -1,17 +1,17 @@
 /**
  * Provider Resolver
- * Auto-detection priority chain: Claude Code CLI → Anthropic API.
- * (GeminiCliProvider will be added in Sprint 31.)
+ * Auto-detection priority chain: Claude Code CLI → Gemini CLI → Anthropic API.
  */
 
 import { LLMProvider } from './interface.js';
 import { ClaudeCodeProvider } from './claude-code.provider.js';
+import { GeminiCliProvider } from './gemini-cli.provider.js';
 import { AnthropicApiProvider } from './anthropic-api.provider.js';
 
 const PROVIDERS: LLMProvider[] = [
   new ClaudeCodeProvider(),
-  new AnthropicApiProvider(),
-  // GeminiCliProvider will be added in Sprint 31
+  new GeminiCliProvider(),    // Priority 2
+  new AnthropicApiProvider(), // Priority 3
 ];
 
 /**
@@ -43,6 +43,7 @@ export async function resolveProvider(override?: string): Promise<LLMProvider> {
     'No LLM provider found.\n\n' +
       'Install one of:\n' +
       '  Claude Code:    npm i -g @anthropic-ai/claude-code && claude auth login\n' +
+      '  Gemini CLI:     npm i -g @google/gemini-cli && gemini auth login\n' +
       '  Anthropic API:  export ANTHROPIC_API_KEY=sk-ant-...\n\n' +
       'Check status: autospec doctor\n',
   );

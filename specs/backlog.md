@@ -703,6 +703,27 @@
 
 ---
 
+## Sprint 31: Polish + Ship v0.2.0 (~38 pts)
+
+**Theme:** Wire the `generate` command, input validation, confirmation/completion UX, interview mode, Gemini provider, validation, version bump — ready for `npm publish`.
+**Status:** ✅ Done
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 31.1 | Create `cli/src/commands/generate.ts` — Commander.js positional arg, all 14 flags, stdin pipe detection | CLI | 5 | ✅ | — | `docs/cli/01_architecture.md` |
+| 31.2 | Input validation — empty, binary, short (<50 words) warning | CLI | 3 | ✅ | — | `docs/cli/04_error_handling.md` |
+| 31.3 | Pre-generation confirmation prompt + cost estimation utility | CLI | 3 | ✅ | — | `docs/cli/03_generate_pipeline.md` |
+| 31.4 | Completion summary — file list, line counts, cost, time, next steps | CLI | 3 | ✅ | — | `docs/cli/03_generate_pipeline.md` |
+| 31.5 | `--dry-run`, `--quiet`, `--verbose`, `--fallback`, exit codes 0-7 | CLI | 3 | ✅ | 31.1 | `docs/cli/04_error_handling.md` |
+| 31.6 | Interview mode — 10 questions → SRS → pipeline | CLI | 5 | ✅ | 31.1 | `docs/cli/03_generate_pipeline.md` |
+| 31.7 | Create `cli/src/providers/gemini-cli.provider.ts` | CLI | 5 | ✅ | — | `docs/cli/02_providers.md` |
+| 31.8 | Spec validation (Step 13) — section presence + per-role line counts | CLI | 3 | ✅ | — | `docs/cli/03_generate_pipeline.md` |
+| 31.9 | Version bump to 0.2.0 + README update + npm publish prep | CLI | 2 | ✅ | all | `docs/cli/05_roadmap.md` |
+| 31.10 | QA — build, test, `autospec generate --dry-run`, doctor | QA | 3 | ✅ | all | — |
+| 31.11 | Docs update + viewer update + sprint summary | Docs | 3 | ✅ | all | — |
+
+---
+
 ## Backlog Statistics
 
 | Sprint | Points | Status |
@@ -734,5 +755,6 @@
 | Sprint 28 | 18 | ✅ Done |
 | Sprint 29 | 82 | ✅ Done |
 | Sprint 30 | 43 | ✅ Done |
+| Sprint 31 | 38 | ✅ Done |
 | Sprint 24B | TBD | 🔲 Planned |
-| **Total** | **998** | 🔄 **IN PROGRESS** |
+| **Total** | **1036** | 🔄 **IN PROGRESS** |

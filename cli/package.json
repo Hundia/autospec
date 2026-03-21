@@ -1,6 +1,6 @@
 {
   "name": "autospec",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "AutoSpec - From requirements to running code. AI-powered spec-driven development.",
   "type": "module",
   "bin": {
