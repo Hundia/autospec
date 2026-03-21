@@ -644,6 +644,41 @@
 
 ---
 
+## Sprint 29: Documentation + Viewer + Quickstart Guide (~82 pts)
+
+**Theme:** Preserve research decisions in docs, expand CLI architecture documentation, redesign landing page QuickStart for all AI tool users, create a "for dummies" QuickStart page in the viewer.
+**Status:** ✅ Done
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 29.1 | Create `docs/research/01_competitive_analysis.md` — GSD v1/v2, OpenSpec v1.2.0, SpecIt v0.1.2 comparison matrix | Docs | 5 | ✅ | — | `docs/research/01_competitive_analysis.md` |
+| 29.2 | Create `docs/research/02_provider_architecture.md` — Why 3 MVP providers, Copilot SDK deferral | Docs | 3 | ✅ | — | `docs/research/02_provider_architecture.md` |
+| 29.3 | Create `docs/research/03_design_decisions.md` — 27-decision log with rationale | Docs | 5 | ✅ | — | `docs/research/03_design_decisions.md` |
+| 29.4 | Create `docs/cli/01_architecture.md` — CLI overview, module structure, command tiers | Docs | 3 | ✅ | — | `docs/cli/01_architecture.md` |
+| 29.5 | Create `docs/cli/02_providers.md` — Provider interface, detection, auth, subprocess patterns | Docs | 5 | ✅ | — | `docs/cli/02_providers.md` |
+| 29.6 | Create `docs/cli/03_generate_pipeline.md` — 14-step pipeline, cost estimates, resume, validation | Docs | 5 | ✅ | — | `docs/cli/03_generate_pipeline.md` |
+| 29.7 | Create `docs/cli/04_error_handling.md` — Failure modes, retries, exit codes 0-7 | Docs | 2 | ✅ | — | `docs/cli/04_error_handling.md` |
+| 29.8 | Create `docs/cli/05_roadmap.md` — v0.2.0 → v0.2.1 → v0.3.0 → v1.0.0 | Docs | 2 | ✅ | — | `docs/cli/05_roadmap.md` |
+| 29.9 | Rewrite `QuickStartSection.tsx` — 4-tab provider selector (Claude/Copilot/Cursor/CLI) | Frontend | 10 | ✅ | — | — |
+| 29.10 | Add "What You Get" value strip above tabs — 4 animated stat pills | Frontend | 3 | ✅ | — | — |
+| 29.11 | CLI tab with `npx autospec generate`, doctor preview, cost estimate | Frontend | 3 | ✅ | — | — |
+| 29.12 | Update section header — "Get Started With Your AI" | Frontend | 2 | ✅ | — | — |
+| 29.13 | Update `viewer/src/data/docs.ts` — Add research + expanded CLI sections | Frontend | 3 | 🔲 | 29.1-29.8 | `viewer/src/data/docs.ts` |
+| 29.14 | Copy 8 new docs to `viewer/public/docs/` | Frontend | 2 | 🔲 | 29.1-29.8 | — |
+| 29.15 | Create `QuickStartPage.tsx` — For-dummies guide, 4 provider paths, FAQ | Frontend | 8 | 🔲 | — | `docs/viewer/06_quickstart_page.md` |
+| 29.16 | Add QuickStart route + sidebar nav item | Frontend | 2 | 🔲 | 29.15 | — |
+| 29.17 | Update `DashboardPage.tsx` — Quick Start CTA card | Frontend | 2 | 🔲 | 29.16 | — |
+| 29.18 | Create `docs/viewer/06_quickstart_page.md` | Docs | 2 | 🔲 | 29.15 | `docs/viewer/06_quickstart_page.md` |
+| 29.19 | Verify sidebar + docs browser renders new sections | QA | 1 | 🔲 | 29.13 | — |
+| 29.20 | Viewer build verification — `npm run build` exits 0 | QA | 3 | 🔲 | Wave 2 | — |
+| 29.21 | Presentation build verification — `npm run build` exits 0 | QA | 3 | 🔲 | Wave 1B | — |
+| 29.22 | Content review — frontmatter, Mermaid, no placeholders | QA | 2 | 🔲 | Wave 1A | — |
+| 29.23 | Update `specs/backlog.md` stats | PM | 2 | 🔲 | 29.20-29.22 | — |
+| 29.24 | Create `sprints/sprint-29/summary.md` | PM | 2 | 🔲 | 29.23 | — |
+| 29.25 | Git commit + push | PM | 1 | 🔲 | 29.24 | — |
+
+---
+
 ## Backlog Statistics
 
 | Sprint | Points | Status |
@@ -673,5 +708,6 @@
 | Sprint 26 | 9 | ✅ Done |
 | Sprint 27 | 31 | ✅ Done |
 | Sprint 28 | 18 | ✅ Done |
+| Sprint 29 | 82 | ✅ Done |
 | Sprint 24B | TBD | 🔲 Planned |
-| **Total** | **873** | 🔄 **IN PROGRESS** |
+| **Total** | **955** | 🔄 **IN PROGRESS** |

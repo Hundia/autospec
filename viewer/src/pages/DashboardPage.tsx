@@ -69,6 +69,22 @@ export const DashboardPage: React.FC = () => {
         <p className="text-sm text-sand-600 mt-1">Spec-Driven Development Framework</p>
       </div>
 
+      {/* Quick Start CTA */}
+      <Card className="border-sage/30 bg-sage/5">
+        <CardContent className="py-4 flex items-center justify-between">
+          <div>
+            <h3 className="text-sm font-semibold text-charcoal">New to AutoSpec?</h3>
+            <p className="text-xs text-sand-600 mt-0.5">Get started in 5 minutes with our step-by-step guide</p>
+          </div>
+          <button
+            onClick={() => navigate('/quickstart')}
+            className="px-4 py-2 bg-sage text-cream text-sm rounded-lg hover:bg-sage-700 transition-colors"
+          >
+            Quick Start →
+          </button>
+        </CardContent>
+      </Card>
+
       {/* KPI Cards */}
       <div className="grid grid-cols-5 gap-4">
         <Card variant="outlined">

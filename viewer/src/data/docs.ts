@@ -22,16 +22,27 @@ export const docsManifest: DocEntry[] = [
   // Viewer
   { slug: '01_architecture', title: 'Architecture', section: 'viewer' },
   { slug: '02_design_system', title: 'Design System', section: 'viewer' },
+  { slug: '06_quickstart_page', title: 'QuickStart Page', section: 'viewer' },
+  // Research (NEW)
+  { slug: '01_competitive_analysis', title: 'Competitive Analysis', section: 'research' },
+  { slug: '02_provider_architecture', title: 'Provider Architecture', section: 'research' },
+  { slug: '03_design_decisions', title: 'Design Decisions', section: 'research' },
   // CLI
+  { slug: '01_architecture', title: 'CLI Architecture', section: 'cli' },
+  { slug: '02_providers', title: 'LLM Providers', section: 'cli' },
+  { slug: '03_generate_pipeline', title: 'Generate Pipeline', section: 'cli' },
+  { slug: '04_error_handling', title: 'Error Handling', section: 'cli' },
+  { slug: '05_roadmap', title: 'Version Roadmap', section: 'cli' },
   { slug: 'orchestration', title: 'Phase Orchestration', section: 'cli' },
   { slug: 'agent_profiles', title: 'Agent Profiles', section: 'cli' },
 ]
 
-export const sections = ['methodology', 'viewer', 'cli'] as const
+export const sections = ['methodology', 'viewer', 'research', 'cli'] as const
 export type DocSection = typeof sections[number]
 
 export const sectionLabels: Record<DocSection, string> = {
   methodology: 'Methodology',
   viewer: 'Viewer',
+  research: 'Research',
   cli: 'CLI',
 }
