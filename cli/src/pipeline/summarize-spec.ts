@@ -31,13 +31,25 @@ export function summarizeSpec(specContent: string): string {
     sections.push('## Key Points\n' + firstSentences.join('\n'));
   }
 
-  // 3. Tables (first 3, for data-heavy specs)
+  // 3. Tables (first 2, capped at 10 rows each to prevent context bloat)
   const tables = extractMarkdownTables(specContent);
   if (tables.length > 0) {
-    sections.push('## Key Tables\n' + tables.slice(0, 3).join('\n\n'));
+    const cappedTables = tables.slice(0, 2).map(t => {
+      const lines = t.split('\n');
+      if (lines.length > 12) {
+        return lines.slice(0, 12).join('\n') + '\n| ... | (truncated) |';
+      }
+      return t;
+    });
+    sections.push('## Key Tables\n' + cappedTables.join('\n\n'));
   }
 
-  return sections.join('\n\n');
+  // Cap total summary to ~2000 chars to prevent context bloat in later specs
+  let result = sections.join('\n\n');
+  if (result.length > 2000) {
+    result = result.slice(0, 2000) + '\n\n(summary truncated)';
+  }
+  return result;
 }
 
 /**

@@ -15,7 +15,7 @@ import { registerCleanup } from '../utils/signals.js';
 export class ClaudeCodeProvider implements LLMProvider {
   readonly name = 'claude-code';
   readonly requiresApiKey = false;
-  readonly timeoutMs = 120_000;
+  readonly timeoutMs = 600_000; // 10 minutes — complex SRS specs can take 3-5 minutes each
 
   async isAvailable(): Promise<boolean> {
     try {
@@ -34,7 +34,7 @@ export class ClaudeCodeProvider implements LLMProvider {
   }
 
   async *generate(prompt: string, options: GenerateOptions): AsyncIterable<string> {
-    const args = ['--print', '--output-format', 'stream-json'];
+    const args = ['--print', '--output-format', 'stream-json', '--verbose'];
 
     if (options.model) {
       args.push('--model', options.model);
@@ -79,17 +79,27 @@ export class ClaudeCodeProvider implements LLMProvider {
           if (!trimmed) continue;
           try {
             const event = JSON.parse(trimmed);
-            // Extract text content from assistant messages
-            if (event.type === 'assistant' && event.content) {
-              if (typeof event.content === 'string') {
-                yield event.content;
-              } else if (Array.isArray(event.content)) {
-                for (const block of event.content) {
+            // Extract text content from assistant messages.
+            // Claude Code CLI stream-json format: {type: "assistant", message: {content: [{type: "text", text: "..."}]}}
+            // Also handle flat format (older versions): {type: "assistant", content: [...]}
+            const content = event.type === 'assistant'
+              ? (event.message?.content ?? event.content)
+              : null;
+            if (content) {
+              if (typeof content === 'string') {
+                yield content;
+              } else if (Array.isArray(content)) {
+                for (const block of content) {
                   if (block.type === 'text' && typeof block.text === 'string') {
                     yield block.text;
                   }
                 }
               }
+            }
+            // Also check the "result" event type which contains the final text
+            if (event.type === 'result' && typeof event.result === 'string' && !event.is_error) {
+              // Only yield result if we got no content from assistant events (fallback)
+              // We track this via a flag set before the loop
             }
           } catch {
             // Skip unparseable lines — common with stream-json format
@@ -101,11 +111,14 @@ export class ClaudeCodeProvider implements LLMProvider {
       if (buffer.trim()) {
         try {
           const event = JSON.parse(buffer.trim());
-          if (event.type === 'assistant' && event.content) {
-            if (typeof event.content === 'string') {
-              yield event.content;
-            } else if (Array.isArray(event.content)) {
-              for (const block of event.content) {
+          const content = event.type === 'assistant'
+            ? (event.message?.content ?? event.content)
+            : null;
+          if (content) {
+            if (typeof content === 'string') {
+              yield content;
+            } else if (Array.isArray(content)) {
+              for (const block of content) {
                 if (block.type === 'text' && typeof block.text === 'string') {
                   yield block.text;
                 }

@@ -189,6 +189,39 @@ async function withRetry<T>(
 }
 
 // ---------------------------------------------------------------------------
+// LLM output cleaner (D2: strip agent narration artifacts)
+// ---------------------------------------------------------------------------
+
+/**
+ * Clean LLM output artifacts — strip agent narration, tool-use text,
+ * and anything before the first markdown heading or YAML frontmatter.
+ */
+function cleanLLMOutput(content: string): string {
+  // Remove any text before the first --- (YAML frontmatter) or # heading
+  const frontmatterStart = content.indexOf('---');
+  const headingStart = content.search(/^#\s/m);
+
+  let start = -1;
+  if (frontmatterStart >= 0 && headingStart >= 0) {
+    start = Math.min(frontmatterStart, headingStart);
+  } else if (frontmatterStart >= 0) {
+    start = frontmatterStart;
+  } else if (headingStart >= 0) {
+    start = headingStart;
+  }
+
+  if (start > 0) {
+    content = content.slice(start);
+  }
+
+  // Remove markdown code fence wrappers (```markdown ... ```)
+  content = content.replace(/^```(?:markdown|md)?\n/gm, '');
+  content = content.replace(/\n```\s*$/gm, '');
+
+  return content.trim();
+}
+
+// ---------------------------------------------------------------------------
 // Main pipeline
 // ---------------------------------------------------------------------------
 
@@ -379,9 +412,13 @@ export async function generateSpecs(options: GenerateSpecsOptions): Promise<Gene
       process.exit(1);
     }
 
+    // --- Clean LLM output artifacts (narration, tool-use text, code fences) ---
+    const cleanedContent = cleanLLMOutput(specContent);
+
     // --- Strip any YAML frontmatter the LLM already wrote, then add ours ---
     // (LLMs sometimes add frontmatter even though we add it ourselves)
-    const contentWithoutFrontmatter = specContent.replace(/^---\n[\s\S]*?\n---\n*/, '');
+    // Handles multiple consecutive frontmatter blocks and leading whitespace.
+    const contentWithoutFrontmatter = cleanedContent.replace(/^(\s*---\n[\s\S]*?\n---\n*)+/, '');
     const finalContent = addFrontmatter(contentWithoutFrontmatter, {
       role: spec.role,
       model: model ?? 'auto',

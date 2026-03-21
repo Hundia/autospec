@@ -16,7 +16,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts --clean --external @inquirer/prompts --external chalk --external commander --external fs-extra --external handlebars --external ora --external yaml",
+    "build": "tsup src/index.ts --format esm --dts --clean --external @inquirer/prompts --external chalk --external commander --external fs-extra --external handlebars --external ora --external yaml && cp -r src/prompts dist/prompts",
     "dev": "tsup src/index.ts --format esm --watch",
     "start": "node dist/index.js",
     "test": "vitest run",
