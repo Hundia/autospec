@@ -418,7 +418,7 @@
 ## Sprint 19: Onboarding Pivot — Template-First, Agent-Native (~50 pts)
 
 **Theme:** Replace CLI-first onboarding with template repo + @QUICKSTART.md workflow. Redesign hero, QuickStart, and Tools sections.
-**Status:** 🔄 In Progress
+**Status:** ✅ Done
 
 ### Agent A: Template Repo + QUICKSTART (~18 pts)
 
@@ -565,7 +565,7 @@
 ## Sprint 26: OpenCode Skill Port for Claude Workflows (~9 pts)
 
 **Theme:** Make the repo's Claude slash-command workflows available as OpenCode skills and project commands.
-**Status:** 🔄 In Progress
+**Status:** ✅ Done
 
 | ID | Ticket | Owner | Pts | Status | Deps | Docs |
 |----|--------|-------|-----|--------|------|------|
@@ -663,19 +663,43 @@
 | 29.10 | Add "What You Get" value strip above tabs — 4 animated stat pills | Frontend | 3 | ✅ | — | — |
 | 29.11 | CLI tab with `npx autospec generate`, doctor preview, cost estimate | Frontend | 3 | ✅ | — | — |
 | 29.12 | Update section header — "Get Started With Your AI" | Frontend | 2 | ✅ | — | — |
-| 29.13 | Update `viewer/src/data/docs.ts` — Add research + expanded CLI sections | Frontend | 3 | 🔲 | 29.1-29.8 | `viewer/src/data/docs.ts` |
-| 29.14 | Copy 8 new docs to `viewer/public/docs/` | Frontend | 2 | 🔲 | 29.1-29.8 | — |
-| 29.15 | Create `QuickStartPage.tsx` — For-dummies guide, 4 provider paths, FAQ | Frontend | 8 | 🔲 | — | `docs/viewer/06_quickstart_page.md` |
-| 29.16 | Add QuickStart route + sidebar nav item | Frontend | 2 | 🔲 | 29.15 | — |
-| 29.17 | Update `DashboardPage.tsx` — Quick Start CTA card | Frontend | 2 | 🔲 | 29.16 | — |
-| 29.18 | Create `docs/viewer/06_quickstart_page.md` | Docs | 2 | 🔲 | 29.15 | `docs/viewer/06_quickstart_page.md` |
-| 29.19 | Verify sidebar + docs browser renders new sections | QA | 1 | 🔲 | 29.13 | — |
-| 29.20 | Viewer build verification — `npm run build` exits 0 | QA | 3 | 🔲 | Wave 2 | — |
-| 29.21 | Presentation build verification — `npm run build` exits 0 | QA | 3 | 🔲 | Wave 1B | — |
-| 29.22 | Content review — frontmatter, Mermaid, no placeholders | QA | 2 | 🔲 | Wave 1A | — |
-| 29.23 | Update `specs/backlog.md` stats | PM | 2 | 🔲 | 29.20-29.22 | — |
-| 29.24 | Create `sprints/sprint-29/summary.md` | PM | 2 | 🔲 | 29.23 | — |
-| 29.25 | Git commit + push | PM | 1 | 🔲 | 29.24 | — |
+| 29.13 | Update `viewer/src/data/docs.ts` — Add research + expanded CLI sections | Frontend | 3 | ✅ | 29.1-29.8 | `viewer/src/data/docs.ts` |
+| 29.14 | Copy 8 new docs to `viewer/public/docs/` | Frontend | 2 | ✅ | 29.1-29.8 | — |
+| 29.15 | Create `QuickStartPage.tsx` — For-dummies guide, 4 provider paths, FAQ | Frontend | 8 | ✅ | — | `docs/viewer/06_quickstart_page.md` |
+| 29.16 | Add QuickStart route + sidebar nav item | Frontend | 2 | ✅ | 29.15 | — |
+| 29.17 | Update `DashboardPage.tsx` — Quick Start CTA card | Frontend | 2 | ✅ | 29.16 | — |
+| 29.18 | Create `docs/viewer/06_quickstart_page.md` | Docs | 2 | ✅ | 29.15 | `docs/viewer/06_quickstart_page.md` |
+| 29.19 | Verify sidebar + docs browser renders new sections | QA | 1 | ✅ | 29.13 | — |
+| 29.20 | Viewer build verification — `npm run build` exits 0 | QA | 3 | ✅ | Wave 2 | — |
+| 29.21 | Presentation build verification — `npm run build` exits 0 | QA | 3 | ✅ | Wave 1B | — |
+| 29.22 | Content review — frontmatter, Mermaid, no placeholders | QA | 2 | ✅ | Wave 1A | — |
+| 29.23 | Update `specs/backlog.md` stats | PM | 2 | ✅ | 29.20-29.22 | — |
+| 29.24 | Create `sprints/sprint-29/summary.md` | PM | 2 | ✅ | 29.23 | — |
+| 29.25 | Git commit + push | PM | 1 | ✅ | 29.24 | — |
+
+---
+
+## Sprint 30: CLI Core Pipeline + Claude Code Provider (~43 pts)
+
+**Theme:** Build the LLM-backed `autospec generate` command — provider interface, Claude Code + Anthropic API providers, 14-step pipeline, prompt templates, resume mechanism, and `autospec doctor`.
+**Status:** ✅ Done
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 30.0 | Update `/sprint-run` skill with orchestrator + Sonnet defaults, docs-first, QA template reference, viewer update rules | PM | 2 | ✅ | — | `skills/claude/sprint-run.md` |
+| 30.1 | ESM/CJS build verification — install `execa@9 zod dotenv @anthropic-ai/sdk`, verify `tsup` bundles cleanly | CLI | 2 | ✅ | — | — |
+| 30.2 | Create `cli/src/providers/interface.ts` — `LLMProvider`, `GenerateOptions`, `ProviderError` interfaces | CLI | 3 | ✅ | 30.1 | `docs/cli/02_providers.md` |
+| 30.3 | Create `cli/src/providers/resolver.ts` — auto-detection priority chain, `resolveProvider()` | CLI | 2 | ✅ | 30.2 | `docs/cli/02_providers.md` |
+| 30.4 | Create `cli/src/providers/claude-code.provider.ts` — subprocess via stdin, NDJSON parsing, error parsing | CLI | 5 | ✅ | 30.2 | `docs/cli/02_providers.md` |
+| 30.5 | Create `cli/src/providers/anthropic-api.provider.ts` — dynamic import, streaming, error parsing | CLI | 5 | ✅ | 30.2 | `docs/cli/02_providers.md` |
+| 30.6 | Create `cli/src/utils/file.ts` additions + `cli/src/utils/signals.ts` — atomic write, SIGINT/SIGTERM handlers | CLI | 3 | ✅ | 30.1 | `docs/cli/03_generate_pipeline.md` |
+| 30.7 | Create `cli/src/pipeline/generate-specs.ts` — 14-step pipeline skeleton | CLI | 5 | ✅ | 30.2, 30.6 | `docs/cli/03_generate_pipeline.md` |
+| 30.8 | Create `cli/src/pipeline/extract-metadata.ts` + prompt template — Step 1 | CLI | 3 | ✅ | 30.7 | `docs/cli/03_generate_pipeline.md` |
+| 30.9 | Create `cli/src/pipeline/generate-single-spec.ts` + `summarize-spec.ts` — Steps 2-11 | CLI | 5 | ✅ | 30.7 | `docs/cli/03_generate_pipeline.md` |
+| 30.10 | Create 11 Handlebars system prompt templates at `cli/src/prompts/system/*.hbs` | CLI | 5 | ✅ | — | `docs/cli/03_generate_pipeline.md` |
+| 30.11 | Create `cli/src/pipeline/resume.ts` — hash-based resume (sha256 in frontmatter) | CLI | 3 | ✅ | 30.7 | `docs/cli/03_generate_pipeline.md` |
+| 30.12 | Create `cli/src/commands/doctor.ts` — system readiness diagnostics | CLI | 2 | ✅ | 30.3 | `docs/cli/01_architecture.md` |
+| 30.13 | QA, docs update, viewer update, sprint summary | Docs | 3 | ✅ | all | — |
 
 ---
 
@@ -701,7 +725,7 @@
 | Sprint 16 | 45 | ✅ Done |
 | Sprint 17 | 24 | ✅ Done |
 | Sprint 18 | 52 | ✅ Done |
-| Sprint 19 | 50 | 🔄 In Progress |
+| Sprint 19 | 50 | ✅ Done |
 | Sprint 23 | 48 | ✅ Done |
 | Sprint 24 | 58 | ✅ Done |
 | Sprint 25 | 12 | ✅ Done |
@@ -709,5 +733,6 @@
 | Sprint 27 | 31 | ✅ Done |
 | Sprint 28 | 18 | ✅ Done |
 | Sprint 29 | 82 | ✅ Done |
+| Sprint 30 | 43 | ✅ Done |
 | Sprint 24B | TBD | 🔲 Planned |
-| **Total** | **955** | 🔄 **IN PROGRESS** |
+| **Total** | **998** | 🔄 **IN PROGRESS** |

@@ -5,6 +5,41 @@
 
 import fs from 'fs-extra';
 import path from 'path';
+import { rename, writeFile as fsWriteFile, rm, readdir } from 'fs/promises';
+import { createHash } from 'crypto';
+
+const AUTOSPEC_TMP_SUFFIX = '.autospec-tmp';
+
+/**
+ * Atomic file write — write to tmp, then rename.
+ * Prevents corruption on Ctrl+C, OOM, or power loss.
+ */
+export async function atomicWriteFile(filePath: string, content: string): Promise<void> {
+  await fs.ensureDir(path.dirname(filePath));
+  const tmpPath = filePath + AUTOSPEC_TMP_SUFFIX;
+  await fsWriteFile(tmpPath, content, 'utf-8');
+  await rename(tmpPath, filePath);  // atomic on same filesystem
+}
+
+/**
+ * Clean orphaned .autospec-tmp files from a directory
+ */
+export async function cleanOrphanedTmpFiles(dir: string): Promise<number> {
+  if (!(await fs.pathExists(dir))) return 0;
+  const files = await readdir(dir);
+  const tmpFiles = files.filter(f => f.endsWith(AUTOSPEC_TMP_SUFFIX));
+  for (const f of tmpFiles) {
+    await rm(path.join(dir, f), { force: true });
+  }
+  return tmpFiles.length;
+}
+
+/**
+ * Compute SHA-256 hash of file content
+ */
+export function computeHash(content: string): string {
+  return createHash('sha256').update(content).digest('hex');
+}
 
 /**
  * Ensure a directory exists, creating it if necessary

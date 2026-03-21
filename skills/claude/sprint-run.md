@@ -20,7 +20,7 @@ Execute the sprint through 8 phases. Get user confirmation after Phase 1 before 
 
 1. Read `specs/backlog.md` — find the target sprint
 2. Read ALL relevant spec files referenced by the sprint's tickets
-3. Read relevant `docs/` sections for context
+3. Read ALL relevant `docs/` sections — **docs are the authoritative source**. Include these paths in agent briefs so agents read them before implementing.
 4. Build execution plan:
    - Order tickets by dependencies (DAG sort)
    - Identify parallelizable batches (tickets with no mutual dependencies)
@@ -45,19 +45,22 @@ Shall I proceed with execution?
 
 ---
 
-### Orchestrator + Agent Execution Pattern (Recommended for multi-sprint)
+### DEFAULT Execution Pattern: Orchestrator + Sonnet Agents
 
-When running multiple sprints or large batches, use the **Opus Orchestrator + Sonnet Agent** pattern:
+**ALWAYS use this pattern.** Opus orchestrates, Sonnet agents implement. This keeps the orchestrator's context clean and is FinOps efficient.
 
 1. **Orchestrator (Opus 4.6)** — never implements directly. Instead:
    - Writes `agents/sprint-X-brief.md` with full context package
-   - Spawns `Agent(subagent_type=general-purpose)` for each sprint
+   - Includes relevant `docs/` file paths in the brief so agents read them FIRST
+   - Spawns `Agent(subagent_type=general-purpose, model="sonnet")` for implementation
    - Reviews results, merges, then spawns next batch
 
 2. **Sprint Agent (Sonnet 4.6)** — reads brief, implements all tickets:
    - Reads `agents/sprint-X-brief.md` for full context
+   - Reads ALL `docs/` files listed in the brief BEFORE writing any code
    - Executes tickets per `execute-ticket.md` conventions
    - Updates `specs/backlog.md` (🔲→✅), docs/, sprint summary
+   - If any code written is NOT documented in `docs/`, creates/updates the relevant doc file
 
 3. **Parallel batches** — sprints with no dependencies run as parallel agents in ONE message:
    ```
@@ -94,40 +97,51 @@ After the user approves the execution plan, populate the viewer with planning vi
 
 ### Phase 2: Ticket Execution
 
+**Use `model: "sonnet"` for all implementation agents (FinOps). Reserve Opus for orchestration + architecture decisions only.**
+
 For each ticket (in dependency order):
 1. Update backlog: 🔲 → 🔄
-2. Read relevant docs + specs
+2. Read relevant docs + specs (agents MUST read `docs/` first)
 3. Implement the ticket
 4. Write tests
 5. Update backlog: 🔄 → 🧪
 
-**Parallelize independent tickets** using Task agents where possible.
+**Parallelize independent tickets** by spawning multiple Sonnet agents in ONE message (parallel tool calls).
 
 ---
 
 ### Phase 3: QA Verification
+
+Follow QA patterns from `templates/specs/05_qa_lead.template.md`.
 
 1. Run full test suite
 2. Fix any regressions
 3. For bug fixes: verify the original bug is resolved
 4. Add new test cases for untested features
 5. Re-run until all tests pass
+6. **Build verification for ALL affected apps:**
 
 ```bash
-npm test                     # Full suite
-npm run lint                 # Code quality
-npm run typecheck            # Type safety
-npm run build                # Build verification
+cd cli && npm run build && npm test   # CLI
+cd viewer && npm run build            # Viewer
+cd presentation && npm run build      # Landing page (if changed)
 ```
+
+7. **E2E verification:** For CLI changes, test end-to-end with a real input file. For UI changes, verify the page renders correctly.
 
 ---
 
 ### Phase 4: Documentation Update
 
+**CRITICAL:** The `docs/` directory must ALWAYS reflect the complete picture of the system. If any code was written that isn't documented, create or update the relevant doc file NOW.
+
 For each completed ticket:
-1. Update relevant `docs/` section
+1. Update relevant `docs/` section (create new files if needed)
 2. Ensure architecture/flow docs reflect changes
 3. Update `docs/` index or navigation if new sections added
+4. **Copy new/updated docs to `viewer/public/docs/`**
+5. **Update `viewer/src/data/docs.ts` manifest** if new doc files were created
+6. Rebuild viewer: `cd viewer && npm run build`
 
 ---
 
@@ -178,6 +192,9 @@ Present summary to user:
 - ALWAYS get user confirmation after Phase 1 before executing
 - ALWAYS run QA before closing (Phase 3 before Phase 5)
 - ALWAYS update docs (Phase 4 before Phase 5)
-- Parallelize independent tickets where possible
-- Use recommended models from backlog for cost efficiency
+- ALWAYS use Sonnet agents for implementation (FinOps efficient) — `model: "sonnet"` in Agent tool calls
+- ALWAYS update `docs/` for any new code — docs must reflect the complete system at all times
+- ALWAYS update the viewer with new docs + sprint data (`viewer/src/data/docs.ts`, `viewer/public/docs/`, `viewer/src/data/backlog.ts`)
+- ALWAYS keep orchestrator context clean — delegate to agents, don't implement directly
+- Parallelize independent tickets by spawning multiple agents in ONE message
 - Never mark sprint complete with failing tests

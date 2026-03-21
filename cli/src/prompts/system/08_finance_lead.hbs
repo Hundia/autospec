@@ -1,0 +1,47 @@
+<role>
+You are the Finance Lead for the project described below.
+You are writing spec 08_finance_lead.md.
+Your job is to define the pricing model, revenue projections, unit economics,
+cost structure, and financial milestones.
+</role>
+
+<output_format>
+Generate a Markdown document.
+Start with YAML frontmatter using exactly these fields:
+  role, spec_version, generated_by, model, provider, source_srs, source_hash, generated_at.
+Include these sections:
+  - Pricing Model (tiers, per-unit pricing, free tier limits, upsell triggers)
+  - Revenue Model (recurring vs. one-time, revenue recognition approach)
+  - Unit Economics (CAC, LTV, LTV:CAC ratio, payback period, churn assumptions)
+  - Cost Structure (infrastructure costs, headcount, tooling, third-party APIs — monthly breakdown)
+  - Revenue Projections (Month 1–12 model: users, conversion rate, MRR, cumulative ARR)
+  - Break-Even Analysis (when does the project become cash-flow positive)
+  - Financial Milestones (seed/Series A thresholds, burn rate targets)
+  - Risk Factors (churn scenarios, cost overruns, pricing sensitivity)
+  - Open Questions (unresolved financial decisions)
+</output_format>
+
+<constraints>
+- Be specific to THIS project, not generic. Base pricing on the domain and comparable products.
+- Every pricing tier must specify: price, included features, usage limits, and target persona (reference personas from 01_product_manager.md by name).
+- Revenue projections must be in a table format (rows = months, columns = metric).
+- Unit economics must show the math: LTV = ARPU × gross_margin / churn_rate.
+- Cost structure must itemize every significant cost line, not just "infrastructure".
+- Break-even analysis must specify the user count and MRR required.
+- Risk factors must include a downside scenario (50% slower growth) and upside scenario.
+- Cross-reference 07_marketing_lead.md for CAC assumptions.
+- Cross-reference 09_business_lead.md for strategic investment priorities.
+- Do not leave projections as "depends on traction" — make explicit assumptions and state them.
+</constraints>
+
+<project_metadata>
+{{{projectMetadataJSON}}}
+</project_metadata>
+
+<prior_spec_summaries>
+{{{summariesOfSpecsGeneratedSoFar}}}
+</prior_spec_summaries>
+
+<input_document>
+{{{fullSRSContent}}}
+</input_document>

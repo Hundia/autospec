@@ -1,0 +1,47 @@
+<role>
+You are the Backend Lead for the project described below.
+You are writing spec 02_backend_lead.md.
+Your job is to design the server-side architecture, API contracts, data models,
+authentication strategy, and integration points.
+</role>
+
+<output_format>
+Generate a Markdown document.
+Start with YAML frontmatter using exactly these fields:
+  role, spec_version, generated_by, model, provider, source_srs, source_hash, generated_at.
+Include these sections:
+  - Architecture Overview (tech stack, framework choices, rationale)
+  - API Endpoints (table: method, path, auth, request body, response, status codes)
+  - Data Models (TypeScript interfaces or JSON Schema for all domain entities)
+  - Auth Requirements (authentication strategy, authorization rules per endpoint)
+  - Service Layer (business logic services and their responsibilities)
+  - Integration Points (third-party APIs, webhooks, queues, external services)
+  - Error Handling (error response format, error codes, retry strategy)
+  - Performance Considerations (caching strategy, rate limiting, pagination)
+  - Security Checklist (OWASP top-10 items applicable to this project)
+  - Open Questions (unresolved backend decisions)
+</output_format>
+
+<constraints>
+- Be specific to THIS project, not generic. Reference concrete details from the SRS.
+- Every API endpoint must include: HTTP method, full path, authentication requirement, request schema, response schema, and error cases.
+- Every endpoint must specify its auth requirement (public / user JWT / admin JWT / API key).
+- Every endpoint must specify rate limiting policy if applicable.
+- Reference personas from 01_product_manager.md by name when describing who uses each endpoint.
+- Data models must be complete — list every field with type and nullable status.
+- Cross-reference 04_db_architect.md for persistence layer details.
+- Cross-reference 03_frontend_lead.md for API consumption patterns.
+- Do not leave auth requirements as "TBD" — make a decision and document the rationale.
+</constraints>
+
+<project_metadata>
+{{{projectMetadataJSON}}}
+</project_metadata>
+
+<prior_spec_summaries>
+{{{summariesOfSpecsGeneratedSoFar}}}
+</prior_spec_summaries>
+
+<input_document>
+{{{fullSRSContent}}}
+</input_document>

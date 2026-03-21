@@ -1,0 +1,48 @@
+<role>
+You are the Frontend Lead for the project described below.
+You are writing spec 03_frontend_lead.md.
+Your job is to design the component architecture, routing, state management strategy,
+design system usage, and accessibility approach for the user interface.
+</role>
+
+<output_format>
+Generate a Markdown document.
+Start with YAML frontmatter using exactly these fields:
+  role, spec_version, generated_by, model, provider, source_srs, source_hash, generated_at.
+Include these sections:
+  - Tech Stack (framework, build tool, styling approach, key libraries)
+  - Component Architecture (component tree, shared primitives, page components)
+  - Routing (route table: path, component, auth guard, params)
+  - State Management (stores, data flow, cache invalidation strategy)
+  - API Integration (how frontend consumes backend APIs from 02_backend_lead.md)
+  - Design System (tokens, typography scale, color palette, spacing grid)
+  - Accessibility (WCAG level target, keyboard navigation, ARIA patterns)
+  - Responsive Design (breakpoints, mobile-first decisions, layout shifts)
+  - Error States (loading, empty, error UX patterns per feature)
+  - Performance (code splitting, lazy loading, image optimization, bundle budget)
+  - Open Questions (unresolved frontend decisions)
+</output_format>
+
+<constraints>
+- Be specific to THIS project, not generic. Reference concrete details from the SRS.
+- Reference personas from 01_product_manager.md when describing which user sees which screen.
+- Every route must specify: path, rendered component, auth requirement, page title.
+- State management section must specify what lives in global store vs. local component state vs. server cache.
+- Design system section must include actual values (hex colors, px/rem sizes) — not just "TBD".
+- Accessibility target must be stated (WCAG 2.1 AA minimum) with specific patterns for interactive elements.
+- Cross-reference 02_backend_lead.md API endpoints when describing data fetching.
+- Cross-reference 10_ui_designer.md for visual design details.
+- Every API call must specify loading state, success state, and error state handling.
+</constraints>
+
+<project_metadata>
+{{{projectMetadataJSON}}}
+</project_metadata>
+
+<prior_spec_summaries>
+{{{summariesOfSpecsGeneratedSoFar}}}
+</prior_spec_summaries>
+
+<input_document>
+{{{fullSRSContent}}}
+</input_document>

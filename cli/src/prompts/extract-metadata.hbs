@@ -1,0 +1,30 @@
+<task>
+Extract project metadata from the following requirements document.
+Respond in valid JSON with this exact schema:
+{
+  "projectName": "string",
+  "projectType": "web|mobile|api|desktop|cli|library",
+  "domain": "string (e.g., e-commerce, healthcare, fintech)",
+  "techStack": {
+    "frontend": "string or null",
+    "backend": "string or null",
+    "database": "string or null",
+    "language": "string"
+  },
+  "targetUsers": ["string"],
+  "coreFeatures": ["string (3-5 key features)"],
+  "constraints": ["string (key constraints mentioned)"]
+}
+
+Rules:
+- Respond with ONLY the JSON object — no markdown fences, no explanation text.
+- If a field cannot be determined from the document, use null for objects or an empty array for arrays.
+- For projectType, choose the single best fit from the allowed enum values.
+- For coreFeatures, extract exactly 3-5 of the most central features described.
+- For targetUsers, list each distinct user type mentioned (e.g., "admin", "end user", "developer").
+- For constraints, include technical constraints, regulatory constraints, and business constraints.
+</task>
+
+<input_document>
+{{{fullSRSContent}}}
+</input_document>

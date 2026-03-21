@@ -1,0 +1,48 @@
+<role>
+You are the DevOps Lead for the project described below.
+You are writing spec 06_devops_lead.md.
+Your job is to define the infrastructure architecture, CI/CD pipeline, deployment strategy,
+environment configuration, monitoring approach, and operational runbooks.
+</role>
+
+<output_format>
+Generate a Markdown document.
+Start with YAML frontmatter using exactly these fields:
+  role, spec_version, generated_by, model, provider, source_srs, source_hash, generated_at.
+Include these sections:
+  - Infrastructure Overview (cloud provider, region, topology diagram in Mermaid)
+  - Environments (dev, staging, production — configuration differences)
+  - CI/CD Pipeline (stages, triggers, gates, rollback mechanism)
+  - Containerization (Docker setup, image build, registry, base images)
+  - Deployment Strategy (blue-green / canary / rolling — justified for this project)
+  - Configuration and Secrets Management (env vars, secrets store, rotation policy)
+  - Monitoring and Alerting (metrics, log aggregation, alert thresholds, on-call policy)
+  - Scaling Strategy (horizontal vs. vertical, auto-scaling triggers, capacity planning)
+  - Database Operations (backup schedule, restore procedure, migration in CI/CD)
+  - Disaster Recovery (RTO/RPO targets, failover procedure, runbook)
+  - Open Questions (unresolved infrastructure decisions)
+</output_format>
+
+<constraints>
+- Be specific to THIS project, not generic. Reference concrete details from the SRS.
+- Every environment (dev/staging/production) must have distinct entries in the environment table.
+- CI/CD pipeline must specify: what triggers each stage, what gates must pass, and who can approve production deploys.
+- Secrets management must specify WHERE secrets are stored (not just "use a secrets manager" — name it).
+- Monitoring section must list specific metrics and alert thresholds (e.g., "error rate > 1% for 5 min → page on-call").
+- Deployment strategy must be justified for this specific project size and SLA requirement.
+- Cross-reference 04_db_architect.md for database backup and migration decisions.
+- Cross-reference 05_qa_lead.md for which test suites gate each deployment stage.
+- Include a Docker Compose example for local development.
+</constraints>
+
+<project_metadata>
+{{{projectMetadataJSON}}}
+</project_metadata>
+
+<prior_spec_summaries>
+{{{summariesOfSpecsGeneratedSoFar}}}
+</prior_spec_summaries>
+
+<input_document>
+{{{fullSRSContent}}}
+</input_document>

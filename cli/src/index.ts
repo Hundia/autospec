@@ -14,6 +14,7 @@ import { statusCommand } from './commands/status.js';
 import { sprintCommand, SprintOptions } from './commands/sprint.js';
 import { specCommand, SpecOptions } from './commands/spec.js';
 import { dashboardCommand, DashboardOptions } from './commands/dashboard.js';
+import { doctorCommand } from './commands/doctor.js';
 
 const VERSION = '0.1.0';
 
@@ -113,6 +114,18 @@ program
     }
   });
 
+// Doctor command
+program
+  .command('doctor')
+  .description('Check system readiness and available LLM providers')
+  .action(async () => {
+    try {
+      await doctorCommand();
+    } catch (error) {
+      process.exit(1);
+    }
+  });
+
 // Help command with banner
 program
   .command('help')
@@ -131,6 +144,7 @@ program.action(() => {
   console.log(chalk.cyan('    autospec sprint <num>') + ' Generate sprint prompt');
   console.log(chalk.cyan('    autospec spec <name>') + ' Create a new feature spec');
   console.log(chalk.cyan('    autospec dashboard') + '   Launch monitoring dashboard');
+  console.log(chalk.cyan('    autospec doctor') + '      Check system readiness');
   console.log('');
   console.log(chalk.dim('  Run ' + chalk.cyan('autospec <command> --help') + ' for more info\n'));
 });
