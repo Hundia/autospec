@@ -88,7 +88,7 @@ This is a **project-description spec** — not a role-based spec decomposition. 
 | Accepts existing SRS/PRD as input | No | No | No | **Yes** |
 | Role-decomposed specs (10 roles) | No | No | No | **Yes** |
 | Standalone CLI (no AI assistant needed) | No (v1) / Yes (v2) | No | Yes | **Yes** |
-| Zero-API-key for CLI tool users | Yes | Yes | Partial | **Yes** |
+| Zero-API-key for CLI tool users | Yes | Yes | Partial | **Yes*** |
 | Headless CI/CD support | No | No | No | **Yes** |
 | Sprint-ready backlog generation | No | No | Partial | **Yes** |
 | Resume on interruption | No | No | No | **Yes** |
@@ -98,6 +98,8 @@ This is a **project-description spec** — not a role-based spec decomposition. 
 | Plugin system for custom roles | No | Yes (schemas) | Yes | v1.0.0 |
 | Atomic file writes | N/A | N/A | Unknown | Yes |
 | Cost tracking | Yes (v2) | N/A | No | Yes |
+
+*\*When Claude Code or Gemini CLI is installed; API key needed for Anthropic API fallback.*
 
 ---
 

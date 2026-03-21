@@ -71,7 +71,7 @@ Commands are organized into three tiers by their primary interaction with LLMs.
 | `--provider <name>` | Auto-detect | Force: `claude-code`, `gemini-cli`, `anthropic-api` |
 | `--model <name>` | Provider default | Model override: `opus`, `sonnet`, `haiku`, `gemini-pro` |
 | `--spec <name>` | All 10 + backlog | Generate only one spec (e.g., `02_backend_lead`) |
-| `--output <dir>` | `./specs/` | Output directory |
+| `--output <dir>` / `-o` | `./specs/` | Output directory |
 | `--max-budget <usd>` | No cap | Cost cap in USD (opt-in, best-effort) |
 | `--force` | `false` | Skip resume check; overwrite all existing specs |
 | `--fallback` | `false` | Try next provider on failure (opt-in) |
@@ -122,8 +122,7 @@ cli/src/
 │   │   ├── 09_business_lead.hbs
 │   │   ├── 10_ui_designer.hbs
 │   │   └── backlog.hbs
-│   ├── extract-metadata.hbs          # Metadata extraction prompt template
-│   └── interview-questions.ts        # 10 fixed interview questions
+│   └── extract-metadata.hbs          # Metadata extraction prompt template
 ├── generators/                       # Existing generators (unchanged)
 ├── parsers/                          # Existing parsers (unchanged)
 └── utils/

@@ -42,7 +42,7 @@ interface GenerateOptions {
 }
 
 interface ProviderError {
-  type: 'auth' | 'rate_limit' | 'network' | 'model_not_found' | 'budget_exceeded' | 'unknown';
+  type: 'auth' | 'rate_limit' | 'network' | 'model_not_found' | 'budget_exceeded' | 'timeout' | 'unknown';
   message: string;        // User-facing message with actionable fix
   retryable: boolean;
   rawError?: string;
@@ -57,7 +57,7 @@ interface ProviderError {
 
 | Priority | Provider | Detection Method | Mechanism | Timeout | Auth |
 |----------|----------|-----------------|-----------|---------|------|
-| 1 | Claude Code CLI | `which claude` exits 0 AND `claude auth status` exits 0 | Subprocess via stdin (`execa`) | 120s | Existing CLI auth — zero-config |
+| 1 | Claude Code CLI | `which claude` exits 0 AND `claude auth status` exits 0 | Subprocess via stdin (`execa`) | 600s (10 minutes) | Existing CLI auth — zero-config |
 | 2 | Gemini CLI | `which gemini` exits 0 | Subprocess via stdin (`execa`) | 120s | Existing CLI auth — zero-config |
 | 3 | Anthropic API | `ANTHROPIC_API_KEY` environment variable set | `@anthropic-ai/sdk` (dynamic import) | 60s | API key required (5-level cascade) |
 
@@ -145,7 +145,7 @@ sequenceDiagram
 ```typescript
 const proc = execa('claude', [...args], {
   input: prompt,
-  timeout: this.timeoutMs,  // 120s
+  timeout: this.timeoutMs,  // 600s (10 minutes)
 });
 ```
 
@@ -169,7 +169,17 @@ try {
 for await (const line of readline(proc.stdout!)) {
   try {
     const event = JSON.parse(line);
-    if (event.type === 'assistant' && event.content) yield event.content;
+    // The actual implementation handles both event.message?.content and event.content.
+    // Content can be a string or an array of content blocks (e.g. [{type:'text',text:'...'}]).
+    if (event.type === 'assistant') {
+      const content = event.message?.content ?? event.content;
+      if (content) {
+        const text = Array.isArray(content)
+          ? content.filter((b: any) => b.type === 'text').map((b: any) => b.text).join('')
+          : content;
+        if (text) yield text;
+      }
+    }
   } catch {
     if (opts.verbose) console.warn(`[stream] unparseable: ${line.slice(0, 80)}`);
   }
@@ -197,7 +207,8 @@ Shares 90% of implementation with Claude Code CLI provider. Key differences:
 
 - Detection: `which gemini` (no auth check — Gemini CLI does not expose a separate auth status command)
 - Subprocess args differ (`gemini` vs `claude`, `--model` flag syntax)
-- Output format: `--output-format json` (single JSON, not NDJSON stream) or plain text
+- Output format: plain text output via `--print` flag (not `--output-format json`)
+- System prompt: passed inline via `--system` flag (not a temp file, unlike Claude Code)
 - `isAvailable()` does not check auth state — first failed generation reveals auth problems
 
 The shared subprocess robustness patterns (stdin delivery, temp files, error parsing) apply identically.
@@ -222,15 +233,16 @@ Bundle size impact: ~200KB. The dynamic import happens once at provider initiali
 
 ## API Key Discovery Cascade
 
-When the Anthropic API provider is selected, the API key is resolved through 5 levels (highest priority first):
+When the Anthropic API provider is selected, the API key is resolved through 4 levels (highest priority first):
 
 | Level | Source | Example |
 |-------|--------|---------|
-| 1 | `--api-key <key>` CLI flag | Explicit for this invocation |
-| 2 | `ANTHROPIC_API_KEY` environment variable | `export ANTHROPIC_API_KEY=sk-ant-...` |
-| 3 | `.env` in current working directory | Project-level key |
-| 4 | `.env` in git root directory | Monorepo root key |
-| 5 | `~/.autospec/.env` in home directory | User-level persistent key |
+| 1 | `ANTHROPIC_API_KEY` environment variable | `export ANTHROPIC_API_KEY=sk-ant-...` |
+| 2 | `.env` in current working directory | Project-level key |
+| 3 | `.env` in git root directory | Monorepo root key |
+| 4 | `~/.autospec/.env` in home directory | User-level persistent key |
+
+> **Note:** A `--api-key <key>` CLI flag is planned but not yet implemented in v0.2.0.
 
 This cascade (sourced from aider's pattern, Researcher C Lesson 3) matches developer expectations: covers the shell session pattern, the project `.env` pattern, and the persistent home config pattern. The cascade is implemented in `cli/src/utils/env.ts`.
 
@@ -249,6 +261,8 @@ This cascade (sourced from aider's pattern, Researcher C Lesson 3) matches devel
 ```
 
 Opt-in rationale: silent fallback from zero-cost Gemini CLI to paid Anthropic API could incur unexpected charges. Users must explicitly consent. (Decision #19 — Researcher A)
+
+> **v0.2.0 note:** The `--fallback` flag is accepted by the CLI in v0.2.0 but the full cross-provider fallback chain is deferred to v0.2.1. In v0.2.0, passing `--fallback` has no effect beyond being parsed without error.
 
 ---
 
@@ -278,9 +292,9 @@ Opt-in rationale: silent fallback from zero-cost Gemini CLI to paid Anthropic AP
     npm             v10.2.0     ok
 
   LLM Providers:
-    + Claude Code    v1.2.3 (authenticated as user@example.com)
-    + Anthropic API  ANTHROPIC_API_KEY set (sk-ant-...xxxx)
-    - Gemini CLI     not installed
+    ✓ Claude Code      authenticated
+    ✓ Anthropic API    ANTHROPIC_API_KEY set (sk-ant-...xxxx)
+    ✗ Gemini CLI       not installed or not authenticated
 
   Ready to generate specs. Run: autospec generate <file>
 ```
@@ -289,9 +303,9 @@ When no provider is available:
 
 ```
   LLM Providers:
-    - Claude Code    not installed
-    - Gemini CLI     not installed
-    - Anthropic API  ANTHROPIC_API_KEY not set
+    ✗ Claude Code      not installed or not authenticated
+    ✗ Gemini CLI       not installed or not authenticated
+    ✗ Anthropic API    ANTHROPIC_API_KEY not set
 
   No LLM provider available. Install one:
     npm i -g @anthropic-ai/claude-code && claude auth login

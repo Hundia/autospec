@@ -219,17 +219,20 @@ function summarizeSpec(specContent: string): string {
     sections.push('## Key Points\n' + firstSentences.join('\n'));
   }
 
-  // 3. Tables (first 3, for data-heavy specs)
+  // 3. Tables (first 2, capped at 10 rows each, for data-heavy specs)
   const tables = extractMarkdownTables(specContent);
   if (tables.length > 0) {
-    sections.push('## Key Tables\n' + tables.slice(0, 3).join('\n\n'));
+    const cappedTables = tables.slice(0, 2).map(t => capTableRows(t, 10));
+    sections.push('## Key Tables\n' + cappedTables.join('\n\n'));
   }
 
-  return sections.join('\n\n');
+  // Total summary capped at 2000 chars
+  const summary = sections.join('\n\n');
+  return summary.length > 2000 ? summary.slice(0, 2000) + '\n…(truncated)' : summary;
 }
 ```
 
-Headers + first sentences + tables covers 80% of cross-spec coherence needs. Entity-extraction regexes were rejected as too fragile for real-world spec content (misses personas in tables, non-standard phrasing, non-English names). Entity extraction is deferred to v0.3.0. (Decision #11 — Architect 1)
+Headers + first sentences + tables (first 2, ≤10 rows each, ≤2000 chars total) covers 80% of cross-spec coherence needs. Entity-extraction regexes were rejected as too fragile for real-world spec content (misses personas in tables, non-standard phrasing, non-English names). Entity extraction is deferred to v0.3.0. (Decision #11 — Architect 1)
 
 ---
 
@@ -367,7 +370,7 @@ Model name shows full identifier (`claude-sonnet-4-20250514`), not just `sonnet`
     10_ui_designer.md         231 lines
     backlog.md                156 lines
 
-  Cost: $0.41 | Time: 1m 47s | Provider: Claude Code CLI (Claude Sonnet 4)
+  Cost: $0.00 (deferred to v0.3.0) | Time: 1m 47s | Provider: Claude Code CLI (Claude Sonnet 4)
 
   Next steps:
     1. Review specs:    ls specs/

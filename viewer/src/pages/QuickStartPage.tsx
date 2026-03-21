@@ -114,17 +114,17 @@ const faqs = [
   {
     question: 'What does it cost?',
     answer:
-      'With Claude Sonnet, a full generation (10 specs + backlog) costs $0.20–$0.80. With Haiku, under $0.10.',
+      'With Claude Sonnet, a full generation (10 specs + backlog) costs $0.20–$0.80. You can also use `--model` to select a different model tier.',
   },
   {
     question: 'Can I use my own AI tool?',
     answer:
-      'Yes! AutoSpec supports Claude Code, GitHub Copilot, Cursor, Windsurf, Aider, and more. The QUICKSTART.md prompt works with any AI coding assistant.',
+      'Yes! AutoSpec supports Claude Code, GitHub Copilot, and Cursor/Windsurf. The QUICKSTART.md prompt works with any AI coding assistant that can read markdown files.',
   },
   {
     question: 'What if generation gets interrupted?',
     answer:
-      'The CLI has built-in resume. Just run the same command again — it skips specs that are already up to date.',
+      'The CLI includes hash-based resume — specs generated from the same SRS are skipped automatically when you re-run the command.',
   },
 ]
 

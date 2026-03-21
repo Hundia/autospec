@@ -149,9 +149,9 @@ const providers: Provider[] = [
     extra: (
       <div className="mt-4 bg-slate-950 rounded-lg p-4 font-mono text-xs text-white/50 leading-relaxed">
         <span className="text-purple-400">$</span> autospec doctor{'\n'}
-        <span className="text-white/30">✓ Provider detected: Anthropic (claude-sonnet-4-5)</span>{'\n'}
-        <span className="text-white/30">✓ Requirements found: requirements/project-brief.md</span>{'\n'}
-        <span className="text-white/30">✓ Output dir ready: specs/</span>
+        <span className="text-white/30">{'  '}LLM Providers:</span>{'\n'}
+        <span className="text-green-400">{'    '}✓ Claude Code      authenticated</span>{'\n'}
+        <span className="text-white/30">{'    '}✗ Anthropic API    ANTHROPIC_API_KEY not set</span>
       </div>
     ),
   },

@@ -18,7 +18,7 @@ AutoSpec's error handling is designed around two principles: every error message
 | 1 | Empty/truncated response | Output < 50 lines | Retry with same prompt | 2 |
 | 2 | Missing YAML frontmatter | Frontmatter parse fails | Retry with augmented prompt (explicit frontmatter instruction added) | 1 |
 | 3 | Missing required sections | Section-presence check fails | Retry with explicit section list injected into prompt | 1 |
-| 4 | Provider timeout | Exceeds per-provider `timeoutMs` (120s for CLI, 60s for SDK) | Retry once, then halt with resume instructions | 1 |
+| 4 | Provider timeout | Exceeds per-provider `timeoutMs` (600s for Claude Code CLI, 120s for Gemini CLI, 60s for SDK) | Retry once, then halt with resume instructions | 1 |
 | 5 | Provider auth failure | 401/403 HTTP or auth-related text in stderr | Halt immediately with re-auth instructions | 0 |
 | 6 | Rate limit | 429 response or "rate limit" in stderr | Retry with exponential backoff | 2 |
 | 7 | Budget exceeded | Cumulative cost > `--max-budget` | Halt, show progress achieved so far, suggest resume | 0 |
@@ -56,7 +56,7 @@ Every error message produced by AutoSpec must satisfy three requirements:
 **1. Specific** — state what exactly failed, not a generic category.
 
 Bad: `Error: generation failed`
-Good: `Error [spec 5/11]: Provider timeout after 120s generating 05_qa_lead.md.`
+Good: `Error [spec 5/11]: Provider timeout after 600s generating 05_qa_lead.md.`
 
 **2. Actionable** — tell the user what to do next, with a concrete command where possible.
 
@@ -74,7 +74,7 @@ Good: `Rate limit reached on spec 3/11 (02_backend_lead.md). Wait 60s or use --p
 
 **Timeout with retry:**
 ```
-  Error [spec 5/11]: Provider timeout after 120s generating 05_qa_lead.md.
+  Error [spec 5/11]: Provider timeout after 600s generating 05_qa_lead.md.
   Retry 1/2 in 2 seconds...
 
   Error [spec 5/11]: Provider timeout after 120s (retry 2/2 exhausted).

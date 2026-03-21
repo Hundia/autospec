@@ -22,6 +22,8 @@ export const docsManifest: DocEntry[] = [
   // Viewer
   { slug: '01_architecture', title: 'Architecture', section: 'viewer' },
   { slug: '02_design_system', title: 'Design System', section: 'viewer' },
+  { slug: '04_pages', title: 'Pages', section: 'viewer' },
+  { slug: '05_advanced_pages', title: 'Advanced Pages', section: 'viewer' },
   { slug: '06_quickstart_page', title: 'QuickStart Page', section: 'viewer' },
   // Research (NEW)
   { slug: '01_competitive_analysis', title: 'Competitive Analysis', section: 'research' },
