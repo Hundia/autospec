@@ -758,4 +758,37 @@
 | Sprint 31 | 38 | ✅ Done |
 | Sprint 32 | 35 | ✅ Done |
 | Sprint 24B | TBD | 🔲 Planned |
-| **Total** | **1036** | 🔄 **IN PROGRESS** |
+| Sprint 33 (Pilot) | 43 | ✅ Done |
+| **Total** | **1079** | 🔄 **IN PROGRESS** |
+
+---
+
+## Sprint 33: Claude Pilot — Resilient Session Manager (~43 pts)
+
+**Theme:** Standalone CLI app for resilient Claude Code sessions with tmux + WhatsApp
+**Status:** ✅ Done
+**Location:** `pilot/`
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| P1.1 | Project scaffold (package.json, tsconfig, vitest) | DevOps | 2 | ✅ | — | — |
+| P1.2 | Config module with Zod validation | Backend | 2 | ✅ | — | — |
+| P1.3 | Logger + signal handlers | Backend | 1 | ✅ | — | — |
+| P1.4 | tmux helpers (create/destroy/capture/send-keys) | Backend | 3 | ✅ | — | — |
+| P1.5 | Session state manager (CRUD + approvals) | Backend | 3 | ✅ | — | — |
+| P1.6 | CLI skeleton + doctor command | Backend | 2 | ✅ | P1.1-P1.5 | — |
+| P2.1 | Session launcher (claude in tmux) | Backend | 3 | ✅ | P1.4-P1.5 | — |
+| P2.2 | Daemon server (Unix socket, PID file) | Backend | 3 | ✅ | P1.* | — |
+| P2.3 | Daemon client (socket transport) | Backend | 2 | ✅ | P2.2 | — |
+| P2.4 | Session monitor (poll tmux, detect events) | Backend | 3 | ✅ | P2.2 | — |
+| P2.5 | Wire CLI commands to daemon | Backend | 1 | ✅ | P2.1-P2.4 | — |
+| P3.1 | Permission parser (regex for Claude prompts) | Backend | 3 | ✅ | — | — |
+| P3.2 | Approval engine (queue, timeout, auto-approve) | Backend | 3 | ✅ | P3.1 | — |
+| P3.3 | Keystroke injector (tmux send-keys) | Backend | 2 | ✅ | P1.4 | — |
+| P4.1 | WhatsApp client wrapper (wwebjs + mock) | Backend | 3 | ✅ | — | — |
+| P4.2 | Notifier + templates | Backend | 2 | ✅ | P4.1 | — |
+| P4.3 | Bot command parser (Y/N/A/status/list) | Backend | 3 | ✅ | P4.1 | — |
+| P4.4 | Daemon-WhatsApp integration | Backend | 2 | ✅ | P3.2, P4.1-P4.3 | — |
+| P5.1 | Text-based TUI dashboard | Frontend | 3 | ✅ | P1.5 | — |
+| P5.2 | WhatsApp CLI commands (status/enable/mock) | Backend | 1 | ✅ | P4.1 | — |
+| P5.3 | 28 unit tests (parser, bot, templates, config) | QA | 1 | ✅ | All | — |

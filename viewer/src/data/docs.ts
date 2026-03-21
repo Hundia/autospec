@@ -37,9 +37,16 @@ export const docsManifest: DocEntry[] = [
   { slug: '05_roadmap', title: 'Version Roadmap', section: 'cli' },
   { slug: 'orchestration', title: 'Phase Orchestration', section: 'cli' },
   { slug: 'agent_profiles', title: 'Agent Profiles', section: 'cli' },
+  // Pilot
+  { slug: '01_overview', title: 'Overview', section: 'pilot' },
+  { slug: '02_architecture', title: 'Architecture', section: 'pilot' },
+  { slug: '03_approval_flow', title: 'Approval Flow', section: 'pilot' },
+  { slug: '04_cli_reference', title: 'CLI Reference', section: 'pilot' },
+  { slug: '05_whatsapp_integration', title: 'WhatsApp Integration', section: 'pilot' },
+  { slug: '06_workflows', title: 'Workflows & How-To', section: 'pilot' },
 ]
 
-export const sections = ['methodology', 'viewer', 'research', 'cli'] as const
+export const sections = ['methodology', 'viewer', 'research', 'cli', 'pilot'] as const
 export type DocSection = typeof sections[number]
 
 export const sectionLabels: Record<DocSection, string> = {
@@ -47,4 +54,5 @@ export const sectionLabels: Record<DocSection, string> = {
   viewer: 'Viewer',
   research: 'Research',
   cli: 'CLI',
+  pilot: 'Pilot',
 }
