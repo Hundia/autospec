@@ -13,6 +13,7 @@ interface StartOptions {
   skill?: string;
   resume?: string;
   model?: string;
+  provider?: string;
   attach?: boolean;
   timeout?: number;
 }
@@ -37,6 +38,7 @@ export async function runStart(prompt: string, opts: StartOptions): Promise<void
       skill: opts.skill,
       resume: opts.resume,
       model: opts.model,
+      provider: opts.provider,
       config,
     });
 

@@ -5,6 +5,7 @@ import { logger } from '../utils/logger.js';
 import * as tmux from '../utils/tmux.js';
 import * as sessionManager from './session-manager.js';
 import type { PilotSession } from './session.types.js';
+import { resolveProvider } from '../providers/resolver.js';
 
 export interface LaunchOptions {
   prompt: string;
@@ -15,6 +16,7 @@ export interface LaunchOptions {
   skill?: string;
   resume?: string;
   model?: string;
+  provider?: string;
   config: PilotConfig;
 }
 
@@ -27,40 +29,28 @@ export async function launchSession(opts: LaunchOptions): Promise<PilotSession> 
     skill,
     resume,
     model,
+    provider: providerOverride,
     config,
   } = opts;
 
   const name = opts.name ?? `session-${nanoid(6)}`;
   const tmuxSessionName = `${config.tmuxSessionPrefix}${name}`;
 
-  // Build claude command
-  const claudeArgs: string[] = [config.claudePath];
   const sessionId = nanoid(16);
 
-  claudeArgs.push('--session-id', sessionId);
-  claudeArgs.push('--name', name);
-
-  if (autoApprove) {
-    claudeArgs.push('--dangerously-skip-permissions');
-  }
-
-  if (model) {
-    claudeArgs.push('--model', model);
-  }
-
-  if (config.fallbackModel) {
-    claudeArgs.push('--fallback-model', config.fallbackModel);
-  }
-
-  if (resume) {
-    claudeArgs.push('--resume', resume);
-  } else if (skill) {
-    claudeArgs.push('-p', `/${skill} ${prompt}`);
-  } else {
-    claudeArgs.push('-p', prompt);
-  }
-
-  const command = claudeArgs.join(' ');
+  // Resolve the provider and build the command
+  const provider = await resolveProvider(providerOverride, config);
+  const commandArgs = provider.buildCommand({
+    prompt,
+    sessionId,
+    name,
+    model: model ?? (config.defaultModel || undefined),
+    fallbackModel: config.fallbackModel || undefined,
+    autoApprove,
+    skill,
+    resume,
+  });
+  const command = commandArgs.join(' ');
 
   // Determine auto-approve patterns
   const autoApprovePatterns = [...config.autoApprovePatterns];

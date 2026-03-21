@@ -759,7 +759,8 @@
 | Sprint 32 | 35 | ✅ Done |
 | Sprint 24B | TBD | 🔲 Planned |
 | Sprint 33 (Pilot) | 43 | ✅ Done |
-| **Total** | **1079** | 🔄 **IN PROGRESS** |
+| Sprint 34.3 (Pilot Viewer) | 8 | ✅ Done |
+| **Total** | **1087** | 🔄 **IN PROGRESS** |
 
 ---
 
@@ -792,3 +793,21 @@
 | P5.1 | Text-based TUI dashboard | Frontend | 3 | ✅ | P1.5 | — |
 | P5.2 | WhatsApp CLI commands (status/enable/mock) | Backend | 1 | ✅ | P4.1 | — |
 | P5.3 | 28 unit tests (parser, bot, templates, config) | QA | 1 | ✅ | All | — |
+
+---
+
+## Sprint 34: Pilot Viewer Enhancement + Multi-LLM Support (~48 pts)
+
+**Theme:** Interactive architecture visualizations, comprehensive docs, multi-LLM provider support
+**Status:** ✅ Done
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 34.1 | Multi-LLM provider abstraction (Claude, Gemini, Copilot) | Backend | 13 | ✅ | Sprint 33 | `pilot/src/providers/` |
+| 34.2 | Doctor multi-provider upgrade | Backend | 3 | ✅ | 34.1 | `pilot/src/commands/doctor.ts` |
+| 34.3 | Interactive Pilot Architecture Page (FlowDiagram, SequenceDiagram) | Frontend | 8 | ✅ | — | `viewer/src/pages/PilotArchPage.tsx` |
+| 34.4 | WhatsApp connection guide | Docs | 5 | ✅ | — | `docs/pilot/07_whatsapp_setup_guide.md` |
+| 34.5 | Installation guide | Docs | 5 | ✅ | 34.1 | `docs/pilot/08_installation_guide.md` |
+| 34.6 | Full skills reference (11 SDD skills) | Docs | 5 | ✅ | — | `docs/pilot/09_skills_reference.md` |
+| 34.7 | Docs manifest + viewer integration | Frontend | 5 | ✅ | 34.3-34.6 | `viewer/src/data/docs.ts` |
+| 34.8 | Sprint summary + backlog | PM | 4 | ✅ | All | `specs/backlog.md` |

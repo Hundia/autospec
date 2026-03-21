@@ -17,6 +17,12 @@ export const PilotConfigSchema = z.object({
   defaultModel: z.string().default(''),
   fallbackModel: z.string().default(''),
 
+  provider: z.object({
+    default: z.string().default(''),  // empty = auto-detect
+    claudePath: z.string().default('claude'),
+    geminiPath: z.string().default('gemini'),
+  }).default({}),
+
   tmuxSessionPrefix: z.string().default('pilot-'),
   scrollbackLimit: z.number().default(100_000),
 

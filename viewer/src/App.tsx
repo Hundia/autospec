@@ -12,6 +12,7 @@ import { SprintsListPage } from './pages/SprintsListPage'
 import { BenchmarkOverviewPage } from './pages/BenchmarkOverviewPage'
 import { BenchmarkResultsPage } from './pages/BenchmarkResultsPage'
 import { QuickStartPage } from './pages/QuickStartPage'
+import { PilotArchPage } from './pages/PilotArchPage'
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/benchmark/results" element={<BenchmarkResultsPage />} />
           <Route path="/design-system" element={<DesignSystemPage />} />
           <Route path="/quickstart" element={<QuickStartPage />} />
+          <Route path="/pilot" element={<PilotArchPage />} />
         </Routes>
       </Layout>
     </HashRouter>

@@ -106,6 +106,18 @@ export const DocsPage: React.FC = () => {
           <span>{currentDoc?.title || slug}</span>
         </div>
 
+        {/* Interactive architecture banner for pilot docs */}
+        {section === 'pilot' && (slug === '02_architecture' || slug === '03_approval_flow') && (
+          <div className="mb-4 p-3 bg-sage/10 border border-sage/30 rounded-lg flex items-center justify-between">
+            <span className="text-sm text-charcoal">
+              View interactive diagrams for this section
+            </span>
+            <a href="#/pilot" className="text-sm font-medium text-sage hover:text-sage-600 underline">
+              Open Pilot Architecture →
+            </a>
+          </div>
+        )}
+
         <Card>
           <CardContent>
             {loading ? (

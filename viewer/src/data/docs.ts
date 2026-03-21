@@ -44,6 +44,9 @@ export const docsManifest: DocEntry[] = [
   { slug: '04_cli_reference', title: 'CLI Reference', section: 'pilot' },
   { slug: '05_whatsapp_integration', title: 'WhatsApp Integration', section: 'pilot' },
   { slug: '06_workflows', title: 'Workflows & How-To', section: 'pilot' },
+  { slug: '07_whatsapp_setup_guide', title: 'WhatsApp Setup Guide', section: 'pilot' },
+  { slug: '08_installation_guide', title: 'Installation Guide', section: 'pilot' },
+  { slug: '09_skills_reference', title: 'Skills Reference', section: 'pilot' },
 ]
 
 export const sections = ['methodology', 'viewer', 'research', 'cli', 'pilot'] as const

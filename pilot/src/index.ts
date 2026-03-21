@@ -26,6 +26,7 @@ program
   .option('--skill <name>', 'Run a Claude Code skill (e.g., sprint-run)')
   .option('--resume <session-id>', 'Resume a previous Claude session')
   .option('--model <model>', 'Claude model override')
+  .option('--provider <name>', 'LLM provider override (claude, gemini, copilot)')
   .option('--attach', 'Attach to tmux session after start')
   .action(async (prompt: string, opts) => {
     const { runStart } = await import('./commands/start.js');
