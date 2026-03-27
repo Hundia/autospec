@@ -811,3 +811,34 @@
 | 34.6 | Full skills reference (11 SDD skills) | Docs | 5 | ✅ | — | `docs/pilot/09_skills_reference.md` |
 | 34.7 | Docs manifest + viewer integration | Frontend | 5 | ✅ | 34.3-34.6 | `viewer/src/data/docs.ts` |
 | 34.8 | Sprint summary + backlog | PM | 4 | ✅ | All | `specs/backlog.md` |
+
+---
+
+## Sprint 35: CLI Tests — Multi-Profile E2E Validation (~35 pts)
+
+**Theme:** Comprehensive test suite for CLI generate pipeline
+**Status:** ✅ Done
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 35.1 | 227 tests across 16 files, 3 user profiles | QA | 21 | ✅ | Sprint 30-31 | `cli/tests/` |
+| 35.2 | Doc audit fixes (timeout, providers, viewer manifest) | Docs | 8 | ✅ | — | `docs/cli/01-04` |
+| 35.3 | First complete E2E run (11/11 specs from 200-word SRS) | QA | 6 | ✅ | 35.1 | `cli/tests/output-simple/` |
+
+---
+
+## Sprint 36: Wave-Based Parallel Generation (~48 pts)
+
+**Theme:** Dependency graph + wave scheduler for parallel spec generation — 2.2x speedup
+**Status:** ✅ Done
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 36.1 | Dependency graph + wave scheduler module | Backend | 8 | ✅ | — | `docs/cli/05_wave_parallel_generation.md` |
+| 36.2 | Selective summaries — filter per-spec dependencies | Backend | 5 | ✅ | 36.1 | `pipeline/generate-specs.ts` |
+| 36.3 | Parallel wave execution engine (Promise.allSettled) | Backend | 13 | ✅ | 36.1, 36.2 | `pipeline/generate-specs.ts` |
+| 36.4 | CLI flags: --parallel/--no-parallel, --concurrency | Backend | 3 | ✅ | 36.3 | `commands/generate.ts`, `index.ts` |
+| 36.5 | Wave-aware progress display (multi-line) | Frontend | 5 | ✅ | 36.3 | `utils/wave-progress.ts` |
+| 36.6 | Error handling: per-spec failure isolation in waves | Backend | 5 | ✅ | 36.3 | `pipeline/generate-specs.ts` |
+| 36.7 | Unit tests: wave-scheduler, selective-summaries, parallel-exec | QA | 5 | ✅ | 36.1-36.3 | `tests/pipeline/wave-scheduler.test.ts`, `tests/pipeline/parallel-execution.test.ts` |
+| 36.8 | E2E test: full parallel generation vs sequential baseline | QA | 4 | ✅ | 36.1-36.6 | `tests/pipeline/generate-parallel.test.ts` |

@@ -14,7 +14,8 @@ import chalk from 'chalk';
 import { confirm } from '@inquirer/prompts';
 import { resolveProvider } from '../providers/resolver.js';
 import { loadEnvCascade } from '../utils/env.js';
-import { generateSpecs } from '../pipeline/generate-specs.js';
+import { generateSpecs, SPEC_ROLES } from '../pipeline/generate-specs.js';
+import { computeWaves, DEPENDENCY_GRAPH } from '../pipeline/wave-scheduler.js';
 import { runInterview } from './interview.js';
 import { validateSrsInput, printValidationError } from '../utils/validation.js';
 import { showConfirmation } from '../utils/confirmation.js';
@@ -51,6 +52,8 @@ export interface GenerateCommandOptions {
   dryRun?: boolean;
   quiet?: boolean;
   verbose?: boolean;
+  parallel?: boolean;
+  concurrency?: number;
 }
 
 export async function generateCommand(
@@ -142,35 +145,67 @@ export async function generateCommand(
       const srsHash = computeHash(srsContent);
       const shortHash = srsHash.slice(0, 7);
 
+      const useParallel = options.parallel !== false; // default true
+
       console.log(chalk.bold('\n  autospec generate --dry-run\n'));
       console.log(`  Provider:  ${dryProvider.name} — ${options.model || 'default'}`);
       console.log(`  SRS:       ${srsPath} (${srsWordCount.toLocaleString()} words, sha256:${shortHash}...)`);
       console.log(`  Output:    ${outputDir}/`);
+      console.log(`  Mode:      ${useParallel ? 'parallel (wave-based)' : 'sequential'}`);
       console.log('\n  Files to generate:');
 
-      for (let i = 0; i < DRY_RUN_SPECS.length; i++) {
-        const specFile = DRY_RUN_SPECS[i];
-        // Resolve relative to cwd
-        const specPath = path.isAbsolute(specFile) ? specFile : path.join(process.cwd(), specFile);
-        const specExists = await exists(specPath);
-        let status = '(NEW)';
-        if (specExists && !options.force) {
-          try {
-            const existingContent = await readFile(specPath);
-            if (existingContent.includes(`sha256:${srsHash}`)) {
-              status = '(SKIP — up to date)';
-            } else {
-              status = '(REGENERATE)';
+      if (useParallel) {
+        // Show wave groupings
+        const waves = computeWaves(SPEC_ROLES);
+        let specNum = 1;
+        for (const wave of waves) {
+          console.log(chalk.dim(`\n    Wave ${wave.index + 1} (${wave.specs.length} spec${wave.specs.length > 1 ? 's' : ''}):`));
+          for (const spec of wave.specs) {
+            const specFile = path.join(outputDir, spec.file);
+            const specPath = path.isAbsolute(specFile) ? specFile : path.join(process.cwd(), specFile);
+            const specExists = await exists(specPath);
+            let status = '(NEW)';
+            if (specExists && !options.force) {
+              try {
+                const existingContent = await readFile(specPath);
+                if (existingContent.includes(`sha256:${srsHash}`)) {
+                  status = '(SKIP — up to date)';
+                } else {
+                  status = '(REGENERATE)';
+                }
+              } catch {
+                status = '(NEW)';
+              }
             }
-          } catch {
-            status = '(NEW)';
+            console.log(`      [${String(specNum++).padStart(2)}] ${spec.file.padEnd(38)} ${status}`);
           }
         }
-        console.log(`    [${String(i + 1).padStart(2)}] ${specFile.padEnd(38)} ${status}`);
+      } else {
+        // Sequential: flat list (original behavior)
+        for (let i = 0; i < DRY_RUN_SPECS.length; i++) {
+          const specFile = DRY_RUN_SPECS[i];
+          // Resolve relative to cwd
+          const specPath = path.isAbsolute(specFile) ? specFile : path.join(process.cwd(), specFile);
+          const specExists = await exists(specPath);
+          let status = '(NEW)';
+          if (specExists && !options.force) {
+            try {
+              const existingContent = await readFile(specPath);
+              if (existingContent.includes(`sha256:${srsHash}`)) {
+                status = '(SKIP — up to date)';
+              } else {
+                status = '(REGENERATE)';
+              }
+            } catch {
+              status = '(NEW)';
+            }
+          }
+          console.log(`    [${String(i + 1).padStart(2)}] ${specFile.padEnd(38)} ${status}`);
+        }
       }
 
       console.log('\n  Est. cost: $0.20–$0.80 (Sonnet)');
-      console.log('  Est. time: ~100–120 seconds');
+      console.log(`  Est. time: ${useParallel ? '~50–70 seconds (parallel)' : '~100–120 seconds'}`);
       console.log('\n  No LLM calls made. Run without --dry-run to generate.\n');
       process.exit(0);
     }
@@ -228,6 +263,8 @@ export async function generateCommand(
       verbose: options.verbose,
       quiet: options.quiet,
       maxBudgetUsd: options.maxBudget ? parseFloat(options.maxBudget) : undefined,
+      parallel: options.parallel,
+      concurrency: options.concurrency,
     });
 
     // 12. Completion summary (command-layer summary after pipeline completes)

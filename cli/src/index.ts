@@ -145,6 +145,9 @@ program
   .option('--dry-run', 'Show plan without LLM calls')
   .option('-q, --quiet', 'Minimal output for CI')
   .option('--verbose', 'Show prompts and raw LLM output')
+  .option('--parallel', 'Enable wave-based parallel generation (default: true)')
+  .option('--no-parallel', 'Force sequential generation (v0.2.0 behavior)')
+  .option('--concurrency <n>', 'Max parallel specs per wave', parseInt)
   .action(async (file: string | undefined, options: GenerateCommandOptions) => {
     try {
       await generateCommand(file, options);
