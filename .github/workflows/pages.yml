@@ -38,6 +38,15 @@ jobs:
       # Combine: copy viewer into presentation/dist/viewer/
       - run: mkdir -p presentation/dist/viewer && cp -r viewer/dist/* presentation/dist/viewer/
 
+      # Build LSS presentation (sub-site)
+      - run: npm ci
+        working-directory: lss-presentation
+      - run: npm run build
+        working-directory: lss-presentation
+
+      # Combine: copy LSS into presentation/dist/lss/
+      - run: mkdir -p presentation/dist/lss && cp -r lss-presentation/dist/* presentation/dist/lss/
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: presentation/dist

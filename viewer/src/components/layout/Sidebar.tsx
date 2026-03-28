@@ -25,6 +25,7 @@ const bottomNavItems = [
   { to: '/benchmark', label: 'Benchmark', icon: Target },
   { to: '/design-system', label: 'Design System', icon: Palette },
   { to: '/pilot', label: 'Pilot', icon: Navigation },
+  { to: '/lss', label: 'LightSpeedSpec', icon: Zap },
 ]
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>

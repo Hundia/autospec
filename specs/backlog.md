@@ -842,3 +842,61 @@
 | 36.6 | Error handling: per-spec failure isolation in waves | Backend | 5 | ✅ | 36.3 | `pipeline/generate-specs.ts` |
 | 36.7 | Unit tests: wave-scheduler, selective-summaries, parallel-exec | QA | 5 | ✅ | 36.1-36.3 | `tests/pipeline/wave-scheduler.test.ts`, `tests/pipeline/parallel-execution.test.ts` |
 | 36.8 | E2E test: full parallel generation vs sequential baseline | QA | 4 | ✅ | 36.1-36.6 | `tests/pipeline/generate-parallel.test.ts` |
+
+---
+
+## Sprint 37: LightSpeedSpec (LSS) — Lightweight SDD Framework (~134 pts)
+
+**Theme:** AutoSpec's lightweight younger brother — adaptive depth, brownfield intelligence, 60-second specs
+**Status:** ✅ Done
+
+### Wave 1: Foundation + Scanner (34 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 37.1 | `lss/` package scaffold: package.json, tsconfig, vitest.config | DevOps | 3 | ✅ | — | — |
+| 37.2 | Provider re-export layer: `lss/src/providers/index.ts` | Backend | 2 | ✅ | 37.1 | — |
+| 37.3 | Scanner: `detect-stack.ts` — read manifest files for tech stack | Backend | 5 | ✅ | 37.1 | `docs/lss/03_scanner.md` |
+| 37.4 | Scanner: `detect-architecture.ts` — directory structure analysis | Backend | 5 | ✅ | 37.1 | `docs/lss/03_scanner.md` |
+| 37.5 | Scanner: `detect-tests.ts`, `detect-routes.ts`, `detect-docs.ts` | Backend | 5 | ✅ | 37.3 | `docs/lss/03_scanner.md` |
+| 37.6 | Scanner: `complexity-scorer.ts` — heuristic scoring + depth routing | Backend | 5 | ✅ | 37.3-37.5 | `docs/lss/04_adaptive_depth.md` |
+| 37.7 | Scanner unit tests: 15+ tests across all modules | QA | 5 | ✅ | 37.3-37.6 | — |
+| 37.8 | Design docs: `docs/lss/01_philosophy.md`, `02_architecture.md`, `03_scanner.md` | Docs | 3 | ✅ | 37.1 | `docs/lss/` |
+| 37.9 | Design doc: `docs/lss/04_adaptive_depth.md` | Docs | 1 | ✅ | 37.6 | `docs/lss/` |
+
+### Wave 2: Pipeline + CLI (38 pts)
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 37.10 | Prompt templates: 6 Handlebars files (analyze, micro, standard, full-product/technical/quality) | Backend | 8 | ✅ | 37.6 | `docs/lss/05_prompts.md` |
+| 37.11 | Pipeline: `depth-router.ts` — select template(s) by depth level | Backend | 3 | ✅ | 37.10 | — |
+| 37.12 | Pipeline: `generate-spec.ts` — unified generation using providers | Backend | 8 | ✅ | 37.11, 37.2 | — |
+| 37.13 | Pipeline: `task-extractor.ts` — parse task list from spec | Backend | 3 | ✅ | 37.12 | — |
+| 37.14 | CLI: `index.ts` entry + `init` command + `scan` command | Backend | 5 | ✅ | 37.12, 37.13 | — |
+| 37.15 | CLI: `status` command + `graduate` command | Backend | 5 | ✅ | 37.14 | `docs/lss/06_graduation_path.md` |
+| 37.16 | Pipeline + CLI unit tests: 15+ tests | QA | 5 | ✅ | 37.12-37.15 | — |
+| 37.17 | Design docs: `docs/lss/05_prompts.md`, `06_graduation_path.md` | Docs | 3 | ✅ | 37.10, 37.15 | `docs/lss/` |
+
+### Wave 3a: Presentation (32 pts) — PARALLEL with Wave 3b
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 37.18 | Scaffold `lss-presentation/`: package.json, vite, tailwind warm palette + lightning yellow | Frontend | 3 | ✅ | — | — |
+| 37.19 | Landing: Navigation, HeroSection, ProblemSection | Frontend | 8 | ✅ | 37.18 | — |
+| 37.20 | Landing: AdaptiveDepthSection, BrownfieldSection, ComparisonSection | Frontend | 5 | ✅ | 37.18 | — |
+| 37.21 | Landing: QuickStartSection, Footer | Frontend | 3 | ✅ | 37.18 | — |
+| 37.22 | 12 presentation slide components with Framer Motion | Frontend | 8 | ✅ | 37.18 | — |
+| 37.23 | Slide data: `slides-en.ts`, `slides-he.ts` (i18n) | Frontend | 3 | ✅ | 37.22 | — |
+| 37.24 | Background effects (adapt from presentation/) | UI | 2 | ✅ | 37.18 | — |
+
+### Wave 3b: Viewer + QA (30 pts) — PARALLEL with Wave 3a
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 37.25 | Viewer: `LssPage.tsx` at `/lss` route | Frontend | 8 | ✅ | Wave 2 | — |
+| 37.26 | Viewer: Sidebar nav item + App.tsx route | Frontend | 2 | ✅ | 37.25 | — |
+| 37.27 | Viewer: LSS sprint data in `backlog.ts` | Frontend | 3 | ✅ | 37.25 | — |
+| 37.28 | Integration tests: `lss init` on fixtures | QA | 8 | ✅ | Wave 2 | — |
+| 37.29 | E2E: `lss init` on autospec repo (brownfield) | QA | 5 | ✅ | Wave 2 | — |
+| 37.30 | Graduate test: `lss graduate` → valid AutoSpec structure | QA | 3 | ✅ | 37.15 | — |
+| 37.31 | Sprint close: backlog update, pages.yml, summary | PM | 3 | ✅ | All | `sprints/sprint-37/summary.md` |

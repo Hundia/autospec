@@ -55,3 +55,31 @@ jobs:
           cache-dependency-path: presentation/package-lock.json
       - run: npm ci
       - run: npm run build
+
+  test-lss:
+    name: LSS Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+        working-directory: lss
+      - run: npm run build
+        working-directory: lss
+      - run: npm test
+        working-directory: lss
+
+  build-lss-presentation:
+    name: LSS Presentation Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+        working-directory: lss-presentation
+      - run: npm run build
+        working-directory: lss-presentation
