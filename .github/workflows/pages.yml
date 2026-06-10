@@ -47,6 +47,15 @@ jobs:
       # Combine: copy LSS into presentation/dist/lss/
       - run: mkdir -p presentation/dist/lss && cp -r lss-presentation/dist/* presentation/dist/lss/
 
+      # Build SDLC presentation (sub-site)
+      - run: npm ci
+        working-directory: sdlc-presentation
+      - run: npm run build
+        working-directory: sdlc-presentation
+
+      # Combine: copy SDLC into presentation/dist/sdlc/
+      - run: mkdir -p presentation/dist/sdlc && cp -r sdlc-presentation/dist/* presentation/dist/sdlc/
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: presentation/dist
