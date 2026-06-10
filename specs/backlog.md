@@ -760,7 +760,8 @@
 | Sprint 24B | TBD | 🔲 Planned |
 | Sprint 33 (Pilot) | 43 | ✅ Done |
 | Sprint 34.3 (Pilot Viewer) | 8 | ✅ Done |
-| **Total** | **1087** | 🔄 **IN PROGRESS** |
+| Sprint 38 (SDLC Presentation) | 34 | ✅ Done |
+| **Total** | **1121** | 🔄 **IN PROGRESS** |
 
 ---
 
@@ -900,3 +901,24 @@
 | 37.29 | E2E: `lss init` on autospec repo (brownfield) | QA | 5 | ✅ | Wave 2 | — |
 | 37.30 | Graduate test: `lss graduate` → valid AutoSpec structure | QA | 3 | ✅ | 37.15 | — |
 | 37.31 | Sprint close: backlog update, pages.yml, summary | PM | 3 | ✅ | All | `sprints/sprint-37/summary.md` |
+
+---
+
+## Sprint 38: Agentic SDLC × SDD Presentation (~34 pts)
+
+**Theme:** New GitHub Pages presentation at `/sdlc/` — clones the AutoSpec deck shell, replaces the solution act with the Enterprise Agentic SDLC methodology (Bolts, Harness, Constitution, 6 Stages) implemented via SDD, with slide-16-style scrollable slides and Summarization emphasis
+**Spec:** `sdlc_sdd.md` (repo root)
+**Status:** ✅ Done
+
+| ID | Ticket | Owner | Pts | Status | Deps | Docs |
+|----|--------|-------|-----|--------|------|------|
+| 38.1 | Spec: `sdlc_sdd.md` — full 22-slide deck design incl. scrollable sub-slides | PM | 5 | ✅ | — | `sdlc_sdd.md` |
+| 38.2 | Scaffold `sdlc-presentation/`: package.json, vite (base `/autospec/sdlc/`), tailwind, App, LandingPage | Frontend | 3 | ✅ | 38.1 | `docs/sdlc-presentation/01_overview.md` |
+| 38.3 | Copy presentation shell: PresentationPage, BackgroundEffects, Dropdown, pipeline/* | Frontend | 3 | ✅ | 38.2 | — |
+| 38.4 | Copy + adapt reused slide components (Title, Eras, ContextPoisoning, ReverseTax, BreakingPoint, CostOfChaos, Bridge, ThreePillars, SprintMemory, Orchestrator, Closing, FinalTagline) | Frontend | 5 | ✅ | 38.3 | — |
+| 38.5 | NEW slides: PhilosophySlide, NotVibeCodingSlide, HarnessSlide, SdlcRolesSlide, ToolingSlide | Frontend | 8 | ✅ | 38.3 | — |
+| 38.6 | NEW scrollable slides: SixStagesSlide + AdoptionSlide (slide-16 pattern) | Frontend | 5 | ✅ | 38.3 | — |
+| 38.7 | Slide data: `slides-en.ts` + `slides-he.ts` (22 slides, i18n) | Frontend | 3 | ✅ | 38.4–38.6 | — |
+| 38.8 | Deploy: `pages.yml` builds sub-site → `presentation/dist/sdlc/` | DevOps | 1 | ✅ | 38.2 | — |
+| 38.9 | QA: build passes, original `presentation/` untouched, scrollable slides verified | QA | 2 | ✅ | All | — |
+| 38.10 | Docs: `docs/sdlc-presentation/01_overview.md` + sprint summary | Docs | 2 | ✅ | All | `docs/sdlc-presentation/01_overview.md` |
