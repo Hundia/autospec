@@ -22,6 +22,7 @@ interface AgenticFiveActsSlideProps {
     title: string;
     subtitle: string;
     closingCallout: string;
+    keyInsight?: { headline: string; body: string };
     acts: Act[];
   };
   lang: 'en' | 'he';
@@ -366,6 +367,28 @@ export default function AgenticFiveActsSlide({ data, lang }: AgenticFiveActsSlid
           </motion.section>
         );
       })}
+
+      {/* Key Insight callout */}
+      {data.keyInsight && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          className="mx-6 my-8 bg-amber-500/5 border border-amber-500/30 rounded-2xl p-6"
+        >
+          <div className="flex items-start gap-4">
+            <span className="text-3xl shrink-0 mt-0.5">⚠️</span>
+            <div>
+              <h4 className="text-amber-400 font-black text-lg mb-2 tracking-tight">
+                {data.keyInsight.headline}
+              </h4>
+              <p className="text-white/65 text-sm leading-relaxed">
+                {data.keyInsight.body}
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      )}
 
       {/* Closing callout */}
       <div className="min-h-[50vh] flex items-center justify-center px-6 pb-20">
