@@ -321,6 +321,23 @@ export const slidesEN = [
       },
       {
         number: 6,
+        emoji: '📝',
+        name: 'Summarization: Bolt Close',
+        tag: 'Memory Layer',
+        owner: 'Dev Team',
+        hero: true,
+        accent: 'teal',
+        bullets: [
+          'Every Bolt closes with a summary: what was built, what changed, what was decided.',
+          'Release notes, linked documentation, modified files, closing commit — all in one artifact.',
+          'The next agent reads the summary and inherits full context in 30 seconds — no reverse engineering.',
+          'Any provider, any session, any team member picks up exactly where you left off.',
+          'The summary is the memory that AI was never given.',
+        ],
+        output: 'bolts/bolt-X/summary.md — permanent knowledge, zero context loss',
+      },
+      {
+        number: 7,
         emoji: '📡',
         name: 'Continuous Steering',
         tag: 'Observability Loop',
