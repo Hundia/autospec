@@ -285,7 +285,7 @@ function KanbanTab() {
   };
 
   return (
-    <svg viewBox="0 0 500 220" className="w-full" aria-label="Sprint Kanban Board">
+    <svg viewBox="0 0 500 220" className="w-full" aria-label="Bolt Kanban Board">
       <SvgDefs />
       <pattern id="kanban-grid" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
         <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1e293b" strokeWidth="0.5" />
@@ -293,7 +293,7 @@ function KanbanTab() {
       <rect width="500" height="220" fill="url(#kanban-grid)" />
 
       {/* Title */}
-      <text x="250" y="22" textAnchor="middle" fill="#e2e8f0" fontSize="11" fontWeight="700" fontFamily="monospace">Sprint Kanban Board</text>
+      <text x="250" y="22" textAnchor="middle" fill="#e2e8f0" fontSize="11" fontWeight="700" fontFamily="monospace">Bolt Kanban Board</text>
 
       {/* Columns */}
       {colConfig.map((col, ci) => {

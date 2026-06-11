@@ -39,8 +39,8 @@ export default function SixStagesSlide({ data, lang }: SixStagesSlideProps) {
 
   return (
     <div className="w-full">
-      {/* Hero header */}
-      <div className="min-h-screen flex flex-col items-center justify-center px-6">
+      {/* Header */}
+      <div className="flex flex-col items-center justify-center px-6 pt-16 pb-10">
         <motion.h2
           initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -54,7 +54,7 @@ export default function SixStagesSlide({ data, lang }: SixStagesSlideProps) {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="text-lg text-white/60 text-center max-w-2xl mb-8"
+          className="text-lg text-white/60 text-center max-w-2xl mb-6"
         >
           {data.subtitle}
         </motion.p>
@@ -62,49 +62,48 @@ export default function SixStagesSlide({ data, lang }: SixStagesSlideProps) {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.6 }}
-          className="flex flex-col items-center gap-2 text-white/40"
+          transition={{ delay: 0.5 }}
+          className="flex flex-col items-center gap-1 text-white/40"
         >
           <span className="text-sm">{isRTL ? 'גלול למטה' : 'Scroll down'}</span>
           <motion.div
-            animate={{ y: [0, 8, 0] }}
+            animate={{ y: [0, 6, 0] }}
             transition={{ repeat: Infinity, duration: 1.5 }}
-            className="text-2xl"
+            className="text-xl"
           >
             ↓
           </motion.div>
         </motion.div>
       </div>
 
-      {/* Connecting line */}
+      {/* Connecting line + stage sections */}
       <div className="relative">
         <div
           className="absolute left-8 top-0 bottom-0 w-0.5 hidden lg:block"
           style={{
-            background: 'linear-gradient(180deg, #3b82f6 0%, #8b5cf6 20%, #06b6d4 40%, #f59e0b 60%, #6366f1 80%, #22c55e 100%)',
-            opacity: 0.2,
+            background: 'linear-gradient(180deg, #3b82f6 0%, #8b5cf6 14%, #06b6d4 28%, #14b8a6 42%, #f59e0b 56%, #6366f1 70%, #22c55e 85%, #f97316 100%)',
+            opacity: 0.25,
           }}
         />
 
-        {/* Stage sections */}
         {data.stages.map((stage) => {
           const colors = accentColors[stage.accent] || accentColors.blue;
           return (
             <motion.section
               key={stage.number}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              className={`relative ${stage.hero ? 'min-h-[120vh] py-20' : 'min-h-[80vh] py-16'} flex items-center`}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.5, ease: 'easeOut' }}
+              className={`relative py-10 ${stage.hero ? 'sm:py-14' : 'sm:py-12'}`}
             >
               <div
                 className={`w-full max-w-5xl mx-auto px-6 ${
                   stage.hero
-                    ? `border-2 ${colors.border} rounded-2xl p-8 shadow-2xl ${colors.glow}`
-                    : ''
+                    ? `border-2 ${colors.border} rounded-2xl p-8 shadow-xl`
+                    : 'border border-white/5 rounded-xl p-6'
                 }`}
-                style={stage.hero ? { background: 'linear-gradient(to bottom, rgba(255,255,255,0.04), transparent)' } : {}}
+                style={stage.hero ? { background: 'linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))' } : {}}
               >
                 {/* Stage number + badge */}
                 <motion.div
@@ -129,13 +128,21 @@ export default function SixStagesSlide({ data, lang }: SixStagesSlideProps) {
                 <h3 className="text-3xl sm:text-4xl font-bold text-white mb-2">{stage.name}</h3>
 
                 {/* Tag + Owner row */}
-                <div className={`flex flex-wrap gap-2 mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className={`flex flex-wrap items-center gap-2 mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
                   <span className={`text-xs px-3 py-1 rounded-full font-mono ${colors.tag}`}>
                     {stage.tag}
                   </span>
-                  <span className="text-xs px-3 py-1 rounded-full bg-white/5 text-white/50">
-                    👤 {stage.owner}
+                  <span className="text-xs text-white/30 uppercase tracking-wider font-semibold">
+                    {isRTL ? 'בעלות:' : 'Owners:'}
                   </span>
+                  {stage.owner.split(' + ').map((owner, idx) => (
+                    <span
+                      key={idx}
+                      className="text-xs px-3 py-1 rounded-full bg-blue-500/15 text-blue-300 border border-blue-400/30 font-semibold"
+                    >
+                      👤 {owner}
+                    </span>
+                  ))}
                 </div>
 
                 {/* Bullets */}
@@ -168,7 +175,7 @@ export default function SixStagesSlide({ data, lang }: SixStagesSlideProps) {
       </div>
 
       {/* Closing callout */}
-      <div className="min-h-[50vh] flex items-center justify-center px-6 pb-20">
+      <div className="flex items-center justify-center px-6 py-14 pb-20">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}

@@ -9,6 +9,8 @@ interface TerminalLine {
 interface ToolCard {
   icon: string;
   title: string;
+  subtitle?: string;
+  description?: string;
   terminal: TerminalLine[];
   valueTag: string;
   accent: string;
@@ -71,9 +73,17 @@ export default function ToolingSlide({ data }: ToolingSlideProps) {
               className={`${colors.bg} border ${colors.border} rounded-2xl overflow-hidden`}
             >
               {/* Card header */}
-              <div className="px-4 py-3 flex items-center gap-2 border-b border-white/10">
-                <span className="text-xl">{tool.icon}</span>
-                <span className={`font-bold text-sm ${colors.text}`}>{tool.title}</span>
+              <div className="px-4 py-3 border-b border-white/10">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">{tool.icon}</span>
+                  <span className={`font-bold text-sm ${colors.text}`}>{tool.title}</span>
+                </div>
+                {tool.subtitle && (
+                  <div className="text-[11px] text-white/40 mt-1 font-mono">{tool.subtitle}</div>
+                )}
+                {tool.description && (
+                  <p className="text-xs text-white/60 mt-2 leading-relaxed">{tool.description}</p>
+                )}
               </div>
 
               {/* Terminal block */}

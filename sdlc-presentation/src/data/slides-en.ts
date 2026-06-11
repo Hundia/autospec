@@ -172,7 +172,7 @@ export const slidesEN = [
       {
         icon: '🎯',
         title: 'Bolts, Not Sprints',
-        description: 'Feature cycles measured in hours or days, not weeks. Agents execute; humans govern. Speed is the output of structure.',
+        description: 'A Bolt is a bounded, independently-testable feature cycle — spec-approved, agent-executed, harness-verified. Measured in hours or days, not weeks. Speed is the output of structure.',
         accent: 'blue',
       },
       {
@@ -184,7 +184,7 @@ export const slidesEN = [
       {
         icon: '✍️',
         title: 'Governors & Reviewers',
-        description: 'Without strong governance, HITL becomes rubber-stamping. Agentic execution + structured specs + enforced governance.',
+        description: 'Without strong governance, HITL becomes rubber-stamping. Agentic execution + structured specs + enforced governance is what separates genuine oversight from theater.',
         accent: 'teal',
       },
       {
@@ -235,7 +235,7 @@ export const slidesEN = [
   {
     type: 'sixStages',
     scrollable: true,
-    title: 'The 6 Stages of the Agentic SDLC',
+    title: 'The 7 Stages of the Agentic SDLC',
     subtitle: 'Scroll down — every stage is a gate',
     stages: [
       {
@@ -259,7 +259,7 @@ export const slidesEN = [
         emoji: '⚖️',
         name: 'Alignment & Constraints',
         tag: 'The Constitution',
-        owner: 'Architect + PO',
+        owner: 'Architect + Product Owner',
         hero: false,
         accent: 'violet',
         bullets: [
@@ -275,7 +275,7 @@ export const slidesEN = [
         emoji: '🗺️',
         name: 'Design & Planning',
         tag: 'Plan & Tasks',
-        owner: 'Architect + Team Lead',
+        owner: 'Architect + Dev Team Lead',
         hero: false,
         accent: 'emerald',
         bullets: [
@@ -313,14 +313,31 @@ export const slidesEN = [
         accent: 'cyan',
         bullets: [
           "Agents implement test cases aligned to the spec's acceptance criteria.",
-          'Test spec defines the AC only — not implementation details.',
-          'AI code review: 38.7% of AI review comments drive real fixes (Atlassian 2026).',
+          'A test spec.md defines the test AC only — not implementation details.',
+          'AI code review: quality improvements up to 80%; 38.7% of AI review comments drive real fixes (Atlassian RovoDev 2026).',
           'QA Developer reviews agent test PRs and maintains the quality harness.',
         ],
         output: 'E2E + regression suites bound to spec ACs',
       },
       {
         number: 6,
+        emoji: '📝',
+        name: 'Summarization: Bolt Close',
+        tag: 'Memory Layer',
+        owner: 'Product Owner + Dev Team Lead + QA Lead (HITL)',
+        hero: true,
+        accent: 'teal',
+        bullets: [
+          'Every Bolt closes with a summary: what was built, what changed, what was decided.',
+          'Release notes, linked documentation, modified files, closing commit — all in one artifact.',
+          'The next agent reads the summary and inherits full context in 30 seconds — no reverse engineering.',
+          'Any provider, any session, any team member picks up exactly where you left off.',
+          'The summary is the memory that AI was never given.',
+        ],
+        output: 'bolts/bolt-X/summary.md — permanent knowledge, zero context loss',
+      },
+      {
+        number: 7,
         emoji: '📡',
         name: 'Continuous Steering',
         tag: 'Observability Loop',
@@ -336,7 +353,7 @@ export const slidesEN = [
         output: 'A system that steers itself back to spec',
       },
     ],
-    closingCallout: "Compress, don't skip. The linear SDLC is collapsing into a compressed Design-&-Experiment loop — the discipline of each stage remains; only the clock changes.",
+    closingCallout: "Compress, don't skip. AI is merging requirements, design, and development into one compressed Design-&-Experiment loop — the discipline of each stage remains; only the clock changes.",
   },
 
   // 13. harness
@@ -369,14 +386,15 @@ export const slidesEN = [
       { icon: '🎯', oldRole: 'Product Owner', newRole: 'Outcome Owner', oneLiner: "Owns the 'what'; approves spec.md", stage: 'Stages 1, 6', accent: 'blue' },
       { icon: '🏛️', oldRole: 'Architect / Tech Lead', newRole: 'Governance Owner', oneLiner: 'Defines the Harness; interrogates the plan', stage: 'Stages 1–3', accent: 'violet' },
       { icon: '🔬', oldRole: 'Developer', newRole: 'Dev Orchestrator', oneLiner: 'Reviews agent PRs, edge cases, writes the harness', stage: 'Stages 4–5', accent: 'teal' },
-      { icon: '🤖', oldRole: 'N/A', newRole: 'Autonomous Workforce', oneLiner: 'Drafts all artifacts; executes bounded tasks under guardrails', stage: 'Stages 2–6', accent: 'cyan' },
-      { icon: '🔭', oldRole: 'SRE / DevOps', newRole: 'Infrastructure Guardian', oneLiner: 'Guardian of self-healing infra and agent telemetry', stage: 'Stage 6', accent: 'emerald' },
+      { icon: '🤖', oldRole: 'N/A', newRole: 'Autonomous Workforce', oneLiner: 'Drafts all artifacts; executes bounded tasks under guardrails', stage: 'Stages 2–7', accent: 'cyan' },
+      { icon: '🔭', oldRole: 'SRE / DevOps', newRole: 'Intelligent Infrastructure Guardian', oneLiner: 'Guardian of self-healing infra and agent telemetry', stage: 'Stage 7', accent: 'emerald' },
       { icon: '🎨', oldRole: 'Designer', newRole: 'Creative Director', oneLiner: "Human taste, vibe, brand — what AI can't encode", stage: 'Stages 1–5', accent: 'amber' },
     ],
     coreShiftTitle: 'The Core Shift',
     coreShift: [
       { type: 'check', text: 'Value shifts from writing code to verifying and validating agent output.' },
       { type: 'check', text: 'The core skill becomes intent — define what software should do, verify it does.' },
+      { type: 'check', text: 'Training focus shifts to understanding the problem (not syntax), AI system monitoring, and verification techniques.' },
       { type: 'warn', text: 'HITL is a mandatory checkpoint, not a rubber stamp.' },
     ],
   },
@@ -401,7 +419,7 @@ export const slidesEN = [
         number: '02',
         title: 'Bolt Summaries',
         description: 'Every Bolt closes with a summary: what was built, what changed, what was decided. The next agent starts with full context.',
-        artifact: 'sprints/bolt-X/summary.md',
+        artifact: 'bolts/bolt-X/summary.md',
         icon: '📋',
         color: 'emerald',
       },
@@ -577,6 +595,8 @@ export const slidesEN = [
       {
         icon: '⚙️',
         title: 'Spec-Kit',
+        subtitle: 'The Workflow Backbone · github.com/github/spec-kit (2025, OSS)',
+        description: 'Places the spec at the center of engineering. Agents cannot begin coding until humans mark the spec as approved.',
         accent: 'teal',
         terminal: [
           { text: '$ spec-kit gen spec --from PROJ-421', type: 'command' },
@@ -588,6 +608,8 @@ export const slidesEN = [
       {
         icon: '🦸',
         title: 'Superpowers',
+        subtitle: 'The Execution Discipline · Harness Enforcement',
+        description: 'Dictates agent behavior during implementation. Strict TDD: agents are prohibited from writing implementation code before a failing test exists.',
         accent: 'violet',
         terminal: [
           { text: '$ superpowers bolt --task tasks.md#42', type: 'command' },
@@ -599,6 +621,8 @@ export const slidesEN = [
       {
         icon: '📋',
         title: 'Jira as Context Hub',
+        subtitle: 'ALM · Visibility Layer',
+        description: 'When spec.md or plan.md changes in the repo, agents auto-sync status to the Jira Epic — no manual status reports.',
         accent: 'blue',
         terminal: [
           { text: 'spec.md updated → agent sync', type: 'command' },
@@ -610,6 +634,8 @@ export const slidesEN = [
       {
         icon: '📖',
         title: 'Confluence as Long-Term Memory',
+        subtitle: 'ALM · Long-Term Memory',
+        description: 'Agents read architecture docs to keep new code compliant — accumulated organizational knowledge constrains agent behavior.',
         accent: 'amber',
         terminal: [
           { text: 'agent context fetch --source confluence', type: 'command' },
@@ -634,7 +660,8 @@ export const slidesEN = [
         name: 'Phase 1 — Foundation',
         accent: 'blue',
         bullets: [
-          'Sandboxes + telemetry + secure gateways; start on non-critical repetitive paths.',
+          'Sandboxes + telemetry + secure gateways — agents operate without production impact.',
+          'Start with non-critical, well-documented processes with clear success criteria — e.g., dependency updates, routine performance monitoring.',
           'Build the Harness (tests / linters / types).',
           'Pilot Spec-Kit on one team.',
         ],
@@ -669,7 +696,7 @@ export const slidesEN = [
         icon: '📝',
         title: 'Velocity',
         accent: 'blue',
-        items: ['Story points per Bolt', 'Bolt cycle time', 'Feature throughput'],
+        items: ['Story points per Bolt', 'Bolt cycle time', 'Lines of code per hour', 'Time on creative vs. maintenance'],
       },
       {
         icon: '🛡',
@@ -709,7 +736,7 @@ export const slidesEN = [
     ],
     links: {
       github: 'github.com/Hundia/autospec',
-      docs: 'hundia.github.io/autospec/#/presentation',
+      docs: 'hundia.github.io/autospec',
     },
     tagline: 'From intent to steering.',
   },
