@@ -1,118 +1,114 @@
-# HANDOFF — SDLC Presentation Sub-Site (Sprint 38)
+# HANDOFF v2 — SDLC Presentation Sub-Site (Post-Merge)
 
-> **Audience:** The next AI assistant (e.g., GitHub Copilot CLI) continuing this work on a local dev machine.
-> **Branch:** `claude/sdlc-sdd-presentation-4cp7e4` (all work lives here; merged to `main` once mid-sprint, then continued on the same branch)
-> **Live URL:** https://hundia.github.io/autospec/sdlc/#/presentation
-> **Last commit at handoff:** `b1e9c12` — "feat(sdlc-presentation): combine 7-stages + pipeline into Big-5 Acts slide"
-
----
-
-## 1. What This Is
-
-A **standalone GitHub Pages presentation sub-site** at `sdlc-presentation/` that tells the story of the **Enterprise Agentic SDLC methodology** (Spec-Driven Development at enterprise scale). It is a clone of the original AutoSpec presentation shell (`presentation/`) with completely new content.
-
-**Critical constraint:** Do NOT touch the original `presentation/` app. The sub-site is deployed *alongside* it:
-- Original: `hundia.github.io/autospec/#/presentation`
-- This one: `hundia.github.io/autospec/sdlc/#/presentation`
-
-The reusable build prompt that originally generated this is at repo root: `sdlc_sdd.md`.
+> **Audience:** The next AI assistant (e.g., GitHub Copilot CLI) continuing this work on the local dev machine.
+> **State at handoff:** ALL work below is **merged to `main` and pulled locally**. The working tree is the source of truth — no pending branches, no unmerged work.
+> **Live URL:** https://hundia.github.io/autospec/sdlc/#/presentation (deploys from `main` via `.github/workflows/pages.yml`)
+> **Supersedes:** the earlier `sdlc-presentation/HANDOFF.md` (v1) — that file describes a pre-merge state and is now stale; trust this document.
 
 ---
 
-## 2. Architecture / How It Deploys
+## 1. What This Project Is
 
-- `sdlc-presentation/` is a self-contained Vite + React + TypeScript + Tailwind + framer-motion app.
-- `vite.config.ts` has `base: '/autospec/sdlc/'`.
-- `.github/workflows/pages.yml` builds BOTH apps: it builds `presentation/`, then builds `sdlc-presentation/` and copies its `dist/` into `presentation/dist/sdlc/` before publishing to Pages. Merging to `main` triggers deploy.
-- `postcss.config.cjs` (not `.js`) because `package.json` has `"type": "module"`.
+A **standalone GitHub Pages presentation sub-site** at `sdlc-presentation/` telling the story of the **Enterprise Agentic SDLC methodology** (Spec-Driven Development at enterprise scale). It clones the original AutoSpec presentation shell with all-new content.
 
-### Key files
+**Hard constraints:**
+- Do NOT touch the original `presentation/` app. Both deploy together:
+  - Original: `hundia.github.io/autospec/#/presentation`
+  - This one: `hundia.github.io/autospec/sdlc/#/presentation`
+- `vite.config.ts` base is `/autospec/sdlc/`; pages.yml builds `sdlc-presentation/` and copies `dist/` into `presentation/dist/sdlc/`.
+- `postcss.config.cjs` (not `.js`) — package.json has `"type": "module"`.
 
-```
-sdlc-presentation/
-├── src/data/slides-en.ts          # English deck — 20 slides (source of truth for content)
-├── src/data/slides-he.ts          # Hebrew mirror — same structure, must stay in sync
-├── src/pages/PresentationPage.tsx # Shell: slide registry (type string → component), nav, RTL, scrollable handling
-├── src/components/                # One component per slide type
-│   ├── AgenticFiveActsSlide.tsx   # ★ NEWEST — the Big-5 Acts combined slide (see §4)
-│   ├── SixStagesSlide.tsx         # legacy, no longer referenced by deck data (still registered)
-│   ├── SprintMemorySlide.tsx      # legacy, no longer referenced by deck data (still registered)
-│   └── pipeline/                  # Rich scrollable visualizations
-│       ├── PipelineSlide.tsx      # legacy slide, no longer referenced by deck data
-│       ├── PipelineStep.tsx
-│       ├── TerminalVisualization.tsx
-│       ├── SkillsVisualization.tsx
-│       ├── WorktreeDiagram.tsx
-│       ├── SprintSummaryVisualization.tsx
-│       ├── QALoopVisualization.tsx
-│       ├── UserReviewVisualization.tsx
-│       ├── DocsTreeVisualization.tsx
-│       ├── SpecGridVisualization.tsx
-│       ├── BrowserMockup.tsx
-│       └── ScrollProgressBar.tsx
-```
+## 2. Tech + Conventions (MUST follow)
 
-### Conventions you MUST follow
+- Vite + React + TypeScript + Tailwind + framer-motion.
+- **Data-driven slides:** each slide is an object in `src/data/slides-en.ts` with a `type` field; `src/pages/PresentationPage.tsx` maps `type` → component via the `slideComponents` registry. Scrollable slides set `scrollable: true` (shell switches to overflow-y-auto + `ScrollProgressBar`).
+- **EN + HE parity:** every content change in `slides-en.ts` MUST be mirrored in `slides-he.ts` (identical structure, Hebrew text). RTL handled by the shell via `dir`.
+- **Terminology: "Bolt", never "Sprint"** — in deck data AND hardcoded strings inside `src/components/pipeline/*` visualizations.
+- **Tailwind purge gotcha:** accent colors are looked up from literal-class maps (`accentMap` / `accentColors` objects). Never construct class names dynamically.
+- **Repo workflow (CLAUDE.md):** track changes in `specs/backlog.md` (Sprint 38 section); QA gate = `npm run build` in `sdlc-presentation/` must pass.
 
-1. **Slide data drives everything.** A slide = an object in `slides-en.ts` with a `type` field. `PresentationPage.tsx` maps `type` → component in `slideComponents`. Scrollable slides set `scrollable: true` (shell switches to `overflow-y-auto` + ScrollProgressBar).
-2. **EN + HE parity.** Every content change in `slides-en.ts` must be mirrored in `slides-he.ts` (same structure, Hebrew text). RTL is handled by the shell via `dir`.
-3. **Terminology: "Bolt", never "Sprint"** in all presentation content AND hardcoded strings inside visualization components (this was a past bug — all 5 pipeline viz components were renamed Sprint→Bolt).
-4. **The methodology has 7 stages** (Stage 6 = "Summarization: Bolt Close", Stage 7 = "Continuous Steering"). Summarization owners: Product Owner + Dev Team Lead + QA Lead, all HITL (Human-in-the-loop).
-5. **Repo workflow rules** (from CLAUDE.md): every change gets a ticket in `specs/backlog.md` (Sprint 38 section, tickets 38.1–38.12 all ✅ so far); QA = `npm run build` in `sdlc-presentation/` must pass.
+## 3. Current Deck — 20 Slides
 
----
+1. **title** — "The Agentic SDLC", presenter line: **"By Eli Hundia & Sharon Schwartz"** (HE: אלי חונדיה ושרון שוורץ)
+2–7. Problem act: eraTraditional, eraAssistant, eraAgentic, contextPoisoning, reverseTax, breakingPoint
+8–9. Turning point: sddCostOfChaos, bridge ("What if...")
+10–11. philosophy (5 cards + quote), notVibeCoding
+12. **agentic5Acts** ← the centerpiece (see §4)
+13–14. harness, sdlcRoles
+15. sddThreePillars
+16. orchestrator
+17. tooling (Spec-Kit, Superpowers, Jira, Confluence)
+18. **adoption** ← redesigned (see §5)
+19. closing ("Start Your First Bolt")
+20. finalTagline
 
-## 3. Session History (what was done, in order)
+Slides 12 and 18 are `scrollable: true`.
 
-1. **Built the sub-site** (22 slides EN+HE) cloning the AutoSpec presentation shell; added pages.yml build step; merged to main; live.
-2. **Slide 12 fixes:** added the Summarization stage (Stage 6) to the "Stages" scrollable slide before Continuous Steering; fixed huge vertical gaps (removed `min-h-screen` per-section constraints → `py-10/py-12`).
-3. **Expert review round:** two simulated reviewers (methodology fidelity + narrative flow) produced 24 findings; all HIGH/MEDIUM fixed — owner chips per stage (split `owner` on `" + "` into blue pills), "6 Stages"→"7 Stages" title, stage tags on Roles slide corrected, Bolt defined on first use, tooling subtitles/descriptions added (`ToolCard` got optional `subtitle`/`description`), Sprint→Bolt renames in all pipeline viz components.
-4. **LATEST — Big-5 Acts merge (commit `b1e9c12`):** Slides 12 ("The 7 Stages"), 16 ("The Agentic SDLC Pipeline"), and 17 ("Summarization: The Memory Layer") were **removed from the deck data** and replaced by ONE new cinematic scrollable slide. Deck: 22 → 20 slides.
+**Legacy components still in the repo but NOT referenced by deck data:** `SixStagesSlide`, `pipeline/PipelineSlide`, `SprintMemorySlide` (still imported/registered in PresentationPage.tsx as `sixStages` / `pipeline` / `sprintMemorySlide`). Open decision: delete them + registry entries, or keep as fallback. User hasn't decided.
 
----
+## 4. Slide 12 — `agentic5Acts` (component: `src/components/AgenticFiveActsSlide.tsx`)
 
-## 4. The Big-5 Acts Slide (current centerpiece — newest, least battle-tested)
+One cinematic scrollable slide that merged three earlier slides (7-Stages, Pipeline, SprintMemory). Structure: full-screen intro with act roadmap → 5 act sections → ⚠️ Key Insight callout → 🎬 closing callout.
 
-`type: 'agentic5Acts'`, component `src/components/AgenticFiveActsSlide.tsx`, slide #12 in the deck.
+Latest content (user-specified stage mapping — do not drift from this):
 
-Structure: full-screen cinematic intro (act roadmap SPECIFY → ARCHITECT → BOLT → REMEMBER → STEER with ★ KEY markers) → 5 act sections (each `min-h-[85vh]`, watermark Roman numeral background, act label row, big act name, italic tagline, owner pills, bullets, output artifact chip, right-column visualization) → closing 🎬 callout.
+| Act | Name | Stages | Owners | Hero | Visualization |
+|-----|------|--------|--------|------|---------------|
+| I | SPECIFY | 1–2 | Product Manager, Architect, **Software System Engineer** | no | `TerminalVisualization` |
+| II | ARCHITECT | 3 | Architect, Dev Team Lead, **QA Team Lead (optional)** | no | `SkillsVisualization` |
+| III | BOLT | 4–5 | Developer (HITL), **QA Tech Lead** | ★ | `WorktreeDiagram` |
+| IV | REMEMBER | 6 | Product Manager + Dev Tech Lead + QA Tech Lead (all HITL) | ★ | `SprintSummaryVisualization` |
+| V | STEER | 7 | SRE / DevOps | no | inline `SteeringLoop` (same file) |
 
-| Act | Name | Maps to stages | Owners | Hero | Visualization |
-|-----|------|----------------|--------|------|---------------|
-| I | SPECIFY | 1–2 | Product Owner, Architect | no | `TerminalVisualization` |
-| II | ARCHITECT | 3 | Architect, Dev Team Lead | no | `SkillsVisualization` |
-| III | BOLT | 4–5 | Developer (HITL), QA Developer (HITL) | ★ | `WorktreeDiagram` |
-| IV | REMEMBER | 6 | PO + Dev Lead + QA Lead (all HITL) | ★ | `SprintSummaryVisualization` |
-| V | STEER | 7 | SRE / DevOps | no | inline `SteeringLoop` (defined in the same file) |
+Content commitments encoded in the bullets (the user dictated these — preserve):
+- **Act I:** Requirement Paper OR spec.md; project laws as **Instructions & Skills files**; PM approves before agents proceed.
+- **Act II:** plan produced by **iterative conversation with a planning agent**; tasks **decoupled by design for parallel execution** by an orchestrating agent; testable components.
+- **Act III:** parallel agentic execution where possible; **all code reviewed by HITL, no exception**; enforced TDD; grounded in **Specs .md files**; QA Tech Lead implements AND runs system tests from Feature Specs scenarios; **every new test added to regression** + full regression run.
+- **Act IV:** development summary involves all tech leads (PM → Dev TL → QA TL); **includes the reasoning made during development** (why, alternatives, constraints).
+- **Act V:** agents monitor **real-time telemetry (metrics + logs)** against spec intent; **real-time scenarios verified against Feature Requirements in Specs .md files**.
+- **Key Insight callout** (amber ⚠️ box rendered before the closing callout, via optional `keyInsight: { headline, body }` in slide data): "The Key Insight: Compress, Don't Skip — the traditional linear SDLC is collapsing, not being eliminated… only the clock changes."
 
-Hero acts (III, IV) get accent background tint, ring, bigger headers, "★ KEY ACT" badge. Visualization mapping is `vizMap` keyed by Roman numeral inside `AgenticFiveActsSlide.tsx`. Accent palette is `accentMap` (blue/emerald/indigo/teal/orange) — Tailwind classes must stay literal (no dynamic class names) or purge will drop them.
+Component implementation notes: `vizMap` keyed by Roman numeral; `accentMap` (blue/emerald/indigo/teal/orange) with literal Tailwind classes; hero acts get tinted bg + ring + `★ KEY ACT` badge; watermark Roman numeral at ~2% opacity per section.
 
-**Status:** `npm run build` passes; pushed to branch; **NOT yet merged to main, NOT yet visually verified in a browser by the user.**
+## 5. Slide 18 — `adoption` (component: `src/components/AdoptionSlide.tsx`)
 
----
+Fully redesigned in the last session to fix huge vertical dead space and flat content:
+- All `min-h-screen` / `min-h-[70vh]` removed — compact, content-driven layout.
+- Gradient progress bar (emerald → blue → violet) above the cards.
+- **3 phase cards** in a responsive grid (stacked mobile → `lg:grid-cols-3`). Each card: 1px colored top stripe, `PHASE NN` mono badge + timeline chip, emoji + name, italic "win headline", ✓ bullets, and a **★ milestone strip** at the bottom (the tangible proof moment).
+- Phases: 🌱 **Foundation** (Weeks 1–6, milestone: first agent PR merged) / 🔗 **Expand** (Month 2–5, milestone: 80% of PRs AI-reviewed first) / 🚀 **Optimize** (Month 6+, milestone: pioneer teams ship in hours — PwC 2026).
+- Compounding row between cards and metrics: `Risk ↓ ── Coverage ↑ ── Velocity ↑↑`.
+- Metrics compacted into a 2×4 grid titled "What to Measure" (Velocity / Quality / Scale / People); closing Amplify Partners quote kept.
+- New optional Phase fields in data: `timeline`, `win`, `milestone` (typed optional in the component, so old-shape data won't break).
 
-## 5. Immediate Next Steps (in priority order)
+## 6. Session History (chronological, all merged)
 
-1. **Visual QA the Big-5 slide locally:** `cd sdlc-presentation && npm install && npm run dev` → open `/#/presentation` → arrow to slide 12 → scroll through all 5 acts in EN and HE (check RTL layout, owner pills, watermark numerals, hero styling, the Act V SteeringLoop).
-2. **Check legacy slide cleanup decision:** `SixStagesSlide`, `PipelineSlide`, `SprintMemorySlide` are now unreferenced by deck data but still imported/registered in `PresentationPage.tsx`. Either delete them + their registry entries, or keep as fallback. (User hasn't decided — ask or leave.)
-3. **Merge to main** (user does this via PR) to deploy the combined slide to the live site.
-4. **Backlog hygiene:** add a ticket to `specs/backlog.md` Sprint 38 for the Big-5 merge if not present (rule: backlog-first; this last change went out quickly — verify ticket exists, add ✅ entry if missing).
-5. Possible follow-up the user may ask for: tighten the intro screen, mobile layout polish, or fold more of the removed Pipeline steps' detail (e.g., Spec Approval Gate, Human Review step) into the acts as sub-beats.
+1. Built the sub-site (22 slides EN+HE) + pages.yml deploy step.
+2. Added Summarization stage to the stages slide; fixed section spacing.
+3. Expert review round — 24 findings fixed (owner pills, 7-stage corrections, Bolt-not-Sprint renames across all pipeline visualizations, tooling card subtitles/descriptions).
+4. **Big-5 Acts merge:** slides 12+16+17 → one `agentic5Acts` cinematic slide; deck 22 → 20.
+5. **Latest round:** co-presenter added; acts content rewritten per user's 7-stage spec (owners, Requirement Paper, Instructions & Skills, planning-agent conversation, HITL review mandatory, QA regression discipline, reasoning in summaries, real-time scenario verification); ⚠️ Key Insight callout added; Adoption Roadmap fully redesigned. All EN + HE.
 
-## 6. How to Verify Any Change
+## 7. How to Verify / Work
 
 ```bash
 cd sdlc-presentation
-npm install        # first time on a new machine
-npm run build      # must pass — this is the QA gate
-npm run dev        # visual check at http://localhost:5173/autospec/sdlc/
+npm install          # if new machine
+npm run build        # QA gate — must pass
+npm run dev          # http://localhost:5173/autospec/sdlc/ → /#/presentation
 ```
+Slide 12 is deck position 12; slide 18 is the adoption roadmap. Test BOTH languages (globe icon top-right) — Hebrew is RTL and every layout change must be checked there.
 
-Push to `claude/sdlc-sdd-presentation-4cp7e4`; deploy happens only on merge to `main` via `.github/workflows/pages.yml`.
+## 8. Likely Next Steps
 
-## 7. Voice & Story Rules (for any content edits)
+1. **Visual QA** of the two redesigned slides in a browser (EN + HE) — they build clean but the newest layouts haven't been human-verified: act sections, ⚠️ Key Insight box, adoption phase cards, milestone strips, RTL alignment.
+2. Decide fate of the unreferenced legacy components (`SixStagesSlide`, `PipelineSlide`, `SprintMemorySlide`) — delete or keep.
+3. `specs/backlog.md` hygiene: confirm Sprint 38 tickets cover the Big-5 merge + latest content round; add ✅ entries if missing (repo rule: backlog-first).
+4. Whatever the user asks next — likely more polish on slide 12/18 after they present-test it.
+
+## 9. Voice & Story Rules (for any content edit)
 
 - Tagline trinity: "The Spec is the Truth. The Harness is the Guardrail. The Human is the Judge."
-- Narrative arc: Problem (eras → context poisoning → reverse-engineering tax → breaking point) → Turning point ("What if...") → Methodology (philosophy → not-vibe-coding → **Big-5 Acts** → harness → roles) → SDD implementation (three pillars → orchestrator) → Tooling & adoption → Close.
-- Summarization/REMEMBER is the signature differentiator ("the memory AI was never given") — always give it hero treatment.
-- Stats used (keep sourced): 38.7% of AI review comments drive real fixes (Atlassian RovoDev 2026), up-to-80% quality improvements, PwC 2026 "pioneer teams", Amplify Partners closing quote.
+- Arc: Problem → "What if..." → Methodology (philosophy → Big-5 Acts → harness → roles) → SDD implementation → Tooling → Adoption → Close.
+- REMEMBER/Summarization is the signature differentiator ("the memory AI was never given") — always hero treatment.
+- Sourced stats to keep intact: 38.7% AI review comments drive real fixes (Atlassian RovoDev 2026), 73% AI projects abandoned, PwC 2026 pioneer teams, Amplify Partners closing quote.
