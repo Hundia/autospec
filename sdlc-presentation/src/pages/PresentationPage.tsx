@@ -35,6 +35,7 @@ import HarnessSlide from '../components/HarnessSlide';
 import SdlcRolesSlide from '../components/SdlcRolesSlide';
 import ToolingSlide from '../components/ToolingSlide';
 import AdoptionSlide from '../components/AdoptionSlide';
+import AgenticFiveActsSlide from '../components/AgenticFiveActsSlide';
 
 const slideComponents = {
   title: TitleSlide,
@@ -50,6 +51,7 @@ const slideComponents = {
   philosophy: PhilosophySlide,
   notVibeCoding: NotVibeCodingSlide,
   sixStages: SixStagesSlide,
+  agentic5Acts: AgenticFiveActsSlide,
   harness: HarnessSlide,
   sdlcRoles: SdlcRolesSlide,
   pipeline: PipelineSlide,
