@@ -182,36 +182,111 @@ export default function AgenticFiveActsSlide({ data, lang }: AgenticFiveActsSlid
           {data.subtitle}
         </motion.p>
 
-        {/* Phase roadmap */}
+        {/* Phase roadmap — 2-column vertical timeline */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="flex items-end gap-2 sm:gap-4 flex-wrap justify-center mb-14"
+          className="w-full max-w-2xl mb-14"
         >
-          {data.phases.map((phase, idx) => {
-            const colors = accentMap[phase.accent] || accentMap.blue;
-            return (
-              <React.Fragment key={phase.number}>
-                <div className={`flex flex-col items-center gap-1 ${phase.hero ? 'scale-115' : ''}`}>
-                  <span className="text-[9px] text-white/25 font-mono tracking-[0.25em] uppercase">
-                    {isRTL ? 'שלב' : 'Phase'} {phase.number}
-                  </span>
-                  <span className={`font-black tracking-wide ${colors.text} ${phase.hero ? 'text-sm sm:text-base' : 'text-xs sm:text-sm'}`}>
-                    {phase.name}
-                  </span>
-                  {phase.hero && (
-                    <span className={`text-[9px] px-1.5 py-0.5 rounded ${colors.badge} font-mono tracking-wide`}>
-                      {isRTL ? '★ שיא' : '★ KEY'}
-                    </span>
-                  )}
-                </div>
-                {idx < data.phases.length - 1 && (
-                  <span className="text-white/15 text-lg hidden sm:block pb-1">──→</span>
-                )}
-              </React.Fragment>
-            );
-          })}
+          <div className="grid grid-cols-2 gap-x-8 sm:gap-x-14 text-left">
+            {/* Left column: phases 1–4 */}
+            <div className="relative">
+              <div
+                className="absolute left-[11px] top-3 bottom-8 w-px pointer-events-none"
+                style={{ background: 'linear-gradient(180deg, #60a5fa 0%, #a78bfa 33%, #34d399 66%, #818cf8 100%)' }}
+              />
+              {data.phases.slice(0, 4).map((phase, idx) => {
+                const colors = accentMap[phase.accent] || accentMap.blue;
+                return (
+                  <motion.div
+                    key={phase.number}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.55 + idx * 0.09 }}
+                    className={`relative flex items-start gap-3 ${idx < 3 ? 'mb-4' : ''}`}
+                  >
+                    <div className={`relative z-10 shrink-0 flex items-center justify-center rounded-full mt-0.5
+                      ${phase.hero
+                        ? `w-[26px] h-[26px] border-2 ${colors.border} ${colors.bg}`
+                        : `w-[22px] h-[22px] border ${colors.border} bg-slate-950`}`}>
+                      <span className={`font-mono font-black text-[9px] ${colors.text}`}>{phase.number}</span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 min-w-0">
+                      <span className={`font-black leading-snug tracking-wide ${colors.text}
+                        ${phase.hero ? 'text-[11px] sm:text-xs' : 'text-[10px] sm:text-[11px]'}`}>
+                        {phase.name}
+                      </span>
+                      {phase.hero && (
+                        <span className={`text-[8px] px-1.5 py-0.5 rounded-sm ${colors.badge} font-mono tracking-wide w-fit`}>
+                          {isRTL ? '★ שיא' : '★ KEY'}
+                        </span>
+                      )}
+                    </div>
+                  </motion.div>
+                );
+              })}
+              {/* Continues-to-right hint */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.05 }}
+                className="mt-3 ml-1 text-[9px] font-mono text-white/15 tracking-widest"
+              >
+                {isRTL ? '← ממשיך' : 'continues →'}
+              </motion.div>
+            </div>
+
+            {/* Right column: phases 5–7 + loop */}
+            <div className="relative mt-6 sm:mt-8">
+              <div
+                className="absolute left-[11px] top-3 bottom-8 w-px pointer-events-none"
+                style={{ background: 'linear-gradient(180deg, #22d3ee 0%, #2dd4bf 50%, #fb923c 100%)' }}
+              />
+              {data.phases.slice(4).map((phase, idx) => {
+                const colors = accentMap[phase.accent] || accentMap.blue;
+                return (
+                  <motion.div
+                    key={phase.number}
+                    initial={{ opacity: 0, x: 8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.95 + idx * 0.09 }}
+                    className={`relative flex items-start gap-3 ${idx < 2 ? 'mb-4' : ''}`}
+                  >
+                    <div className={`relative z-10 shrink-0 flex items-center justify-center rounded-full mt-0.5
+                      ${phase.hero
+                        ? `w-[26px] h-[26px] border-2 ${colors.border} ${colors.bg}`
+                        : `w-[22px] h-[22px] border ${colors.border} bg-slate-950`}`}>
+                      <span className={`font-mono font-black text-[9px] ${colors.text}`}>{phase.number}</span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 min-w-0">
+                      <span className={`font-black leading-snug tracking-wide ${colors.text}
+                        ${phase.hero ? 'text-[11px] sm:text-xs' : 'text-[10px] sm:text-[11px]'}`}>
+                        {phase.name}
+                      </span>
+                      {phase.hero && (
+                        <span className={`text-[8px] px-1.5 py-0.5 rounded-sm ${colors.badge} font-mono tracking-wide w-fit`}>
+                          {isRTL ? '★ שיא' : '★ KEY'}
+                        </span>
+                      )}
+                    </div>
+                  </motion.div>
+                );
+              })}
+              {/* Loop indicator */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.3 }}
+                className="flex items-center gap-2 mt-3 ml-1"
+              >
+                <span className="text-white/25 text-sm leading-none">↺</span>
+                <span className="text-[9px] font-mono text-white/20 tracking-[0.25em] uppercase">
+                  {isRTL ? 'לולאה רציפה' : 'continuous loop'}
+                </span>
+              </motion.div>
+            </div>
+          </div>
         </motion.div>
 
         {/* Scroll hint */}
