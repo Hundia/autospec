@@ -1,11 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import TerminalVisualization from './pipeline/TerminalVisualization';
+import SpecGridVisualization from './pipeline/SpecGridVisualization';
 import SkillsVisualization from './pipeline/SkillsVisualization';
 import WorktreeDiagram from './pipeline/WorktreeDiagram';
+import QALoopVisualization from './pipeline/QALoopVisualization';
 import SprintSummaryVisualization from './pipeline/SprintSummaryVisualization';
 
-interface Act {
+interface Phase {
   number: string;
   name: string;
   tagline: string;
@@ -23,16 +25,18 @@ interface AgenticFiveActsSlideProps {
     subtitle: string;
     closingCallout: string;
     keyInsight?: { headline: string; body: string };
-    acts: Act[];
+    phases: Phase[];
   };
   lang: 'en' | 'he';
 }
 
 const vizMap: Record<string, React.FC<{ lang: 'en' | 'he' }>> = {
-  I: TerminalVisualization,
-  II: SkillsVisualization,
-  III: WorktreeDiagram,
-  IV: SprintSummaryVisualization,
+  '1': TerminalVisualization,
+  '2': SpecGridVisualization,
+  '3': SkillsVisualization,
+  '4': WorktreeDiagram,
+  '5': QALoopVisualization,
+  '6': SprintSummaryVisualization,
 };
 
 const accentMap: Record<string, {
@@ -51,6 +55,14 @@ const accentMap: Record<string, {
     heroRing: '',
     bullet: 'text-blue-400',
   },
+  violet: {
+    text: 'text-violet-400',
+    border: 'border-violet-500/25',
+    bg: 'bg-violet-500/5',
+    badge: 'bg-violet-500/20 text-violet-300',
+    heroRing: '',
+    bullet: 'text-violet-400',
+  },
   emerald: {
     text: 'text-emerald-400',
     border: 'border-emerald-500/25',
@@ -66,6 +78,14 @@ const accentMap: Record<string, {
     badge: 'bg-indigo-500/20 text-indigo-300',
     heroRing: 'ring-1 ring-inset ring-indigo-500/20',
     bullet: 'text-indigo-400',
+  },
+  cyan: {
+    text: 'text-cyan-400',
+    border: 'border-cyan-500/25',
+    bg: 'bg-cyan-500/5',
+    badge: 'bg-cyan-500/20 text-cyan-300',
+    heroRing: '',
+    bullet: 'text-cyan-400',
   },
   teal: {
     text: 'text-teal-400',
@@ -141,7 +161,7 @@ export default function AgenticFiveActsSlide({ data, lang }: AgenticFiveActsSlid
           transition={{ delay: 0.1 }}
           className="text-[11px] font-mono tracking-[0.35em] text-white/35 uppercase mb-5"
         >
-          {isRTL ? 'חמש מעשות · מסע שלם' : 'Five Acts · One Complete Journey'}
+          {isRTL ? 'שבעה שלבים · לולאה שלמה' : 'Seven Phases · One Complete Loop'}
         </motion.div>
 
         <motion.h2
@@ -162,31 +182,31 @@ export default function AgenticFiveActsSlide({ data, lang }: AgenticFiveActsSlid
           {data.subtitle}
         </motion.p>
 
-        {/* Act roadmap */}
+        {/* Phase roadmap */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="flex items-end gap-3 sm:gap-6 flex-wrap justify-center mb-14"
+          className="flex items-end gap-2 sm:gap-4 flex-wrap justify-center mb-14"
         >
-          {data.acts.map((act, idx) => {
-            const colors = accentMap[act.accent] || accentMap.blue;
+          {data.phases.map((phase, idx) => {
+            const colors = accentMap[phase.accent] || accentMap.blue;
             return (
-              <React.Fragment key={act.number}>
-                <div className={`flex flex-col items-center gap-1 ${act.hero ? 'scale-115' : ''}`}>
+              <React.Fragment key={phase.number}>
+                <div className={`flex flex-col items-center gap-1 ${phase.hero ? 'scale-115' : ''}`}>
                   <span className="text-[9px] text-white/25 font-mono tracking-[0.25em] uppercase">
-                    Act {act.number}
+                    {isRTL ? 'שלב' : 'Phase'} {phase.number}
                   </span>
-                  <span className={`font-black tracking-wide ${colors.text} ${act.hero ? 'text-base sm:text-lg' : 'text-sm sm:text-base'}`}>
-                    {act.name}
+                  <span className={`font-black tracking-wide ${colors.text} ${phase.hero ? 'text-sm sm:text-base' : 'text-xs sm:text-sm'}`}>
+                    {phase.name}
                   </span>
-                  {act.hero && (
+                  {phase.hero && (
                     <span className={`text-[9px] px-1.5 py-0.5 rounded ${colors.badge} font-mono tracking-wide`}>
                       {isRTL ? '★ שיא' : '★ KEY'}
                     </span>
                   )}
                 </div>
-                {idx < data.acts.length - 1 && (
+                {idx < data.phases.length - 1 && (
                   <span className="text-white/15 text-lg hidden sm:block pb-1">──→</span>
                 )}
               </React.Fragment>
@@ -201,7 +221,7 @@ export default function AgenticFiveActsSlide({ data, lang }: AgenticFiveActsSlid
           transition={{ delay: 0.75 }}
           className="flex flex-col items-center gap-2 text-white/35"
         >
-          <span className="text-sm">{isRTL ? 'גלול דרך המעשות' : 'Scroll through the acts'}</span>
+          <span className="text-sm">{isRTL ? 'גלול דרך השלבים' : 'Scroll through the phases'}</span>
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ repeat: Infinity, duration: 1.5 }}
@@ -212,35 +232,35 @@ export default function AgenticFiveActsSlide({ data, lang }: AgenticFiveActsSlid
         </motion.div>
       </div>
 
-      {/* ── THE FIVE ACTS ── */}
-      {data.acts.map((act) => {
-        const colors = accentMap[act.accent] || accentMap.blue;
-        const VizComponent = vizMap[act.number];
+      {/* ── THE SEVEN PHASES ── */}
+      {data.phases.map((phase) => {
+        const colors = accentMap[phase.accent] || accentMap.blue;
+        const VizComponent = vizMap[phase.number];
 
         return (
           <motion.section
-            key={act.number}
+            key={phase.number}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.5 }}
             className={`relative min-h-[85vh] flex flex-col justify-center px-6 py-16 border-t ${
-              act.hero
+              phase.hero
                 ? `${colors.border} ${colors.bg} ${colors.heroRing}`
                 : 'border-white/5'
             }`}
           >
-            {/* Watermark act number */}
+            {/* Watermark phase number */}
             <div className="absolute inset-0 flex items-center justify-end pr-4 sm:pr-12 pointer-events-none select-none overflow-hidden">
               <span
                 className={`text-[18vw] font-black ${colors.text}`}
                 style={{ opacity: 0.022, lineHeight: 1 }}
               >
-                {act.number}
+                {phase.number}
               </span>
             </div>
 
-            {/* Act label row */}
+            {/* Phase label row */}
             <motion.div
               initial={{ opacity: 0, x: -15 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -249,28 +269,28 @@ export default function AgenticFiveActsSlide({ data, lang }: AgenticFiveActsSlid
               className="flex items-center gap-3 mb-3 flex-wrap"
             >
               <span className={`text-[10px] font-mono tracking-[0.3em] ${colors.text} uppercase`}>
-                {isRTL ? 'מעשה' : 'Act'} {act.number}
+                {isRTL ? 'שלב' : 'Phase'} {phase.number}
               </span>
               <span className="text-white/15">·</span>
-              <span className="text-[11px] text-white/35 font-mono">{act.stageRef}</span>
-              {act.hero && (
+              <span className="text-[11px] text-white/35 font-mono">{phase.stageRef}</span>
+              {phase.hero && (
                 <span className={`text-[10px] px-2.5 py-0.5 rounded-full ${colors.badge} font-semibold tracking-wide`}>
-                  {isRTL ? '★ מעשה מפתח' : '★ KEY ACT'}
+                  {isRTL ? '★ שלב מפתח' : '★ KEY PHASE'}
                 </span>
               )}
             </motion.div>
 
-            {/* Act name */}
+            {/* Phase name */}
             <motion.h3
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
               className={`font-black mb-3 tracking-tight ${colors.text} ${
-                act.hero ? 'text-5xl sm:text-6xl' : 'text-4xl sm:text-5xl'
+                phase.hero ? 'text-5xl sm:text-6xl' : 'text-4xl sm:text-5xl'
               }`}
             >
-              {act.name}
+              {phase.name}
             </motion.h3>
 
             {/* Tagline */}
@@ -280,10 +300,10 @@ export default function AgenticFiveActsSlide({ data, lang }: AgenticFiveActsSlid
               viewport={{ once: true }}
               transition={{ delay: 0.15 }}
               className={`text-white/65 italic mb-5 max-w-2xl leading-relaxed ${
-                act.hero ? 'text-lg sm:text-xl' : 'text-base sm:text-lg'
+                phase.hero ? 'text-lg sm:text-xl' : 'text-base sm:text-lg'
               }`}
             >
-              "{act.tagline}"
+              "{phase.tagline}"
             </motion.p>
 
             {/* Owners */}
@@ -297,7 +317,7 @@ export default function AgenticFiveActsSlide({ data, lang }: AgenticFiveActsSlid
               <span className="text-[11px] text-white/30 font-mono uppercase tracking-wider">
                 {isRTL ? 'אחראים:' : 'Owners:'}
               </span>
-              {act.owners.map((owner) => (
+              {phase.owners.map((owner) => (
                 <span
                   key={owner}
                   className="text-xs px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-300 font-medium"
@@ -308,11 +328,11 @@ export default function AgenticFiveActsSlide({ data, lang }: AgenticFiveActsSlid
             </motion.div>
 
             {/* Body: bullets + visualization */}
-            <div className={`grid gap-8 items-start ${VizComponent || act.number === 'V' ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
+            <div className={`grid gap-8 items-start ${VizComponent || phase.number === '7' ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
               {/* Left: bullets + output */}
               <div>
                 <ul className="space-y-2.5 mb-7">
-                  {act.bullets.map((bullet, bIdx) => (
+                  {phase.bullets.map((bullet, bIdx) => (
                     <motion.li
                       key={bIdx}
                       initial={{ opacity: 0, x: -8 }}
@@ -337,7 +357,7 @@ export default function AgenticFiveActsSlide({ data, lang }: AgenticFiveActsSlid
                   <span className="text-[11px] text-white/40 font-mono uppercase tracking-wider">
                     {isRTL ? 'פלט:' : 'Output'}
                   </span>
-                  <span className={`text-sm font-mono font-semibold ${colors.text}`}>{act.output}</span>
+                  <span className={`text-sm font-mono font-semibold ${colors.text}`}>{phase.output}</span>
                 </motion.div>
               </div>
 
@@ -353,7 +373,7 @@ export default function AgenticFiveActsSlide({ data, lang }: AgenticFiveActsSlid
                 </motion.div>
               )}
 
-              {act.number === 'V' && (
+              {phase.number === '7' && (
                 <motion.div
                   initial={{ opacity: 0, y: 12 }}
                   whileInView={{ opacity: 1, y: 0 }}
