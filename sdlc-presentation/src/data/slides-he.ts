@@ -172,7 +172,7 @@ export const slidesHE = [
       {
         icon: '🎯',
         title: 'בולטים, לא ספרינטים',
-        description: 'מחזורי פיצ\'רים נמדדים בשעות או ימים, לא שבועות. סוכנים מבצעים; בני אדם מנהלים. מהירות היא תוצר של מבנה.',
+        description: 'בולט הוא מחזור פיצ\'ר תחום וניתן לבדיקה עצמאית — ספסיפיקציה מאושרת, ביצוע סוכנים, אימות סבכה. נמדד בשעות או ימים, לא שבועות. מהירות היא תוצר של מבנה.',
         accent: 'blue',
       },
       {
@@ -184,7 +184,7 @@ export const slidesHE = [
       {
         icon: '✍️',
         title: 'מנהלים ומסקרים',
-        description: 'ללא ממשל חזק, HITL הופך לאישור גומי. ביצוע אג\'נטי + ספסיפיקציות מובנות + ממשל נאכף.',
+        description: 'ללא ממשל חזק, HITL הופך לאישור גומי. ביצוע אג\'נטי + ספסיפיקציות מובנות + ממשל נאכף — זה מה שמפריד פיקוח אמיתי מהצגה.',
         accent: 'teal',
       },
       {
@@ -235,7 +235,7 @@ export const slidesHE = [
   {
     type: 'sixStages',
     scrollable: true,
-    title: '6 שלבי ה-SDLC האג\'נטי',
+    title: '7 שלבי ה-SDLC האג\'נטי',
     subtitle: 'גלול למטה — כל שלב הוא שער',
     stages: [
       {
@@ -313,8 +313,8 @@ export const slidesHE = [
         accent: 'cyan',
         bullets: [
           'סוכנים מממשים מקרי בדיקה מיושרים לקריטריוני הקבלה של הספסיפיקציה.',
-          'ספסיפיקציית הבדיקה מגדירה רק את ה-AC — לא פרטי מימוש.',
-          'סקירת קוד AI: 38.7% מהערות סקירת AI מניעות תיקונים אמיתיים (Atlassian 2026).',
+          'spec.md של בדיקות מגדיר רק את ה-AC — לא פרטי מימוש.',
+          'סקירת קוד AI: שיפורי איכות עד 80%; 38.7% מהערות סקירת AI מניעות תיקונים אמיתיים (Atlassian RovoDev 2026).',
           'מפתח QA סוקר PR של בדיקות סוכנים ומתחזק את סבכת האיכות.',
         ],
         output: 'חבילות E2E + רגרסיה קשורות ל-AC של הספסיפיקציה',
@@ -353,7 +353,7 @@ export const slidesHE = [
         output: 'מערכת שמנהיגה את עצמה בחזרה לספסיפיקציה',
       },
     ],
-    closingCallout: 'דחוס, אל תדלג. ה-SDLC הליניארי מתמוטט ללולאת עיצוב-וניסוי דחוסה — המשמעת של כל שלב נשארת; רק השעון משתנה.',
+    closingCallout: 'דחוס, אל תדלג. ה-AI ממזג דרישות, עיצוב ופיתוח ללולאת עיצוב-וניסוי דחוסה אחת — המשמעת של כל שלב נשארת; רק השעון משתנה.',
   },
 
   // 13. harness
@@ -386,14 +386,15 @@ export const slidesHE = [
       { icon: '🎯', oldRole: 'מנהל מוצר', newRole: 'בעל תוצאות', oneLiner: "בעל ה'מה'; מאשר spec.md", stage: 'שלבים 1, 6', accent: 'blue' },
       { icon: '🏛️', oldRole: 'ארכיטקט / ראש טכנולוגיה', newRole: 'בעל ממשל', oneLiner: 'מגדיר את הסבכה; חוקר את התכנית', stage: 'שלבים 1–3', accent: 'violet' },
       { icon: '🔬', oldRole: 'מפתח', newRole: 'מתאם פיתוח', oneLiner: 'סוקר PR של סוכנים, מקרי קצה, כותב סבכה', stage: 'שלבים 4–5', accent: 'teal' },
-      { icon: '🤖', oldRole: 'לא קיים', newRole: 'כוח עבודה אוטונומי', oneLiner: 'מנסח את כל הארטיפקטים; מבצע משימות מוגבלות תחת גדרות', stage: 'שלבים 2–6', accent: 'cyan' },
-      { icon: '🔭', oldRole: 'SRE / DevOps', newRole: 'שומר תשתיות', oneLiner: 'שומר על תשתית ריפוי עצמי וטלמטריה של סוכנים', stage: 'שלב 6', accent: 'emerald' },
+      { icon: '🤖', oldRole: 'לא קיים', newRole: 'כוח עבודה אוטונומי', oneLiner: 'מנסח את כל הארטיפקטים; מבצע משימות מוגבלות תחת גדרות', stage: 'שלבים 2–7', accent: 'cyan' },
+      { icon: '🔭', oldRole: 'SRE / DevOps', newRole: 'שומר תשתיות חכמות', oneLiner: 'שומר על תשתית ריפוי עצמי וטלמטריה של סוכנים', stage: 'שלב 7', accent: 'emerald' },
       { icon: '🎨', oldRole: 'מעצב', newRole: 'מנהל יצירתי', oneLiner: "טעם אנושי, חוויה, מותג — מה ש-AI לא יכול לקודד", stage: 'שלבים 1–5', accent: 'amber' },
     ],
     coreShiftTitle: 'השינוי המרכזי',
     coreShift: [
       { type: 'check', text: 'הערך עובר מכתיבת קוד לאימות ואישור פלט סוכנים.' },
       { type: 'check', text: 'המיומנות המרכזית הופכת לכוונה — הגדר מה התוכנה צריכה לעשות, אמת שהיא עושה זאת.' },
+      { type: 'check', text: 'מוקד ההכשרה עובר להבנת הבעיה (לא תחביר), ניטור מערכות AI וטכניקות אימות.' },
       { type: 'warn', text: 'HITL הוא נקודת ביקורת חובה, לא חותמת גומי.' },
     ],
   },
@@ -418,7 +419,7 @@ export const slidesHE = [
         number: '02',
         title: 'סיכומי בולטים',
         description: 'כל בולט נסגר עם סיכום: מה נבנה, מה השתנה, מה הוחלט. הסוכן הבא מתחיל עם הקשר מלא.',
-        artifact: 'sprints/bolt-X/summary.md',
+        artifact: 'bolts/bolt-X/summary.md',
         icon: '📋',
         color: 'emerald',
       },
@@ -594,6 +595,8 @@ export const slidesHE = [
       {
         icon: '⚙️',
         title: 'Spec-Kit',
+        subtitle: 'עמוד השדרה של זרימת העבודה · github.com/github/spec-kit (2025, OSS)',
+        description: 'מציב את הספסיפיקציה במרכז ההנדסה. סוכנים לא יכולים להתחיל לקודד עד שבני אדם מסמנים את הספסיפיקציה כמאושרת.',
         accent: 'teal',
         terminal: [
           { text: '$ spec-kit gen spec --from PROJ-421', type: 'command' },
@@ -605,6 +608,8 @@ export const slidesHE = [
       {
         icon: '🦸',
         title: 'Superpowers',
+        subtitle: 'משמעת הביצוע · אכיפת הסבכה',
+        description: 'מכתיב את התנהגות הסוכן בזמן המימוש. TDD קפדני: אסור לסוכנים לכתוב קוד מימוש לפני שקיימת בדיקה כושלת.',
         accent: 'violet',
         terminal: [
           { text: '$ superpowers bolt --task tasks.md#42', type: 'command' },
@@ -616,6 +621,8 @@ export const slidesHE = [
       {
         icon: '📋',
         title: 'Jira כרכז הקשר',
+        subtitle: 'ALM · שכבת נראות',
+        description: 'כש-spec.md או plan.md משתנים ב-repo, סוכנים מסנכרנים סטטוס ל-Epic ב-Jira אוטומטית — ללא דוחות סטטוס ידניים.',
         accent: 'blue',
         terminal: [
           { text: 'spec.md עודכן → סינכרון סוכן', type: 'command' },
@@ -627,6 +634,8 @@ export const slidesHE = [
       {
         icon: '📖',
         title: 'Confluence כזיכרון ארוך-טווח',
+        subtitle: 'ALM · זיכרון ארוך-טווח',
+        description: 'סוכנים קוראים מסמכי ארכיטקטורה כדי לשמור על תאימות הקוד — ידע ארגוני מצטבר מגביל את התנהגות הסוכנים.',
         accent: 'amber',
         terminal: [
           { text: 'agent context fetch --source confluence', type: 'command' },
@@ -651,7 +660,8 @@ export const slidesHE = [
         name: 'שלב 1 — יסודות',
         accent: 'blue',
         bullets: [
-          'סנדבוקסים + טלמטריה + שערי אבטחה; התחל בנתיבים חוזרים לא-קריטיים.',
+          'סנדבוקסים + טלמטריה + שערי אבטחה — סוכנים פועלים ללא השפעה על פרודקשן.',
+          'התחל בתהליכים לא-קריטיים, מתועדים היטב, עם קריטריוני הצלחה ברורים — למשל עדכוני תלויות, ניטור ביצועים שגרתי.',
           'בנה את הסבכה (בדיקות / linters / טיפוסים).',
           'פיילוט של Spec-Kit על צוות אחד.',
         ],
@@ -686,7 +696,7 @@ export const slidesHE = [
         icon: '📝',
         title: 'מהירות',
         accent: 'blue',
-        items: ['נקודות סיפור לבולט', 'זמן מחזור בולט', 'תפוקת פיצ\'רים'],
+        items: ['נקודות סיפור לבולט', 'זמן מחזור בולט', 'שורות קוד לשעה', 'זמן על יצירה מול תחזוקה'],
       },
       {
         icon: '🛡',
@@ -726,7 +736,7 @@ export const slidesHE = [
     ],
     links: {
       github: 'github.com/Hundia/autospec',
-      docs: 'hundia.github.io/autospec/#/presentation',
+      docs: 'hundia.github.io/autospec',
     },
     tagline: 'מכוונה להיגוי.',
   },

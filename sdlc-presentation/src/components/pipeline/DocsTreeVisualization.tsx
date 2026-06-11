@@ -51,7 +51,7 @@ export default function DocsTreeVisualization({ lang }: { lang: 'en' | 'he' }) {
         transition={{ delay: 1.5 }}
         className="mt-3 pt-3 border-t border-emerald-500/10 text-emerald-400/60 text-xs text-center"
       >
-        {lang === 'he' ? '100+ קבצים אחרי 10 ספרינטים' : '100+ files after 10 sprints'}
+        {lang === 'he' ? '100+ קבצים אחרי 10 בולטים' : '100+ files after 10 bolts'}
       </motion.div>
     </div>
   );

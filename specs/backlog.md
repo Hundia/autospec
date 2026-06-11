@@ -922,3 +922,5 @@
 | 38.8 | Deploy: `pages.yml` builds sub-site → `presentation/dist/sdlc/` | DevOps | 1 | ✅ | 38.2 | — |
 | 38.9 | QA: build passes, original `presentation/` untouched, scrollable slides verified | QA | 2 | ✅ | All | — |
 | 38.10 | Docs: `docs/sdlc-presentation/01_overview.md` + sprint summary | Docs | 2 | ✅ | All | `docs/sdlc-presentation/01_overview.md` |
+| 38.11 | Stages slide: Summarization stage inserted (hero, HITL owners) + spacing redesign | Frontend | 3 | ✅ | 38.6 | — |
+| 38.12 | Expert review round: 2 reviewer agents (methodology fidelity + narrative flow), findings fixed (7-stages title, role stage tags, Sprint→Bolt strings, tooling descriptions, playbook content restored) | QA | 5 | ✅ | 38.11 | — |

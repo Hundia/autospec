@@ -20,13 +20,13 @@ export default function SprintSummaryVisualization({ lang }: { lang: 'en' | 'he'
         </div>
         <div className="p-3 font-mono text-xs space-y-1">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-teal-400">
-            {'>'} /sprint-close
+            {'>'} /bolt-close
           </motion.div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.5 }} className="text-slate-400">
-            {isHe ? 'סוגר ספרינט 11... מייצר סיכום...' : 'Closing Sprint 11... Generating summary...'}
+            {isHe ? 'סוגר בולט 11... מייצר סיכום...' : 'Closing Bolt 11... Generating summary...'}
           </motion.div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.8 }} className="text-green-400">
-            ✓ sprints/sprint-11/summary.md {isHe ? 'נוצר' : 'created'}
+            ✓ bolts/bolt-11/summary.md {isHe ? 'נוצר' : 'created'}
           </motion.div>
         </div>
       </motion.div>
@@ -40,7 +40,7 @@ export default function SprintSummaryVisualization({ lang }: { lang: 'en' | 'he'
       >
         <div className="flex items-center gap-2 mb-4">
           <span className="text-lg">📋</span>
-          <span className="text-sm font-mono text-teal-400">sprints/sprint-11/summary.md</span>
+          <span className="text-sm font-mono text-teal-400">bolts/bolt-11/summary.md</span>
         </div>
 
         <div className="space-y-3 text-sm">
@@ -95,7 +95,7 @@ export default function SprintSummaryVisualization({ lang }: { lang: 'en' | 'he'
           >
             <div className="text-amber-400 font-semibold text-xs uppercase tracking-wide mb-1">{isHe ? 'Commit סגירה' : 'Closing Commit'}</div>
             <div className="text-slate-400 text-xs font-mono">
-              <span className="text-amber-300">a3f7c21</span> feat(sprint-11): auth system + login page
+              <span className="text-amber-300">a3f7c21</span> feat(bolt-11): auth system + login page
             </div>
           </motion.div>
         </div>
@@ -111,8 +111,8 @@ export default function SprintSummaryVisualization({ lang }: { lang: 'en' | 'he'
         <div className="text-lg mb-1">✨</div>
         <p className="text-sm text-teal-300 font-medium">
           {isHe
-            ? 'זה הקסם: בפעם הבאה שסוכן ירצה לשנות/להרחיב/לעדכן משהו מהספרינט הזה — כל מה שהוא צריך נמצא כאן. בלי הנדסה לאחור!'
-            : "This is the magic: next time an agent needs to change, extend, or update anything from this sprint — everything it needs is right here. No reverse engineering!"}
+            ? 'זה הקסם: בפעם הבאה שסוכן ירצה לשנות/להרחיב/לעדכן משהו מהבולט הזה — כל מה שהוא צריך נמצא כאן. בלי הנדסה לאחור!'
+            : "This is the magic: next time an agent needs to change, extend, or update anything from this bolt — everything it needs is right here. No reverse engineering!"}
         </p>
       </motion.div>
     </div>

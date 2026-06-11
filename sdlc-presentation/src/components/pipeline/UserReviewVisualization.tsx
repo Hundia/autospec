@@ -33,7 +33,7 @@ export default function UserReviewVisualization({ lang }: { lang: 'en' | 'he' })
           </div>
           <div>
             <div className="text-sm font-semibold text-white">{isHe ? 'סקירת בעל המוצר' : 'Product Owner Review'}</div>
-            <div className="text-xs text-slate-400">{isHe ? 'בודק את הספרינט' : 'Testing sprint deliverables'}</div>
+            <div className="text-xs text-slate-400">{isHe ? 'בודק את הבולט' : 'Testing bolt deliverables'}</div>
           </div>
         </div>
 
