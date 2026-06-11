@@ -275,7 +275,7 @@ export const slidesHE = [
         emoji: '🗺️',
         name: 'עיצוב ותכנון',
         tag: 'תכנן ומשימות',
-        owner: 'ארכיטקט + ראש צוות',
+        owner: 'ארכיטקט + ראש צוות פיתוח',
         hero: false,
         accent: 'emerald',
         bullets: [
@@ -324,7 +324,7 @@ export const slidesHE = [
         emoji: '📝',
         name: 'סיכום: סגירת בולט',
         tag: 'שכבת הזיכרון',
-        owner: 'צוות הפיתוח',
+        owner: 'מנהל מוצר + ראש צוות פיתוח + מוביל QA (HITL)',
         hero: true,
         accent: 'teal',
         bullets: [

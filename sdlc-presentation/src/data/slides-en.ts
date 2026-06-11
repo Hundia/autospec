@@ -259,7 +259,7 @@ export const slidesEN = [
         emoji: '⚖️',
         name: 'Alignment & Constraints',
         tag: 'The Constitution',
-        owner: 'Architect + PO',
+        owner: 'Architect + Product Owner',
         hero: false,
         accent: 'violet',
         bullets: [
@@ -275,7 +275,7 @@ export const slidesEN = [
         emoji: '🗺️',
         name: 'Design & Planning',
         tag: 'Plan & Tasks',
-        owner: 'Architect + Team Lead',
+        owner: 'Architect + Dev Team Lead',
         hero: false,
         accent: 'emerald',
         bullets: [
@@ -324,7 +324,7 @@ export const slidesEN = [
         emoji: '📝',
         name: 'Summarization: Bolt Close',
         tag: 'Memory Layer',
-        owner: 'Dev Team',
+        owner: 'Product Owner + Dev Team Lead + QA Lead (HITL)',
         hero: true,
         accent: 'teal',
         bullets: [

@@ -128,13 +128,21 @@ export default function SixStagesSlide({ data, lang }: SixStagesSlideProps) {
                 <h3 className="text-3xl sm:text-4xl font-bold text-white mb-2">{stage.name}</h3>
 
                 {/* Tag + Owner row */}
-                <div className={`flex flex-wrap gap-2 mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className={`flex flex-wrap items-center gap-2 mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
                   <span className={`text-xs px-3 py-1 rounded-full font-mono ${colors.tag}`}>
                     {stage.tag}
                   </span>
-                  <span className="text-xs px-3 py-1 rounded-full bg-white/5 text-white/50">
-                    👤 {stage.owner}
+                  <span className="text-xs text-white/30 uppercase tracking-wider font-semibold">
+                    {isRTL ? 'בעלות:' : 'Owners:'}
                   </span>
+                  {stage.owner.split(' + ').map((owner, idx) => (
+                    <span
+                      key={idx}
+                      className="text-xs px-3 py-1 rounded-full bg-blue-500/15 text-blue-300 border border-blue-400/30 font-semibold"
+                    >
+                      👤 {owner}
+                    </span>
+                  ))}
                 </div>
 
                 {/* Bullets */}
