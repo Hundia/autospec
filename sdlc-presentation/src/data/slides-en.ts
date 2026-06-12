@@ -86,46 +86,76 @@ export const slidesEN = [
     },
   },
 
-  // 6. reverseTax
+  // 6. secondFeature (merged: The Reverse Engineering Tax + The Breaking Point)
   {
-    type: 'reverseTax',
-    title: 'The Reverse Engineering Tax',
-    subtitle: "It's not the code you wrote. It's the price you pay every time you want to add something new.",
-    dayOne: {
-      title: 'You want Feature +1',
-      items: [
-        "Your AI-built product works. It's day 60.",
-        'The chat sessions are gone — no documentation was written.',
-        'You open a new AI session. It has no idea what exists.',
-        '"Let\'s add the payment flow." Should be simple.',
-      ],
-    },
-    daySixty: {
-      title: 'What you do before writing line 1',
-      items: [
-        '4–8h: Re-read every file to understand what was built',
-        '2–4h: Reverse-engineer architecture decisions made in chat',
-        '2–4h: Find safe extension points — or risk breaking what works',
-        'Only then: Build the feature you wanted',
-      ],
-    },
-    cost: { hours: 40, label: 'Hours of re-discovery overhead per quarter — before a single new line is written' },
-    callout: '73% of AI projects are abandoned. Not because the first feature failed. Because the second feature became unaffordable.',
-  },
-
-  // 7. breakingPoint
-  {
-    type: 'breakingPoint',
-    title: 'The Breaking Point',
-    subtitle: 'The faster you build, the faster you lose',
-    buildItems: ['6 AI agents', '200+ files generated', '50 chat sessions'],
-    debtItems: ['0 docs written', '0 decisions recorded', '0 handoff possible'],
-    stats: [
-      { value: '73%', label: 'of AI projects abandoned within 6 months' },
-      { value: '40hrs', label: 'spent re-understanding code per quarter' },
-      { value: '$0', label: 'value of chat logs after session ends' },
+    type: 'secondFeature',
+    scrollable: true,
+    kicker: 'One session corrupts. Every session forgets.',
+    title: 'The Second Feature',
+    subtitle: 'The first feature is free. The second one is where AI projects go to die.',
+    scrollHint: 'Scroll — this gets worse',
+    chapters: [
+      { number: '01', name: 'The Reverse Engineering Tax', accent: 'amber' },
+      { number: '02', name: 'The Breaking Point', accent: 'red' },
     ],
-    bottomLine: 'AI-driven development without governance is technical debt at AI speed.',
+    chapter1: {
+      label: 'The Reverse Engineering Tax',
+      headline: 'Day 60. The product works. You want Feature +1.',
+      setup: [
+        'Your AI-built product runs in production. Six features, zero incidents.',
+        'The chat sessions that built it are gone. No docs were ever written.',
+        'You open a fresh session: "Add the payment flow." Should be simple.',
+      ],
+      terminal: {
+        windowTitle: 'ai-agent — session #51 — day 60',
+        lines: [
+          { kind: 'you', time: '09:02', text: 'Add a payment flow with Stripe. Checkout already exists.' },
+          { kind: 'agent', time: '09:02', text: 'I have no context for this project. 214 files. No README. No specs. No record of any decision. Before I write code, I need answers.' },
+          { kind: 'agent', time: '09:03', text: 'Where is checkout implemented? Which data layer is canonical? Is there a service boundary for transactions?' },
+          { kind: 'you', time: '09:04', text: "I don't remember. It was all decided in chat. The sessions are gone." },
+          { kind: 'agent', time: '09:05', text: 'Understood. Starting discovery.' },
+          { kind: 'cmd', text: 'grep -r "checkout" src/', result: '→ 47 matches across 12 files' },
+          { kind: 'cmd', text: 'cat src/services/order.ts', result: '→ 612 lines, zero comments' },
+          { kind: 'cmd', text: 'find . -name "*.md"', result: '→ 0 results' },
+          { kind: 'sys', time: '11:30', text: '2.5 hrs elapsed · feature code written: 0', tone: 'warn' },
+          { kind: 'agent', time: '14:15', text: 'I found three different state patterns. Which one is intentional?' },
+          { kind: 'you', time: '14:16', text: '...' },
+          { kind: 'sys', time: '17:40', text: '8 hrs elapsed · still reverse-engineering · feature not started', tone: 'fail' },
+        ],
+      },
+      meter: { to: 16, unit: 'hrs', caption: 'paid in rediscovery — before the first new line is written' },
+      invoice: {
+        title: 'Invoice — The Reverse Engineering Tax',
+        items: [
+          { hours: '4–8h', label: 'Re-read every file to learn what was built' },
+          { hours: '2–4h', label: 'Reverse-engineer decisions made in dead chats' },
+          { hours: '2–4h', label: "Find extension points that won't break production" },
+        ],
+        total: { hours: '8–16h', label: 'Due before Feature +1 begins' },
+      },
+      callout: { stat: '73%', text: 'of AI projects are abandoned. Not because the first feature failed — because the second feature became unaffordable.' },
+    },
+    chapter2: {
+      label: 'The Breaking Point',
+      headline: 'Now multiply by your whole team.',
+      build: [
+        { value: '6', label: 'AI agents' },
+        { value: '200+', label: 'files generated' },
+        { value: '50', label: 'chat sessions' },
+      ],
+      debt: [
+        { value: '0', label: 'docs written' },
+        { value: '0', label: 'decisions recorded' },
+        { value: '0', label: 'handoff possible' },
+      ],
+      graveyard: { count: 50, youAreHereLabel: 'you are here', stamp: 'GONE' },
+      stats: [
+        { value: '73%', label: 'of AI projects abandoned within 6 months' },
+        { value: '40hrs', label: 're-understanding code, every quarter' },
+        { value: '$0', label: 'value of a chat log after the session ends' },
+      ],
+      bottomLine: 'AI-driven development without governance is technical debt at AI speed.',
+    },
   },
 
   // ── ACT 2 — TURNING POINT (slides 8–9) ────────────────────────────────────────

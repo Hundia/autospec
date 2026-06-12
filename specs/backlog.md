@@ -924,3 +924,5 @@
 | 38.10 | Docs: `docs/sdlc-presentation/01_overview.md` + sprint summary | Docs | 2 | ✅ | All | `docs/sdlc-presentation/01_overview.md` |
 | 38.11 | Stages slide: Summarization stage inserted (hero, HITL owners) + spacing redesign | Frontend | 3 | ✅ | 38.6 | — |
 | 38.12 | Expert review round: 2 reviewer agents (methodology fidelity + narrative flow), findings fixed (7-stages title, role stage tags, Sprint→Bolt strings, tooling descriptions, playbook content restored) | QA | 5 | ✅ | 38.11 | — |
+| 38.13 | Terminology cleanup: Kite removed, Agentic→Prompt Engineering, Bolt→Cycle, Harness→Guardrails, reverseTax rewrite (Feature +1), slide-4 danger↔slide title correlation (EN+HE) | Frontend | 3 | ✅ | 38.12 | — |
+| 38.14 | Merge ReverseTax + BreakingPoint slides into one scrollable "The Second Feature" slide (SecondFeatureSlide): Session #51 terminal centerpiece, tax meter, invoice, 73% callout, session graveyard, flatline verdict (EN+HE) | Frontend | 5 | ✅ | 38.13 | — |
