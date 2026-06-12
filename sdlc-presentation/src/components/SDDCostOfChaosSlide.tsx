@@ -2,95 +2,112 @@ import { motion } from 'framer-motion';
 
 interface SDDCostOfChaosSlideProps {
   data: {
+    kicker: string;
     title: string;
-    subtitle: string;
-    columns: {
-      left: {
-        label: string;
-        color: string;
-        items: Array<{ icon: string; text: string }>;
-      };
-      right: {
-        label: string;
-        color: string;
-        items: Array<{ icon: string; text: string }>;
-      };
-    };
-    callout: string;
+    reframe: { myth: string; truth: string };
+    findings: Array<{ label: string; cause: string }>;
+    crystal: { word: string; definition: string };
   };
   lang: 'en' | 'he';
 }
 
-const colorStyles: Record<string, { border: string; bg: string; label: string; dot: string }> = {
-  red: { border: 'border-red-500/40', bg: 'bg-red-500/10', label: 'text-red-400', dot: 'bg-red-400' },
-  green: { border: 'border-green-500/40', bg: 'bg-green-500/10', label: 'text-green-400', dot: 'bg-green-400' },
-};
-
 export default function SDDCostOfChaosSlide({ data }: SDDCostOfChaosSlideProps) {
+  const { reframe, findings, crystal } = data;
+
   return (
-    <div className="max-w-5xl mx-auto w-full">
+    <div className="max-w-5xl mx-auto w-full flex flex-col gap-5">
+      {/* Kicker */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4 }}
+        className="text-[10px] font-mono tracking-[0.4em] text-slate-500 uppercase"
+      >
+        {data.kicker}
+      </motion.div>
+
+      {/* Title */}
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="text-4xl sm:text-5xl font-bold text-center mb-3 bg-gradient-to-r from-red-400 to-amber-400 bg-clip-text text-transparent"
+        transition={{ delay: 0.1, duration: 0.4 }}
+        className="text-3xl sm:text-4xl font-black text-white tracking-tight"
       >
         {data.title}
       </motion.h2>
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.15 }}
-        className="text-center text-slate-400 text-base mb-8 max-w-2xl mx-auto"
-      >
-        {data.subtitle}
-      </motion.p>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        {[data.columns.left, data.columns.right].map((col, colIdx) => {
-          const styles = colorStyles[col.color] || colorStyles.red;
-          return (
-            <motion.div
-              key={colIdx}
-              initial={{ opacity: 0, x: colIdx === 0 ? -30 : 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 + colIdx * 0.15, duration: 0.5 }}
-              className={`${styles.bg} border ${styles.border} rounded-xl p-5`}
-            >
-              <div className="flex items-center gap-2 mb-4">
-                <div className={`w-2.5 h-2.5 rounded-full ${styles.dot}`} />
-                <h3 className={`text-lg font-semibold ${styles.label}`}>{col.label}</h3>
-              </div>
-              <div className="space-y-3">
-                {col.items.map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 + colIdx * 0.15 + idx * 0.1 }}
-                    className="flex items-start gap-3"
-                  >
-                    <span className="text-xl flex-shrink-0">{item.icon}</span>
-                    <span className="text-white/80 text-sm">{item.text}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          );
-        })}
+      {/* Reframe block */}
+      <div className="flex flex-col gap-2">
+        {/* Myth with animated strikethrough */}
+        <div className="relative inline-block self-start">
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.35, duration: 0.3 }}
+            className="text-base sm:text-lg text-red-400/60"
+          >
+            {reframe.myth}
+          </motion.span>
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.6, duration: 0.5, ease: 'easeInOut' }}
+            className="absolute left-0 right-0 bg-red-500/60 h-px top-1/2"
+            style={{ transformOrigin: 'left' }}
+          />
+        </div>
+        {/* Truth */}
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.95, duration: 0.4 }}
+          className="text-xl sm:text-2xl font-bold text-white"
+        >
+          {reframe.truth}
+        </motion.p>
       </div>
 
+      {/* Three forensic findings */}
+      <div className="grid grid-cols-3 gap-4">
+        {findings.map((finding, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.05 + idx * 0.15, duration: 0.4 }}
+            className="bg-slate-800/40 border border-slate-700/40 rounded-xl px-4 py-4 flex flex-col justify-between min-h-[90px]"
+          >
+            <span className="text-xs text-slate-400 leading-snug">{finding.label}</span>
+            <span className="text-xs sm:text-sm font-black text-red-400/80 tracking-widest uppercase mt-3">
+              {finding.cause}
+            </span>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Cyan scan line */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1 }}
-        className="text-center"
-      >
-        <p className="text-lg text-amber-300 bg-amber-500/10 border border-amber-500/30 rounded-lg px-6 py-3 inline-block">
-          {data.callout}
-        </p>
-      </motion.div>
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ delay: 1.55, duration: 0.6, ease: 'easeInOut' }}
+        className="h-px w-full bg-cyan-400/50"
+        style={{ transformOrigin: 'left' }}
+      />
+
+      {/* SPECIFICATION crystal card — forced LTR for visual symmetry */}
+      <div dir="ltr">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1.85, duration: 0.5, ease: 'easeOut' }}
+          className="bg-cyan-950/40 border border-cyan-500/50 rounded-2xl px-8 py-5 flex flex-col items-center gap-1.5"
+        >
+          <span className="text-4xl sm:text-5xl font-black text-cyan-200 tracking-[0.15em]">
+            {crystal.word}
+          </span>
+          <span className="text-sm italic text-cyan-300/70">{crystal.definition}</span>
+        </motion.div>
+      </div>
     </div>
   );
 }

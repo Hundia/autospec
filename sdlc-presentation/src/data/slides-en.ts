@@ -163,31 +163,21 @@ export const slidesEN = [
   // 8. sddCostOfChaos
   {
     type: 'sddCostOfChaos',
+    kicker: 'DIAGNOSIS',
     title: 'The Cost of No Specifications',
-    subtitle: 'AI-driven development without specs is a liability, not an asset',
-    columns: {
-      left: {
-        label: 'With Conversation',
-        color: 'red',
-        items: [
-          { icon: '💬', text: 'Context degrades after turn 30' },
-          { icon: '🔄', text: 'Every session starts from zero' },
-          { icon: '❌', text: 'Decisions lost when chat ends' },
-          { icon: '🚫', text: 'No agent can continue your work' },
-        ],
-      },
-      right: {
-        label: 'With Specifications',
-        color: 'green',
-        items: [
-          { icon: '📐', text: 'Decisions persisted in specs/' },
-          { icon: '🔗', text: 'Any session inherits full context' },
-          { icon: '✅', text: 'Choices survive forever in docs/' },
-          { icon: '🤖', text: 'Any agent can continue seamlessly' },
-        ],
-      },
+    reframe: {
+      myth: 'The AI forgot everything.',
+      truth: 'You never gave it memory.',
     },
-    callout: 'Specifications are the memory that AI was never given.',
+    findings: [
+      { label: 'Session #51 — starting over', cause: 'NO PERSISTENT MEMORY' },
+      { label: 'Turn 30 — context corrupts', cause: 'NO EXTERNAL ANCHOR' },
+      { label: 'Agent B — starts from zero', cause: 'NO SHARED DOCUMENT' },
+    ],
+    crystal: {
+      word: 'SPECIFICATION',
+      definition: 'The memory you never gave it.',
+    },
   },
 
   // 9. bridge
