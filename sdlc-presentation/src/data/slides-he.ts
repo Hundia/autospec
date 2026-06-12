@@ -192,9 +192,48 @@ export const slidesHE = [
     ],
   },
 
-  // ── ACT 3 — THE AGENTIC SDLC METHODOLOGY (slides 10–14) ──────────────────────
+  // 10. sddThreePillars — הצהרת SDD (הועבר לכאן מאקט 4; מגדיר את המערכת לפני כל שקפי המתודולוגיה)
+  {
+    type: 'sddThreePillars',
+    kicker: 'פיתוח מונחה-ספסיפיקציות · מה זה',
+    title: 'מערכת ההפעלה של פיתוח אג\'נטי',
+    definition: 'מתודולוגיה שבה הספסיפיקציה אף פעם לא אופציונלית, כל החלטה ניתנת למעקב, וכל סוכן פועל בתוך גבולות שאושרו על ידי בני אדם.',
+    pillars: [
+      {
+        number: '01',
+        icon: '📐',
+        title: 'ספסיפיקציות כקוד',
+        description: 'spec.md וחוקה חיים ב-git. מאושר על ידי בני אדם לפני שסוכן כלשהו פועל. מקור האמת היחיד שכל שלב קורא.',
+        artifact: 'specs/*.md  ·  constitution.md',
+        color: 'teal',
+      },
+      {
+        number: '02',
+        icon: '📋',
+        title: 'סיכומי מחזורים',
+        description: 'כל מחזור נסגר עם סיכום: מה נבנה, מה השתנה, מה הוחלט — כולל ההיגיון. אין הקשר שאבוד אי פעם.',
+        artifact: 'cycles/cycle-X/summary.md',
+        color: 'emerald',
+      },
+      {
+        number: '03',
+        icon: '📖',
+        title: 'תיעוד חי',
+        description: 'מסמכים וגדרות הגנה גדלים עם כל מחזור. החוקה מגבילה כל סוכן עתידי — אוטומטית.',
+        artifact: 'docs/  ·  guardrails/',
+        color: 'cyan',
+      },
+    ],
+    thesis: [
+      { text: 'הספסיפיקציה היא האמת', color: 'amber' },
+      { text: 'גדרות ההגנה הן ההגנה', color: 'emerald' },
+      { text: 'האדם הוא השופט', color: 'blue' },
+    ],
+  },
 
-  // 10. philosophy
+  // ── ACT 3 — THE AGENTIC SDLC METHODOLOGY (slides 11–15) ──────────────────────
+
+  // 11. philosophy
   {
     type: 'philosophy',
     title: 'הפילוסופיה המרכזית',
@@ -430,42 +469,9 @@ export const slidesHE = [
     ],
   },
 
-  // ── ACT 4 — IMPLEMENTED WITH SPEC-DRIVEN DEVELOPMENT (slides 15–18) ─────────
+  // ── ACT 4 — IMPLEMENTED WITH SPEC-DRIVEN DEVELOPMENT ─────────────────────────
 
-  // 15. sddThreePillars
-  {
-    type: 'sddThreePillars',
-    title: 'SDD: מערכת ההפעלה של ה-SDLC האג\'נטי',
-    subtitle: 'המתודולוגיה פועלת על שלושה ארטיפקטים',
-    pillars: [
-      {
-        number: '01',
-        title: 'ספסיפיקציות כקוד',
-        description: 'spec.md והחוקה חיים ב-git. פלט שלבים 1–2, קריא על ידי כל סוכן, מאושר על ידי בני אדם.',
-        artifact: 'specs/*.md',
-        icon: '📐',
-        color: 'teal',
-      },
-      {
-        number: '02',
-        title: 'סיכומי מחזורים',
-        description: 'כל מחזור נסגר עם סיכום: מה נבנה, מה השתנה, מה הוחלט. הסוכן הבא מתחיל עם הקשר מלא.',
-        artifact: 'cycles/cycle-X/summary.md',
-        icon: '📋',
-        color: 'emerald',
-      },
-      {
-        number: '03',
-        title: 'תיעוד חי',
-        description: 'מסמכים גדלים עם כל משימה; מסמכי החוקה והארכיטקטורה מגבילים סוכנים עתידיים.',
-        artifact: 'docs/ (גדל בכל מחזור)',
-        icon: '📖',
-        color: 'cyan',
-      },
-    ],
-  },
-
-  // 16. orchestrator
+  // orchestrator
   {
     type: 'orchestrator',
     title: 'בני אדם מתזמנים. סוכנים מבצעים.',

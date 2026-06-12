@@ -192,9 +192,48 @@ export const slidesEN = [
     ],
   },
 
-  // ── ACT 3 — THE AGENTIC SDLC METHODOLOGY (slides 10–14) ──────────────────────
+  // 10. sddThreePillars — SDD DECLARATION (moved here from Act 4; defines the system before all methodology slides)
+  {
+    type: 'sddThreePillars',
+    kicker: 'SPEC-DRIVEN DEVELOPMENT · WHAT IT IS',
+    title: 'The Operating System of Agentic Development',
+    definition: 'A methodology where the spec is never optional, every decision is traceable, and every agent operates inside human-approved boundaries.',
+    pillars: [
+      {
+        number: '01',
+        icon: '📐',
+        title: 'Specs as Code',
+        description: 'spec.md and constitution.md live in git. Human-approved before any agent acts. The single source of truth every phase reads.',
+        artifact: 'specs/*.md  ·  constitution.md',
+        color: 'teal',
+      },
+      {
+        number: '02',
+        icon: '📋',
+        title: 'Cycle Summaries',
+        description: 'Every Cycle closes with a summary: what was built, what changed, what was decided — including the reasoning. No context is ever lost.',
+        artifact: 'cycles/cycle-X/summary.md',
+        color: 'emerald',
+      },
+      {
+        number: '03',
+        icon: '📖',
+        title: 'Living Documentation',
+        description: 'Docs and guardrails grow with every Cycle. The constitution constrains every future agent — automatically.',
+        artifact: 'docs/  ·  guardrails/',
+        color: 'cyan',
+      },
+    ],
+    thesis: [
+      { text: 'THE SPEC IS THE TRUTH', color: 'amber' },
+      { text: 'THE GUARDRAILS ARE THE PROTECTION', color: 'emerald' },
+      { text: 'THE HUMAN IS THE JUDGE', color: 'blue' },
+    ],
+  },
 
-  // 10. philosophy
+  // ── ACT 3 — THE AGENTIC SDLC METHODOLOGY (slides 11–15) ──────────────────────
+
+  // 11. philosophy
   {
     type: 'philosophy',
     title: 'Core Philosophy',
@@ -430,42 +469,9 @@ export const slidesEN = [
     ],
   },
 
-  // ── ACT 4 — IMPLEMENTED WITH SPEC-DRIVEN DEVELOPMENT (slides 15–18) ─────────
+  // ── ACT 4 — IMPLEMENTED WITH SPEC-DRIVEN DEVELOPMENT ─────────────────────────
 
-  // 15. sddThreePillars
-  {
-    type: 'sddThreePillars',
-    title: 'SDD: The Operating System of the Agentic SDLC',
-    subtitle: 'The methodology runs on three artifacts',
-    pillars: [
-      {
-        number: '01',
-        title: 'Specs as Code',
-        description: 'spec.md + the Constitution live in git. Stage 1–2 output, readable by any agent, approved by humans.',
-        artifact: 'specs/*.md',
-        icon: '📐',
-        color: 'teal',
-      },
-      {
-        number: '02',
-        title: 'Cycle Summaries',
-        description: 'Every Cycle closes with a summary: what was built, what changed, what was decided. The next agent starts with full context.',
-        artifact: 'cycles/cycle-X/summary.md',
-        icon: '📋',
-        color: 'emerald',
-      },
-      {
-        number: '03',
-        title: 'Living Documentation',
-        description: 'Docs grow with every task; the Constitution and architecture docs constrain future agents.',
-        artifact: 'docs/ (grows every Cycle)',
-        icon: '📖',
-        color: 'cyan',
-      },
-    ],
-  },
-
-  // 16. orchestrator
+  // orchestrator
   {
     type: 'orchestrator',
     title: 'Humans Orchestrate. Agents Execute.',
