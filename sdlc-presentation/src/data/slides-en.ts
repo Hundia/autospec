@@ -29,7 +29,7 @@ export const slidesEN = [
     type: 'eraAssistant',
     title: 'The Code Assistant Era',
     subtitle: 'AI helped you type faster, not think better',
-    tools: ['GitHub Copilot', 'TabNine', 'Kite'],
+    tools: ['GitHub Copilot', 'TabNine'],
     gains: [
       { title: 'Typing Speed', description: '3x faster autocomplete' },
       { title: 'Boilerplate', description: 'Repetitive code eliminated' },
@@ -44,7 +44,7 @@ export const slidesEN = [
   // 4. eraAgentic
   {
     type: 'eraAgentic',
-    title: 'The Agentic Era',
+    title: 'The Prompt Engineering Era',
     subtitle: 'Revolutionary power, dangerous autonomy',
     tools: ['Claude Code', 'Cursor', 'Devin'],
     power: [
@@ -53,9 +53,9 @@ export const slidesEN = [
       { title: 'Autonomous', description: 'AI makes implementation decisions' },
     ],
     danger: [
-      { title: 'No Memory', description: 'Every session starts from zero' },
-      { title: 'Context Drift', description: 'Long conversations corrupt decisions' },
-      { title: 'Zero Documentation', description: 'Chat logs are not docs' },
+      { title: 'Context Poisoning', description: 'Extended sessions corrupt earlier decisions — the AI contradicts itself turn by turn' },
+      { title: 'The Reverse Engineering Tax', description: 'Every session resets to zero — you pay the full rediscovery cost before every new feature' },
+      { title: 'The Breaking Point', description: 'No documentation means no continuity — teams hit an invisible wall at the second feature' },
     ],
   },
 
@@ -90,16 +90,27 @@ export const slidesEN = [
   {
     type: 'reverseTax',
     title: 'The Reverse Engineering Tax',
-    subtitle: 'Two months later, you reverse-engineer your own codebase',
+    subtitle: "It's not the code you wrote. It's the price you pay every time you want to add something new.",
     dayOne: {
-      title: 'Day 1',
-      items: ['Active AI context', 'AI knows all conventions', 'Moving fast, shipping features'],
+      title: 'You want Feature +1',
+      items: [
+        "Your AI-built product works. It's day 60.",
+        'The chat sessions are gone — no documentation was written.',
+        'You open a new AI session. It has no idea what exists.',
+        '"Let\'s add the payment flow." Should be simple.',
+      ],
     },
     daySixty: {
-      title: 'Day 60',
-      items: ['Chat logs deleted or stale', 'Zero context for new sessions', '"Why was this built this way?"'],
+      title: 'What you do before writing line 1',
+      items: [
+        '4–8h: Re-read every file to understand what was built',
+        '2–4h: Reverse-engineer architecture decisions made in chat',
+        '2–4h: Find safe extension points — or risk breaking what works',
+        'Only then: Build the feature you wanted',
+      ],
     },
-    cost: { hours: 40, label: 'Hours lost to reverse engineering per quarter' },
+    cost: { hours: 40, label: 'Hours of re-discovery overhead per quarter — before a single new line is written' },
+    callout: '73% of AI projects are abandoned. Not because the first feature failed. Because the second feature became unaffordable.',
   },
 
   // 7. breakingPoint
@@ -114,7 +125,7 @@ export const slidesEN = [
       { value: '40hrs', label: 'spent re-understanding code per quarter' },
       { value: '$0', label: 'value of chat logs after session ends' },
     ],
-    bottomLine: 'Agentic development without governance is technical debt at AI speed.',
+    bottomLine: 'AI-driven development without governance is technical debt at AI speed.',
   },
 
   // ── ACT 2 — TURNING POINT (slides 8–9) ────────────────────────────────────────
@@ -123,7 +134,7 @@ export const slidesEN = [
   {
     type: 'sddCostOfChaos',
     title: 'The Cost of No Specifications',
-    subtitle: 'Agentic AI without specs is a liability, not an asset',
+    subtitle: 'AI-driven development without specs is a liability, not an asset',
     columns: {
       left: {
         label: 'With Conversation',
@@ -171,26 +182,26 @@ export const slidesEN = [
     cards: [
       {
         icon: '🎯',
-        title: 'Bolts, Not Sprints',
-        description: 'A Bolt is a bounded, independently-testable feature cycle — spec-approved, agent-executed, harness-verified. Measured in hours or days, not weeks. Speed is the output of structure.',
+        title: 'Cycles, Not Sprints',
+        description: 'A Cycle is a bounded, independently-testable delivery unit — spec-approved, AI-executed, guardrail-verified. Measured in hours or days, not weeks. Speed is the output of structure.',
         accent: 'blue',
       },
       {
         icon: '👁',
         title: 'Humans as Orchestrators',
-        description: 'Engineers move from Executors (writing code) to Orchestrators — designing specs, reviewing agent output, maintaining the harness.',
+        description: 'Engineers move from Executors (writing code) to Orchestrators — designing specs, reviewing agent output, maintaining the guardrails.',
         accent: 'violet',
       },
       {
         icon: '✍️',
         title: 'Governors & Reviewers',
-        description: 'Without strong governance, HITL becomes rubber-stamping. Agentic execution + structured specs + enforced governance is what separates genuine oversight from theater.',
+        description: 'Without strong governance, HITL becomes rubber-stamping. AI-driven execution + structured specs + enforced governance is what separates genuine oversight from theater.',
         accent: 'teal',
       },
       {
         icon: '🛡',
-        title: 'The Harness is the Guardrail',
-        description: 'Tests, linters, types, constraints agents cannot violate. Every agent error is encoded as a permanent test case.',
+        title: 'Guardrails Cannot Be Bypassed',
+        description: 'Tests, linters, types, constraints agents cannot violate. Every agent error becomes a permanent guardrail test — it cannot recur. The guardrails only ever grow stronger.',
         accent: 'emerald',
       },
       {
@@ -200,7 +211,7 @@ export const slidesEN = [
         accent: 'amber',
       },
     ],
-    quote: 'The Spec is the Truth, the Harness is the Guardrail, and the Human is the Judge.',
+    quote: 'The Spec is the Truth. The Guardrails are the Protection. The Human is the Judge.',
   },
 
   // 11. notVibeCoding
@@ -219,10 +230,10 @@ export const slidesEN = [
       ],
     },
     right: {
-      label: 'Governed Agentic SDLC',
+      label: 'Governed AI Development',
       accent: 'green',
       items: [
-        'Specs, harnesses, audit trails',
+        'Specs, guardrails, audit trails',
         'Human checkpoints at every gate',
         'Every output traceable',
         'Every agent error becomes a permanent test case',
@@ -237,7 +248,7 @@ export const slidesEN = [
     scrollable: true,
     title: 'The Agentic SDLC',
     subtitle: 'Seven phases. One complete loop. No context ever lost.',
-    closingCallout: 'Discover. Align. Architect. Execute. Test. Remember. Steer. Seven disciplines that collapse the clock — without skipping a single stage.',
+    closingCallout: 'Discover. Align. Plan. Execute. Test. Remember. Steer. Seven phases that collapse the clock — without skipping a single stage.',
     keyInsight: {
       headline: 'The Key Insight: Compress, Don\'t Skip',
       body: 'The traditional linear SDLC is collapsing — not being eliminated. AI is merging requirements, design, and development into a highly compressed, iterative "Design & Experiment" super-phase. Cross-functional teams move from idea to functional prototype in days or hours. The discipline of each stage still matters; only the clock changes.',
@@ -268,7 +279,7 @@ export const slidesEN = [
         accent: 'violet',
         bullets: [
           'Project laws encoded as Instructions & Skills files: architecture patterns, design conventions, security standards.',
-          'These constraints form the base of the Harness — hard bounds injected into every agent context, making non-compliant suggestions mechanically impossible.',
+          'These constraints form the base of the Guardrails — hard bounds injected into every agent context, making non-compliant suggestions mechanically impossible.',
           'The Architect and Software System Engineer sign off: every future agent inherits these boundaries automatically.',
         ],
         output: 'constitution.md + Instructions & Skills files',
@@ -283,7 +294,7 @@ export const slidesEN = [
         accent: 'emerald',
         bullets: [
           'Iterative conversation with a planning agent produces plan.md and granular tasks.md.',
-          'Tasks are designed to be independently testable and decoupled by design — enabling parallel agentic execution from the start.',
+          'Tasks are designed to be independently testable and decoupled by design — enabling parallel AI execution from the start.',
           'An orchestrating agent assigns independent tasks to multiple specialist agents simultaneously.',
           'Senior engineers interrogate the plan, not write it — focusing on legacy constraints, security, blast radius.',
           'QA Team Lead shapes test architecture upfront: testability baked in before a single line is written.',
@@ -299,24 +310,24 @@ export const slidesEN = [
         hero: true,
         accent: 'indigo',
         bullets: [
-          'Parallel agentic execution where tasks are decoupled — multiple agents in isolated worktrees tackle independent work simultaneously.',
+          'Parallel AI execution where tasks are decoupled — multiple agents in isolated worktrees tackle independent work simultaneously.',
           'Every implementation is grounded in the Specs .md files defined for the task. No free-form generation.',
           'All agent-generated code is reviewed by the Developer HITL before merge — without exception.',
-          'TDD-enforced: no implementation before a failing test. Every agent error becomes a permanent harness test — it cannot recur.',
+          'TDD-enforced: no implementation before a failing test. Every agent error becomes a permanent guardrail test — it cannot recur.',
         ],
         output: 'Merged, HITL-reviewed code',
       },
       {
         number: '5',
         name: 'TESTING & QA',
-        tagline: 'Every feature scenario verified — and immortalized in the harness.',
+        tagline: 'Every feature scenario verified — and immortalized in the guardrails.',
         stageRef: 'Stage 5',
         owners: ['QA Tech Lead'],
         hero: false,
         accent: 'cyan',
         bullets: [
           'QA Tech Lead implements AND runs system tests based on scenarios in Feature Specs .md files.',
-          'Every new test added to regression — full regression suite runs on every Bolt close.',
+          'Every new test added to regression — full regression suite runs on every Cycle close.',
           'No feature is considered shipped until all Feature Spec scenarios pass and regression is green.',
         ],
         output: 'Regression-green test suite + system test results',
@@ -324,18 +335,18 @@ export const slidesEN = [
       {
         number: '6',
         name: 'DEVELOPMENT SUMMARY',
-        tagline: 'The memory that makes every next Bolt faster than the last.',
+        tagline: 'The memory that makes every next Cycle faster than the last.',
         stageRef: 'Stage 6',
         owners: ['Product Manager (HITL)', 'Dev Tech Lead (HITL)', 'QA Tech Lead (HITL)'],
         hero: true,
         accent: 'teal',
         bullets: [
-          'Every Bolt closes with a development summary: what was built, what changed, what was decided — including the reasoning behind key technical choices.',
+          'Every Cycle closes with a development summary: what was built, what changed, what was decided — including the reasoning behind key technical choices.',
           'Reasoning captured: why an approach was chosen, alternatives considered, constraints encountered.',
           'All tech leads participate as HITL: PM → Dev TL → QA TL each validate their domain.',
           'The next agent reads the summary and inherits full context in 30 seconds — including the decision trail. No reverse engineering.',
         ],
-        output: 'bolts/bolt-X/summary.md (with embedded reasoning log)',
+        output: 'cycles/cycle-X/summary.md (with embedded reasoning log)',
       },
       {
         number: '7',
@@ -348,7 +359,7 @@ export const slidesEN = [
         bullets: [
           'Observability agents monitor real-time telemetry — metrics and logs — against the spec\'s intended behavior.',
           'Real-time scenario verification: agent behavior validated against Feature Requirements in the Specs .md files.',
-          'Drift from spec intent triggers automated alerts or opens a self-correction Bolt automatically.',
+          'Drift from spec intent triggers automated alerts or opens a self-correction Cycle automatically.',
           'SRE agents surface anomalies proactively; GenAI writes incident summaries tied to the relevant spec section.',
         ],
         output: 'A self-steering, spec-aligned production system',
@@ -359,14 +370,14 @@ export const slidesEN = [
   // 13. harness
   {
     type: 'harness',
-    title: 'Harness Engineering',
-    subtitle: 'The mechanical guardrail agents cannot violate',
+    title: 'Guardrail Engineering',
+    subtitle: 'Automated protection that grows stronger with every agent error',
     loopSteps: [
       'Agent acts',
-      'Harness checks',
+      'Guardrails check',
       'Error caught',
       'Encoded as permanent test',
-      'Harness grows',
+      'Guardrails grow',
     ],
     layers: [
       { icon: '✅', title: 'Tests (TDD-enforced)', description: 'No implementation without a failing test. Every agent error becomes a test case.', accent: 'green' },
@@ -374,7 +385,7 @@ export const slidesEN = [
       { icon: '🔷', title: 'Type Systems', description: 'Types constrain what agents can generate — catching errors before runtime.', accent: 'violet' },
       { icon: '⚖️', title: 'Constitution Constraints', description: 'Stack, security, architecture bounds injected into every agent context.', accent: 'amber' },
     ],
-    callout: 'Every agent error becomes a permanent test case. The harness only ever gets stronger.',
+    callout: 'Every agent error becomes a permanent test case. The guardrails only ever get stronger.',
   },
 
   // 14. sdlcRoles
@@ -384,8 +395,8 @@ export const slidesEN = [
     subtitle: 'Nobody is replaced. Everybody is promoted.',
     roles: [
       { icon: '🎯', oldRole: 'Product Owner', newRole: 'Outcome Owner', oneLiner: "Owns the 'what'; approves spec.md", stage: 'Stages 1, 6', accent: 'blue' },
-      { icon: '🏛️', oldRole: 'Architect / Tech Lead', newRole: 'Governance Owner', oneLiner: 'Defines the Harness; interrogates the plan', stage: 'Stages 1–3', accent: 'violet' },
-      { icon: '🔬', oldRole: 'Developer', newRole: 'Dev Orchestrator', oneLiner: 'Reviews agent PRs, edge cases, writes the harness', stage: 'Stages 4–5', accent: 'teal' },
+      { icon: '🏛️', oldRole: 'Architect / Tech Lead', newRole: 'Governance Owner', oneLiner: 'Defines the Guardrails; interrogates the plan', stage: 'Stages 1–3', accent: 'violet' },
+      { icon: '🔬', oldRole: 'Developer', newRole: 'Dev Orchestrator', oneLiner: 'Reviews agent PRs, edge cases, writes the guardrails', stage: 'Stages 4–5', accent: 'teal' },
       { icon: '🤖', oldRole: 'N/A', newRole: 'Autonomous Workforce', oneLiner: 'Drafts all artifacts; executes bounded tasks under guardrails', stage: 'Stages 2–7', accent: 'cyan' },
       { icon: '🔭', oldRole: 'SRE / DevOps', newRole: 'Intelligent Infrastructure Guardian', oneLiner: 'Guardian of self-healing infra and agent telemetry', stage: 'Stage 7', accent: 'emerald' },
       { icon: '🎨', oldRole: 'Designer', newRole: 'Creative Director', oneLiner: "Human taste, vibe, brand — what AI can't encode", stage: 'Stages 1–5', accent: 'amber' },
@@ -417,9 +428,9 @@ export const slidesEN = [
       },
       {
         number: '02',
-        title: 'Bolt Summaries',
-        description: 'Every Bolt closes with a summary: what was built, what changed, what was decided. The next agent starts with full context.',
-        artifact: 'bolts/bolt-X/summary.md',
+        title: 'Cycle Summaries',
+        description: 'Every Cycle closes with a summary: what was built, what changed, what was decided. The next agent starts with full context.',
+        artifact: 'cycles/cycle-X/summary.md',
         icon: '📋',
         color: 'emerald',
       },
@@ -427,7 +438,7 @@ export const slidesEN = [
         number: '03',
         title: 'Living Documentation',
         description: 'Docs grow with every task; the Constitution and architecture docs constrain future agents.',
-        artifact: 'docs/ (grows every Bolt)',
+        artifact: 'docs/ (grows every Cycle)',
         icon: '📖',
         color: 'cyan',
       },
@@ -438,7 +449,7 @@ export const slidesEN = [
   {
     type: 'orchestrator',
     title: 'Humans Orchestrate. Agents Execute.',
-    subtitle: 'Same specs. Same harness. Any model.',
+    subtitle: 'Same specs. Same guardrails. Any model.',
     providers: [
       { id: 'claude', name: 'Claude Code', icon: '🟣', accent: 'indigo', orchestratorModel: 'Opus 4.6', agentModel: 'Sonnet 4.6' },
       { id: 'copilot', name: 'GitHub Copilot', icon: '🔵', accent: 'blue', orchestratorModel: 'GPT 5.4', agentModel: 'GPT 5.2' },
@@ -447,7 +458,7 @@ export const slidesEN = [
     ],
     orchestrator: {
       roleLabel: 'Governance Owner',
-      tasks: ['Writes Bolt briefs', 'Spawns parallel agents', 'Sequences by dependency graph', 'Reviews results & merges'],
+      tasks: ['Writes Cycle briefs', 'Spawns parallel agents', 'Sequences by dependency graph', 'Reviews results & merges'],
     },
     agents: [
       { roleLabel: 'Agent A', task: 'Backend tickets in worktree-a' },
@@ -455,7 +466,7 @@ export const slidesEN = [
       { roleLabel: 'Agent C', task: 'Docs & config in worktree-c' },
     ],
     benefits: ['Clean main context', 'Parallel execution', 'Isolated worktrees'],
-    callout: 'Same specs. Same harness. Any model.',
+    callout: 'Same specs. Same guardrails. Any model.',
   },
 
   // ── ACT 5 — TOOLING & ADOPTION (slides 19–20) ────────────────────────────────
@@ -482,15 +493,15 @@ export const slidesEN = [
       {
         icon: '🦸',
         title: 'Superpowers',
-        subtitle: 'The Execution Discipline · Harness Enforcement',
+        subtitle: 'The Execution Discipline · Guardrail Enforcement',
         description: 'Dictates agent behavior during implementation. Strict TDD: agents are prohibited from writing implementation code before a failing test exists.',
         accent: 'violet',
         terminal: [
-          { text: '$ superpowers bolt --task tasks.md#42', type: 'command' },
+          { text: '$ superpowers cycle --task tasks.md#42', type: 'command' },
           { text: '⛔ No implementation without failing test', type: 'error' },
           { text: '✓ Test fails → OK to implement now', type: 'success' },
         ],
-        valueTag: 'Enforces harness engineering automatically.',
+        valueTag: 'Enforces guardrail engineering automatically.',
       },
       {
         icon: '📋',
@@ -514,7 +525,7 @@ export const slidesEN = [
         terminal: [
           { text: 'agent context fetch --source confluence', type: 'command' },
           { text: '→ Loading: arch-decisions.md, security-standards.md', type: 'info' },
-          { text: '✓ 14 constraints injected into harness', type: 'success' },
+          { text: '✓ 14 constraints injected into guardrails', type: 'success' },
         ],
         valueTag: 'Source of truth in repo, visibility in Confluence.',
       },
@@ -539,7 +550,7 @@ export const slidesEN = [
         bullets: [
           'Stand up isolated agent sandboxes — telemetry, security gateways, zero production impact.',
           'Pilot Spec-Kit on one willing, non-critical team with a well-defined feature.',
-          'Build the test/CI Harness: tests, linters, types — your first mechanical guardrails.',
+          'Build the Guardrails: tests, linters, types — automated protection from day one.',
           'Define agent guardrails: what agents can and cannot touch.',
           '⚠ Governance muscle: teach the team HITL is a mandatory checkpoint, not a rubber stamp.',
         ],
@@ -555,7 +566,7 @@ export const slidesEN = [
         bullets: [
           'AI code review on every PR, org-wide — measure defect escape rates, document the wins.',
           'Wire Jira + Confluence as agent context hubs: specs auto-sync, zero manual status reports.',
-          'Observability agents in production; first self-correction Bolts run automatically.',
+          'first self-correction Cycles run automatically.',
           '⚠ Train developers in prompting, AI monitoring, verification — the skill shift matters as much as the tooling shift.',
         ],
       },
@@ -568,8 +579,8 @@ export const slidesEN = [
         milestone: 'Pioneer teams ship features in hours, not weeks — PwC 2026',
         accent: 'violet',
         bullets: [
-          'Full Bolt cadence across all teams — bounded features spec-to-ship in hours.',
-          'The Harness only gets stronger: every error encoded, every edge case immortalized as a test.',
+          'Full Cycle cadence across all teams — bounded features spec-to-ship in hours.',
+          'The Guardrails only get stronger: every error encoded, every edge case immortalized as a test.',
           'Reinvest velocity gains into harder problems — creative work only humans can do.',
           'Measure and publish compound ROI: cycle time, defect escape, developer satisfaction.',
         ],
@@ -581,7 +592,7 @@ export const slidesEN = [
         icon: '⚡',
         title: 'Velocity',
         accent: 'blue',
-        items: ['Bolt cycle time', 'Time-to-market', 'Deploy frequency'],
+        items: ['Cycle time', 'Time-to-market', 'Deploy frequency'],
       },
       {
         icon: '🛡',
@@ -593,7 +604,7 @@ export const slidesEN = [
         icon: '🔗',
         title: 'Scale',
         accent: 'violet',
-        items: ['Agent PRs per week', 'Harness coverage %', 'Parallel bolt ratio'],
+        items: ['Agent PRs per week', 'Guardrail coverage %', 'Parallel cycle ratio'],
       },
       {
         icon: '👥',
@@ -611,13 +622,13 @@ export const slidesEN = [
   // 21. closing
   {
     type: 'closing',
-    title: 'Start Your First Bolt',
+    title: 'Start Your First Cycle',
     install: 'git clone https://github.com/Hundia/autospec my-project',
     commands: [
       { cmd: 'Pick one bounded, non-critical feature', desc: 'your pilot' },
       { cmd: 'Write spec.md and get it approved', desc: 'the gate comes first' },
-      { cmd: 'Let agents bolt it under the harness', desc: 'TDD-enforced, sandboxed' },
-      { cmd: '/bolt-close', desc: 'the summary is the memory' },
+      { cmd: 'Let AI execute it under guardrails', desc: 'TDD-enforced, guardrail-verified' },
+      { cmd: '/cycle-close', desc: 'the summary is the memory' },
     ],
     links: {
       github: 'github.com/Hundia/autospec',
@@ -630,6 +641,6 @@ export const slidesEN = [
   {
     type: 'finalTagline',
     title: 'The Agentic SDLC',
-    tagline: 'The Spec is the Truth. The Harness is the Guardrail. The Human is the Judge.',
+    tagline: 'The Spec is the Truth. The Guardrails are the Protection. The Human is the Judge.',
   },
 ];

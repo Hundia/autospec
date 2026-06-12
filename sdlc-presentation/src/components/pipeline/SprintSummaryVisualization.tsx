@@ -20,13 +20,13 @@ export default function SprintSummaryVisualization({ lang }: { lang: 'en' | 'he'
         </div>
         <div className="p-3 font-mono text-xs space-y-1">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-teal-400">
-            {'>'} /bolt-close
+            {'>'} /cycle-close
           </motion.div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.5 }} className="text-slate-400">
-            {isHe ? 'סוגר בולט 11... מייצר סיכום...' : 'Closing Bolt 11... Generating summary...'}
+            {isHe ? 'סוגר מחזור 11... מייצר סיכום...' : 'Closing Cycle 11... Generating summary...'}
           </motion.div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.8 }} className="text-green-400">
-            ✓ bolts/bolt-11/summary.md {isHe ? 'נוצר' : 'created'}
+            ✓ cycles/cycle-11/summary.md {isHe ? 'נוצר' : 'created'}
           </motion.div>
         </div>
       </motion.div>
@@ -40,7 +40,7 @@ export default function SprintSummaryVisualization({ lang }: { lang: 'en' | 'he'
       >
         <div className="flex items-center gap-2 mb-4">
           <span className="text-lg">📋</span>
-          <span className="text-sm font-mono text-teal-400">bolts/bolt-11/summary.md</span>
+          <span className="text-sm font-mono text-teal-400">cycles/cycle-11/summary.md</span>
         </div>
 
         <div className="space-y-3 text-sm">

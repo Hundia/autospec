@@ -56,7 +56,7 @@ export default function HarnessSlide({ data }: HarnessSlideProps) {
         transition={{ delay: 0.2, duration: 0.5 }}
         className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-8"
       >
-        <p className="text-xs text-white/40 uppercase tracking-widest text-center mb-4">The Harness Loop</p>
+        <p className="text-xs text-white/40 uppercase tracking-widest text-center mb-4">The Guardrail Loop</p>
         <div className="flex flex-wrap items-center justify-center gap-2">
           {data.loopSteps.map((step, idx) => (
             <React.Fragment key={idx}>
