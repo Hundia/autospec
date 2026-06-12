@@ -163,31 +163,21 @@ export const slidesHE = [
   // 8. sddCostOfChaos
   {
     type: 'sddCostOfChaos',
+    kicker: 'אבחנה',
     title: 'עלות היעדר ספסיפיקציות',
-    subtitle: 'פיתוח AI ללא ספסיפיקציות — חבות, לא נכס',
-    columns: {
-      left: {
-        label: "עם שיחת צ'אט",
-        color: 'red',
-        items: [
-          { icon: '💬', text: 'ההקשר מתדרדר אחרי תור 30' },
-          { icon: '🔄', text: 'כל סשן מתחיל מאפס' },
-          { icon: '❌', text: "החלטות אובדות כשהצ'אט נגמר" },
-          { icon: '🚫', text: 'אף סוכן לא יכול להמשיך את עבודתך' },
-        ],
-      },
-      right: {
-        label: 'עם ספסיפיקציות',
-        color: 'green',
-        items: [
-          { icon: '📐', text: 'החלטות שמורות ב-specs/' },
-          { icon: '🔗', text: 'כל סשן יורש הקשר מלא' },
-          { icon: '✅', text: 'בחירות שרדות לנצח ב-docs/' },
-          { icon: '🤖', text: 'כל סוכן יכול להמשיך בצורה חלקה' },
-        ],
-      },
+    reframe: {
+      myth: 'ה-AI שכח הכל.',
+      truth: 'אתה מעולם לא נתת לו זיכרון.',
     },
-    callout: 'ספסיפיקציות הן הזיכרון שה-AI לא קיבל מעולם.',
+    findings: [
+      { label: 'סשן #51 — מתחיל מחדש', cause: 'אין זיכרון מתמיד' },
+      { label: 'תור 30 — ההקשר משחית', cause: 'אין עוגן חיצוני' },
+      { label: 'סוכן B — מתחיל מאפס', cause: 'אין מסמך משותף' },
+    ],
+    crystal: {
+      word: 'SPECIFICATION',
+      definition: 'הזיכרון שמעולם לא נתת לו.',
+    },
   },
 
   // 9. bridge
