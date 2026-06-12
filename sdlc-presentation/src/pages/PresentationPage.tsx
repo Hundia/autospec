@@ -15,8 +15,7 @@ import EraTraditionalSlide from '../components/EraTraditionalSlide';
 import EraAssistantSlide from '../components/EraAssistantSlide';
 import EraAgenticSlide from '../components/EraAgenticSlide';
 import ContextPoisoningSlide from '../components/ContextPoisoningSlide';
-import ReverseTaxSlide from '../components/ReverseTaxSlide';
-import BreakingPointSlide from '../components/BreakingPointSlide';
+import SecondFeatureSlide from '../components/SecondFeatureSlide';
 import SDDCostOfChaosSlide from '../components/SDDCostOfChaosSlide';
 import BridgeSlide from '../components/BridgeSlide';
 import SDDThreePillarsSlide from '../components/SDDThreePillarsSlide';
@@ -43,8 +42,7 @@ const slideComponents = {
   eraAssistant: EraAssistantSlide,
   eraAgentic: EraAgenticSlide,
   contextPoisoning: ContextPoisoningSlide,
-  reverseTax: ReverseTaxSlide,
-  breakingPoint: BreakingPointSlide,
+  secondFeature: SecondFeatureSlide,
   sddCostOfChaos: SDDCostOfChaosSlide,
   bridge: BridgeSlide,
   sddThreePillars: SDDThreePillarsSlide,
