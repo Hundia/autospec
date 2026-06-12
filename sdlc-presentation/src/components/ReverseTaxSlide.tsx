@@ -8,6 +8,7 @@ interface ReverseTaxSlideProps {
     dayOne: { title: string; items: string[] };
     daySixty: { title: string; items: string[] };
     cost: { hours: number; label: string };
+    callout?: string;
   };
   lang: 'en' | 'he';
 }
@@ -105,6 +106,18 @@ export default function ReverseTaxSlide({ data }: ReverseTaxSlideProps): JSX.Ele
         </div>
         <p className="text-slate-400 text-sm">{data.cost.label}</p>
       </motion.div>
+
+      {/* Callout */}
+      {data.callout && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.0 }}
+          className="mt-5 text-center bg-amber-500/10 border border-amber-500/30 rounded-xl px-6 py-4"
+        >
+          <p className="text-amber-300 text-sm font-semibold italic">{data.callout}</p>
+        </motion.div>
+      )}
     </div>
   );
 }

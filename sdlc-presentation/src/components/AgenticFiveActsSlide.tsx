@@ -110,13 +110,13 @@ function SteeringLoop({ isRTL }: { isRTL: boolean }) {
     ? [
         { icon: '📡', label: 'ניטור' },
         { icon: '📊', label: 'זיהוי סטייה' },
-        { icon: '⚡', label: 'בולט תיקון' },
+        { icon: '⚡', label: 'מחזור תיקון' },
         { icon: '✅', label: 'בהתאמה ל-Spec' },
       ]
     : [
         { icon: '📡', label: 'Monitor' },
         { icon: '📊', label: 'Detect Drift' },
-        { icon: '⚡', label: 'Correction Bolt' },
+        { icon: '⚡', label: 'Correction Cycle' },
         { icon: '✅', label: 'Back to Spec' },
       ];
 
@@ -141,8 +141,8 @@ function SteeringLoop({ isRTL }: { isRTL: boolean }) {
       </div>
       <div className="text-xs text-orange-400/70 font-mono">
         {isRTL
-          ? 'הלולאה לעולם לא נגמרת — סטייה הופכת לבולט חדש'
-          : 'The loop never ends — drift becomes a new Bolt'}
+          ? 'הלולאה לעולם לא נגמרת — סטייה הופכת למחזור חדש'
+          : 'The loop never ends — drift becomes a new Cycle'}
       </div>
     </div>
   );
