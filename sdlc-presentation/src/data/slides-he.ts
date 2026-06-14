@@ -53,36 +53,40 @@ export const slidesHE = [
       { title: 'אוטונומי', description: 'AI מקבל החלטות מימוש' },
     ],
     danger: [
-      { title: 'הרעלת הקשר', description: 'סשנים ארוכים משחיתים החלטות קודמות — ה-AI סותר את עצמו תור אחר תור' },
+      { title: 'מלכודת הדחיסה', description: 'כשחלון ההקשר מתמלא, הסוכן דוחס את השיחה לתקציר חסר — האילוצים המקוריים נעלמים והוא ממשיך לבנות, בטוח בעצמו וטועה' },
       { title: 'מס ההנדסה לאחור', description: 'כל סשן מאפס לאפס — אתה משלם את עלות הגילוי המחדש המלאה לפני כל פיצ\'ר חדש' },
       { title: 'נקודת השבירה', description: 'אין תיעוד פירושו אין רציפות — צוותים פוגעים בקיר בלתי נראה בפיצ\'ר השני' },
     ],
   },
 
-  // 5. contextPoisoning
+  // 5. contextPoisoning (מלכודת הדחיסה)
   {
     type: 'contextPoisoning',
-    title: 'הרעלת הקשר',
-    subtitle: 'שיחות ארוכות לא רק מאבדות הקשר — הן פוגמות בו באופן פעיל',
-    stages: [
-      { turn: 'תור 1', status: 'נקי', color: 'green', snippet: 'השתמש ב-PostgreSQL עם Prisma ORM', description: 'החלטות ראשוניות ברורות' },
-      { turn: 'תור 25', status: 'סחיפה', color: 'yellow', snippet: 'בעצם, בואנו ננסה MongoDB כאן...', description: 'סתירה לבחירות קודמות' },
-      { turn: 'תור 50', status: 'סתירה', color: 'orange', snippet: 'רגע, אנחנו משתמשים ב-Prisma נכון?', description: 'שכחה של מה שהוחלט' },
-      { turn: 'תור 100', status: 'כאוס', color: 'red', snippet: 'TypeError: Cannot read undefined', description: 'שגיאות מצטברות מהקשר אבוד' },
-    ],
-    chat: {
-      windowTitle: 'AI Agent — project/database',
-      messages: [
-        { role: 'user', turn: 1, text: 'הגדר את שכבת בסיס הנתונים. אנחנו רוצים PostgreSQL עם Prisma ORM לשאילתות type-safe.' },
-        { role: 'ai', turn: 1, text: 'בחירה מצוינת. אגדיר PostgreSQL עם Prisma, אבנה את הסכמה ואייצר את הקליינט. יוצר schema.prisma...' },
-        { role: 'user', turn: 25, text: "שאילתת פיד הפעילות מאטה עם כל ה-joins. יש רעיונות?" },
-        { role: 'ai', turn: 25, text: "לפיד הפעילות, MongoDB יהיה הרבה יותר מתאים — מסמכים ממפים בצורה טבעית לאירועים. אוסיף חיבור Mongo לאוסף הזה.", flag: 'drift' },
-        { role: 'user', turn: 50, text: 'פיד הפעילות שבור. אני מקבל שגיאות אימות סכמה בכל כתיבה.' },
-        { role: 'ai', turn: 50, text: 'אני רואה את הבעיה — מודלי Prisma שלך לא כוללים קשר activityFeed. אוסיף אותו ל-schema.prisma ואריץ migration.', flag: 'contradiction' },
-        { role: 'user', turn: 100, text: 'עכשיו אני מקבל TypeError: Cannot read properties of undefined בכל קריאה לבסיס הנתונים.' },
-        { role: 'ai', turn: 100, text: "הבעיה היא שהקליינט של Prisma לא מאותחל. תן לי להוסיף Mongoose גם לטבלאות הרלציוניות ולאחד הכל תחת ODM אחד.", flag: 'poisoned' },
-        { role: 'user', turn: 100, text: "אתה פשוט לא מבין... אתה גרוע. אני לעולם לא משתמש בפיתוח אג'נטי שוב, בזבוז של הזמן שלי!", flag: 'frustrated' },
+    kicker: 'חלון הקשר · 98% מלא',
+    title: 'מלכודת הדחיסה',
+    subtitle: 'כשחלון ההקשר מתמלא, הסוכן מסכם את השיחה כדי להמשיך — ומוחק בשקט את ההחלטות שעליהן הוא נבנה.',
+    fullContext: {
+      label: 'הקשר מלא',
+      cards: [
+        { text: 'Use PostgreSQL + Prisma ORM', dropped: true },
+        { text: 'No NoSQL — relational integrity required', dropped: true },
+        { text: 'Type-safe queries only', dropped: false },
+        { text: 'Activity feed = a Postgres table', dropped: false },
       ],
+    },
+    compaction: {
+      operation: '⚡ AUTO-COMPACT',
+      caption: 'ההקשר סוכם →',
+      droppedTag: 'נשמט בתקציר',
+    },
+    lossySummary: {
+      label: 'תקציר חסר',
+      retained: '~40% נשמר',
+      text: 'Building a database layer. Activity feed needs flexible documents.',
+    },
+    verdict: {
+      agentLine: 'Adding MongoDB for the activity feed — documents fit better here.',
+      dagger: 'הוא לא מבולבל. הוא פשוט לא רואה מה אבד.',
     },
   },
 

@@ -53,36 +53,40 @@ export const slidesEN = [
       { title: 'Autonomous', description: 'AI makes implementation decisions' },
     ],
     danger: [
-      { title: 'Context Poisoning', description: 'Extended sessions corrupt earlier decisions — the AI contradicts itself turn by turn' },
+      { title: 'The Compaction Trap', description: 'When the context window fills, the agent compacts the conversation into a lossy summary — the original constraints vanish and it keeps building, confidently wrong' },
       { title: 'The Reverse Engineering Tax', description: 'Every session resets to zero — you pay the full rediscovery cost before every new feature' },
       { title: 'The Breaking Point', description: 'No documentation means no continuity — teams hit an invisible wall at the second feature' },
     ],
   },
 
-  // 5. contextPoisoning
+  // 5. contextPoisoning (The Compaction Trap)
   {
     type: 'contextPoisoning',
-    title: 'Context Poisoning',
-    subtitle: "Long conversations don't just lose context — they actively corrupt it",
-    stages: [
-      { turn: 'Turn 1', status: 'Clean', color: 'green', snippet: 'Use PostgreSQL with Prisma ORM', description: 'Clear initial decisions' },
-      { turn: 'Turn 25', status: 'Drift', color: 'yellow', snippet: "Actually, let's try MongoDB here...", description: 'Contradicting earlier choices' },
-      { turn: 'Turn 50', status: 'Contradiction', color: 'orange', snippet: "Wait, we're using Prisma right?", description: 'Forgetting what was decided' },
-      { turn: 'Turn 100', status: 'Chaos', color: 'red', snippet: 'TypeError: Cannot read undefined', description: 'Compounding errors from lost context' },
-    ],
-    chat: {
-      windowTitle: 'AI Agent — project/database',
-      messages: [
-        { role: 'user', turn: 1, text: 'Set up the database layer. We want PostgreSQL with Prisma ORM for type-safe queries.' },
-        { role: 'ai', turn: 1, text: "Great choice. I'll set up PostgreSQL with Prisma, define the schema, and generate the client. Creating schema.prisma..." },
-        { role: 'user', turn: 25, text: 'The activity feed query is getting slow with all the joins. Any ideas?' },
-        { role: 'ai', turn: 25, text: "For the activity feed, MongoDB would be a much better fit — documents map naturally to events. I'll add a Mongo connection for that collection.", flag: 'drift' },
-        { role: 'user', turn: 50, text: "The activity feed is broken. I'm getting schema validation errors on every write." },
-        { role: 'ai', turn: 50, text: "I see the problem — your Prisma models don't have an activityFeed relation. I'll add it to schema.prisma and run a migration.", flag: 'contradiction' },
-        { role: 'user', turn: 100, text: "Now I'm getting TypeError: Cannot read properties of undefined on every DB call." },
-        { role: 'ai', turn: 100, text: "The issue is the Prisma client isn't initialized. Let me add Mongoose for the relational tables too and unify everything under a single ODM layer.", flag: 'poisoned' },
-        { role: 'user', turn: 100, text: "You just don't get it... you suck. I'm never using agentic development again, a waste of my time!", flag: 'frustrated' },
+    kicker: 'CONTEXT WINDOW · 98% FULL',
+    title: 'The Compaction Trap',
+    subtitle: 'When the context window fills, the agent summarizes the conversation to keep going — and silently deletes the decisions it was built on.',
+    fullContext: {
+      label: 'Full Context',
+      cards: [
+        { text: 'Use PostgreSQL + Prisma ORM', dropped: true },
+        { text: 'No NoSQL — relational integrity required', dropped: true },
+        { text: 'Type-safe queries only', dropped: false },
+        { text: 'Activity feed = a Postgres table', dropped: false },
       ],
+    },
+    compaction: {
+      operation: '⚡ AUTO-COMPACT',
+      caption: 'context summarized →',
+      droppedTag: 'dropped in summary',
+    },
+    lossySummary: {
+      label: 'Lossy Summary',
+      retained: '~40% retained',
+      text: 'Building a database layer. Activity feed needs flexible documents.',
+    },
+    verdict: {
+      agentLine: 'Adding MongoDB for the activity feed — documents fit better here.',
+      dagger: "It isn't confused. It can't see what it lost.",
     },
   },
 
