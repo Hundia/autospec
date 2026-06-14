@@ -65,7 +65,15 @@ export const slidesEN = [
     type: 'contextPoisoning',
     kicker: 'CONTEXT WINDOW · 98% FULL',
     title: 'The Compaction Trap',
-    subtitle: 'When the context window fills, the agent summarizes the conversation to keep going — and silently deletes the decisions it was built on.',
+    subtitle: "It isn't that you talked too long. Many roads reach the same cliff — and however you fill the window, compaction is lossy, so the foundation falls first.",
+    triggers: {
+      lead: 'Any of these hits the same wall →',
+      items: [
+        { label: 'One giant doc, pasted up front', note: 'compacts before you write a line' },
+        { label: 'A few big docs over iterations', note: 'fills the window like a long chat' },
+        { label: 'A late pivot near the limit', note: 'drops the early, foundational calls' },
+      ],
+    },
     fullContext: {
       label: 'Full Context',
       cards: [

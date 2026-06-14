@@ -5,11 +5,20 @@ interface MemoryCard {
   dropped: boolean;
 }
 
+interface Trigger {
+  label: string;
+  note: string;
+}
+
 interface ContextPoisoningSlideProps {
   data: {
     kicker: string;
     title: string;
     subtitle: string;
+    triggers: {
+      lead: string;
+      items: Trigger[];
+    };
     fullContext: {
       label: string;
       cards: MemoryCard[];
@@ -69,6 +78,50 @@ export default function ContextPoisoningSlide({ data }: ContextPoisoningSlidePro
 
       {/* Mechanism diagram — forced LTR (causal left→right flow) */}
       <div dir="ltr" className="mt-2">
+        {/* On-ramps — many roads to the same cliff. They all feed AUTO-COMPACT. */}
+        <div className="flex flex-col items-center gap-2 mb-1">
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.35 }}
+            className="text-[9px] font-mono uppercase tracking-[0.3em] text-amber-400/70"
+          >
+            {data.triggers.lead}
+          </motion.span>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full max-w-3xl">
+            {data.triggers.items.map((trigger, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 + idx * 0.1, duration: 0.35 }}
+                className="rounded-lg border border-amber-500/25 bg-amber-500/[0.04] px-3 py-1.5 text-center"
+              >
+                <span className="block text-[11px] font-semibold text-amber-200/90">
+                  {trigger.label}
+                </span>
+                <span className="block text-[9px] font-mono text-amber-300/50 mt-0.5 leading-tight">
+                  {trigger.note}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+          {/* Convergence cue: three roads taper into one point on the seam */}
+          <motion.svg
+            viewBox="0 0 300 22"
+            preserveAspectRatio="none"
+            className="w-40 h-4 opacity-60"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.6 }}
+            transition={{ delay: 0.7, duration: 0.4 }}
+            aria-hidden="true"
+          >
+            <line x1="20" y1="0" x2="150" y2="22" stroke="rgb(251 191 36 / 0.45)" strokeWidth="1.5" />
+            <line x1="150" y1="0" x2="150" y2="22" stroke="rgb(251 191 36 / 0.45)" strokeWidth="1.5" />
+            <line x1="280" y1="0" x2="150" y2="22" stroke="rgb(251 191 36 / 0.45)" strokeWidth="1.5" />
+          </motion.svg>
+        </div>
+
         <div className="grid grid-cols-[1fr_auto_1fr] gap-4 sm:gap-6 items-center">
           {/* LEFT: Full Context */}
           <div className="flex flex-col gap-2">
