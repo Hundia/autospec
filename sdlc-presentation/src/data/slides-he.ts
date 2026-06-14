@@ -525,6 +525,38 @@ export const slidesHE = [
     callout: 'אותן ספסיפיקציות. אותן גדרות הגנה. כל מודל.',
   },
 
+  // specRot — capstone של אקט המתודולוגיה: לקרוא לאויב בשמו, ולהראות שהוא מובס מעצם הבנייה
+  {
+    type: 'specRot',
+    scrollable: true,
+    kicker: 'אקט 4 · אבן הראשה',
+    enemyLabel: 'SPEC ROT',
+    enemySub: 'a.k.a. doc drift · design drift · בן הדוד של code rot',
+    definition: 'הספסיפיקציה והמימוש נסחפים לאט בלי סנכרון. הקוד ממשיך להשתנות; הספסיפיקציה לא. סנטימטר אחר סנטימטר היא הופכת ממדויקת, למטעה, לחסרת אמון, לנטושה.',
+    decayTitle: 'איך מקור אמת אחד גוסס בשקט',
+    specTrackLabel: 'spec.md',
+    codeTrackLabel: 'the code',
+    stages: [
+      { commits: '+0 commits', label: 'נולדה מהימנה — מקור האמת היחיד', trust: 100 },
+      { commits: '+12 commits', label: 'תיקון נשלח בצ׳אט, מעולם לא נכתב בחזרה', trust: 70 },
+      { commits: '+31 commits', label: 'כעת מטעה — אנשים קוראים את הקוד במקום', trust: 35 },
+      { commits: '+47 commits', label: 'נטושה — סוכן שמוזן בה בונה את הדבר הלא נכון', trust: 10 },
+    ],
+    staleStamp: 'last updated · 47 commits ago',
+    verdict: 'ספסיפיקציה שנרקבה גרועה מהיעדר ספסיפיקציה.',
+    verdictSub: 'היא לא רק משתתקת — היא מטעה באופן פעיל, ומחזירה את מס ההנדסה לאחור.',
+    cureKicker: 'התפנית',
+    cureTitle: 'SDD הופך ריקבון לבלתי אפשרי מעצם הבנייה',
+    gates: [
+      { icon: 'FileCheck', title: 'שער ספסיפיקציה-תחילה', detail: 'הספסיפיקציה מתעדכנת לפני שהקוד משתנה — לעולם לא אחרי.' },
+      { icon: 'GitMerge', title: 'אין ספסיפיקציה, אין מיזוג', detail: 'קוד לא יכול להיכנס בלי ספסיפיקציה מאושרת ועדכנית.' },
+      { icon: 'RefreshCw', title: 'סיכומי מחזור', detail: 'כל מחזור נסגר בכתיבת הספסיפיקציה בחזרה לחיים.' },
+      { icon: 'ShieldCheck', title: 'גדרות ההגנה אוכפות זאת', detail: 'סחיפה נתפסת מכנית, לא מתוך רצון טוב.' },
+    ],
+    lockedLabel: 'spec ⟷ code · locked',
+    payoff: 'הספסיפיקציה לא יכולה להתיישן בשקט. האמת נשארת האמת.',
+  },
+
   // ── ACT 5 — TOOLING & ADOPTION (slides 19–20) ────────────────────────────────
 
   // 19. tooling — SCROLLABLE · TABBED COMPARE · PIPELINE · MEMORY

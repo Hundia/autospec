@@ -525,6 +525,38 @@ export const slidesEN = [
     callout: 'Same specs. Same guardrails. Any model.',
   },
 
+  // specRot — capstone of the methodology act: name the enemy, show it defeated by construction
+  {
+    type: 'specRot',
+    scrollable: true,
+    kicker: 'ACT 4 · THE CAPSTONE',
+    enemyLabel: 'SPEC ROT',
+    enemySub: 'a.k.a. doc drift · design drift · the cousin of code rot',
+    definition: 'The spec and the implementation slowly drift out of sync. Code keeps changing; the spec doesn’t. Inch by inch it goes from accurate, to misleading, to distrusted, to abandoned.',
+    decayTitle: 'How a source of truth quietly dies',
+    specTrackLabel: 'spec.md',
+    codeTrackLabel: 'the code',
+    stages: [
+      { commits: '+0 commits', label: 'Born trusted — the single source of truth', trust: 100 },
+      { commits: '+12 commits', label: 'Fix shipped in chat, never written back', trust: 70 },
+      { commits: '+31 commits', label: 'Now misleading — people read the code instead', trust: 35 },
+      { commits: '+47 commits', label: 'Abandoned — an agent fed it builds the wrong thing', trust: 10 },
+    ],
+    staleStamp: 'last updated · 47 commits ago',
+    verdict: 'A rotted spec is worse than no spec.',
+    verdictSub: 'It doesn’t just go silent — it actively misleads, and revives the Reverse Engineering Tax.',
+    cureKicker: 'THE TURN',
+    cureTitle: 'SDD makes rot impossible by construction',
+    gates: [
+      { icon: 'FileCheck', title: 'Spec-first gate', detail: 'The spec is updated before the code changes — never after.' },
+      { icon: 'GitMerge', title: 'No spec, no merge', detail: 'Code can’t land without an approved, current spec.' },
+      { icon: 'RefreshCw', title: 'Cycle summaries', detail: 'Every cycle closes by writing the spec back to live.' },
+      { icon: 'ShieldCheck', title: 'Guardrails enforce it', detail: 'Drift is caught mechanically, not by goodwill.' },
+    ],
+    lockedLabel: 'spec ⟷ code · locked',
+    payoff: 'The spec can’t silently go stale. The truth stays the truth.',
+  },
+
   // ── ACT 5 — TOOLING & ADOPTION (slides 19–20) ────────────────────────────────
 
   // 19. tooling — SCROLLABLE · TABBED COMPARE · PIPELINE · MEMORY
