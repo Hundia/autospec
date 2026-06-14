@@ -501,65 +501,190 @@ export const slidesEN = [
 
   // ── ACT 5 — TOOLING & ADOPTION (slides 19–20) ────────────────────────────────
 
-  // 19. tooling
+  // 19. tooling — SCROLLABLE · TABBED COMPARE · PIPELINE · MEMORY
   {
     type: 'tooling',
-    title: 'The Toolchain',
-    subtitle: 'Each tool enforces one discipline',
-    tools: [
-      {
-        icon: '⚙️',
-        title: 'Spec-Kit',
-        subtitle: 'The Workflow Backbone · github.com/github/spec-kit (2025, OSS)',
-        description: 'Places the spec at the center of engineering. Agents cannot begin coding until humans mark the spec as approved.',
-        accent: 'teal',
-        terminal: [
-          { text: '$ spec-kit gen spec --from PROJ-421', type: 'command' },
-          { text: '✓ spec.md created — awaiting PO approval', type: 'success' },
-          { text: '⛔ Coding blocked until: spec.approved = true', type: 'error' },
-        ],
-        valueTag: 'Eliminates vibe coding — forces documented intent.',
-      },
-      {
-        icon: '🦸',
-        title: 'Superpowers',
-        subtitle: 'The Execution Discipline · Guardrail Enforcement',
-        description: 'Dictates agent behavior during implementation. Strict TDD: agents are prohibited from writing implementation code before a failing test exists.',
-        accent: 'violet',
-        terminal: [
-          { text: '$ superpowers cycle --task tasks.md#42', type: 'command' },
-          { text: '⛔ No implementation without failing test', type: 'error' },
-          { text: '✓ Test fails → OK to implement now', type: 'success' },
-        ],
-        valueTag: 'Enforces guardrail engineering automatically.',
-      },
-      {
-        icon: '📋',
-        title: 'Jira as Context Hub',
-        subtitle: 'ALM · Visibility Layer',
-        description: 'When spec.md or plan.md changes in the repo, agents auto-sync status to the Jira Epic — no manual status reports.',
-        accent: 'blue',
-        terminal: [
-          { text: 'spec.md updated → agent sync', type: 'command' },
-          { text: '→ PROJ-421: Status → "In Planning"', type: 'info' },
-          { text: '✓ Non-technical stakeholders informed', type: 'success' },
-        ],
-        valueTag: 'Enterprise visibility without manual overhead.',
-      },
-      {
-        icon: '📖',
-        title: 'Confluence as Long-Term Memory',
-        subtitle: 'ALM · Long-Term Memory',
-        description: 'Agents read architecture docs to keep new code compliant — accumulated organizational knowledge constrains agent behavior.',
-        accent: 'amber',
-        terminal: [
-          { text: 'agent context fetch --source confluence', type: 'command' },
-          { text: '→ Loading: arch-decisions.md, security-standards.md', type: 'info' },
-          { text: '✓ 14 constraints injected into guardrails', type: 'success' },
-        ],
-        valueTag: 'Source of truth in repo, visibility in Confluence.',
-      },
-    ],
+    scrollable: true,
+    kicker: 'ACT 5 · THE TOOLING',
+    title: 'Make It Real',
+    subtitle: 'The methodology, tooled — pick a spec framework, enforce the guardrails, and close the loop from ticket to PR.',
+    scrollHint: 'Scroll through the toolchain',
+    intro: {
+      roadmap: [
+        { id: '1', label: 'Spec Frameworks', accent: 'teal' },
+        { id: '2', label: 'Guardrails', accent: 'violet' },
+        { id: '3', label: 'Ticket → PR', accent: 'cyan' },
+        { id: '4', label: 'Long-Term Memory', accent: 'emerald' },
+      ],
+    },
+
+    // ── PAGE 1 — SPEC FRAMEWORKS (4 tabs) ──
+    specPage: {
+      page: '1',
+      accent: 'teal',
+      label: 'Spec Frameworks',
+      eyebrow: 'Where the truth is written.',
+      dimensions: [
+        'Spec approval gate',
+        'TDD / guardrail enforcement',
+        'Cycle summaries / memory',
+        'ALM & tool sync (Jira/Confluence)',
+        'Model-agnostic',
+        'License / openness',
+      ],
+      frameworks: [
+        {
+          id: 'spec-kit', glyph: '⚙️', name: 'Spec-Kit', short: 'Spec-Kit', role: 'The Backbone', accent: 'teal',
+          tagline: 'Spec at the center; no code until the spec is approved.',
+          whatItIs: "GitHub's open framework that puts a machine-readable spec at the center of the workflow and gates implementation on human approval.",
+          bullets: ['spec.md is the contract', 'Human approval gate before code', 'Phase-driven workflow', 'Open source, vendor-neutral'],
+          terminal: [
+            { text: '$ specify init && specify spec --from PROJ-421', type: 'command' },
+            { text: '✓ spec.md created — awaiting approval', type: 'success' },
+            { text: '⛔ implementation blocked: spec.approved = false', type: 'error' },
+          ],
+          repo: 'github.com/github/spec-kit',
+          cells: ['✓ Enforced gate', '~ Conventions', '✗', '~ Via scripts', '✓', '✓ OSS (MIT)'],
+        },
+        {
+          id: 'openspec', glyph: '📐', name: 'OpenSpec', short: 'OpenSpec', role: 'The Proposal Flow', accent: 'teal',
+          tagline: 'Change-as-proposal: every delta is a reviewed spec.',
+          whatItIs: 'An open spec-driven approach where each change is authored as a proposal and approved before execution, keeping a reviewable history of intent.',
+          bullets: ['Change = proposal', 'Reviewable spec history', 'Lightweight, repo-native', 'Open source, no API keys'],
+          terminal: [
+            { text: '$ openspec propose "add waitlist"', type: 'command' },
+            { text: '✓ proposal/waitlist.md → review', type: 'success' },
+            { text: '✓ approved → ready to implement', type: 'success' },
+          ],
+          repo: 'openspec.dev',
+          cells: ['✓ Proposal → approve', '~ Spec-level', '~ Change history', '~ Via scripts', '✓', '✓ OSS'],
+        },
+        {
+          id: 'autospec', glyph: '🧬', name: 'AutoSpec', short: 'AutoSpec', role: 'The Unifier', accent: 'teal', home: true,
+          tagline: 'Spec gate + guardrails + cycle memory + ALM sync — one framework.',
+          whatItIs: 'The framework this very deck is built with. It unifies the disciplines: the spec gate, guardrail/TDD enforcement, cycle summaries as long-term memory, and skills that sync Jira/TFS and Confluence.',
+          bullets: ['Spec gate + role-based specs', 'Guardrails enforced, not suggested', 'Cycle summaries = durable memory', 'Skills: Jira/TFS → spec → PR', 'Any model (FinOps routing)'],
+          terminal: [
+            { text: '$ autospec cycle start --from PROJ-421', type: 'command' },
+            { text: '✓ spec.md gated · guardrails armed', type: 'success' },
+            { text: '✓ cycle-12 summary will persist to docs/', type: 'success' },
+          ],
+          repo: 'github.com/Hundia/autospec',
+          cells: ['✓ Gate + roles', '✓ Built-in guardrails', '✓ Cycle summaries', '✓ Jira / TFS / Confluence', '✓ Any model', '✓ OSS (Hundia/autospec)'],
+        },
+        {
+          id: 'diy', glyph: '✍️', name: 'Write Your Own Spec', short: 'DIY', role: 'The DIY Path', accent: 'teal',
+          tagline: 'No framework? Encode the discipline yourself.',
+          whatItIs: "You don't need a product — you need the disciplines. A constitution.md, a spec template, a CI approval gate, and pre-commit guardrails reproduce most of the value.",
+          bullets: ['constitution.md as your rules', 'spec template + PR approval gate', 'guardrails via CI / pre-commit', 'Full control, full maintenance'],
+          terminal: [
+            { text: '$ mkdir specs && touch constitution.md spec-template.md', type: 'command' },
+            { text: '# CI: block merge unless spec.approved label', type: 'info' },
+            { text: '# pre-commit: tests + lint + types = guardrails', type: 'info' },
+          ],
+          repo: 'your repo',
+          cells: ['~ You define it', '~ DIY hooks', '~ Roll your own', '~ You wire it', '✓', 'n/a — your repo'],
+        },
+      ],
+    },
+
+    // ── PAGE 2 — SUPERPOWERS / GUARDRAILS (2 tabs) ──
+    guardPage: {
+      page: '2',
+      accent: 'violet',
+      label: 'Execution Discipline',
+      eyebrow: 'Where the truth is protected.',
+      thesis: 'The Guardrails are the Protection.',
+      dimensions: [
+        'No code before a failing test',
+        'Enforced automatically (not advisory)',
+        'Hooks into the agent loop',
+        'Encodes every fix as a test',
+        'Setup cost',
+      ],
+      frameworks: [
+        {
+          id: 'superpowers', glyph: '🦸', name: 'Superpowers', short: 'Superpowers', role: 'Guardrail Enforcement', accent: 'violet',
+          tagline: 'Strict TDD for agents — no implementation before a failing test exists.',
+          whatItIs: 'An execution-discipline layer that governs agent behavior during implementation: agents are prohibited from writing implementation code until a failing test exists.',
+          bullets: ['Strict TDD, enforced on the agent', 'Blocks implementation without a red test', 'Plugs into the cycle loop', 'Turns every bug into a permanent test'],
+          terminal: [
+            { text: '$ superpowers cycle --task tasks.md#42', type: 'command' },
+            { text: '⛔ No implementation without failing test', type: 'error' },
+            { text: '✓ Test fails → OK to implement now', type: 'success' },
+          ],
+          repo: 'github.com/obra/superpowers',
+          cells: ['✓ Enforced', '✓ Hard block', '✓ Cycle hooks', '✓ Regression tests', '~ Install + config'],
+        },
+        {
+          id: 'diy-guard', glyph: '🛠️', name: 'Write Your Own Guardrails', short: 'DIY', role: 'The DIY Path', accent: 'violet',
+          tagline: 'CI + pre-commit can enforce the same discipline you build yourself.',
+          whatItIs: 'Reproduce the discipline with tooling you already own: pre-commit hooks, a CI gate that fails on missing tests, and an agent prompt contract that forbids untested code.',
+          bullets: ['pre-commit: tests + lint + types', 'CI gate fails on coverage drop', 'Prompt contract: red test first', 'Full control, you maintain it'],
+          terminal: [
+            { text: '$ pre-commit install', type: 'command' },
+            { text: '# CI: fail if new code lacks a failing-then-passing test', type: 'info' },
+            { text: '✓ guardrails enforced in your pipeline', type: 'success' },
+          ],
+          repo: 'your repo',
+          cells: ['~ If you wire it', '~ Via CI only', '~ Manual', '~ If disciplined', '~ DIY effort'],
+        },
+      ],
+    },
+
+    // ── PAGE 3 — TICKET → PR PIPELINE ──
+    pipelinePage: {
+      page: '3',
+      accent: 'cyan',
+      label: 'The Killer Integration',
+      eyebrow: 'Where it connects to the work you already track.',
+      headline: 'One Skill. Ticket → Merged PR.',
+      source: { id: 'PROJ-421', title: 'Add waitlist to bookings', status: 'In Progress' },
+      stages: [
+        { n: '1', verb: 'Pull', sub: 'requirement → context' },
+        { n: '2', verb: 'Spec', sub: 'generate spec.md, await gate' },
+        { n: '3', verb: 'Execute', sub: 'agent implements in worktree' },
+        { n: '4', verb: 'Test', sub: 'guardrails: TDD, lint, types' },
+        { n: '5', verb: 'Open PR', sub: 'branch pushed, Jira updated' },
+      ],
+      terminal: [
+        { text: '$ autospec skill run jira-to-pr --ticket PROJ-421', type: 'command' },
+        { text: '→ pull       PROJ-421 "Add waitlist to bookings"', type: 'info' },
+        { text: '→ spec       spec.md drafted · gate: approved ✓', type: 'info' },
+        { text: '→ execute    agent implementing in worktree-a…', type: 'info' },
+        { text: '→ test       12 passed · lint ✓ · types ✓', type: 'info' },
+        { text: '→ pr         opened #318 → main · PROJ-421 → In Review ✓', type: 'info' },
+        { text: '✓ ticket → merged PR, fully traceable', type: 'success' },
+      ],
+      callout: 'One skill closes the loop — and writes its summary back to memory.',
+    },
+
+    // ── PAGE 4 — LONG-TERM MEMORY ──
+    memoryPage: {
+      page: '4',
+      accent: 'emerald',
+      label: 'The Memory You Never Gave It',
+      eyebrow: 'Where every decision is remembered.',
+      headline: 'Confluence + docs/ = Long-Term Memory.',
+      syncBadge: 'Confluence ⇄ docs/',
+      bullets: [
+        'Agents read it before they write — architecture, guardrails, and past decisions become live constraints.',
+        'It grows every cycle — each cycle summary appends new folders and decision records.',
+        'Nothing is re-derived — the memory you never gave it, finally given.',
+      ],
+      tree: [
+        { name: 'docs/', depth: 0, icon: '📁' },
+        { name: 'architecture/', depth: 1, icon: '📁', files: ['01-system.md', '02-decisions.md'] },
+        { name: 'guardrails/', depth: 1, icon: '📁', files: ['01-tdd.md', '02-security.md'] },
+        { name: 'flows/', depth: 1, icon: '📁', files: ['01-ticket-to-pr.md'] },
+        { name: 'cycles/', depth: 1, icon: '📁', files: ['cycle-10/', 'cycle-11/', 'cycle-12/ ← new'] },
+      ],
+      treeFooter: '+1 cycle summary written back, every loop',
+      callout: 'The spec is the truth, the guardrails are the protection, and the docs are the memory — no context ever lost.',
+    },
+
+    // ── CLOSING HANDOFF ──
+    closing: 'These are the tools that make the methodology real. Next: how to adopt them — Foundation → Expand → Optimize.',
   },
 
   // 20. adoption — SCROLLABLE
