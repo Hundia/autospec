@@ -191,7 +191,17 @@ export default function PresentationPage() {
           transition={{ duration: 0.3, ease: 'easeInOut' }}
           className={`min-h-screen ${isScrollable ? 'pt-16' : 'flex items-center justify-center'} p-8`}
         >
-          <SlideComponent data={currentSlideData as any} lang={lang} />
+          <SlideComponent
+            data={currentSlideData as any}
+            lang={lang}
+            onNavigateTo={(type: string) => {
+              const targetIdx = slides.findIndex((s: any) => s.type === type);
+              if (targetIdx !== -1) {
+                setDirection(targetIdx > currentSlide ? 1 : -1);
+                setCurrentSlide(targetIdx);
+              }
+            }}
+          />
         </motion.div>
       </AnimatePresence>
 
