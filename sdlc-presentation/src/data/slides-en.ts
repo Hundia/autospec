@@ -171,16 +171,33 @@ export const slidesEN = [
     title: 'The Cost of No Specifications',
     reframe: {
       myth: 'The AI forgot everything.',
-      truth: 'You never gave it memory.',
+      truth: 'You never gave it a source of truth.',
     },
-    findings: [
-      { label: 'Session #51 — starting over', cause: 'NO PERSISTENT MEMORY' },
-      { label: 'Turn 30 — context corrupts', cause: 'NO EXTERNAL ANCHOR' },
-      { label: 'Agent B — starts from zero', cause: 'NO SHARED DOCUMENT' },
-    ],
+    contrast: {
+      disease: 'DRIFT',
+      diseaseNote: 'no source of truth',
+      left: {
+        header: 'PROMPT-FIRST',
+        sub: 'intent lives in the prompt',
+        symptoms: [
+          'Session #51 — starts over',
+          'Turn 30 — context corrupts',
+          'Agent B — starts from zero',
+        ],
+      },
+      right: {
+        header: 'SPEC-FIRST',
+        sub: 'intent lives in the spec',
+        cures: [
+          'Define intent once',
+          'Anchor every agent',
+          'One shared document',
+        ],
+      },
+    },
     crystal: {
       word: 'SPECIFICATION',
-      definition: 'The memory you never gave it.',
+      definition: 'The source of truth you never wrote.',
     },
   },
 
