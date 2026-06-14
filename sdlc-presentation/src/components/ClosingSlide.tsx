@@ -1,99 +1,165 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { Terminal, Github, BookOpen } from 'lucide-react';
+import {
+  Compass,
+  Terminal,
+  Sparkles,
+  Rocket,
+  ExternalLink,
+  type LucideIcon,
+} from 'lucide-react';
+
+interface ClosingLink {
+  name: string;
+  url: string;
+  note?: string;
+}
+
+interface ClosingCategory {
+  label: string;
+  accent: string;
+  icon: string;
+  links: ClosingLink[];
+}
 
 interface ClosingSlideProps {
   data: {
     title: string;
-    install: string;
-    commands: Array<{
-      cmd: string;
-      desc: string;
-    }>;
-    links: {
-      github: string;
-      docs: string;
-    };
+    subtitle?: string;
+    categories: ClosingCategory[];
     tagline: string;
   };
   lang: 'en' | 'he';
 }
 
-export default function ClosingSlide({ data, lang }: ClosingSlideProps) {
+// Icon lookup — literal mapping, no dynamic construction.
+const ICONS: Record<string, LucideIcon> = {
+  Compass,
+  Terminal,
+  Sparkles,
+  Rocket,
+};
+
+// Per-category accent — FULL literal class strings, no concatenation.
+const ACCENTS: Record<
+  string,
+  { card: string; chip: string; icon: string; label: string; dot: string }
+> = {
+  emerald: {
+    card: 'border-emerald-400/25 bg-emerald-500/5 hover:border-emerald-400/40',
+    chip: 'border-emerald-400/20 bg-emerald-400/5 hover:border-emerald-300/50 hover:bg-emerald-400/10',
+    icon: 'text-emerald-300',
+    label: 'text-emerald-200',
+    dot: 'bg-emerald-400',
+  },
+  blue: {
+    card: 'border-blue-400/25 bg-blue-500/5 hover:border-blue-400/40',
+    chip: 'border-blue-400/20 bg-blue-400/5 hover:border-blue-300/50 hover:bg-blue-400/10',
+    icon: 'text-blue-300',
+    label: 'text-blue-200',
+    dot: 'bg-blue-400',
+  },
+  cyan: {
+    card: 'border-cyan-400/25 bg-cyan-500/5 hover:border-cyan-400/40',
+    chip: 'border-cyan-400/20 bg-cyan-400/5 hover:border-cyan-300/50 hover:bg-cyan-400/10',
+    icon: 'text-cyan-300',
+    label: 'text-cyan-200',
+    dot: 'bg-cyan-400',
+  },
+  violet: {
+    card: 'border-violet-400/25 bg-violet-500/5 hover:border-violet-400/40',
+    chip: 'border-violet-400/20 bg-violet-400/5 hover:border-violet-300/50 hover:bg-violet-400/10',
+    icon: 'text-violet-300',
+    label: 'text-violet-200',
+    dot: 'bg-violet-400',
+  },
+};
+
+const FALLBACK_ACCENT = ACCENTS.emerald;
+
+export default function ClosingSlide({ data, lang }: ClosingSlideProps): JSX.Element {
+  const isRTL = lang === 'he';
+
   return (
-    <div className="max-w-4xl mx-auto text-center">
-      <motion.h2
-        initial={{ opacity: 0, y: -20 }}
+    <div className="max-w-5xl mx-auto w-full">
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-4xl sm:text-5xl font-bold text-white mb-8"
+        transition={{ duration: 0.5 }}
+        className="text-center mb-6"
       >
-        {data.title}
-      </motion.h2>
-
-      {/* Install Command */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.2 }}
-        className="bg-black/50 border border-green-500/30 rounded-xl p-6 mb-8"
-      >
-        <div className="flex items-center gap-3 mb-2">
-          <Terminal className="text-green-400" size={20} />
-          <span className="text-white/50 text-sm">Clone the starter kit</span>
-        </div>
-        <code className="text-lg sm:text-xl text-green-400 font-mono break-all">
-          {data.install}
-        </code>
+        <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-gradient-to-r from-teal-300 via-cyan-300 to-violet-300 bg-clip-text">
+          {data.title}
+        </h2>
+        {data.subtitle && (
+          <p className="mt-2 text-base sm:text-lg text-white/55">{data.subtitle}</p>
+        )}
       </motion.div>
 
-      {/* Commands */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="bg-white/5 rounded-xl p-6 mb-8"
-      >
-        <div className="space-y-3">
-          {data.commands.map((cmd, idx) => (
-            <div key={idx} className="flex items-center justify-between gap-4 text-left">
-              <code className="text-blue-400 font-mono bg-black/30 px-3 py-2 rounded">
-                {cmd.cmd}
-              </code>
-              <span className="text-white/60 text-sm">{cmd.desc}</span>
-            </div>
-          ))}
-        </div>
-      </motion.div>
+      {/* Category grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {data.categories.map((category, idx) => {
+          const accent = ACCENTS[category.accent] ?? FALLBACK_ACCENT;
+          const Icon = ICONS[category.icon] ?? Compass;
 
-      {/* Links */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
-        className="flex justify-center gap-6 mb-12"
-      >
-        <a
-          href={`https://${data.links.github}`}
-          className="flex items-center gap-2 text-white/60 hover:text-white transition-colors"
-        >
-          <Github size={20} />
-          <span>{data.links.github}</span>
-        </a>
-        <a
-          href={`https://${data.links.docs}`}
-          className="flex items-center gap-2 text-white/60 hover:text-white transition-colors"
-        >
-          <BookOpen size={20} />
-          <span>{data.links.docs}</span>
-        </a>
-      </motion.div>
+          return (
+            <motion.div
+              key={category.label}
+              initial={{ opacity: 0, y: 18, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.45, delay: 0.15 + idx * 0.08, ease: 'easeOut' }}
+              className={`rounded-2xl border p-4 transition-colors ${accent.card}`}
+            >
+              {/* Category header */}
+              <div
+                className={`flex items-center gap-2.5 mb-3 ${
+                  isRTL ? 'flex-row-reverse text-right' : ''
+                }`}
+              >
+                <Icon className={accent.icon} size={20} />
+                <span className={`text-sm font-semibold tracking-wide uppercase ${accent.label}`}>
+                  {category.label}
+                </span>
+              </div>
+
+              {/* Links */}
+              <div className="space-y-2">
+                {category.links.map((link) => (
+                  <a
+                    key={link.url}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    dir="ltr"
+                    className={`group flex items-center gap-2.5 rounded-xl border px-3 py-2 transition-colors ${accent.chip}`}
+                  >
+                    <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${accent.dot}`} />
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-medium text-white">
+                        {link.name}
+                      </span>
+                      {link.note && (
+                        <span className="block truncate text-xs text-white/45">{link.note}</span>
+                      )}
+                    </span>
+                    <ExternalLink
+                      className="shrink-0 text-white/30 transition-colors group-hover:text-white/70"
+                      size={14}
+                    />
+                  </a>
+                ))}
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
 
       {/* Tagline */}
       <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        className="text-2xl sm:text-3xl text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text font-bold"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.55 }}
+        className="mt-6 text-center text-2xl sm:text-3xl font-bold text-transparent bg-gradient-to-r from-teal-300 via-cyan-300 to-violet-300 bg-clip-text"
       >
         {data.tagline}
       </motion.p>

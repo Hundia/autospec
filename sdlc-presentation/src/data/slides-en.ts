@@ -306,29 +306,41 @@ export const slidesEN = [
   // 11. notVibeCoding
   {
     type: 'notVibeCoding',
-    title: 'This Is Not Vibe Coding',
-    subtitle: 'Governance is the difference',
-    left: {
-      label: 'Vibe Coding',
-      accent: 'red',
-      items: [
-        'Solo dev prompting to a prototype',
-        'No audit trail',
-        'Decisions evaporate with the chat',
-        'Quality = luck',
-      ],
-    },
-    right: {
-      label: 'Governed AI Development',
-      accent: 'green',
-      items: [
-        'Specs, guardrails, audit trails',
-        'Human checkpoints at every gate',
-        'Every output traceable',
-        'Every agent error becomes a permanent test case',
-      ],
-    },
-    callout: 'The difference is accountability.',
+    title: 'What You Just Saw Has a Name',
+    subtitle: 'A discipline with rules, contracts, and accountability — by design.',
+    definitionLead: 'The practice',
+    definitionTerm: 'Governed Agentic Development',
+    pillars: [
+      {
+        key: 'teal',
+        icon: 'spec',
+        ordinal: '01',
+        label: 'The spec is the contract',
+        detail: 'No code before the spec is approved. The single source of truth every agent reads.',
+      },
+      {
+        key: 'emerald',
+        icon: 'guardrails',
+        ordinal: '02',
+        label: 'Guardrails are law',
+        detail: 'Tests, types, linters, constraints agents cannot bypass. Every error becomes a permanent test case.',
+      },
+      {
+        key: 'blue',
+        icon: 'human',
+        ordinal: '03',
+        label: 'The human is the judge',
+        detail: 'Human-in-the-loop checkpoints at every gate. Oversight, not rubber-stamping.',
+      },
+      {
+        key: 'violet',
+        icon: 'trail',
+        ordinal: '04',
+        label: 'Every move is on the record',
+        detail: 'Decisions, specs, and outputs are version-controlled and traceable. Nothing evaporates with the chat.',
+      },
+    ],
+    verdict: 'So when people call it vibe coding — it isn\'t. This is.',
   },
 
   // 12. agentic5Acts — SCROLLABLE
@@ -507,10 +519,9 @@ export const slidesEN = [
     title: 'Humans Orchestrate. Agents Execute.',
     subtitle: 'Same specs. Same guardrails. Any model.',
     providers: [
-      { id: 'claude', name: 'Claude Code', icon: '🟣', accent: 'indigo', orchestratorModel: 'Opus 4.6', agentModel: 'Sonnet 4.6' },
       { id: 'copilot', name: 'GitHub Copilot', icon: '🔵', accent: 'blue', orchestratorModel: 'GPT 5.4', agentModel: 'GPT 5.2' },
-      { id: 'gemini', name: 'Gemini', icon: '🟡', accent: 'amber', orchestratorModel: 'Gemini Ultra', agentModel: 'Gemini Pro' },
-      { id: 'local', name: 'Continue (Local)', icon: '🟢', accent: 'green', orchestratorModel: 'GPT OSS 120B', agentModel: 'GPT OSS 7B' },
+      { id: 'cline', name: 'Cline', icon: '🤖', accent: 'indigo', orchestratorModel: 'Claude / GPT-5', agentModel: 'BYO model' },
+      { id: 'continue', name: 'Continue (Local)', icon: '🟢', accent: 'green', orchestratorModel: 'GPT OSS 120B', agentModel: 'GPT OSS 7B' },
     ],
     orchestrator: {
       roleLabel: 'Governance Owner',
@@ -822,18 +833,49 @@ export const slidesEN = [
   // 21. closing
   {
     type: 'closing',
-    title: 'Start Your First Cycle',
-    install: 'git clone https://github.com/Hundia/autospec my-project',
-    commands: [
-      { cmd: 'Pick one bounded, non-critical feature', desc: 'your pilot' },
-      { cmd: 'Write spec.md and get it approved', desc: 'the gate comes first' },
-      { cmd: 'Let AI execute it under guardrails', desc: 'TDD-enforced, guardrail-verified' },
-      { cmd: '/cycle-close', desc: 'the summary is the memory' },
+    title: 'Your Launchpad',
+    subtitle: 'Everything we covered — bookmark it, then go build.',
+    categories: [
+      {
+        label: 'Spec Frameworks',
+        accent: 'emerald',
+        icon: 'Compass',
+        links: [
+          { name: 'GitHub Spec Kit', url: 'https://github.com/github/spec-kit', note: 'Spec → Plan → Tasks → Implement' },
+          { name: 'OpenSpec', url: 'https://github.com/Fission-AI/OpenSpec', note: 'Lightweight spec-driven workflow' },
+        ],
+      },
+      {
+        label: 'Agentic Tooling & CLIs',
+        accent: 'blue',
+        icon: 'Terminal',
+        links: [
+          { name: 'GitHub Copilot', url: 'https://github.com/features/copilot', note: 'AI pair programmer' },
+          { name: 'Copilot CLI', url: 'https://github.com/github/copilot-cli', note: 'Copilot in your terminal' },
+          { name: 'Superpowers', url: 'https://github.com/obra/superpowers', note: 'Agentic skills methodology' },
+        ],
+      },
+      {
+        label: 'Skills & Guides',
+        accent: 'cyan',
+        icon: 'Sparkles',
+        links: [
+          { name: 'Anthropic Skills', url: 'https://github.com/anthropics/skills', note: 'Official Agent Skills' },
+          { name: 'Spec Kit Docs', url: 'https://github.github.com/spec-kit/', note: 'Getting started guide' },
+          { name: 'Spec-Driven w/ AI', url: 'https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/', note: 'The GitHub Blog intro' },
+        ],
+      },
+      {
+        label: 'AutoSpec Ecosystem',
+        accent: 'violet',
+        icon: 'Rocket',
+        links: [
+          { name: 'AutoSpec', url: 'https://github.com/Hundia/autospec', note: 'This framework' },
+          { name: 'AutoSpec Docs', url: 'https://hundia.github.io/autospec', note: 'Methodology & guides' },
+          { name: 'AutoDeck', url: 'https://github.com/Hundia/AutoDeck', note: 'This deck, open source' },
+        ],
+      },
     ],
-    links: {
-      github: 'github.com/Hundia/autospec',
-      docs: 'hundia.github.io/autospec',
-    },
     tagline: 'From intent to steering.',
   },
 

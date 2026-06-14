@@ -306,29 +306,41 @@ export const slidesHE = [
   // 11. notVibeCoding
   {
     type: 'notVibeCoding',
-    title: 'זה לא Vibe Coding',
-    subtitle: 'הממשל הוא ההבדל',
-    left: {
-      label: 'Vibe Coding',
-      accent: 'red',
-      items: [
-        'מפתח בודד שמנחה לפרוטוטיפ',
-        'אין מסלול ביקורת',
-        "החלטות מתאדות עם הצ'אט",
-        'איכות = מזל',
-      ],
-    },
-    right: {
-      label: 'פיתוח AI מנוהל',
-      accent: 'green',
-      items: [
-        'ספסיפיקציות, גדרות הגנה, מסלולי ביקורת',
-        'נקודות ביקורת אנושיות בכל שער',
-        'כל פלט ניתן לאיתור',
-        'כל שגיאת סוכן הופכת למקרה בדיקה קבוע',
-      ],
-    },
-    callout: 'ההבדל הוא אחריות.',
+    title: 'למה שראיתם זה עתה יש שם',
+    subtitle: 'משמעת עם חוקים, חוזים ואחריותיות — לפי תכנון.',
+    definitionLead: 'הפרקטיקה',
+    definitionTerm: 'Governed Agentic Development',
+    pillars: [
+      {
+        key: 'teal',
+        icon: 'spec',
+        ordinal: '01',
+        label: 'הספסיפיקציה היא החוזה',
+        detail: 'אין קוד לפני אישור הספסיפיקציה. מקור האמת היחיד שכל סוכן קורא.',
+      },
+      {
+        key: 'emerald',
+        icon: 'guardrails',
+        ordinal: '02',
+        label: 'גדרות ההגנה הן החוק',
+        detail: 'בדיקות, טיפוסים, linters ואילוצים שסוכנים לא יכולים לעקוף. כל שגיאה הופכת לבדיקה קבועה.',
+      },
+      {
+        key: 'blue',
+        icon: 'human',
+        ordinal: '03',
+        label: 'האדם הוא השופט',
+        detail: 'נקודות ביקורת אנושיות בכל שער. פיקוח אמיתי, לא אישור גומי.',
+      },
+      {
+        key: 'violet',
+        icon: 'trail',
+        ordinal: '04',
+        label: 'כל מהלך מתועד',
+        detail: "החלטות, ספסיפיקציות ופלטים מנוהלים בגרסאות וניתנים לאיתור. שום דבר לא מתאדה עם הצ'אט.",
+      },
+    ],
+    verdict: 'אז כשקוראים לזה Vibe Coding — זה לא. זה זה.',
   },
 
   // 12. agentic5Acts — SCROLLABLE
@@ -507,10 +519,9 @@ export const slidesHE = [
     title: 'בני אדם מתזמנים. סוכנים מבצעים.',
     subtitle: 'אותן ספסיפיקציות. אותן גדרות הגנה. כל מודל.',
     providers: [
-      { id: 'claude', name: 'Claude Code', icon: '🟣', accent: 'indigo', orchestratorModel: 'Opus 4.6', agentModel: 'Sonnet 4.6' },
       { id: 'copilot', name: 'GitHub Copilot', icon: '🔵', accent: 'blue', orchestratorModel: 'GPT 5.4', agentModel: 'GPT 5.2' },
-      { id: 'gemini', name: 'Gemini', icon: '🟡', accent: 'amber', orchestratorModel: 'Gemini Ultra', agentModel: 'Gemini Pro' },
-      { id: 'local', name: 'Continue (Local)', icon: '🟢', accent: 'green', orchestratorModel: 'GPT OSS 120B', agentModel: 'GPT OSS 7B' },
+      { id: 'cline', name: 'Cline', icon: '🤖', accent: 'indigo', orchestratorModel: 'Claude / GPT-5', agentModel: 'BYO model' },
+      { id: 'continue', name: 'Continue (Local)', icon: '🟢', accent: 'green', orchestratorModel: 'GPT OSS 120B', agentModel: 'GPT OSS 7B' },
     ],
     orchestrator: {
       roleLabel: 'בעל ממשל',
@@ -822,18 +833,49 @@ export const slidesHE = [
   // 21. closing
   {
     type: 'closing',
-    title: 'התחל את המחזור הראשון שלך',
-    install: 'git clone https://github.com/Hundia/autospec my-project',
-    commands: [
-      { cmd: 'בחר פיצ\'ר מוגבל לא-קריטי', desc: 'הפיילוט שלך' },
-      { cmd: 'כתוב spec.md וקבל אישור', desc: 'השער קודם' },
-      { cmd: 'תן ל-AI לבצע אותו תחת גדרות ההגנה', desc: 'TDD נאכף, אימות גדרות הגנה' },
-      { cmd: '/cycle-close', desc: 'הסיכום הוא הזיכרון' },
+    title: 'נקודת השיגור שלך',
+    subtitle: 'כל מה שעברנו עליו — סמנו, ואז צאו לבנות.',
+    categories: [
+      {
+        label: 'מסגרות ספסיפיקציה',
+        accent: 'emerald',
+        icon: 'Compass',
+        links: [
+          { name: 'GitHub Spec Kit', url: 'https://github.com/github/spec-kit', note: 'Spec → Plan → Tasks → Implement' },
+          { name: 'OpenSpec', url: 'https://github.com/Fission-AI/OpenSpec', note: 'תהליך spec-driven קליל' },
+        ],
+      },
+      {
+        label: 'כלים אג\'נטיים ו-CLI',
+        accent: 'blue',
+        icon: 'Terminal',
+        links: [
+          { name: 'GitHub Copilot', url: 'https://github.com/features/copilot', note: 'שותף תכנות AI' },
+          { name: 'Copilot CLI', url: 'https://github.com/github/copilot-cli', note: 'Copilot בטרמינל שלכם' },
+          { name: 'Superpowers', url: 'https://github.com/obra/superpowers', note: 'מתודולוגיית skills אג\'נטית' },
+        ],
+      },
+      {
+        label: 'Skills ומדריכים',
+        accent: 'cyan',
+        icon: 'Sparkles',
+        links: [
+          { name: 'Anthropic Skills', url: 'https://github.com/anthropics/skills', note: 'Agent Skills הרשמיים' },
+          { name: 'Spec Kit Docs', url: 'https://github.github.com/spec-kit/', note: 'מדריך התחלה' },
+          { name: 'Spec-Driven w/ AI', url: 'https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/', note: 'מאמר הפתיחה ב-GitHub Blog' },
+        ],
+      },
+      {
+        label: 'אקוסיסטם AutoSpec',
+        accent: 'violet',
+        icon: 'Rocket',
+        links: [
+          { name: 'AutoSpec', url: 'https://github.com/Hundia/autospec', note: 'המסגרת הזו' },
+          { name: 'AutoSpec Docs', url: 'https://hundia.github.io/autospec', note: 'מתודולוגיה ומדריכים' },
+          { name: 'AutoDeck', url: 'https://github.com/Hundia/AutoDeck', note: 'המצגת הזו, בקוד פתוח' },
+        ],
+      },
     ],
-    links: {
-      github: 'github.com/Hundia/autospec',
-      docs: 'hundia.github.io/autospec',
-    },
     tagline: 'מכוונה להיגוי.',
   },
 
