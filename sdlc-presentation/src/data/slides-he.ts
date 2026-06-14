@@ -53,36 +53,40 @@ export const slidesHE = [
       { title: 'אוטונומי', description: 'AI מקבל החלטות מימוש' },
     ],
     danger: [
-      { title: 'הרעלת הקשר', description: 'סשנים ארוכים משחיתים החלטות קודמות — ה-AI סותר את עצמו תור אחר תור' },
+      { title: 'מלכודת הדחיסה', description: 'כשחלון ההקשר מתמלא, הסוכן דוחס את השיחה לתקציר חסר — האילוצים המקוריים נעלמים והוא ממשיך לבנות, בטוח בעצמו וטועה' },
       { title: 'מס ההנדסה לאחור', description: 'כל סשן מאפס לאפס — אתה משלם את עלות הגילוי המחדש המלאה לפני כל פיצ\'ר חדש' },
       { title: 'נקודת השבירה', description: 'אין תיעוד פירושו אין רציפות — צוותים פוגעים בקיר בלתי נראה בפיצ\'ר השני' },
     ],
   },
 
-  // 5. contextPoisoning
+  // 5. contextPoisoning (מלכודת הדחיסה)
   {
     type: 'contextPoisoning',
-    title: 'הרעלת הקשר',
-    subtitle: 'שיחות ארוכות לא רק מאבדות הקשר — הן פוגמות בו באופן פעיל',
-    stages: [
-      { turn: 'תור 1', status: 'נקי', color: 'green', snippet: 'השתמש ב-PostgreSQL עם Prisma ORM', description: 'החלטות ראשוניות ברורות' },
-      { turn: 'תור 25', status: 'סחיפה', color: 'yellow', snippet: 'בעצם, בואנו ננסה MongoDB כאן...', description: 'סתירה לבחירות קודמות' },
-      { turn: 'תור 50', status: 'סתירה', color: 'orange', snippet: 'רגע, אנחנו משתמשים ב-Prisma נכון?', description: 'שכחה של מה שהוחלט' },
-      { turn: 'תור 100', status: 'כאוס', color: 'red', snippet: 'TypeError: Cannot read undefined', description: 'שגיאות מצטברות מהקשר אבוד' },
-    ],
-    chat: {
-      windowTitle: 'AI Agent — project/database',
-      messages: [
-        { role: 'user', turn: 1, text: 'הגדר את שכבת בסיס הנתונים. אנחנו רוצים PostgreSQL עם Prisma ORM לשאילתות type-safe.' },
-        { role: 'ai', turn: 1, text: 'בחירה מצוינת. אגדיר PostgreSQL עם Prisma, אבנה את הסכמה ואייצר את הקליינט. יוצר schema.prisma...' },
-        { role: 'user', turn: 25, text: "שאילתת פיד הפעילות מאטה עם כל ה-joins. יש רעיונות?" },
-        { role: 'ai', turn: 25, text: "לפיד הפעילות, MongoDB יהיה הרבה יותר מתאים — מסמכים ממפים בצורה טבעית לאירועים. אוסיף חיבור Mongo לאוסף הזה.", flag: 'drift' },
-        { role: 'user', turn: 50, text: 'פיד הפעילות שבור. אני מקבל שגיאות אימות סכמה בכל כתיבה.' },
-        { role: 'ai', turn: 50, text: 'אני רואה את הבעיה — מודלי Prisma שלך לא כוללים קשר activityFeed. אוסיף אותו ל-schema.prisma ואריץ migration.', flag: 'contradiction' },
-        { role: 'user', turn: 100, text: 'עכשיו אני מקבל TypeError: Cannot read properties of undefined בכל קריאה לבסיס הנתונים.' },
-        { role: 'ai', turn: 100, text: "הבעיה היא שהקליינט של Prisma לא מאותחל. תן לי להוסיף Mongoose גם לטבלאות הרלציוניות ולאחד הכל תחת ODM אחד.", flag: 'poisoned' },
-        { role: 'user', turn: 100, text: "אתה פשוט לא מבין... אתה גרוע. אני לעולם לא משתמש בפיתוח אג'נטי שוב, בזבוז של הזמן שלי!", flag: 'frustrated' },
+    kicker: 'חלון הקשר · 98% מלא',
+    title: 'מלכודת הדחיסה',
+    subtitle: 'כשחלון ההקשר מתמלא, הסוכן מסכם את השיחה כדי להמשיך — ומוחק בשקט את ההחלטות שעליהן הוא נבנה.',
+    fullContext: {
+      label: 'הקשר מלא',
+      cards: [
+        { text: 'Use PostgreSQL + Prisma ORM', dropped: true },
+        { text: 'No NoSQL — relational integrity required', dropped: true },
+        { text: 'Type-safe queries only', dropped: false },
+        { text: 'Activity feed = a Postgres table', dropped: false },
       ],
+    },
+    compaction: {
+      operation: '⚡ AUTO-COMPACT',
+      caption: 'ההקשר סוכם →',
+      droppedTag: 'נשמט בתקציר',
+    },
+    lossySummary: {
+      label: 'תקציר חסר',
+      retained: '~40% נשמר',
+      text: 'Building a database layer. Activity feed needs flexible documents.',
+    },
+    verdict: {
+      agentLine: 'Adding MongoDB for the activity feed — documents fit better here.',
+      dagger: 'הוא לא מבולבל. הוא פשוט לא רואה מה אבד.',
     },
   },
 
@@ -497,65 +501,190 @@ export const slidesHE = [
 
   // ── ACT 5 — TOOLING & ADOPTION (slides 19–20) ────────────────────────────────
 
-  // 19. tooling
+  // 19. tooling — SCROLLABLE · TABBED COMPARE · PIPELINE · MEMORY
   {
     type: 'tooling',
-    title: 'שרשרת הכלים',
-    subtitle: 'כל כלי אוכף משמעת אחת',
-    tools: [
-      {
-        icon: '⚙️',
-        title: 'Spec-Kit',
-        subtitle: 'עמוד השדרה של זרימת העבודה · github.com/github/spec-kit (2025, OSS)',
-        description: 'מציב את הספסיפיקציה במרכז ההנדסה. סוכנים לא יכולים להתחיל לקודד עד שבני אדם מסמנים את הספסיפיקציה כמאושרת.',
-        accent: 'teal',
-        terminal: [
-          { text: '$ spec-kit gen spec --from PROJ-421', type: 'command' },
-          { text: '✓ spec.md נוצר — ממתין לאישור מנהל מוצר', type: 'success' },
-          { text: '⛔ קידוד חסום עד: spec.approved = true', type: 'error' },
-        ],
-        valueTag: 'מסיים vibe coding — מאלץ כוונה מתועדת.',
-      },
-      {
-        icon: '🦸',
-        title: 'Superpowers',
-        subtitle: 'משמעת הביצוע · אכיפת גדרות ההגנה',
-        description: 'מכתיב את התנהגות הסוכן בזמן המימוש. TDD קפדני: אסור לסוכנים לכתוב קוד מימוש לפני שקיימת בדיקה כושלת.',
-        accent: 'violet',
-        terminal: [
-          { text: '$ superpowers cycle --task tasks.md#42', type: 'command' },
-          { text: '⛔ אין מימוש ללא בדיקה כושלת', type: 'error' },
-          { text: '✓ בדיקה כושלת → OK למימוש כעת', type: 'success' },
-        ],
-        valueTag: 'אוכף הנדסת גדרות הגנה אוטומטית.',
-      },
-      {
-        icon: '📋',
-        title: 'Jira כרכז הקשר',
-        subtitle: 'ALM · שכבת נראות',
-        description: 'כש-spec.md או plan.md משתנים ב-repo, סוכנים מסנכרנים סטטוס ל-Epic ב-Jira אוטומטית — ללא דוחות סטטוס ידניים.',
-        accent: 'blue',
-        terminal: [
-          { text: 'spec.md עודכן → סינכרון סוכן', type: 'command' },
-          { text: '→ PROJ-421: סטטוס → "בתכנון"', type: 'info' },
-          { text: '✓ בעלי עניין לא-טכניים מעודכנים', type: 'success' },
-        ],
-        valueTag: 'נראות ארגונית ללא תקורה ידנית.',
-      },
-      {
-        icon: '📖',
-        title: 'Confluence כזיכרון ארוך-טווח',
-        subtitle: 'ALM · זיכרון ארוך-טווח',
-        description: 'סוכנים קוראים מסמכי ארכיטקטורה כדי לשמור על תאימות הקוד — ידע ארגוני מצטבר מגביל את התנהגות הסוכנים.',
-        accent: 'amber',
-        terminal: [
-          { text: 'agent context fetch --source confluence', type: 'command' },
-          { text: '→ טוען: arch-decisions.md, security-standards.md', type: 'info' },
-          { text: '✓ 14 אילוצים הוזרקו לגדרות ההגנה', type: 'success' },
-        ],
-        valueTag: 'מקור אמת ב-repo, נראות ב-Confluence.',
-      },
-    ],
+    scrollable: true,
+    kicker: 'אקט 5 · הכלים',
+    title: 'להפוך את זה לאמיתי',
+    subtitle: 'המתודולוגיה, עם כלים — בחר מסגרת ספסיפיקציה, אכוף את גדרות ההגנה, וסגור את הלולאה מטיקט ל-PR.',
+    scrollHint: 'גלול דרך שרשרת הכלים',
+    intro: {
+      roadmap: [
+        { id: '1', label: 'מסגרות ספסיפיקציה', accent: 'teal' },
+        { id: '2', label: 'גדרות הגנה', accent: 'violet' },
+        { id: '3', label: 'טיקט → PR', accent: 'cyan' },
+        { id: '4', label: 'זיכרון ארוך-טווח', accent: 'emerald' },
+      ],
+    },
+
+    // ── PAGE 1 — SPEC FRAMEWORKS (4 tabs) ──
+    specPage: {
+      page: '1',
+      accent: 'teal',
+      label: 'מסגרות ספסיפיקציה',
+      eyebrow: 'היכן האמת נכתבת.',
+      dimensions: [
+        'שער אישור ספסיפיקציה',
+        'אכיפת TDD / גדרות הגנה',
+        'סיכומי מחזורים / זיכרון',
+        'סנכרון ALM וכלים (Jira/Confluence)',
+        'אגנוסטי למודל',
+        'רישיון / קוד פתוח',
+      ],
+      frameworks: [
+        {
+          id: 'spec-kit', glyph: '⚙️', name: 'Spec-Kit', short: 'Spec-Kit', role: 'עמוד השדרה', accent: 'teal',
+          tagline: 'הספסיפיקציה במרכז; אין קוד עד שהספסיפיקציה מאושרת.',
+          whatItIs: 'המסגרת הפתוחה של GitHub שמציבה ספסיפיקציה קריאת-מכונה במרכז זרימת העבודה ומתנה את המימוש באישור אנושי.',
+          bullets: ['spec.md הוא החוזה', 'שער אישור אנושי לפני קוד', 'זרימת עבודה מבוססת-שלבים', 'קוד פתוח, ניטרלי לספק'],
+          terminal: [
+            { text: '$ specify init && specify spec --from PROJ-421', type: 'command' },
+            { text: '✓ spec.md created — awaiting approval', type: 'success' },
+            { text: '⛔ implementation blocked: spec.approved = false', type: 'error' },
+          ],
+          repo: 'github.com/github/spec-kit',
+          cells: ['✓ שער אכוף', '~ מוסכמות', '✗', '~ דרך סקריפטים', '✓', '✓ OSS (MIT)'],
+        },
+        {
+          id: 'openspec', glyph: '📐', name: 'OpenSpec', short: 'OpenSpec', role: 'זרימת הצעות', accent: 'teal',
+          tagline: 'שינוי-כהצעה: כל דלתא היא ספסיפיקציה נסקרת.',
+          whatItIs: 'גישה פתוחה מונחית-ספסיפיקציות שבה כל שינוי נכתב כהצעה ומאושר לפני ביצוע, תוך שמירת היסטוריית כוונות נסקרת.',
+          bullets: ['שינוי = הצעה', 'היסטוריית ספסיפיקציות נסקרת', 'קליל, נטיב ל-repo', 'קוד פתוח, ללא מפתחות API'],
+          terminal: [
+            { text: '$ openspec propose "add waitlist"', type: 'command' },
+            { text: '✓ proposal/waitlist.md → review', type: 'success' },
+            { text: '✓ approved → ready to implement', type: 'success' },
+          ],
+          repo: 'openspec.dev',
+          cells: ['✓ הצעה → אישור', '~ ברמת ספסיפיקציה', '~ היסטוריית שינויים', '~ דרך סקריפטים', '✓', '✓ OSS'],
+        },
+        {
+          id: 'autospec', glyph: '🧬', name: 'AutoSpec', short: 'AutoSpec', role: 'המאחד', accent: 'teal', home: true,
+          tagline: 'שער ספסיפיקציה + גדרות הגנה + זיכרון מחזורים + סנכרון ALM — מסגרת אחת.',
+          whatItIs: 'המסגרת שהמצגת הזו עצמה בנויה בה. היא מאחדת את המשמעות: שער הספסיפיקציה, אכיפת TDD/גדרות הגנה, סיכומי מחזורים כזיכרון ארוך-טווח, ומיומנויות שמסנכרנות Jira/TFS ו-Confluence.',
+          bullets: ['שער ספסיפיקציה + ספסים מבוססי-תפקיד', 'גדרות הגנה אכופות, לא מוצעות', 'סיכומי מחזורים = זיכרון עמיד', 'מיומנויות: Jira/TFS → ספסיפיקציה → PR', 'כל מודל (ניתוב FinOps)'],
+          terminal: [
+            { text: '$ autospec cycle start --from PROJ-421', type: 'command' },
+            { text: '✓ spec.md gated · guardrails armed', type: 'success' },
+            { text: '✓ cycle-12 summary will persist to docs/', type: 'success' },
+          ],
+          repo: 'github.com/Hundia/autospec',
+          cells: ['✓ שער + תפקידים', '✓ גדרות מובנות', '✓ סיכומי מחזורים', '✓ Jira / TFS / Confluence', '✓ כל מודל', '✓ OSS (Hundia/autospec)'],
+        },
+        {
+          id: 'diy', glyph: '✍️', name: 'Write Your Own Spec', short: 'DIY', role: 'הדרך העצמאית', accent: 'teal',
+          tagline: 'אין מסגרת? קודד את המשמעת בעצמך.',
+          whatItIs: 'אינך צריך מוצר — אתה צריך את המשמעות. constitution.md, תבנית ספסיפיקציה, שער אישור ב-CI וגדרות pre-commit משחזרים את רוב הערך.',
+          bullets: ['constitution.md ככללים שלך', 'תבנית ספסיפיקציה + שער אישור PR', 'גדרות הגנה דרך CI / pre-commit', 'שליטה מלאה, תחזוקה מלאה'],
+          terminal: [
+            { text: '$ mkdir specs && touch constitution.md spec-template.md', type: 'command' },
+            { text: '# CI: block merge unless spec.approved label', type: 'info' },
+            { text: '# pre-commit: tests + lint + types = guardrails', type: 'info' },
+          ],
+          repo: 'your repo',
+          cells: ['~ אתה מגדיר', '~ hooks עצמאיים', '~ בעצמך', '~ אתה מחבר', '✓', 'n/a — repo שלך'],
+        },
+      ],
+    },
+
+    // ── PAGE 2 — SUPERPOWERS / GUARDRAILS (2 tabs) ──
+    guardPage: {
+      page: '2',
+      accent: 'violet',
+      label: 'משמעת ביצוע',
+      eyebrow: 'היכן האמת מוגנת.',
+      thesis: 'גדרות ההגנה הן ההגנה.',
+      dimensions: [
+        'אין קוד לפני בדיקה כושלת',
+        'אכיפה אוטומטית (לא המלצה)',
+        'מתחבר ללולאת הסוכן',
+        'מקודד כל תיקון כבדיקה',
+        'עלות הקמה',
+      ],
+      frameworks: [
+        {
+          id: 'superpowers', glyph: '🦸', name: 'Superpowers', short: 'Superpowers', role: 'אכיפת גדרות הגנה', accent: 'violet',
+          tagline: 'TDD קפדני לסוכנים — אין מימוש לפני שקיימת בדיקה כושלת.',
+          whatItIs: 'שכבת משמעת-ביצוע שמנהלת את התנהגות הסוכן בזמן המימוש: אסור לסוכנים לכתוב קוד מימוש עד שקיימת בדיקה כושלת.',
+          bullets: ['TDD קפדני, אכוף על הסוכן', 'חוסם מימוש ללא בדיקה אדומה', 'מתחבר ללולאת המחזור', 'הופך כל באג לבדיקה קבועה'],
+          terminal: [
+            { text: '$ superpowers cycle --task tasks.md#42', type: 'command' },
+            { text: '⛔ No implementation without failing test', type: 'error' },
+            { text: '✓ Test fails → OK to implement now', type: 'success' },
+          ],
+          repo: 'github.com/obra/superpowers',
+          cells: ['✓ אכוף', '✓ חסימה קשיחה', '✓ hooks למחזור', '✓ בדיקות רגרסיה', '~ התקנה + הגדרה'],
+        },
+        {
+          id: 'diy-guard', glyph: '🛠️', name: 'Write Your Own Guardrails', short: 'DIY', role: 'הדרך העצמאית', accent: 'violet',
+          tagline: 'CI + pre-commit יכולים לאכוף את אותה משמעת שאתה בונה בעצמך.',
+          whatItIs: 'שחזר את המשמעת עם כלים שכבר ברשותך: hooks של pre-commit, שער CI שנכשל על בדיקות חסרות, וחוזה פרומפט לסוכן שאוסר קוד לא-נבדק.',
+          bullets: ['pre-commit: בדיקות + lint + types', 'שער CI נכשל על ירידת כיסוי', 'חוזה פרומפט: בדיקה אדומה תחילה', 'שליטה מלאה, אתה מתחזק'],
+          terminal: [
+            { text: '$ pre-commit install', type: 'command' },
+            { text: '# CI: fail if new code lacks a failing-then-passing test', type: 'info' },
+            { text: '✓ guardrails enforced in your pipeline', type: 'success' },
+          ],
+          repo: 'your repo',
+          cells: ['~ אם תחבר', '~ דרך CI בלבד', '~ ידני', '~ אם ממושמע', '~ מאמץ עצמאי'],
+        },
+      ],
+    },
+
+    // ── PAGE 3 — TICKET → PR PIPELINE ──
+    pipelinePage: {
+      page: '3',
+      accent: 'cyan',
+      label: 'האינטגרציה המכרעת',
+      eyebrow: 'היכן זה מתחבר לעבודה שאתה כבר עוקב אחריה.',
+      headline: 'מיומנות אחת. טיקט → PR ממוזג.',
+      source: { id: 'PROJ-421', title: 'הוסף רשימת המתנה להזמנות', status: 'בתהליך' },
+      stages: [
+        { n: '1', verb: 'משיכה', sub: 'דרישה → הקשר' },
+        { n: '2', verb: 'ספסיפיקציה', sub: 'יצירת spec.md, המתנה לשער' },
+        { n: '3', verb: 'ביצוע', sub: 'הסוכן מממש ב-worktree' },
+        { n: '4', verb: 'בדיקה', sub: 'גדרות: TDD, lint, types' },
+        { n: '5', verb: 'פתיחת PR', sub: 'ענף נדחף, Jira מעודכן' },
+      ],
+      terminal: [
+        { text: '$ autospec skill run jira-to-pr --ticket PROJ-421', type: 'command' },
+        { text: '→ pull       PROJ-421 "Add waitlist to bookings"', type: 'info' },
+        { text: '→ spec       spec.md drafted · gate: approved ✓', type: 'info' },
+        { text: '→ execute    agent implementing in worktree-a…', type: 'info' },
+        { text: '→ test       12 passed · lint ✓ · types ✓', type: 'info' },
+        { text: '→ pr         opened #318 → main · PROJ-421 → In Review ✓', type: 'info' },
+        { text: '✓ ticket → merged PR, fully traceable', type: 'success' },
+      ],
+      callout: 'מיומנות אחת סוגרת את הלולאה — וכותבת את הסיכום שלה בחזרה לזיכרון.',
+    },
+
+    // ── PAGE 4 — LONG-TERM MEMORY ──
+    memoryPage: {
+      page: '4',
+      accent: 'emerald',
+      label: 'הזיכרון שמעולם לא נתת לו',
+      eyebrow: 'היכן כל החלטה נזכרת.',
+      headline: 'Confluence + docs/ = זיכרון ארוך-טווח.',
+      syncBadge: 'Confluence ⇄ docs/',
+      bullets: [
+        'הסוכנים קוראים את זה לפני שהם כותבים — ארכיטקטורה, גדרות הגנה והחלטות עבר הופכים לאילוצים חיים.',
+        'זה גדל בכל מחזור — כל סיכום מחזור מוסיף תיקיות חדשות ורשומות החלטה.',
+        'שום דבר לא נגזר מחדש — הזיכרון שמעולם לא נתת לו, סוף סוף ניתן.',
+      ],
+      tree: [
+        { name: 'docs/', depth: 0, icon: '📁' },
+        { name: 'architecture/', depth: 1, icon: '📁', files: ['01-system.md', '02-decisions.md'] },
+        { name: 'guardrails/', depth: 1, icon: '📁', files: ['01-tdd.md', '02-security.md'] },
+        { name: 'flows/', depth: 1, icon: '📁', files: ['01-ticket-to-pr.md'] },
+        { name: 'cycles/', depth: 1, icon: '📁', files: ['cycle-10/', 'cycle-11/', 'cycle-12/ ← new'] },
+      ],
+      treeFooter: '+סיכום מחזור אחד נכתב בחזרה, בכל לולאה',
+      callout: 'הספסיפיקציה היא האמת, גדרות ההגנה הן ההגנה, והמסמכים הם הזיכרון — שום הקשר לא אובד.',
+    },
+
+    // ── CLOSING HANDOFF ──
+    closing: 'אלה הכלים שהופכים את המתודולוגיה לאמיתית. הבא: איך לאמץ אותם — יסוד → הרחבה → אופטימיזציה.',
   },
 
   // 20. adoption — SCROLLABLE
