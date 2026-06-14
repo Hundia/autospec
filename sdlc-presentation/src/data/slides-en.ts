@@ -7,7 +7,8 @@ export const slidesEN = [
     title: 'The Agentic SDLC',
     subtitle: 'Spec-Driven Development at Enterprise Scale',
     tagline: 'Agents execute. Humans govern.',
-    presenter: 'By Eli Hundia & Sharon Schwartz',
+    presenter: 'By Eli Hundia',
+    collaborator: 'In collaboration with Sharon Schwartz',
   },
 
   // 2. eraTraditional

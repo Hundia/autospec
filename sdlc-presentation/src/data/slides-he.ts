@@ -7,7 +7,8 @@ export const slidesHE = [
     title: 'The Agentic SDLC',
     subtitle: 'פיתוח מונחה-ספסיפיקציות בסקאלה ארגונית',
     tagline: 'סוכנים מבצעים. בני אדם מנהלים.',
-    presenter: 'אלי חונדיה ושרון שוורץ',
+    presenter: 'מאת אלי חונדיה',
+    collaborator: 'בשיתוף עם שרון שוורץ',
   },
 
   // 2. eraTraditional
