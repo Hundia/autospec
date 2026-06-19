@@ -60,20 +60,47 @@ export const slidesHE = [
     ],
   },
 
-  // 5. contextPoisoning (מלכודת הדחיסה)
+  // 5. contextPoisoning (מלכודת הדחיסה) — שקופית נגללת
   {
     type: 'contextPoisoning',
-    kicker: 'חלון הקשר · 98% מלא',
+    scrollable: true,
+    kicker: 'בעיה שמסתתרת בתוך כוונות טובות',
     title: 'מלכודת הדחיסה',
-    subtitle: 'זה לא שדיברת יותר מדי. דרכים רבות מובילות לאותו צוק — וכך או כך שתמלא את החלון, הדחיסה אובדת מידע, ולכן היסוד הוא הראשון ליפול.',
-    triggers: {
-      lead: '→ כל אחת מאלה פוגעת באותו קיר',
-      items: [
-        { label: 'מסמך ענק אחד, מודבק מראש', note: 'נדחס עוד לפני שכתבת שורה' },
-        { label: 'כמה מסמכים גדולים לאורך איטרציות', note: 'ממלא את החלון כמו שיחה ארוכה' },
-        { label: 'פנייה חדה סמוך לגבול', note: 'מפילה את ההחלטות המוקדמות והיסודיות' },
-      ],
-    },
+    hook: 'המלכודת היא שדווקא היסודיות היא זו שהורגת אותך.',
+    scrollHint: 'גלול וצפה בחלון מתמלא',
+    // ── Beat 1 — the instinct ──
+    instinctKicker: 'האינסטינקט',
+    instinctTitle: 'אתה עושה את הדבר האחראי — אתה נותן לו הכול.',
+    instinctLead: 'עוד לפני שהסוכן כותב שורה, אתה מוסר לו את כל ההקשר: ה-PRD המלא, מסמך התכנון, ה-API reference, סיכומי הפגישות. המהלך האחראי. זו המלכודת.',
+    bigDocs: [
+      { icon: 'BookOpen', name: 'ה-PRD המלא של המוצר', weight: '82 pages · ~61k tokens', fill: 90 },
+      { icon: 'FileText', name: 'מסמך הארכיטקטורה והתכנון', weight: '40 pages · ~30k tokens', fill: 55 },
+      { icon: 'Code2', name: 'ה-API reference המלא', weight: 'every endpoint · ~45k tokens', fill: 72 },
+      { icon: 'ClipboardList', name: 'חצי שנה של סיכומי פגישות', weight: 'pasted in full · ~28k tokens', fill: 48 },
+      { icon: 'MessageSquare', name: 'שלושה Slack threads מיוצאים', weight: '"ליתר ביטחון" · ~22k tokens', fill: 38 },
+      { icon: 'FileStack', name: 'ה-codebase הישן, נשפך פנימה', weight: 'all of it · ~70k tokens', fill: 95 },
+    ],
+    instinctReframe: 'שום דבר מזה אינו רשלני. כל אחד מאלה הוא הדבר המסור והנכון לעשות.',
+    // ── Beat 2 — the window fills ──
+    windowKicker: 'החלון מתמלא',
+    windowTitle: 'חלון ההקשר הוא תקציב — ואתה בזבזת אותו עוד לפני שהעבודה התחילה.',
+    windowLead: 'הוא סופי. כל מסמך שאתה מדביק תופס נתח. המד מטפס מעבר לקו הסכנה עוד לפני שניתנה הוראה מועילה אחת.',
+    budgetLabel: 'תקציב חלון ההקשר',
+    fillStages: [
+      { label: 'PRD הודבק', detail: 'מסמך ענק אחד, מראש', fill: 20 },
+      { label: '+ design + API', detail: 'כמה מסמכים גדולים נערמים', fill: 60 },
+      { label: '+ notes + code', detail: 'לא נשאר מקום לחשוב', fill: 98 },
+    ],
+    wallLabel: '98% מלא — לפני כל עבודה אמיתית',
+    onRampsLead: '→ דרכי גישה רבות, קיר אחד',
+    onRamps: [
+      { label: 'מסמך ענק אחד, מראש', note: 'ממלא את החלון לפני שכתבת שורה' },
+      { label: 'כמה מסמכים גדולים לאורך איטרציות', note: 'נערמים כמו שיחה ארוכה' },
+      { label: 'פנייה חדה סמוך לגבול', note: 'מטה חלון כמעט-מלא אל מעבר לקצה' },
+    ],
+    // ── Beat 3 — the result (compaction) ──
+    resultKicker: 'התוצאה',
+    resultTitle: 'רק עכשיו AUTO-COMPACT נכנס לפעולה — והדחיסה אובדת מידע.',
     fullContext: {
       label: 'הקשר מלא',
       cards: [
@@ -93,9 +120,12 @@ export const slidesHE = [
       retained: '~40% נשמר',
       text: 'Building a database layer. Activity feed needs flexible documents.',
     },
+    casualtyNote: 'האילוצים היסודיים הם הנפגעים — נשמטים ראשונים, ולעולם לא משוחזרים.',
+    // ── Beat 4 — the dagger ──
     verdict: {
       agentLine: 'Adding MongoDB for the activity feed — documents fit better here.',
       dagger: 'הוא לא מבולבל. הוא פשוט לא רואה מה אבד.',
+      reframe: 'אותה יסודיות שהייתה אמורה להגן על העבודה היא בדיוק זו שפוצצה אותה.',
     },
   },
 

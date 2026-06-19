@@ -60,20 +60,47 @@ export const slidesEN = [
     ],
   },
 
-  // 5. contextPoisoning (The Compaction Trap)
+  // 5. contextPoisoning (The Compaction Trap) — scrollable narrative
   {
     type: 'contextPoisoning',
-    kicker: 'CONTEXT WINDOW · 98% FULL',
+    scrollable: true,
+    kicker: 'A PROBLEM HIDING INSIDE GOOD INTENTIONS',
     title: 'The Compaction Trap',
-    subtitle: "It isn't that you talked too long. Many roads reach the same cliff — and however you fill the window, compaction is lossy, so the foundation falls first.",
-    triggers: {
-      lead: 'Any of these hits the same wall →',
-      items: [
-        { label: 'One giant doc, pasted up front', note: 'compacts before you write a line' },
-        { label: 'A few big docs over iterations', note: 'fills the window like a long chat' },
-        { label: 'A late pivot near the limit', note: 'drops the early, foundational calls' },
-      ],
-    },
+    hook: 'The trap is that being thorough is exactly what kills you.',
+    scrollHint: 'Scroll to watch the window fill',
+    // ── Beat 1 — the instinct ──
+    instinctKicker: 'THE INSTINCT',
+    instinctTitle: 'You do the responsible thing — you give it everything.',
+    instinctLead: "Before the agent writes a line, you hand it all the context: the full PRD, the design doc, the API reference, the meeting notes. The responsible move. That's the trap.",
+    bigDocs: [
+      { icon: 'BookOpen', name: 'The full product PRD', weight: '82 pages · ~61k tokens', fill: 90 },
+      { icon: 'FileText', name: 'The architecture & design doc', weight: '40 pages · ~30k tokens', fill: 55 },
+      { icon: 'Code2', name: 'The complete API reference', weight: 'every endpoint · ~45k tokens', fill: 72 },
+      { icon: 'ClipboardList', name: 'Six months of meeting notes', weight: 'pasted in full · ~28k tokens', fill: 48 },
+      { icon: 'MessageSquare', name: 'Three exported Slack threads', weight: '"just in case" · ~22k tokens', fill: 38 },
+      { icon: 'FileStack', name: 'The old codebase, dumped in', weight: 'all of it · ~70k tokens', fill: 95 },
+    ],
+    instinctReframe: 'None of this is careless. Every one of these is the diligent thing to do.',
+    // ── Beat 2 — the window fills ──
+    windowKicker: 'THE WINDOW FILLS',
+    windowTitle: 'The context window is a budget — and you spent it before work began.',
+    windowLead: 'It is finite. Every document you paste in claims a slice. The gauge climbs past the danger line before a single useful instruction is ever given.',
+    budgetLabel: 'Context window budget',
+    fillStages: [
+      { label: 'PRD pasted', detail: 'one giant doc, up front', fill: 20 },
+      { label: '+ design + API', detail: 'a few big docs stack up', fill: 60 },
+      { label: '+ notes + code', detail: 'no room left to think', fill: 98 },
+    ],
+    wallLabel: '98% FULL — before any real work',
+    onRampsLead: 'Many on-ramps, one wall →',
+    onRamps: [
+      { label: 'One giant doc, up front', note: 'fills the window before you write a line' },
+      { label: 'A few big docs over iterations', note: 'stacks up like a long chat' },
+      { label: 'A late pivot near the limit', note: 'tips a nearly-full window over the edge' },
+    ],
+    // ── Beat 3 — the result (compaction) ──
+    resultKicker: 'THE RESULT',
+    resultTitle: 'Only now does AUTO-COMPACT fire — and compaction is lossy.',
     fullContext: {
       label: 'Full Context',
       cards: [
@@ -93,9 +120,12 @@ export const slidesEN = [
       retained: '~40% retained',
       text: 'Building a database layer. Activity feed needs flexible documents.',
     },
+    casualtyNote: 'The foundational constraints are the casualties — dropped first, never recovered.',
+    // ── Beat 4 — the dagger ──
     verdict: {
       agentLine: 'Adding MongoDB for the activity feed — documents fit better here.',
       dagger: "It isn't confused. It can't see what it lost.",
+      reframe: 'The thoroughness that was supposed to protect the work is exactly what detonated it.',
     },
   },
 
