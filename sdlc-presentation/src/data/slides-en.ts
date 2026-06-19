@@ -956,7 +956,134 @@ export const slidesEN = [
     tagline: 'From intent to steering.',
   },
 
-  // 22. finalTagline
+  // 22. demoIntro
+  {
+    type: 'demoIntro',
+    scrollable: true,
+
+    // HERO
+    kicker: 'LIVE DEMO',
+    heroTitle: 'Building REQ-MFL-001',
+    heroSubtitle: 'From Jira ticket to reviewed PR — with SDD.',
+    heroTag: 'Ground Station · Drone Telemetry Platform',
+    scrollHint: 'Follow the requirement — from filed ticket to shipped PR',
+
+    // Beat 1 — The Project
+    projectKicker: 'THE PROJECT',
+    projectTitle: 'A Drone Telemetry Platform',
+    projectBody:
+      'An airborne drone. A ground crew. One radio link carrying everything they need to keep the flight safe. Every subsystem on board — managed independently, critical to airworthiness.',
+    droneModules: [
+      { iconKey: 'Cpu',      label: 'Main Computer', subLabel: 'Mission processor' },
+      { iconKey: 'Camera',   label: 'Camera',        subLabel: 'Optical payload' },
+      { iconKey: 'Wind',     label: 'Rotors',        subLabel: 'Propulsion' },
+      { iconKey: 'Compass',  label: 'INS',           subLabel: 'Inertial Nav' },
+      { iconKey: 'Activity', label: 'IMU',           subLabel: 'Motion sensing' },
+      { iconKey: 'MapPin',   label: 'GPS',           subLabel: 'Geo-location' },
+      { iconKey: 'Radio',    label: 'Comms',         subLabel: 'Datalink' },
+    ],
+    droneImageUrl: '/drone-anatomy.png',
+
+    // Beat 2 — ICD / Communication
+    commsKicker: 'THE ICD',
+    commsTitle: 'Strict Message Types — No Free-Form',
+    commsBody:
+      'All data flows via an Interface Control Document (ICD): only pre-defined message types are permitted. Two messages run today. A third has just landed on the sprint board — and it touches every subsystem on the drone.',
+    currentMessages: [
+      { type: 'NAV',    accentKey: 'blue',  desc: 'Geo-location — lat / lon / alt / heading' },
+      { type: 'STATUS', accentKey: 'teal',  desc: 'Battery level · time-in-air · system uptime' },
+    ],
+    newMessage: {
+      type: 'MFL',
+      accentKey: 'amber',
+      desc: 'Module Functionality Log — per-subsystem operational health',
+    },
+    commsImageUrl: '/drone-comms.png',
+
+    // Beat 3 — Requirement
+    demandKicker: 'THE REQUIREMENT',
+    demandTitle: 'REQ-MFL-001',
+    demandBody:
+      'Operators need to assess airworthiness in real time and respond to in-flight degradation. Every subsystem must report its operational status — OK, DEGRADED, or FAIL — on every telemetry cycle.',
+    mflModules: [
+      { id: 'camera', label: 'Camera' },
+      { id: 'rotors', label: 'Rotors' },
+      { id: 'ins',    label: 'INS' },
+      { id: 'imu',    label: 'IMU' },
+      { id: 'gps',    label: 'GPS' },
+      { id: 'comms',  label: 'Comms' },
+    ],
+    mflPayloadSample: `{
+  "type": "MFL",
+  "timestamp": "2026-06-19T14:32:11Z",
+  "modules": {
+    "camera": "OK",
+    "rotors": "OK",
+    "ins":    "OK",
+    "imu":    "DEGRADED",
+    "gps":    "OK",
+    "comms":  "FAIL"
+  }
+}`,
+    scope: ['Backend', 'Frontend', 'Simulator'],
+
+    // Beat 4 — Workflow
+    workflowKicker: 'THE SDD PIPELINE',
+    workflowTitle: 'Six Steps. One Spec. No Chaos.',
+    workflowSteps: [
+      {
+        num: '01',
+        label: 'Pull Jira Ticket',
+        detail: 'Agent fetches REQ-MFL-001 via API key',
+        icon: 'ClipboardList',
+        accent: 'blue',
+      },
+      {
+        num: '02',
+        label: 'Create Spec',
+        detail: 'OpenSpec generates a living spec from the requirement',
+        icon: 'FileText',
+        accent: 'violet',
+      },
+      {
+        num: '03',
+        label: 'Generate Code',
+        detail: 'Agent implements backend · frontend · simulator',
+        icon: 'Code2',
+        accent: 'indigo',
+      },
+      {
+        num: '04',
+        label: 'HITL Review',
+        detail: 'Human-in-the-Loop review gates the next step',
+        icon: 'UserCheck',
+        accent: 'teal',
+      },
+      {
+        num: '05',
+        label: 'Generate QA Tests',
+        detail: 'Agent generates E2E tests from the spec',
+        icon: 'FlaskConical',
+        accent: 'emerald',
+      },
+      {
+        num: '06',
+        label: 'PR + AI Review',
+        detail: 'AWS Bedrock Agent summarizes for dev + team lead',
+        icon: 'GitPullRequest',
+        accent: 'cyan',
+      },
+    ],
+
+    // Beat 5 — Handoff
+    handoffKicker: 'OVER TO YOU',
+    handoffTitle: 'The Stage Is Yours.',
+    handoffBody:
+      'You know the rules. REQ-MFL-001 just entered the pipeline. Watch SDD close it.',
+    handoffCallout: 'REQ-MFL-001 · Drone Telemetry Platform',
+  },
+
+  // 23. finalTagline
   {
     type: 'finalTagline',
     title: 'The Agentic SDLC',

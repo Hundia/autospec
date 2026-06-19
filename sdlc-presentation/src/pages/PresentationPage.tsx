@@ -35,6 +35,7 @@ import ToolingSlide from '../components/ToolingSlide';
 import AdoptionSlide from '../components/AdoptionSlide';
 import AgenticFiveActsSlide from '../components/AgenticFiveActsSlide';
 import SpecRotSlide from '../components/SpecRotSlide';
+import DemoIntroSlide from '../components/DemoIntroSlide';
 
 // Per-slide accent color — follows the deck's thermal identity
 const slideAccent: Record<string, string> = {
@@ -60,6 +61,7 @@ const slideAccent: Record<string, string> = {
   tooling: '#2dd4bf',
   adoption: '#34d399',
   closing: '#a78bfa',
+  demoIntro: '#34d399',
   finalTagline: '#60a5fa',
 };
 
@@ -201,6 +203,7 @@ const slideComponents = {
   tooling: ToolingSlide,
   adoption: AdoptionSlide,
   closing: ClosingSlide,
+  demoIntro: DemoIntroSlide,
   finalTagline: FinalTaglineSlide,
 };
 
