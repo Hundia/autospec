@@ -7,7 +7,8 @@ export const slidesHE = [
     title: 'The Agentic SDLC',
     subtitle: 'פיתוח מונחה-ספסיפיקציות בסקאלה ארגונית',
     tagline: 'סוכנים מבצעים. בני אדם מנהלים.',
-    presenter: 'אלי חונדיה ושרון שוורץ',
+    presenter: 'מאת אלי חונדיה',
+    collaborator: 'בשיתוף עם שרון שוורץ',
   },
 
   // 2. eraTraditional
@@ -59,12 +60,47 @@ export const slidesHE = [
     ],
   },
 
-  // 5. contextPoisoning (מלכודת הדחיסה)
+  // 5. contextPoisoning (מלכודת הדחיסה) — שקופית נגללת
   {
     type: 'contextPoisoning',
-    kicker: 'חלון הקשר · 98% מלא',
+    scrollable: true,
+    kicker: 'בעיה שמסתתרת בתוך כוונות טובות',
     title: 'מלכודת הדחיסה',
-    subtitle: 'כשחלון ההקשר מתמלא, הסוכן מסכם את השיחה כדי להמשיך — ומוחק בשקט את ההחלטות שעליהן הוא נבנה.',
+    hook: 'המלכודת היא שדווקא היסודיות היא זו שהורגת אותך.',
+    scrollHint: 'גלול וצפה בחלון מתמלא',
+    // ── Beat 1 — the instinct ──
+    instinctKicker: 'האינסטינקט',
+    instinctTitle: 'אתה עושה את הדבר האחראי — אתה נותן לו הכול.',
+    instinctLead: 'עוד לפני שהסוכן כותב שורה, אתה מוסר לו את כל ההקשר: ה-PRD המלא, מסמך התכנון, ה-API reference, סיכומי הפגישות. המהלך האחראי. זו המלכודת.',
+    bigDocs: [
+      { icon: 'BookOpen', name: 'ה-PRD המלא של המוצר', weight: '82 pages · ~61k tokens', fill: 90 },
+      { icon: 'FileText', name: 'מסמך הארכיטקטורה והתכנון', weight: '40 pages · ~30k tokens', fill: 55 },
+      { icon: 'Code2', name: 'ה-API reference המלא', weight: 'every endpoint · ~45k tokens', fill: 72 },
+      { icon: 'ClipboardList', name: 'חצי שנה של סיכומי פגישות', weight: 'pasted in full · ~28k tokens', fill: 48 },
+      { icon: 'MessageSquare', name: 'שלושה Slack threads מיוצאים', weight: '"ליתר ביטחון" · ~22k tokens', fill: 38 },
+      { icon: 'FileStack', name: 'ה-codebase הישן, נשפך פנימה', weight: 'all of it · ~70k tokens', fill: 95 },
+    ],
+    instinctReframe: 'שום דבר מזה אינו רשלני. כל אחד מאלה הוא הדבר המסור והנכון לעשות.',
+    // ── Beat 2 — the window fills ──
+    windowKicker: 'החלון מתמלא',
+    windowTitle: 'חלון ההקשר הוא תקציב — ואתה בזבזת אותו עוד לפני שהעבודה התחילה.',
+    windowLead: 'הוא סופי. כל מסמך שאתה מדביק תופס נתח. המד מטפס מעבר לקו הסכנה עוד לפני שניתנה הוראה מועילה אחת.',
+    budgetLabel: 'תקציב חלון ההקשר',
+    fillStages: [
+      { label: 'PRD הודבק', detail: 'מסמך ענק אחד, מראש', fill: 20 },
+      { label: '+ design + API', detail: 'כמה מסמכים גדולים נערמים', fill: 60 },
+      { label: '+ notes + code', detail: 'לא נשאר מקום לחשוב', fill: 98 },
+    ],
+    wallLabel: '98% מלא — לפני כל עבודה אמיתית',
+    onRampsLead: '→ דרכי גישה רבות, קיר אחד',
+    onRamps: [
+      { label: 'מסמך ענק אחד, מראש', note: 'ממלא את החלון לפני שכתבת שורה' },
+      { label: 'כמה מסמכים גדולים לאורך איטרציות', note: 'נערמים כמו שיחה ארוכה' },
+      { label: 'פנייה חדה סמוך לגבול', note: 'מטה חלון כמעט-מלא אל מעבר לקצה' },
+    ],
+    // ── Beat 3 — the result (compaction) ──
+    resultKicker: 'התוצאה',
+    resultTitle: 'רק עכשיו AUTO-COMPACT נכנס לפעולה — והדחיסה אובדת מידע.',
     fullContext: {
       label: 'הקשר מלא',
       cards: [
@@ -84,9 +120,12 @@ export const slidesHE = [
       retained: '~40% נשמר',
       text: 'Building a database layer. Activity feed needs flexible documents.',
     },
+    casualtyNote: 'האילוצים היסודיים הם הנפגעים — נשמטים ראשונים, ולעולם לא משוחזרים.',
+    // ── Beat 4 — the dagger ──
     verdict: {
       agentLine: 'Adding MongoDB for the activity feed — documents fit better here.',
       dagger: 'הוא לא מבולבל. הוא פשוט לא רואה מה אבד.',
+      reframe: 'אותה יסודיות שהייתה אמורה להגן על העבודה היא בדיוק זו שפוצצה אותה.',
     },
   },
 
@@ -297,29 +336,41 @@ export const slidesHE = [
   // 11. notVibeCoding
   {
     type: 'notVibeCoding',
-    title: 'זה לא Vibe Coding',
-    subtitle: 'הממשל הוא ההבדל',
-    left: {
-      label: 'Vibe Coding',
-      accent: 'red',
-      items: [
-        'מפתח בודד שמנחה לפרוטוטיפ',
-        'אין מסלול ביקורת',
-        "החלטות מתאדות עם הצ'אט",
-        'איכות = מזל',
-      ],
-    },
-    right: {
-      label: 'פיתוח AI מנוהל',
-      accent: 'green',
-      items: [
-        'ספסיפיקציות, גדרות הגנה, מסלולי ביקורת',
-        'נקודות ביקורת אנושיות בכל שער',
-        'כל פלט ניתן לאיתור',
-        'כל שגיאת סוכן הופכת למקרה בדיקה קבוע',
-      ],
-    },
-    callout: 'ההבדל הוא אחריות.',
+    title: 'למה שראיתם זה עתה יש שם',
+    subtitle: 'משמעת עם חוקים, חוזים ואחריותיות — לפי תכנון.',
+    definitionLead: 'הפרקטיקה',
+    definitionTerm: 'Governed Agentic Development',
+    pillars: [
+      {
+        key: 'teal',
+        icon: 'spec',
+        ordinal: '01',
+        label: 'הספסיפיקציה היא החוזה',
+        detail: 'אין קוד לפני אישור הספסיפיקציה. מקור האמת היחיד שכל סוכן קורא.',
+      },
+      {
+        key: 'emerald',
+        icon: 'guardrails',
+        ordinal: '02',
+        label: 'גדרות ההגנה הן החוק',
+        detail: 'בדיקות, טיפוסים, linters ואילוצים שסוכנים לא יכולים לעקוף. כל שגיאה הופכת לבדיקה קבועה.',
+      },
+      {
+        key: 'blue',
+        icon: 'human',
+        ordinal: '03',
+        label: 'האדם הוא השופט',
+        detail: 'נקודות ביקורת אנושיות בכל שער. פיקוח אמיתי, לא אישור גומי.',
+      },
+      {
+        key: 'violet',
+        icon: 'trail',
+        ordinal: '04',
+        label: 'כל מהלך מתועד',
+        detail: "החלטות, ספסיפיקציות ופלטים מנוהלים בגרסאות וניתנים לאיתור. שום דבר לא מתאדה עם הצ'אט.",
+      },
+    ],
+    verdict: 'אז כשקוראים לזה Vibe Coding — זה לא. זה זה.',
   },
 
   // 12. agentic5Acts — SCROLLABLE
@@ -498,10 +549,9 @@ export const slidesHE = [
     title: 'בני אדם מתזמנים. סוכנים מבצעים.',
     subtitle: 'אותן ספסיפיקציות. אותן גדרות הגנה. כל מודל.',
     providers: [
-      { id: 'claude', name: 'Claude Code', icon: '🟣', accent: 'indigo', orchestratorModel: 'Opus 4.6', agentModel: 'Sonnet 4.6' },
       { id: 'copilot', name: 'GitHub Copilot', icon: '🔵', accent: 'blue', orchestratorModel: 'GPT 5.4', agentModel: 'GPT 5.2' },
-      { id: 'gemini', name: 'Gemini', icon: '🟡', accent: 'amber', orchestratorModel: 'Gemini Ultra', agentModel: 'Gemini Pro' },
-      { id: 'local', name: 'Continue (Local)', icon: '🟢', accent: 'green', orchestratorModel: 'GPT OSS 120B', agentModel: 'GPT OSS 7B' },
+      { id: 'cline', name: 'Cline', icon: '🤖', accent: 'indigo', orchestratorModel: 'Claude / GPT-5', agentModel: 'BYO model' },
+      { id: 'continue', name: 'Continue (Local)', icon: '🟢', accent: 'green', orchestratorModel: 'GPT OSS 120B', agentModel: 'GPT OSS 7B' },
     ],
     orchestrator: {
       roleLabel: 'בעל ממשל',
@@ -514,6 +564,38 @@ export const slidesHE = [
     ],
     benefits: ['הקשר ראשי נקי', 'ביצוע מקבילי', 'עצי עבודה מבודדים'],
     callout: 'אותן ספסיפיקציות. אותן גדרות הגנה. כל מודל.',
+  },
+
+  // specRot — capstone של אקט המתודולוגיה: לקרוא לאויב בשמו, ולהראות שהוא מובס מעצם הבנייה
+  {
+    type: 'specRot',
+    scrollable: true,
+    kicker: 'אקט 4 · אבן הראשה',
+    enemyLabel: 'SPEC ROT',
+    enemySub: 'a.k.a. doc drift · design drift · בן הדוד של code rot',
+    definition: 'הספסיפיקציה והמימוש נסחפים לאט בלי סנכרון. הקוד ממשיך להשתנות; הספסיפיקציה לא. סנטימטר אחר סנטימטר היא הופכת ממדויקת, למטעה, לחסרת אמון, לנטושה.',
+    decayTitle: 'איך מקור אמת אחד גוסס בשקט',
+    specTrackLabel: 'spec.md',
+    codeTrackLabel: 'the code',
+    stages: [
+      { commits: '+0 commits', label: 'נולדה מהימנה — מקור האמת היחיד', trust: 100 },
+      { commits: '+12 commits', label: 'תיקון נשלח בצ׳אט, מעולם לא נכתב בחזרה', trust: 70 },
+      { commits: '+31 commits', label: 'כעת מטעה — אנשים קוראים את הקוד במקום', trust: 35 },
+      { commits: '+47 commits', label: 'נטושה — סוכן שמוזן בה בונה את הדבר הלא נכון', trust: 10 },
+    ],
+    staleStamp: 'last updated · 47 commits ago',
+    verdict: 'ספסיפיקציה שנרקבה גרועה מהיעדר ספסיפיקציה.',
+    verdictSub: 'היא לא רק משתתקת — היא מטעה באופן פעיל, ומחזירה את מס ההנדסה לאחור.',
+    cureKicker: 'התפנית',
+    cureTitle: 'SDD הופך ריקבון לבלתי אפשרי מעצם הבנייה',
+    gates: [
+      { icon: 'FileCheck', title: 'שער ספסיפיקציה-תחילה', detail: 'הספסיפיקציה מתעדכנת לפני שהקוד משתנה — לעולם לא אחרי.' },
+      { icon: 'GitMerge', title: 'אין ספסיפיקציה, אין מיזוג', detail: 'קוד לא יכול להיכנס בלי ספסיפיקציה מאושרת ועדכנית.' },
+      { icon: 'RefreshCw', title: 'סיכומי מחזור', detail: 'כל מחזור נסגר בכתיבת הספסיפיקציה בחזרה לחיים.' },
+      { icon: 'ShieldCheck', title: 'גדרות ההגנה אוכפות זאת', detail: 'סחיפה נתפסת מכנית, לא מתוך רצון טוב.' },
+    ],
+    lockedLabel: 'spec ⟷ code · locked',
+    payoff: 'הספסיפיקציה לא יכולה להתיישן בשקט. האמת נשארת האמת.',
   },
 
   // ── ACT 5 — TOOLING & ADOPTION (slides 19–20) ────────────────────────────────
@@ -781,18 +863,49 @@ export const slidesHE = [
   // 21. closing
   {
     type: 'closing',
-    title: 'התחל את המחזור הראשון שלך',
-    install: 'git clone https://github.com/Hundia/autospec my-project',
-    commands: [
-      { cmd: 'בחר פיצ\'ר מוגבל לא-קריטי', desc: 'הפיילוט שלך' },
-      { cmd: 'כתוב spec.md וקבל אישור', desc: 'השער קודם' },
-      { cmd: 'תן ל-AI לבצע אותו תחת גדרות ההגנה', desc: 'TDD נאכף, אימות גדרות הגנה' },
-      { cmd: '/cycle-close', desc: 'הסיכום הוא הזיכרון' },
+    title: 'נקודת השיגור שלך',
+    subtitle: 'כל מה שעברנו עליו — סמנו, ואז צאו לבנות.',
+    categories: [
+      {
+        label: 'מסגרות ספסיפיקציה',
+        accent: 'emerald',
+        icon: 'Compass',
+        links: [
+          { name: 'GitHub Spec Kit', url: 'https://github.com/github/spec-kit', note: 'Spec → Plan → Tasks → Implement' },
+          { name: 'OpenSpec', url: 'https://github.com/Fission-AI/OpenSpec', note: 'תהליך spec-driven קליל' },
+        ],
+      },
+      {
+        label: 'כלים אג\'נטיים ו-CLI',
+        accent: 'blue',
+        icon: 'Terminal',
+        links: [
+          { name: 'GitHub Copilot', url: 'https://github.com/features/copilot', note: 'שותף תכנות AI' },
+          { name: 'Copilot CLI', url: 'https://github.com/github/copilot-cli', note: 'Copilot בטרמינל שלכם' },
+          { name: 'Superpowers', url: 'https://github.com/obra/superpowers', note: 'מתודולוגיית skills אג\'נטית' },
+        ],
+      },
+      {
+        label: 'Skills ומדריכים',
+        accent: 'cyan',
+        icon: 'Sparkles',
+        links: [
+          { name: 'Anthropic Skills', url: 'https://github.com/anthropics/skills', note: 'Agent Skills הרשמיים' },
+          { name: 'Spec Kit Docs', url: 'https://github.github.com/spec-kit/', note: 'מדריך התחלה' },
+          { name: 'Spec-Driven w/ AI', url: 'https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/', note: 'מאמר הפתיחה ב-GitHub Blog' },
+        ],
+      },
+      {
+        label: 'אקוסיסטם AutoSpec',
+        accent: 'violet',
+        icon: 'Rocket',
+        links: [
+          { name: 'AutoSpec', url: 'https://github.com/Hundia/autospec', note: 'המסגרת הזו' },
+          { name: 'AutoSpec Docs', url: 'https://hundia.github.io/autospec', note: 'מתודולוגיה ומדריכים' },
+          { name: 'AutoDeck', url: 'https://github.com/Hundia/AutoDeck', note: 'המצגת הזו, בקוד פתוח' },
+        ],
+      },
     ],
-    links: {
-      github: 'github.com/Hundia/autospec',
-      docs: 'hundia.github.io/autospec',
-    },
     tagline: 'מכוונה להיגוי.',
   },
 

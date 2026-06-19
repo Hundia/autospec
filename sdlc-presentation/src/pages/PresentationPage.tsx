@@ -35,6 +35,7 @@ import SdlcRolesSlide from '../components/SdlcRolesSlide';
 import ToolingSlide from '../components/ToolingSlide';
 import AdoptionSlide from '../components/AdoptionSlide';
 import AgenticFiveActsSlide from '../components/AgenticFiveActsSlide';
+import SpecRotSlide from '../components/SpecRotSlide';
 
 const slideComponents = {
   title: TitleSlide,
@@ -55,6 +56,7 @@ const slideComponents = {
   pipeline: PipelineSlide,
   sprintMemorySlide: SprintMemorySlide,
   orchestrator: OrchestratorSlide,
+  specRot: SpecRotSlide,
   tooling: ToolingSlide,
   adoption: AdoptionSlide,
   closing: ClosingSlide,

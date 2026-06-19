@@ -7,7 +7,8 @@ export const slidesEN = [
     title: 'The Agentic SDLC',
     subtitle: 'Spec-Driven Development at Enterprise Scale',
     tagline: 'Agents execute. Humans govern.',
-    presenter: 'By Eli Hundia & Sharon Schwartz',
+    presenter: 'By Eli Hundia',
+    collaborator: 'In collaboration with Sharon Schwartz',
   },
 
   // 2. eraTraditional
@@ -59,12 +60,47 @@ export const slidesEN = [
     ],
   },
 
-  // 5. contextPoisoning (The Compaction Trap)
+  // 5. contextPoisoning (The Compaction Trap) — scrollable narrative
   {
     type: 'contextPoisoning',
-    kicker: 'CONTEXT WINDOW · 98% FULL',
+    scrollable: true,
+    kicker: 'A PROBLEM HIDING INSIDE GOOD INTENTIONS',
     title: 'The Compaction Trap',
-    subtitle: 'When the context window fills, the agent summarizes the conversation to keep going — and silently deletes the decisions it was built on.',
+    hook: 'The trap is that being thorough is exactly what kills you.',
+    scrollHint: 'Scroll to watch the window fill',
+    // ── Beat 1 — the instinct ──
+    instinctKicker: 'THE INSTINCT',
+    instinctTitle: 'You do the responsible thing — you give it everything.',
+    instinctLead: "Before the agent writes a line, you hand it all the context: the full PRD, the design doc, the API reference, the meeting notes. The responsible move. That's the trap.",
+    bigDocs: [
+      { icon: 'BookOpen', name: 'The full product PRD', weight: '82 pages · ~61k tokens', fill: 90 },
+      { icon: 'FileText', name: 'The architecture & design doc', weight: '40 pages · ~30k tokens', fill: 55 },
+      { icon: 'Code2', name: 'The complete API reference', weight: 'every endpoint · ~45k tokens', fill: 72 },
+      { icon: 'ClipboardList', name: 'Six months of meeting notes', weight: 'pasted in full · ~28k tokens', fill: 48 },
+      { icon: 'MessageSquare', name: 'Three exported Slack threads', weight: '"just in case" · ~22k tokens', fill: 38 },
+      { icon: 'FileStack', name: 'The old codebase, dumped in', weight: 'all of it · ~70k tokens', fill: 95 },
+    ],
+    instinctReframe: 'None of this is careless. Every one of these is the diligent thing to do.',
+    // ── Beat 2 — the window fills ──
+    windowKicker: 'THE WINDOW FILLS',
+    windowTitle: 'The context window is a budget — and you spent it before work began.',
+    windowLead: 'It is finite. Every document you paste in claims a slice. The gauge climbs past the danger line before a single useful instruction is ever given.',
+    budgetLabel: 'Context window budget',
+    fillStages: [
+      { label: 'PRD pasted', detail: 'one giant doc, up front', fill: 20 },
+      { label: '+ design + API', detail: 'a few big docs stack up', fill: 60 },
+      { label: '+ notes + code', detail: 'no room left to think', fill: 98 },
+    ],
+    wallLabel: '98% FULL — before any real work',
+    onRampsLead: 'Many on-ramps, one wall →',
+    onRamps: [
+      { label: 'One giant doc, up front', note: 'fills the window before you write a line' },
+      { label: 'A few big docs over iterations', note: 'stacks up like a long chat' },
+      { label: 'A late pivot near the limit', note: 'tips a nearly-full window over the edge' },
+    ],
+    // ── Beat 3 — the result (compaction) ──
+    resultKicker: 'THE RESULT',
+    resultTitle: 'Only now does AUTO-COMPACT fire — and compaction is lossy.',
     fullContext: {
       label: 'Full Context',
       cards: [
@@ -84,9 +120,12 @@ export const slidesEN = [
       retained: '~40% retained',
       text: 'Building a database layer. Activity feed needs flexible documents.',
     },
+    casualtyNote: 'The foundational constraints are the casualties — dropped first, never recovered.',
+    // ── Beat 4 — the dagger ──
     verdict: {
       agentLine: 'Adding MongoDB for the activity feed — documents fit better here.',
       dagger: "It isn't confused. It can't see what it lost.",
+      reframe: 'The thoroughness that was supposed to protect the work is exactly what detonated it.',
     },
   },
 
@@ -297,29 +336,41 @@ export const slidesEN = [
   // 11. notVibeCoding
   {
     type: 'notVibeCoding',
-    title: 'This Is Not Vibe Coding',
-    subtitle: 'Governance is the difference',
-    left: {
-      label: 'Vibe Coding',
-      accent: 'red',
-      items: [
-        'Solo dev prompting to a prototype',
-        'No audit trail',
-        'Decisions evaporate with the chat',
-        'Quality = luck',
-      ],
-    },
-    right: {
-      label: 'Governed AI Development',
-      accent: 'green',
-      items: [
-        'Specs, guardrails, audit trails',
-        'Human checkpoints at every gate',
-        'Every output traceable',
-        'Every agent error becomes a permanent test case',
-      ],
-    },
-    callout: 'The difference is accountability.',
+    title: 'What You Just Saw Has a Name',
+    subtitle: 'A discipline with rules, contracts, and accountability — by design.',
+    definitionLead: 'The practice',
+    definitionTerm: 'Governed Agentic Development',
+    pillars: [
+      {
+        key: 'teal',
+        icon: 'spec',
+        ordinal: '01',
+        label: 'The spec is the contract',
+        detail: 'No code before the spec is approved. The single source of truth every agent reads.',
+      },
+      {
+        key: 'emerald',
+        icon: 'guardrails',
+        ordinal: '02',
+        label: 'Guardrails are law',
+        detail: 'Tests, types, linters, constraints agents cannot bypass. Every error becomes a permanent test case.',
+      },
+      {
+        key: 'blue',
+        icon: 'human',
+        ordinal: '03',
+        label: 'The human is the judge',
+        detail: 'Human-in-the-loop checkpoints at every gate. Oversight, not rubber-stamping.',
+      },
+      {
+        key: 'violet',
+        icon: 'trail',
+        ordinal: '04',
+        label: 'Every move is on the record',
+        detail: 'Decisions, specs, and outputs are version-controlled and traceable. Nothing evaporates with the chat.',
+      },
+    ],
+    verdict: 'So when people call it vibe coding — it isn\'t. This is.',
   },
 
   // 12. agentic5Acts — SCROLLABLE
@@ -498,10 +549,9 @@ export const slidesEN = [
     title: 'Humans Orchestrate. Agents Execute.',
     subtitle: 'Same specs. Same guardrails. Any model.',
     providers: [
-      { id: 'claude', name: 'Claude Code', icon: '🟣', accent: 'indigo', orchestratorModel: 'Opus 4.6', agentModel: 'Sonnet 4.6' },
       { id: 'copilot', name: 'GitHub Copilot', icon: '🔵', accent: 'blue', orchestratorModel: 'GPT 5.4', agentModel: 'GPT 5.2' },
-      { id: 'gemini', name: 'Gemini', icon: '🟡', accent: 'amber', orchestratorModel: 'Gemini Ultra', agentModel: 'Gemini Pro' },
-      { id: 'local', name: 'Continue (Local)', icon: '🟢', accent: 'green', orchestratorModel: 'GPT OSS 120B', agentModel: 'GPT OSS 7B' },
+      { id: 'cline', name: 'Cline', icon: '🤖', accent: 'indigo', orchestratorModel: 'Claude / GPT-5', agentModel: 'BYO model' },
+      { id: 'continue', name: 'Continue (Local)', icon: '🟢', accent: 'green', orchestratorModel: 'GPT OSS 120B', agentModel: 'GPT OSS 7B' },
     ],
     orchestrator: {
       roleLabel: 'Governance Owner',
@@ -514,6 +564,38 @@ export const slidesEN = [
     ],
     benefits: ['Clean main context', 'Parallel execution', 'Isolated worktrees'],
     callout: 'Same specs. Same guardrails. Any model.',
+  },
+
+  // specRot — capstone of the methodology act: name the enemy, show it defeated by construction
+  {
+    type: 'specRot',
+    scrollable: true,
+    kicker: 'ACT 4 · THE CAPSTONE',
+    enemyLabel: 'SPEC ROT',
+    enemySub: 'a.k.a. doc drift · design drift · the cousin of code rot',
+    definition: 'The spec and the implementation slowly drift out of sync. Code keeps changing; the spec doesn’t. Inch by inch it goes from accurate, to misleading, to distrusted, to abandoned.',
+    decayTitle: 'How a source of truth quietly dies',
+    specTrackLabel: 'spec.md',
+    codeTrackLabel: 'the code',
+    stages: [
+      { commits: '+0 commits', label: 'Born trusted — the single source of truth', trust: 100 },
+      { commits: '+12 commits', label: 'Fix shipped in chat, never written back', trust: 70 },
+      { commits: '+31 commits', label: 'Now misleading — people read the code instead', trust: 35 },
+      { commits: '+47 commits', label: 'Abandoned — an agent fed it builds the wrong thing', trust: 10 },
+    ],
+    staleStamp: 'last updated · 47 commits ago',
+    verdict: 'A rotted spec is worse than no spec.',
+    verdictSub: 'It doesn’t just go silent — it actively misleads, and revives the Reverse Engineering Tax.',
+    cureKicker: 'THE TURN',
+    cureTitle: 'SDD makes rot impossible by construction',
+    gates: [
+      { icon: 'FileCheck', title: 'Spec-first gate', detail: 'The spec is updated before the code changes — never after.' },
+      { icon: 'GitMerge', title: 'No spec, no merge', detail: 'Code can’t land without an approved, current spec.' },
+      { icon: 'RefreshCw', title: 'Cycle summaries', detail: 'Every cycle closes by writing the spec back to live.' },
+      { icon: 'ShieldCheck', title: 'Guardrails enforce it', detail: 'Drift is caught mechanically, not by goodwill.' },
+    ],
+    lockedLabel: 'spec ⟷ code · locked',
+    payoff: 'The spec can’t silently go stale. The truth stays the truth.',
   },
 
   // ── ACT 5 — TOOLING & ADOPTION (slides 19–20) ────────────────────────────────
@@ -781,18 +863,49 @@ export const slidesEN = [
   // 21. closing
   {
     type: 'closing',
-    title: 'Start Your First Cycle',
-    install: 'git clone https://github.com/Hundia/autospec my-project',
-    commands: [
-      { cmd: 'Pick one bounded, non-critical feature', desc: 'your pilot' },
-      { cmd: 'Write spec.md and get it approved', desc: 'the gate comes first' },
-      { cmd: 'Let AI execute it under guardrails', desc: 'TDD-enforced, guardrail-verified' },
-      { cmd: '/cycle-close', desc: 'the summary is the memory' },
+    title: 'Your Launchpad',
+    subtitle: 'Everything we covered — bookmark it, then go build.',
+    categories: [
+      {
+        label: 'Spec Frameworks',
+        accent: 'emerald',
+        icon: 'Compass',
+        links: [
+          { name: 'GitHub Spec Kit', url: 'https://github.com/github/spec-kit', note: 'Spec → Plan → Tasks → Implement' },
+          { name: 'OpenSpec', url: 'https://github.com/Fission-AI/OpenSpec', note: 'Lightweight spec-driven workflow' },
+        ],
+      },
+      {
+        label: 'Agentic Tooling & CLIs',
+        accent: 'blue',
+        icon: 'Terminal',
+        links: [
+          { name: 'GitHub Copilot', url: 'https://github.com/features/copilot', note: 'AI pair programmer' },
+          { name: 'Copilot CLI', url: 'https://github.com/github/copilot-cli', note: 'Copilot in your terminal' },
+          { name: 'Superpowers', url: 'https://github.com/obra/superpowers', note: 'Agentic skills methodology' },
+        ],
+      },
+      {
+        label: 'Skills & Guides',
+        accent: 'cyan',
+        icon: 'Sparkles',
+        links: [
+          { name: 'Anthropic Skills', url: 'https://github.com/anthropics/skills', note: 'Official Agent Skills' },
+          { name: 'Spec Kit Docs', url: 'https://github.github.com/spec-kit/', note: 'Getting started guide' },
+          { name: 'Spec-Driven w/ AI', url: 'https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/', note: 'The GitHub Blog intro' },
+        ],
+      },
+      {
+        label: 'AutoSpec Ecosystem',
+        accent: 'violet',
+        icon: 'Rocket',
+        links: [
+          { name: 'AutoSpec', url: 'https://github.com/Hundia/autospec', note: 'This framework' },
+          { name: 'AutoSpec Docs', url: 'https://hundia.github.io/autospec', note: 'Methodology & guides' },
+          { name: 'AutoDeck', url: 'https://github.com/Hundia/AutoDeck', note: 'This deck, open source' },
+        ],
+      },
     ],
-    links: {
-      github: 'github.com/Hundia/autospec',
-      docs: 'hundia.github.io/autospec',
-    },
     tagline: 'From intent to steering.',
   },
 

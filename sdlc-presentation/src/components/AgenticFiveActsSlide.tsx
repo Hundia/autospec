@@ -381,25 +381,30 @@ export default function AgenticFiveActsSlide({ data, lang }: AgenticFiveActsSlid
               "{phase.tagline}"
             </motion.p>
 
-            {/* Owners */}
+            {/* Owners — responsibility anchor */}
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="flex items-center gap-2 flex-wrap mb-8"
+              className={`inline-flex items-center gap-3 sm:gap-4 flex-wrap mb-8 px-4 py-3 rounded-xl border ${colors.border} ${colors.bg}`}
             >
-              <span className="text-[11px] text-white/30 font-mono uppercase tracking-wider">
-                {isRTL ? 'אחראים:' : 'Owners:'}
+              <span className={`text-[11px] sm:text-xs font-mono font-bold uppercase tracking-[0.25em] ${colors.text}`}>
+                {isRTL
+                  ? (phase.owners.length > 1 ? 'אחראים' : 'אחראי')
+                  : (phase.owners.length > 1 ? 'Owners' : 'Owner')}
               </span>
-              {phase.owners.map((owner) => (
-                <span
-                  key={owner}
-                  className="text-xs px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-300 font-medium"
-                >
-                  {owner}
-                </span>
-              ))}
+              <span className="text-white/15 text-lg leading-none">·</span>
+              <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
+                {phase.owners.map((owner) => (
+                  <span
+                    key={owner}
+                    className={`text-sm sm:text-base font-bold px-3 py-1.5 rounded-lg ${colors.badge} tracking-tight`}
+                  >
+                    {owner}
+                  </span>
+                ))}
+              </div>
             </motion.div>
 
             {/* Body: bullets + visualization */}

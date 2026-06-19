@@ -11,7 +11,7 @@ import {
 const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   Wrench, Zap, Brain, FileCheck, ShieldCheck,
   Users, Tag, GitBranch, Calendar, BarChart2,
-  Search, Sliders, BookOpen, TrendingUp, RefreshCw,
+  Search, Sliders, BookOpen, TrendingUp, RefreshCw, ExternalLink,
 };
 
 // ── Types ─────────────────────────────────────────────────────────────────────
