@@ -546,8 +546,10 @@ export const slidesEN = [
   // orchestrator
   {
     type: 'orchestrator',
+    scrollable: true,
+    kicker: 'ACT 4 · THE PATTERN',
     title: 'Humans Orchestrate. Agents Execute.',
-    subtitle: 'Same specs. Same guardrails. Any model.',
+    subtitle: 'Orchestration is not just parallelism — it is context architecture.',
     providers: [
       { id: 'copilot', name: 'GitHub Copilot', icon: '🔵', accent: 'blue', orchestratorModel: 'GPT 5.4', agentModel: 'GPT 5.2' },
       { id: 'cline', name: 'Cline', icon: '🤖', accent: 'indigo', orchestratorModel: 'Claude / GPT-5', agentModel: 'BYO model' },
@@ -564,6 +566,51 @@ export const slidesEN = [
     ],
     benefits: ['Clean main context', 'Parallel execution', 'Isolated worktrees'],
     callout: 'Same specs. Same guardrails. Any model.',
+    withoutBeat: {
+      kicker: 'BEAT 1 · WITHOUT ORCHESTRATION',
+      title: 'Without orchestration, every task costs context.',
+      body: 'When there is no separation of concerns, the main context does all the work: planning, executing, reviewing, debugging. It fills fast. Compaction kicks in. The project loses its memory.',
+      trapReference: 'Remember slide 5 — The Compaction Trap',
+      contextSteps: [
+        'Feature 1 planned and executed in main context — context at 30%',
+        'Bug triage + fix in same context — context at 55%',
+        'Feature 2 kicked off — context at 75%, model summarises quietly',
+        'Review and debugging — context compacted, early decisions forgotten',
+        'Feature 3: AI no longer remembers the original architecture decisions',
+        'The second feature is where most AI projects go to die.',
+      ],
+    },
+    withBeat: {
+      kicker: 'BEAT 2 · WITH ORCHESTRATION',
+      title: 'With orchestration, agents carry the load.',
+      body: 'The orchestrator holds the brief: vision, specs, dependency order, guardrails. Each agent receives a targeted handoff and executes in its own isolated context window. The main context barely moves.',
+      agentLabels: ['Agent A', 'Agent B', 'Agent C'],
+      agentTasks: [
+        'Backend tickets\nworktree-a',
+        'Frontend tickets\nworktree-b',
+        'Docs & config\nworktree-c',
+      ],
+    },
+    handoffBeat: {
+      kicker: 'BEAT 3 · THE HANDOFF BRIEF',
+      title: 'The agent gets exactly what it needs — no more.',
+      body: 'The orchestrator does not hand over the full conversation history. It writes a targeted brief: the relevant spec, the ticket list, the acceptance criteria, the guardrails. The agent starts fresh with focused context.',
+      briefItems: [
+        'Relevant spec (scoped to this ticket set)',
+        'Ticket list with acceptance criteria',
+        'Guardrails and code standards',
+        'Dependency references (API contracts, schema)',
+      ],
+      notIncluded: 'NOT included: the full conversation history, previous features, planning debates, or any context outside this agent\'s lane.\n\nThis is intentional — isolation is the mechanism.',
+    },
+    payoffBeat: {
+      kicker: 'BEAT 4 · THE PAYOFF',
+      title: 'Your main context stays coherent for the entire project.',
+      body: 'Not just the first feature. Not just sprint one. The orchestrator holds the full picture — architecture, decisions, dependencies — because it never burned its memory on execution tasks.',
+      callbackQuote: 'The second feature is where AI projects go to die.',
+      resolution: 'With orchestration, there is no second-feature wall. Agents bear the context cost of execution. The main context stays long-lived, coherent, and in command — for as long as the project runs.',
+      providerLine: 'Same specs. Same guardrails. Any model.',
+    },
   },
 
   // specRot — capstone of the methodology act: name the enemy, show it defeated by construction
