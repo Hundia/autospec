@@ -84,7 +84,7 @@ export default function SDDCostOfChaosSlide({ data }: SDDCostOfChaosSlideProps) 
           initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1.1, duration: 0.4, ease: 'easeOut' }}
-          className="relative grid grid-cols-2 rounded-2xl border border-slate-700/40 overflow-hidden"
+          className="grid grid-cols-[1fr_auto_1fr] rounded-2xl border border-slate-700/40 overflow-hidden"
         >
           {/* LEFT — the disease */}
           <div className={`${TONE.problem.bg} px-5 py-4 flex flex-col gap-2.5`}>
@@ -113,8 +113,34 @@ export default function SDDCostOfChaosSlide({ data }: SDDCostOfChaosSlideProps) 
             </div>
           </div>
 
+          {/* CENTER seam — DRIFT badge lives here in normal flow, vertically centered */}
+          <div className="relative flex flex-col items-center justify-center px-4 py-4 border-x border-slate-700/30">
+            {/* Animated seam line drawn behind the badge */}
+            <motion.div
+              initial={{ scaleY: 0 }}
+              animate={{ scaleY: 1 }}
+              transition={{ delay: 1.55, duration: 0.4, ease: 'easeInOut' }}
+              className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-px bg-slate-600/40 pointer-events-none"
+              style={{ transformOrigin: 'top' }}
+            />
+            {/* DRIFT badge — in flow, z-10 so it clears the seam line */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 1.7, duration: 0.4, ease: 'easeOut' }}
+              className="relative z-10 flex flex-col items-center gap-1"
+            >
+              <span className="px-3 py-1 rounded-full bg-slate-900 border border-amber-500/40 text-sm font-black tracking-[0.3em] text-amber-300 whitespace-nowrap">
+                {contrast.disease}
+              </span>
+              <span className="text-[9px] font-mono text-amber-300/50 tracking-wide whitespace-nowrap text-center">
+                {contrast.diseaseNote}
+              </span>
+            </motion.div>
+          </div>
+
           {/* RIGHT — the cure */}
-          <div className={`${TONE.cure.bg} px-5 py-4 flex flex-col gap-2.5 border-l ${TONE.cure.border}`}>
+          <div className={`${TONE.cure.bg} px-5 py-4 flex flex-col gap-2.5`}>
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -139,28 +165,6 @@ export default function SDDCostOfChaosSlide({ data }: SDDCostOfChaosSlideProps) 
               ))}
             </div>
           </div>
-
-          {/* Center seam — the named disease */}
-          <motion.div
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: 1 }}
-            transition={{ delay: 1.55, duration: 0.4, ease: 'easeInOut' }}
-            className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-slate-600/40"
-            style={{ transformOrigin: 'top' }}
-          />
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1.7, duration: 0.4, ease: 'easeOut' }}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center"
-          >
-            <span className="px-3 py-1 rounded-full bg-slate-900 border border-amber-500/40 text-sm font-black tracking-[0.3em] text-amber-300">
-              {contrast.disease}
-            </span>
-            <span className="mt-1 text-[9px] font-mono text-amber-300/50 tracking-wide">
-              {contrast.diseaseNote}
-            </span>
-          </motion.div>
         </motion.div>
       </div>
 

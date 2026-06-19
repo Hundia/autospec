@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Globe, Home } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Home, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import BackgroundEffect from '../components/backgrounds/BackgroundEffects';
-import PresentationDropdown from '../components/ui/PresentationDropdown';
 
 // Slide data
 import { slidesEN } from '../data/slides-en';
@@ -36,6 +35,148 @@ import ToolingSlide from '../components/ToolingSlide';
 import AdoptionSlide from '../components/AdoptionSlide';
 import AgenticFiveActsSlide from '../components/AgenticFiveActsSlide';
 import SpecRotSlide from '../components/SpecRotSlide';
+
+// Per-slide accent color — follows the deck's thermal identity
+const slideAccent: Record<string, string> = {
+  title: '#60a5fa',
+  eraTraditional: '#94a3b8',
+  eraAssistant: '#34d399',
+  eraAgentic: '#fb923c',
+  contextPoisoning: '#f59e0b',
+  secondFeature: '#ef4444',
+  sddCostOfChaos: '#22d3ee',
+  bridge: '#2dd4bf',
+  sddThreePillars: '#34d399',
+  philosophy: '#a78bfa',
+  notVibeCoding: '#2dd4bf',
+  sixStages: '#60a5fa',
+  agentic5Acts: '#60a5fa',
+  harness: '#34d399',
+  sdlcRoles: '#818cf8',
+  pipeline: '#22d3ee',
+  sprintMemorySlide: '#a78bfa',
+  orchestrator: '#818cf8',
+  specRot: '#f59e0b',
+  tooling: '#2dd4bf',
+  adoption: '#34d399',
+  closing: '#a78bfa',
+  finalTagline: '#60a5fa',
+};
+
+interface ZapMenuProps {
+  lang: 'en' | 'he';
+  setLang: (l: 'en' | 'he') => void;
+  accentColor: string;
+  isRTL: boolean;
+}
+
+function ZapMenu({ lang, setLang, accentColor, isRTL }: ZapMenuProps) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onPointer = (e: PointerEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
+    document.addEventListener('pointerdown', onPointer);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('pointerdown', onPointer);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  return (
+    <div ref={ref} className="relative">
+      {/* ── Lightning bolt button ── */}
+      <motion.button
+        onClick={() => setOpen((v) => !v)}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.92 }}
+        className="relative w-11 h-11 rounded-full flex items-center justify-center bg-slate-900/75 backdrop-blur-sm cursor-pointer"
+        aria-label="Open menu"
+        style={{ border: `1.5px solid ${accentColor}50` }}
+      >
+        {/* Pulsing outer glow */}
+        <motion.span
+          className="absolute inset-[-3px] rounded-full pointer-events-none"
+          animate={{ opacity: [0.35, 0.85, 0.35] }}
+          transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ boxShadow: `0 0 14px ${accentColor}75, 0 0 30px ${accentColor}35` }}
+        />
+        {/* Radial inner glow disc */}
+        <span
+          className="absolute inset-0 rounded-full pointer-events-none"
+          style={{ background: `radial-gradient(circle, ${accentColor}25 0%, transparent 68%)` }}
+        />
+        {/* Bolt icon — stroke follows animated color; fill toggles on open */}
+        <motion.span
+          animate={{ color: accentColor }}
+          transition={{ duration: 0.4, ease: 'easeInOut' }}
+          className="relative z-10 flex items-center justify-center"
+        >
+          <Zap
+            size={19}
+            strokeWidth={2.2}
+            fill={open ? accentColor : 'none'}
+            className="transition-all duration-200"
+          />
+        </motion.span>
+      </motion.button>
+
+      {/* ── Drop-down menu ── */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.88, y: -6 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.88, y: -6 }}
+            transition={{ duration: 0.16, ease: 'easeOut' }}
+            className={`absolute top-[54px] ${isRTL ? 'left-0' : 'right-0'} w-44 rounded-2xl overflow-hidden`}
+            style={{
+              background: 'rgba(10, 15, 30, 0.96)',
+              backdropFilter: 'blur(18px)',
+              border: '1px solid rgba(255,255,255,0.10)',
+              boxShadow: `0 18px 52px rgba(0,0,0,0.60), 0 0 28px ${accentColor}20`,
+            }}
+          >
+            {/* Language toggle */}
+            <div className="p-2 flex gap-1.5">
+              {(['en', 'he'] as const).map((l) => (
+                <button
+                  key={l}
+                  onClick={() => { setLang(l); setOpen(false); }}
+                  className="flex-1 py-2 rounded-xl text-sm font-semibold transition-colors duration-150"
+                  style={
+                    lang === l
+                      ? { background: `${accentColor}25`, color: accentColor, border: `1px solid ${accentColor}48` }
+                      : { color: 'rgba(255,255,255,0.38)', border: '1px solid transparent' }
+                  }
+                >
+                  {l === 'en' ? 'EN' : 'עב'}
+                </button>
+              ))}
+            </div>
+
+            <div className="mx-3 h-px" style={{ background: 'rgba(255,255,255,0.09)' }} />
+
+            {/* Go Home */}
+            <Link
+              to="/"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 px-4 py-3 text-sm font-medium text-white/55 hover:text-white hover:bg-white/5 transition-colors duration-150"
+            >
+              <Home size={14} />
+              <span>{isRTL ? 'עמוד הבית' : 'Go Home'}</span>
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 const slideComponents = {
   title: TitleSlide,
@@ -122,6 +263,7 @@ export default function PresentationPage() {
   const currentSlideData = slides[currentSlide];
   const isScrollable = !!(currentSlideData as any).scrollable;
   const SlideComponent = slideComponents[currentSlideData.type as keyof typeof slideComponents];
+  const accentColor = slideAccent[currentSlideData.type] ?? '#60a5fa';
 
   const slideVariants = {
     enter: (dir: number) => ({
@@ -150,30 +292,9 @@ export default function PresentationPage() {
       {/* Animated Background */}
       <BackgroundEffect activeId="particles" />
 
-      {/* Back to Home */}
-      <Link
-        to="/"
-        className={`fixed top-4 z-50 flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors ${
-          isRTL ? 'right-4' : 'left-4'
-        }`}
-      >
-        <Home size={18} />
-        <span className="text-sm">Home</span>
-      </Link>
-
-      {/* Language Selector */}
+      {/* Lightning bolt nav menu */}
       <div className={`fixed top-4 z-50 ${isRTL ? 'left-4' : 'right-4'}`}>
-        <PresentationDropdown
-          value={lang}
-          onChange={(v) => setLang(v as 'en' | 'he')}
-          icon={<Globe size={14} />}
-          animateIcon
-          align="right"
-          options={[
-            { id: 'en', label: 'English' },
-            { id: 'he', label: 'עברית' },
-          ]}
-        />
+        <ZapMenu lang={lang} setLang={setLang} accentColor={accentColor} isRTL={isRTL} />
       </div>
 
       {/* Slide Counter */}
