@@ -267,6 +267,8 @@ function CommsFlowFallback() {
 // ── Main component ──────────────────────────────────────────────────────────────
 export default function DemoIntroSlide({ data, lang }: DemoIntroSlideProps) {
   const isRTL = lang === 'he';
+  const base = import.meta.env.BASE_URL;
+  const resolveUrl = (path: string) => `${base}${path.replace(/^\//, '')}`;
 
   return (
     <div className="w-full max-w-5xl mx-auto">
@@ -403,7 +405,7 @@ export default function DemoIntroSlide({ data, lang }: DemoIntroSlideProps) {
           >
             {data.droneImageUrl ? (
               <img
-                src={data.droneImageUrl}
+                src={resolveUrl(data.droneImageUrl)}
                 alt="Drone hardware diagram"
                 className="rounded-2xl border border-blue-500/20 max-w-full max-h-80 object-contain"
               />
@@ -521,7 +523,7 @@ export default function DemoIntroSlide({ data, lang }: DemoIntroSlideProps) {
           >
             {data.commsImageUrl ? (
               <img
-                src={data.commsImageUrl}
+                src={resolveUrl(data.commsImageUrl)}
                 alt="Drone-to-ground comms flow"
                 className="rounded-2xl border border-teal-500/20 max-w-full max-h-80 object-contain"
               />
