@@ -546,8 +546,10 @@ export const slidesHE = [
   // orchestrator
   {
     type: 'orchestrator',
+    scrollable: true,
+    kicker: 'אקט 4 · הדפוס',
     title: 'בני אדם מתזמנים. סוכנים מבצעים.',
-    subtitle: 'אותן ספסיפיקציות. אותן גדרות הגנה. כל מודל.',
+    subtitle: 'תזמור הוא לא רק ביצוע מקבילי — זו ארכיטקטורת הקשר.',
     providers: [
       { id: 'copilot', name: 'GitHub Copilot', icon: '🔵', accent: 'blue', orchestratorModel: 'GPT 5.4', agentModel: 'GPT 5.2' },
       { id: 'cline', name: 'Cline', icon: '🤖', accent: 'indigo', orchestratorModel: 'Claude / GPT-5', agentModel: 'BYO model' },
@@ -564,6 +566,51 @@ export const slidesHE = [
     ],
     benefits: ['הקשר ראשי נקי', 'ביצוע מקבילי', 'עצי עבודה מבודדים'],
     callout: 'אותן ספסיפיקציות. אותן גדרות הגנה. כל מודל.',
+    withoutBeat: {
+      kicker: 'פעימה 1 · ללא תזמור',
+      title: 'ללא תזמור, כל משימה עולה בהקשר.',
+      body: 'כשאין הפרדה בין תכנון לביצוע, ההקשר הראשי עושה הכול: מתכנן, מבצע, סוקר, מאבחן. הוא מתמלא מהר. ה-Compaction נכנס לפעולה. הפרויקט מאבד את הזיכרון שלו.',
+      trapReference: 'זכור שקופית 5 — מלכודת הדחיסה',
+      contextSteps: [
+        'Feature 1 תוכנן ובוצע בהקשר הראשי — הקשר ב-30%',
+        'איבחון באגים ותיקון באותו הקשר — הקשר ב-55%',
+        'Feature 2 החל — הקשר ב-75%, המודל מסכם בשקט',
+        'סקירה ואיבחון — הקשר דוחס, החלטות מוקדמות אבדו',
+        'Feature 3: ה-AI כבר לא זוכר את החלטות הארכיטקטורה המקוריות',
+        'הפיצ׳ר השני הוא המקום שבו רוב פרויקטי ה-AI מתים.',
+      ],
+    },
+    withBeat: {
+      kicker: 'פעימה 2 · עם תזמור',
+      title: 'עם תזמור, הסוכנים נושאים בנטל.',
+      body: 'המתזמן מחזיק את התמונה הכוללת: חזון, ספסיפיקציות, סדר תלויות, גדרות הגנה. כל סוכן מקבל תקציר ממוקד ומבצע בחלון הקשר מבודד משלו. ההקשר הראשי כמעט לא זז.',
+      agentLabels: ['סוכן א', 'סוכן ב', 'סוכן ג'],
+      agentTasks: [
+        'כרטיסי Backend\nworktree-a',
+        'כרטיסי Frontend\nworktree-b',
+        'מסמכים ותצורה\nworktree-c',
+      ],
+    },
+    handoffBeat: {
+      kicker: 'פעימה 3 · תקציר המסירה',
+      title: 'הסוכן מקבל בדיוק מה שהוא צריך — לא יותר.',
+      body: 'המתזמן לא מעביר את כל היסטוריית השיחה. הוא כותב תקציר ממוקד: הספסיפיקציה הרלוונטית, רשימת הכרטיסים, קריטריוני קבלה, וגדרות ההגנה. הסוכן מתחיל רענן עם הקשר ממוקד.',
+      briefItems: [
+        'ספסיפיקציה רלוונטית (מוגבלת לסט הכרטיסים הזה)',
+        'רשימת כרטיסים עם קריטריוני קבלה',
+        'גדרות הגנה ותקני קוד',
+        'הפניות לתלויות (חוזי API, סכמה)',
+      ],
+      notIncluded: 'לא כלול: היסטוריית השיחה המלאה, פיצ׳רים קודמים, דיוני תכנון, או כל הקשר מחוץ לנתיב של הסוכן הזה.\n\nזה מכוון — הבידוד הוא המנגנון.',
+    },
+    payoffBeat: {
+      kicker: 'פעימה 4 · התמורה',
+      title: 'ההקשר הראשי שלך נשאר קוהרנטי לכל אורך הפרויקט.',
+      body: 'לא רק הפיצ׳ר הראשון. לא רק ספרינט אחד. המתזמן מחזיק את התמונה המלאה — ארכיטקטורה, החלטות, תלויות — כי מעולם לא שרף את הזיכרון שלו על משימות ביצוע.',
+      callbackQuote: 'הפיצ׳ר השני הוא המקום שבו פרויקטי ה-AI הולכים למות.',
+      resolution: 'עם תזמור, אין קיר פיצ׳ר שני. הסוכנים נושאים בעלות ההקשר של הביצוע. ההקשר הראשי נשאר ארוך, קוהרנטי, ובשליטה — לכל משך הפרויקט.',
+      providerLine: 'אותן ספסיפיקציות. אותן גדרות הגנה. כל מודל.',
+    },
   },
 
   // specRot — capstone של אקט המתודולוגיה: לקרוא לאויב בשמו, ולהראות שהוא מובס מעצם הבנייה
@@ -909,7 +956,134 @@ export const slidesHE = [
     tagline: 'מכוונה להיגוי.',
   },
 
-  // 22. finalTagline
+  // 22. demoIntro
+  {
+    type: 'demoIntro',
+    scrollable: true,
+
+    // HERO
+    kicker: 'LIVE DEMO',
+    heroTitle: 'Building REQ-MFL-001',
+    heroSubtitle: 'מטיקט Jira ועד PR מבוקר — עם SDD.',
+    heroTag: 'Ground Station · Drone Telemetry Platform',
+    scrollHint: 'עקבו אחרי הדרישה — מהגשת הטיקט ועד PR שנשלח',
+
+    // Beat 1 — The Project
+    projectKicker: 'הפרויקט',
+    projectTitle: 'פלטפורמת טלמטריה לרחפן',
+    projectBody:
+      'רחפן בשמים. צוות קרקע. קישור רדיו אחד שמוביל את כל מה שצריך לשמור על הטיסה בטוחה. כל מערכת משנה — מנוהלת בנפרד, קריטית לכשירות הטיסה.',
+    droneModules: [
+      { iconKey: 'Cpu',      label: 'Main Computer', subLabel: 'מעבד משימה' },
+      { iconKey: 'Camera',   label: 'Camera',        subLabel: 'עומס אופטי' },
+      { iconKey: 'Wind',     label: 'Rotors',        subLabel: 'מערכת הנעה' },
+      { iconKey: 'Compass',  label: 'INS',           subLabel: 'ניווט אינרציאלי' },
+      { iconKey: 'Activity', label: 'IMU',           subLabel: 'חישת תנועה' },
+      { iconKey: 'MapPin',   label: 'GPS',           subLabel: 'מיקום גאוגרפי' },
+      { iconKey: 'Radio',    label: 'Comms',         subLabel: 'קישור נתונים' },
+    ],
+    droneImageUrl: '/drone-anatomy.png',
+
+    // Beat 2 — ICD / Communication
+    commsKicker: 'ה-ICD',
+    commsTitle: 'סוגי הודעות מחמירים — ללא תקשורת חופשית',
+    commsBody:
+      'כל הנתונים זורמים דרך מסמך בקרת ממשק (ICD): רק סוגי הודעות מוגדרים מראש מותרים. שתי הודעות פועלות היום. שלישית נחתה על לוח ה-sprint — והיא נוגעת בכל מערכת משנה ברחפן.',
+    currentMessages: [
+      { type: 'NAV',    accentKey: 'blue',  desc: 'מיקום גאוגרפי — קו רוחב / אורך / גובה / כיוון' },
+      { type: 'STATUS', accentKey: 'teal',  desc: 'רמת סוללה · זמן טיסה · זמן פעולה' },
+    ],
+    newMessage: {
+      type: 'MFL',
+      accentKey: 'amber',
+      desc: 'Module Functionality Log — בריאות תפעולית לכל מערכת משנה',
+    },
+    commsImageUrl: '/drone-comms.png',
+
+    // Beat 3 — Requirement
+    demandKicker: 'הדרישה',
+    demandTitle: 'REQ-MFL-001',
+    demandBody:
+      'מפעילים צריכים להעריך כשירות טיסה בזמן אמת ולהגיב לפגיעה במהלך הטיסה. כל מערכת משנה חייבת לדווח על מצבה התפעולי — OK, DEGRADED, או FAIL — בכל מחזור טלמטריה.',
+    mflModules: [
+      { id: 'camera', label: 'Camera' },
+      { id: 'rotors', label: 'Rotors' },
+      { id: 'ins',    label: 'INS' },
+      { id: 'imu',    label: 'IMU' },
+      { id: 'gps',    label: 'GPS' },
+      { id: 'comms',  label: 'Comms' },
+    ],
+    mflPayloadSample: `{
+  "type": "MFL",
+  "timestamp": "2026-06-19T14:32:11Z",
+  "modules": {
+    "camera": "OK",
+    "rotors": "OK",
+    "ins":    "OK",
+    "imu":    "DEGRADED",
+    "gps":    "OK",
+    "comms":  "FAIL"
+  }
+}`,
+    scope: ['Backend', 'Frontend', 'Simulator'],
+
+    // Beat 4 — Workflow
+    workflowKicker: 'צינור ה-SDD',
+    workflowTitle: 'שישה שלבים. Spec אחד. ללא כאוס.',
+    workflowSteps: [
+      {
+        num: '01',
+        label: 'Pull Jira Ticket',
+        detail: 'ה-Agent שולף את REQ-MFL-001 דרך API key',
+        icon: 'ClipboardList',
+        accent: 'blue',
+      },
+      {
+        num: '02',
+        label: 'Create Spec',
+        detail: 'OpenSpec מייצר spec חי מהדרישה',
+        icon: 'FileText',
+        accent: 'violet',
+      },
+      {
+        num: '03',
+        label: 'Generate Code',
+        detail: 'ה-Agent מממש backend · frontend · simulator',
+        icon: 'Code2',
+        accent: 'indigo',
+      },
+      {
+        num: '04',
+        label: 'HITL Review',
+        detail: 'Human-in-the-Loop review עוצר את הצינור לאישור אנושי',
+        icon: 'UserCheck',
+        accent: 'teal',
+      },
+      {
+        num: '05',
+        label: 'Generate QA Tests',
+        detail: 'ה-Agent מייצר בדיקות E2E מה-spec',
+        icon: 'FlaskConical',
+        accent: 'emerald',
+      },
+      {
+        num: '06',
+        label: 'PR + AI Review',
+        detail: 'AWS Bedrock Agent מסכם עבור המפתח ומנהל הצוות',
+        icon: 'GitPullRequest',
+        accent: 'cyan',
+      },
+    ],
+
+    // Beat 5 — Handoff
+    handoffKicker: 'הבמה שלכם',
+    handoffTitle: 'הבמה היא שלכם.',
+    handoffBody:
+      'אתם מכירים את הכללים. REQ-MFL-001 נכנסה לצינור. צפו ב-SDD סוגרת אותה.',
+    handoffCallout: 'REQ-MFL-001 · Drone Telemetry Platform',
+  },
+
+  // 23. finalTagline
   {
     type: 'finalTagline',
     title: 'The Agentic SDLC',
