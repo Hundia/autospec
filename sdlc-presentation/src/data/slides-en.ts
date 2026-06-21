@@ -962,8 +962,8 @@ export const slidesEN = [
     scrollable: true,
 
     // HERO
-    kicker: 'LIVE DEMO',
-    heroTitle: 'Building REQ-MFL-001',
+    kicker: 'REQ-MFL-001 · LIVE DEMO',
+    heroTitle: 'Game Of Drones',
     heroSubtitle: 'From Jira ticket to reviewed PR — with SDD.',
     heroTag: 'Ground Station · Drone Telemetry Platform',
     scrollHint: 'Follow the requirement — from filed ticket to shipped PR',

@@ -288,7 +288,8 @@ export default function DemoIntroSlide({ data, lang }: DemoIntroSlideProps) {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight leading-none mb-5 bg-gradient-to-r from-blue-400 via-violet-400 to-indigo-400 bg-clip-text text-transparent pb-2"
+          className="text-5xl sm:text-7xl lg:text-8xl leading-none mb-5 bg-gradient-to-r from-blue-400 via-violet-400 to-indigo-400 bg-clip-text text-transparent pb-2 tracking-wide"
+          style={{ fontFamily: "'Cinzel', serif", fontWeight: 900 }}
         >
           {data.heroTitle}
         </motion.h1>
