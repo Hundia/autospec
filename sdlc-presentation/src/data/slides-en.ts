@@ -956,7 +956,116 @@ export const slidesEN = [
     tagline: 'From intent to steering.',
   },
 
-  // 22. demoIntro
+  // 22. openSpecWhat — SCROLLABLE · "What is OpenSpec"
+  {
+    type: 'openSpecWhat',
+    variant: 'what',
+    scrollable: true,
+
+    kicker: 'THE TOOL BEHIND THE DEMO',
+    heroTitle: 'OpenSpec',
+    heroSubtitle: 'Align humans and AI on what to build — before a single line of code.',
+    scrollHint: 'The framework powering Game Of Drones',
+
+    // Beat 1 — Core idea
+    pullQuote: 'Version control for intent',
+    ideaKicker: 'THE CORE IDEA',
+    ideaHeading: 'Decide the what. Let the agent build the how.',
+    ideaBody:
+      'OpenSpec is a lightweight spec-driven framework that locks down intent first. Code becomes a faithful translation of an agreed spec — not a guess pulled from chat history.',
+
+    // Beat 2 — Loop
+    loopKicker: 'ONE CALM LOOP',
+    loopHeading: 'Propose → Apply → Archive',
+    loopBody:
+      'Every change flows through the same three steps. Propose the intent, apply the tasks, archive it as the new source of truth.',
+    loopSteps: [
+      { iconKey: 'FilePlus2',    label: 'Propose', command: '/opsx:propose add-mfl-telemetry', note: 'Creates the change folder', accent: 'teal' },
+      { iconKey: 'Workflow',     label: 'Apply',   command: '/opsx:apply',                     note: 'Implements the tasks',     accent: 'violet' },
+      { iconKey: 'CheckCircle2', label: 'Archive', command: '/opsx:archive',                   note: 'Becomes source of truth',  accent: 'emerald' },
+    ],
+    loopBackNote: 'Archived truth feeds the next change — brownfield-first, 1 → n',
+
+    // Beat 3 — Two directories
+    dirKicker: 'WHERE IT ALL LIVES',
+    dirHeading: 'Truth in one place. Proposals in another.',
+    dirBody:
+      'Specs describe what the system does today. Changes describe what is in flight. Nothing is ambiguous.',
+    fileTree: `openspec/
+├── specs/      ← current source of truth
+└── changes/    ← proposed updates (in flight)
+    └── archive/
+        └── 2026-06-21-mfl-telemetry/`,
+    specsNote: 'The current source of truth — what the drone platform does right now.',
+    changesNote: 'Proposed updates still in flight — like REQ-MFL-001 before it ships.',
+
+    // Beat 4 — Why it lands
+    whyKicker: 'WORKS WHERE YOU ALREADY WORK',
+    whyHeading: 'Brownfield-first. Tool-agnostic.',
+    whyBody:
+      'Built to evolve existing codebases, not just greenfield demos. It plugs into 30+ AI assistants through simple slash commands.',
+    tools: ['Claude Code', 'Cursor', 'GitHub Copilot', 'OpenCode', '+ 30 more'],
+  },
+
+  // 23. openSpecAnatomy — SCROLLABLE · "Anatomy of a Spec"
+  {
+    type: 'openSpecAnatomy',
+    variant: 'anatomy',
+    scrollable: true,
+
+    kicker: 'WHAT A SPEC ACTUALLY LOOKS LIKE',
+    heroTitle: 'Anatomy of a Spec',
+    heroSubtitle: 'Open a change folder and see exactly what changed — and why.',
+    scrollHint: 'The drone requirement, as a real spec',
+
+    // Beat 1 — Four artifacts
+    artifactsKicker: 'INSIDE A CHANGE',
+    artifactsHeading: 'Four files. One feature.',
+    folderLabel: 'openspec/changes/add-mfl-telemetry/',
+    artifacts: [
+      { iconKey: 'FileText',     name: 'proposal.md', desc: 'The WHY + WHAT — rationale and scope',      accent: 'teal' },
+      { iconKey: 'FolderTree',   name: 'specs/',      desc: 'Requirements with test scenarios',         accent: 'cyan' },
+      { iconKey: 'GitBranch',    name: 'design.md',   desc: 'The HOW — technical approach',             accent: 'violet' },
+      { iconKey: 'CheckCircle2', name: 'tasks.md',    desc: 'Implementation checklist the agent works', accent: 'emerald' },
+    ],
+
+    // Beat 2 — Requirement
+    reqKicker: 'REQ-MFL-001',
+    reqHeading: 'The requirement, in plain language',
+    reqBody:
+      'A spec opens with a requirement anyone can read — no jargon, no ambiguity about what success means.',
+    requirementBlock: `Requirement: MFL Telemetry Status
+
+Each drone subsystem — camera, rotors, INS,
+IMU, GPS, comms — MUST report its health as
+OK / DEGRADED / FAIL on every telemetry cycle.`,
+
+    // Beat 3 — Scenarios
+    scenarioKicker: 'BEHAVIOR AS SCENARIOS',
+    scenarioHeading: 'WHEN this, THEN that.',
+    scenarioBody:
+      'Each requirement carries scenarios in plain conditional language. Humans read them like sentences; the agent reads them like tests.',
+    scenarioBlock: `Scenario: Healthy subsystem
+  WHEN the camera responds within the cycle
+  THEN the MFL reports camera = OK
+
+Scenario: Missed heartbeat
+  WHEN the GPS misses its heartbeat
+  THEN the MFL reports gps = FAIL`,
+
+    // Beat 4 — Delta specs
+    deltaKicker: 'SEE ONLY WHAT CHANGED',
+    deltaHeading: 'Delta specs — no diffing whole docs.',
+    deltaBody:
+      'Proposals tag each section so humans and AI see the change at a glance — exactly what this feature adds, alters, and retires.',
+    deltas: [
+      { tag: '## ADDED',    iconKey: 'FilePlus2', accent: 'emerald', content: 'Requirement: MFL Telemetry Status' },
+      { tag: '## MODIFIED', iconKey: 'FileEdit',  accent: 'indigo',  content: 'Telemetry cycle now carries the MFL payload' },
+      { tag: '## REMOVED',  iconKey: 'FileMinus2', accent: 'slate',  content: 'Legacy per-sensor status pings' },
+    ],
+  },
+
+  // 24. demoIntro
   {
     type: 'demoIntro',
     scrollable: true,

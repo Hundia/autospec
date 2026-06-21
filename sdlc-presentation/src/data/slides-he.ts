@@ -956,7 +956,116 @@ export const slidesHE = [
     tagline: 'מכוונה להיגוי.',
   },
 
-  // 22. demoIntro
+  // 22. openSpecWhat — SCROLLABLE · "What is OpenSpec"
+  {
+    type: 'openSpecWhat',
+    variant: 'what',
+    scrollable: true,
+
+    kicker: 'הכלי שמאחורי הדמו',
+    heroTitle: 'OpenSpec',
+    heroSubtitle: 'יישור בין בני אדם ל-AI על מה לבנות — לפני שורת קוד אחת.',
+    scrollHint: 'המסגרת שמפעילה את Game Of Drones',
+
+    // Beat 1 — Core idea
+    pullQuote: 'Version control for intent',
+    ideaKicker: 'הרעיון המרכזי',
+    ideaHeading: 'מחליטים על ה-what. נותנים לסוכן לבנות את ה-how.',
+    ideaBody:
+      'OpenSpec היא מסגרת spec-driven קלת משקל שמקבעת קודם את הכוונה. הקוד הופך לתרגום נאמן של spec מוסכם — לא ניחוש מתוך היסטוריית שיחה.',
+
+    // Beat 2 — Loop
+    loopKicker: 'לולאה אחת רגועה',
+    loopHeading: 'Propose → Apply → Archive',
+    loopBody:
+      'כל שינוי זורם דרך אותם שלושה שלבים. מציעים את הכוונה, מיישמים את המשימות, מארכבים כמקור האמת החדש.',
+    loopSteps: [
+      { iconKey: 'FilePlus2',    label: 'Propose', command: '/opsx:propose add-mfl-telemetry', note: 'יוצר את תיקיית השינוי', accent: 'teal' },
+      { iconKey: 'Workflow',     label: 'Apply',   command: '/opsx:apply',                     note: 'מיישם את המשימות',    accent: 'violet' },
+      { iconKey: 'CheckCircle2', label: 'Archive', command: '/opsx:archive',                   note: 'הופך למקור האמת',     accent: 'emerald' },
+    ],
+    loopBackNote: 'האמת המארכבת מזינה את השינוי הבא — brownfield-first, 1 → n',
+
+    // Beat 3 — Two directories
+    dirKicker: 'איפה הכול חי',
+    dirHeading: 'אמת במקום אחד. הצעות באחר.',
+    dirBody:
+      'ה-specs מתארים מה המערכת עושה היום. ה-changes מתארים מה בתהליך. שום דבר לא מעורפל.',
+    fileTree: `openspec/
+├── specs/      ← current source of truth
+└── changes/    ← proposed updates (in flight)
+    └── archive/
+        └── 2026-06-21-mfl-telemetry/`,
+    specsNote: 'מקור האמת הנוכחי — מה שפלטפורמת הרחפן עושה כרגע.',
+    changesNote: 'עדכונים מוצעים שעדיין בתהליך — כמו REQ-MFL-001 לפני שהוא נשלח.',
+
+    // Beat 4 — Why it lands
+    whyKicker: 'עובד איפה שאתם כבר עובדים',
+    whyHeading: 'Brownfield-first. אגנוסטי לכלים.',
+    whyBody:
+      'נבנה כדי לפתח codebases קיימים, לא רק דמואים greenfield. מתחבר ל-30+ עוזרי AI דרך פקודות slash פשוטות.',
+    tools: ['Claude Code', 'Cursor', 'GitHub Copilot', 'OpenCode', '+ 30 more'],
+  },
+
+  // 23. openSpecAnatomy — SCROLLABLE · "Anatomy of a Spec"
+  {
+    type: 'openSpecAnatomy',
+    variant: 'anatomy',
+    scrollable: true,
+
+    kicker: 'איך spec באמת נראה',
+    heroTitle: 'Anatomy of a Spec',
+    heroSubtitle: 'פותחים תיקיית שינוי ורואים בדיוק מה השתנה — ולמה.',
+    scrollHint: 'דרישת הרחפן, כ-spec אמיתי',
+
+    // Beat 1 — Four artifacts
+    artifactsKicker: 'בתוך שינוי',
+    artifactsHeading: 'ארבעה קבצים. פיצ׳ר אחד.',
+    folderLabel: 'openspec/changes/add-mfl-telemetry/',
+    artifacts: [
+      { iconKey: 'FileText',     name: 'proposal.md', desc: 'ה-WHY + WHAT — רציונל והיקף',        accent: 'teal' },
+      { iconKey: 'FolderTree',   name: 'specs/',      desc: 'דרישות עם תרחישי בדיקה',             accent: 'cyan' },
+      { iconKey: 'GitBranch',    name: 'design.md',   desc: 'ה-HOW — גישה טכנית',                 accent: 'violet' },
+      { iconKey: 'CheckCircle2', name: 'tasks.md',    desc: 'צ׳קליסט מימוש שהסוכן עובד לפיו',     accent: 'emerald' },
+    ],
+
+    // Beat 2 — Requirement
+    reqKicker: 'REQ-MFL-001',
+    reqHeading: 'הדרישה, בשפה פשוטה',
+    reqBody:
+      'spec נפתח בדרישה שכל אחד יכול לקרוא — בלי ז׳רגון, בלי עמימות לגבי מה נחשב הצלחה.',
+    requirementBlock: `Requirement: MFL Telemetry Status
+
+Each drone subsystem — camera, rotors, INS,
+IMU, GPS, comms — MUST report its health as
+OK / DEGRADED / FAIL on every telemetry cycle.`,
+
+    // Beat 3 — Scenarios
+    scenarioKicker: 'התנהגות כתרחישים',
+    scenarioHeading: 'WHEN זה, THEN זה.',
+    scenarioBody:
+      'כל דרישה נושאת תרחישים בשפה תנאית פשוטה. בני אדם קוראים אותם כמשפטים; הסוכן קורא אותם כבדיקות.',
+    scenarioBlock: `Scenario: Healthy subsystem
+  WHEN the camera responds within the cycle
+  THEN the MFL reports camera = OK
+
+Scenario: Missed heartbeat
+  WHEN the GPS misses its heartbeat
+  THEN the MFL reports gps = FAIL`,
+
+    // Beat 4 — Delta specs
+    deltaKicker: 'רואים רק מה שהשתנה',
+    deltaHeading: 'Delta specs — בלי לעשות diff למסמכים שלמים.',
+    deltaBody:
+      'הצעות מתייגות כל סעיף כך שבני אדם ו-AI רואים את השינוי במבט אחד — בדיוק מה הפיצ׳ר מוסיף, משנה, ומסיר.',
+    deltas: [
+      { tag: '## ADDED',    iconKey: 'FilePlus2', accent: 'emerald', content: 'Requirement: MFL Telemetry Status' },
+      { tag: '## MODIFIED', iconKey: 'FileEdit',  accent: 'indigo',  content: 'Telemetry cycle now carries the MFL payload' },
+      { tag: '## REMOVED',  iconKey: 'FileMinus2', accent: 'slate',  content: 'Legacy per-sensor status pings' },
+    ],
+  },
+
+  // 24. demoIntro
   {
     type: 'demoIntro',
     scrollable: true,
