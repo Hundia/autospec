@@ -293,46 +293,6 @@ export const slidesEN = [
 
   // ── ACT 3 — THE AGENTIC SDLC METHODOLOGY (slides 11–15) ──────────────────────
 
-  // 11. philosophy
-  {
-    type: 'philosophy',
-    title: 'Core Philosophy',
-    subtitle: 'Five ideas that change everything',
-    cards: [
-      {
-        icon: '🎯',
-        title: 'Cycles, Not Sprints',
-        description: 'A Cycle is a bounded, independently-testable delivery unit — spec-approved, AI-executed, guardrail-verified. Measured in hours or days, not weeks. Speed is the output of structure.',
-        accent: 'blue',
-      },
-      {
-        icon: '👁',
-        title: 'Humans as Orchestrators',
-        description: 'Engineers move from Executors (writing code) to Orchestrators — designing specs, reviewing agent output, maintaining the guardrails.',
-        accent: 'violet',
-      },
-      {
-        icon: '✍️',
-        title: 'Governors & Reviewers',
-        description: 'Without strong governance, HITL becomes rubber-stamping. AI-driven execution + structured specs + enforced governance is what separates genuine oversight from theater.',
-        accent: 'teal',
-      },
-      {
-        icon: '🛡',
-        title: 'Guardrails Cannot Be Bypassed',
-        description: 'Tests, linters, types, constraints agents cannot violate. Every agent error becomes a permanent guardrail test — it cannot recur. The guardrails only ever grow stronger.',
-        accent: 'emerald',
-      },
-      {
-        icon: '📄',
-        title: 'The Spec is the Truth',
-        description: 'No code before the spec is approved. Spec is version-controlled and updated before code changes. Kills spec rot.',
-        accent: 'amber',
-      },
-    ],
-    quote: 'The Spec is the Truth. The Guardrails are the Protection. The Human is the Judge.',
-  },
-
   // agentic5Acts — SCROLLABLE
   {
     type: 'agentic5Acts',
@@ -587,6 +547,46 @@ export const slidesEN = [
     ],
     loopBackNote: 'every error makes the next run safer',
     callout: 'Every agent error becomes a permanent gate. Humans never have to catch the same mistake twice — the pipeline only ever gets stronger.',
+  },
+
+  // philosophy — Core Philosophy (placed AFTER "What You Just Saw Has a Name")
+  {
+    type: 'philosophy',
+    title: 'Core Philosophy',
+    subtitle: 'Five ideas that change everything',
+    cards: [
+      {
+        icon: '🎯',
+        title: 'Cycles, Not Sprints',
+        description: 'A Cycle is a bounded, independently-testable delivery unit — spec-approved, AI-executed, guardrail-verified. Measured in hours or days, not weeks. Speed is the output of structure.',
+        accent: 'blue',
+      },
+      {
+        icon: '👁',
+        title: 'Humans as Orchestrators',
+        description: 'Engineers move from Executors (writing code) to Orchestrators — designing specs, reviewing agent output, maintaining the guardrails.',
+        accent: 'violet',
+      },
+      {
+        icon: '✍️',
+        title: 'Governors & Reviewers',
+        description: 'Without strong governance, HITL becomes rubber-stamping. AI-driven execution + structured specs + enforced governance is what separates genuine oversight from theater.',
+        accent: 'teal',
+      },
+      {
+        icon: '🛡',
+        title: 'Guardrails Cannot Be Bypassed',
+        description: 'Tests, linters, types, constraints agents cannot violate. Every agent error becomes a permanent guardrail test — it cannot recur. The guardrails only ever grow stronger.',
+        accent: 'emerald',
+      },
+      {
+        icon: '📄',
+        title: 'The Spec is the Truth',
+        description: 'No code before the spec is approved. Spec is version-controlled and updated before code changes. Kills spec rot.',
+        accent: 'amber',
+      },
+    ],
+    quote: 'The Spec is the Truth. The Guardrails are the Protection. The Human is the Judge.',
   },
 
   // sdlcRoles
