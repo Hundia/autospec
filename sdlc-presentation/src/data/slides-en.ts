@@ -14,8 +14,6 @@ export const slidesEN = [
   // 2. paradigmShift — the reframe: AI is not a tool you adopt
   {
     type: 'paradigmShift',
-    kicker: 'A REFRAME',
-    mistake: "The first mistake in 'adopting AI' is calling it 'AI adoption.' The moment you name it that way, people assume it's just a tool.",
     struckPhrase: 'AI Adoption',
     truth: "It's not a tool you adopt — it's a shift in how the work itself happens.",
     dimensionsLead: 'What actually shifts',

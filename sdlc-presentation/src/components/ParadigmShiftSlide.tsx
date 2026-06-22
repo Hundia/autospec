@@ -8,8 +8,6 @@ interface Dimension {
 
 interface ParadigmShiftSlideProps {
   data: {
-    kicker: string;
-    mistake: string;
     struckPhrase: string;
     truth: string;
     dimensionsLead: string;
@@ -59,28 +57,8 @@ export default function ParadigmShiftSlide({ data, lang }: ParadigmShiftSlidePro
         transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
       />
 
-      {/* Kicker */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="relative z-10 text-[10px] font-mono tracking-[0.45em] text-slate-500 uppercase"
-      >
-        {data.kicker}
-      </motion.div>
-
-      {/* The reframe — the mistake, the demoted phrase, the deeper truth */}
+      {/* The struck-through phrase + deeper truth */}
       <div className="relative z-10 flex flex-col gap-6">
-        {/* The mistake line */}
-        <motion.p
-          initial={{ opacity: 0, y: -16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.5 }}
-          className="text-lg sm:text-xl text-slate-400 font-light leading-relaxed max-w-2xl"
-        >
-          {data.mistake}
-        </motion.p>
-
         {/* The struck-through phrase — demoted, replaced */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
