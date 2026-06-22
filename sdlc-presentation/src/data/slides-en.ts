@@ -487,9 +487,10 @@ export const slidesEN = [
     verdict: 'So when people call it vibe coding — it isn\'t. This is.',
   },
 
-  // harness — SCROLLABLE · guardrail use-cases
+  // harness — HIDDEN (repetitive with The Agentic SDLC)
   {
     type: 'harness',
+    hidden: true,
     scrollable: true,
 
     kicker: 'ACT 3 · THE EXECUTION PIPELINE',
@@ -583,12 +584,12 @@ export const slidesEN = [
     title: 'Roles Reinvented',
     subtitle: 'Nobody is replaced. Everybody is promoted.',
     roles: [
-      { icon: '🎯', oldRole: 'Product Owner', newRole: 'Outcome Owner', oneLiner: "Owns the 'what'; approves spec.md", stage: 'Stages 1, 6', accent: 'blue' },
-      { icon: '🏛️', oldRole: 'Architect / Tech Lead', newRole: 'Governance Owner', oneLiner: 'Defines the Guardrails; interrogates the plan', stage: 'Stages 1–3', accent: 'violet' },
-      { icon: '🔬', oldRole: 'Developer', newRole: 'Dev Orchestrator', oneLiner: 'Reviews agent PRs, edge cases, writes the guardrails', stage: 'Stages 4–5', accent: 'teal' },
-      { icon: '🤖', oldRole: 'N/A', newRole: 'Autonomous Workforce', oneLiner: 'Drafts all artifacts; executes bounded tasks under guardrails', stage: 'Stages 2–7', accent: 'cyan' },
-      { icon: '🔭', oldRole: 'SRE / DevOps', newRole: 'Intelligent Infrastructure Guardian', oneLiner: 'Guardian of self-healing infra and agent telemetry', stage: 'Stage 7', accent: 'emerald' },
-      { icon: '🎨', oldRole: 'Designer', newRole: 'Creative Director', oneLiner: "Human taste, vibe, brand — what AI can't encode", stage: 'Stages 1–5', accent: 'amber' },
+      { icon: '🎯', oldRole: 'Product Manager', newRole: 'Outcome Owner', oneLiner: "Owns the 'what' — writes requirements, approves spec.md, signs off on every Cycle", stage: 'Stages 1, 6', accent: 'blue' },
+      { icon: '🏛️', oldRole: 'Architect / Tech Lead', newRole: 'Governance Owner', oneLiner: 'Defines architecture, constraints, and pipeline gates; signs off on constitution.md before any agent runs', stage: 'Stages 1–3', accent: 'violet' },
+      { icon: '🔬', oldRole: 'Developer', newRole: 'Dev Orchestrator', oneLiner: 'Steers agents, writes sprint briefs, reviews every PR — owns output quality, not code authorship', stage: 'Stage 4', accent: 'teal' },
+      { icon: '🧪', oldRole: 'QA Lead', newRole: 'QA Orchestrator', oneLiner: 'Shapes test architecture upfront, runs system tests against Feature Specs, owns the regression net', stage: 'Stage 5', accent: 'cyan' },
+      { icon: '🤖', oldRole: 'N/A', newRole: 'AI Agent', oneLiner: 'Executes all implementation — code, tests, docs — within the constraints set by the Governance Owner', stage: 'Stages 2–7', accent: 'indigo' },
+      { icon: '🔭', oldRole: 'SRE / DevOps', newRole: 'Observability Lead', oneLiner: 'Monitors production against spec intent; triggers self-correction cycles when systems drift', stage: 'Stage 7', accent: 'emerald' },
     ],
     coreShiftTitle: 'The Core Shift',
     coreShift: [

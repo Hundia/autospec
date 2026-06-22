@@ -475,9 +475,10 @@ export const slidesHE = [
     verdict: 'אז כשקוראים לזה Vibe Coding — זה לא. זה זה.',
   },
 
-  // 13. harness — SCROLLABLE · guardrail use-cases
+  // 13. harness — HIDDEN (repetitive with The Agentic SDLC)
   {
     type: 'harness',
+    hidden: true,
     scrollable: true,
     kicker: 'מערכה 3 · צינור ביצוע',
     heroTitle: 'The Execution Pipeline',
@@ -507,12 +508,12 @@ export const slidesHE = [
     title: 'תפקידים מחודשים',
     subtitle: 'אף אחד לא מוחלף. כולם מקודמים.',
     roles: [
-      { icon: '🎯', oldRole: 'מנהל מוצר', newRole: 'בעל תוצאות', oneLiner: "בעל ה'מה'; מאשר spec.md", stage: 'שלבים 1, 6', accent: 'blue' },
-      { icon: '🏛️', oldRole: 'ארכיטקט / ראש טכנולוגיה', newRole: 'בעל ממשל', oneLiner: 'מגדיר את גדרות ההגנה; חוקר את התכנית', stage: 'שלבים 1–3', accent: 'violet' },
-      { icon: '🔬', oldRole: 'מפתח', newRole: 'מתאם פיתוח', oneLiner: 'סוקר PR של סוכנים, מקרי קצה, כותב גדרות הגנה', stage: 'שלבים 4–5', accent: 'teal' },
-      { icon: '🤖', oldRole: 'לא קיים', newRole: 'כוח עבודה אוטונומי', oneLiner: 'מנסח את כל הארטיפקטים; מבצע משימות מוגבלות תחת גדרות', stage: 'שלבים 2–7', accent: 'cyan' },
-      { icon: '🔭', oldRole: 'SRE / DevOps', newRole: 'שומר תשתיות חכמות', oneLiner: 'שומר על תשתית ריפוי עצמי וטלמטריה של סוכנים', stage: 'שלב 7', accent: 'emerald' },
-      { icon: '🎨', oldRole: 'מעצב', newRole: 'מנהל יצירתי', oneLiner: "טעם אנושי, חוויה, מותג — מה ש-AI לא יכול לקודד", stage: 'שלבים 1–5', accent: 'amber' },
+      { icon: '🎯', oldRole: 'מנהל מוצר', newRole: 'בעל תוצאות', oneLiner: "בעל ה'מה' — כותב דרישות, מאשר spec.md, חותם על כל מחזור", stage: 'שלבים 1, 6', accent: 'blue' },
+      { icon: '🏛️', oldRole: 'ארכיטקט / ראש טכנולוגיה', newRole: 'בעל ממשל', oneLiner: 'מגדיר ארכיטקטורה, אילוצים ושערי צינור; חותם על constitution.md לפני שסוכן מתחיל', stage: 'שלבים 1–3', accent: 'violet' },
+      { icon: '🔬', oldRole: 'מפתח', newRole: 'מתאם פיתוח', oneLiner: 'מוביל סוכנים, כותב תקצירי sprint, סוקר כל PR — בעל איכות הפלט, לא כתיבת הקוד', stage: 'שלב 4', accent: 'teal' },
+      { icon: '🧪', oldRole: 'ליד QA', newRole: 'מתאם QA', oneLiner: 'מעצב ארכיטקטורת בדיקות מראש, מריץ בדיקות מול Feature Specs, בעל רשת ה-regression', stage: 'שלב 5', accent: 'cyan' },
+      { icon: '🤖', oldRole: 'לא קיים', newRole: 'סוכן AI', oneLiner: 'מבצע את כל עבודת הפיתוח — קוד, בדיקות, תיעוד — בתוך האילוצים שהגדיר בעל הממשל', stage: 'שלבים 2–7', accent: 'indigo' },
+      { icon: '🔭', oldRole: 'SRE / DevOps', newRole: 'ליד תצפיתיות', oneLiner: 'עוקב אחר ייצור מול כוונת ה-spec; מפעיל מחזורי תיקון עצמי כשמערכות סוטות', stage: 'שלב 7', accent: 'emerald' },
     ],
     coreShiftTitle: 'השינוי המרכזי',
     coreShift: [

@@ -53,14 +53,13 @@ export default function EraAgenticSlide({ data }: EraAgenticSlideProps): JSX.Ele
         ))}
       </motion.div>
 
-      {/* Split layout: single grid so corresponding Power/Danger rows share height */}
-      <div className="grid grid-cols-2 gap-x-6 gap-y-3 auto-rows-fr items-stretch">
-        {/* Column headers (first grid row) */}
+      {/* Column headers — outside the card grid so they don't stretch */}
+      <div className="grid grid-cols-2 gap-x-6 mb-3">
         <motion.h3
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="text-cyan-400 font-bold text-xl mb-1 text-center"
+          className="text-cyan-400 font-bold text-xl text-center"
         >
           The Power
         </motion.h3>
@@ -68,12 +67,14 @@ export default function EraAgenticSlide({ data }: EraAgenticSlideProps): JSX.Ele
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="text-amber-400 font-bold text-xl mb-1 text-center"
+          className="text-amber-400 font-bold text-xl text-center"
         >
           The Danger
         </motion.h3>
+      </div>
 
-        {/* Card rows: each Power/Danger pair occupies one auto-row of equal height */}
+      {/* Card rows: equal-height pairs */}
+      <div className="grid grid-cols-2 gap-x-6 gap-y-3 auto-rows-fr items-stretch">
         {data.power.map((powerItem, idx) => {
           const dangerItem = data.danger[idx];
           return (
