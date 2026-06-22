@@ -271,10 +271,10 @@ export default function DemoIntroSlide({ data, lang }: DemoIntroSlideProps) {
   const resolveUrl = (path: string) => `${base}${path.replace(/^\//, '')}`;
 
   return (
-    <div className="w-full max-w-5xl mx-auto">
+    <div className="w-full">
 
-      {/* ══ HERO ══════════════════════════════════════════════════════════════════ */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center py-24 px-6 text-center overflow-hidden">
+      {/* ══ HERO — full viewport width/height, no max-w constraint ═══════════════ */}
+      <section className="relative w-screen min-h-screen flex flex-col items-center justify-center py-24 px-6 text-center overflow-hidden" style={{ marginLeft: 'calc(50% - 50vw)' }}>
         {/* Looping drone-battle video — scoped to hero only */}
         <video
           className="absolute inset-0 w-full h-full object-cover pointer-events-none"
@@ -356,6 +356,9 @@ export default function DemoIntroSlide({ data, lang }: DemoIntroSlideProps) {
           </motion.div>
         </div>
       </section>
+
+      {/* ══ BEATS — constrained to max-w-5xl ════════════════════════════════════ */}
+      <div className="max-w-5xl mx-auto">
 
       {/* ══ BEAT 1 — THE PROJECT ══════════════════════════════════════════════════ */}
       <motion.section
@@ -839,6 +842,7 @@ export default function DemoIntroSlide({ data, lang }: DemoIntroSlideProps) {
         </motion.div>
       </motion.section>
 
+      </div>{/* end beats max-w-5xl */}
     </div>
   );
 }
