@@ -23,29 +23,9 @@ const ambientDots = [
 
 export default function TitleSlide({ data, lang }: TitleSlideProps) {
   const words = data.tagline.split(' ');
-  const videoSrc = `${import.meta.env.BASE_URL}drone-battle.mp4`;
 
   return (
     <div className="relative w-full min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden">
-      {/* Looping drone-battle video background */}
-      <video
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-        src={videoSrc}
-        autoPlay
-        loop
-        muted
-        playsInline
-        aria-hidden="true"
-      />
-      {/* Darkening overlay — keeps the deck palette and text legible over the video */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(ellipse at 50% 45%, rgba(15,23,42,0.82) 0%, rgba(15,23,42,0.70) 45%, rgba(15,23,42,0.55) 100%)',
-        }}
-      />
-
       {/* Animated gradient background */}
       <motion.div
         className="absolute inset-0 pointer-events-none"

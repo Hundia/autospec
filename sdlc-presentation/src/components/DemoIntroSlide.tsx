@@ -274,66 +274,87 @@ export default function DemoIntroSlide({ data, lang }: DemoIntroSlideProps) {
     <div className="w-full max-w-5xl mx-auto">
 
       {/* ══ HERO ══════════════════════════════════════════════════════════════════ */}
-      <section className="min-h-screen flex flex-col items-center justify-center py-24 px-6 text-center">
-        <motion.p
-          initial={{ opacity: 0, y: -12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-[10px] sm:text-xs tracking-[0.45em] text-blue-400/80 uppercase font-mono mb-6"
-        >
-          {data.kicker}
-        </motion.p>
-
-        <motion.h1
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-          className="text-5xl sm:text-7xl lg:text-8xl leading-none mb-5 bg-gradient-to-r from-blue-400 via-violet-400 to-indigo-400 bg-clip-text text-transparent pb-2 tracking-wide"
-          style={{ fontFamily: "'Cinzel', serif", fontWeight: 900 }}
-        >
-          {data.heroTitle}
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35 }}
-          className="text-lg sm:text-xl text-white/85 max-w-2xl mb-4 leading-relaxed font-medium"
-        >
-          {data.heroSubtitle}
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-violet-500/20 bg-violet-500/8 mb-12"
-        >
-          <span className="text-xs font-mono text-violet-300/50 tracking-wide">{data.heroTag}</span>
-        </motion.div>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.65 }}
-          className="text-sm text-white/35 mb-6 italic"
-        >
-          {data.scrollHint}
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="flex flex-col items-center gap-2 text-white/30"
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 1.6 }}
+      <section className="relative min-h-screen flex flex-col items-center justify-center py-24 px-6 text-center overflow-hidden">
+        {/* Looping drone-battle video — scoped to hero only */}
+        <video
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+          src={`${base}drone-battle.mp4`}
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-hidden="true"
+        />
+        {/* Dark overlay — keeps text legible, lets corner drones show through */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(ellipse at 50% 45%, rgba(15,23,42,0.88) 0%, rgba(15,23,42,0.75) 45%, rgba(15,23,42,0.60) 100%)',
+          }}
+        />
+        {/* Content sits above video layers */}
+        <div className="relative z-10 flex flex-col items-center">
+          <motion.p
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-[10px] sm:text-xs tracking-[0.45em] text-blue-400/80 uppercase font-mono mb-6"
           >
-            <ChevronDown size={24} />
+            {data.kicker}
+          </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="text-5xl sm:text-7xl lg:text-8xl leading-none mb-5 bg-gradient-to-r from-blue-400 via-violet-400 to-indigo-400 bg-clip-text text-transparent pb-2 tracking-wide"
+            style={{ fontFamily: "'Cinzel', serif", fontWeight: 900 }}
+          >
+            {data.heroTitle}
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35 }}
+            className="text-lg sm:text-xl text-white/85 max-w-2xl mb-4 leading-relaxed font-medium"
+          >
+            {data.heroSubtitle}
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-violet-500/20 bg-violet-500/8 mb-12"
+          >
+            <span className="text-xs font-mono text-violet-300/50 tracking-wide">{data.heroTag}</span>
           </motion.div>
-        </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.65 }}
+            className="text-sm text-white/35 mb-6 italic"
+          >
+            {data.scrollHint}
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="flex flex-col items-center gap-2 text-white/30"
+          >
+            <motion.div
+              animate={{ y: [0, 8, 0] }}
+              transition={{ repeat: Infinity, duration: 1.6 }}
+            >
+              <ChevronDown size={24} />
+            </motion.div>
+          </motion.div>
+        </div>
       </section>
 
       {/* ══ BEAT 1 — THE PROJECT ══════════════════════════════════════════════════ */}
