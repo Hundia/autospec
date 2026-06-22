@@ -72,7 +72,7 @@ interface DeltaBlock {
 
 interface OpenSpecSlideData {
   type: string;
-  variant: 'what' | 'anatomy';
+  variant: 'what' | 'anatomy' | 'unified';
   scrollable: boolean;
 
   kicker: string;
@@ -193,10 +193,10 @@ export default function OpenSpecSlide({ data, lang }: OpenSpecSlideProps) {
           transition={{ delay: 0.1, type: 'spring', stiffness: 180, damping: 16 }}
           className="w-16 h-16 rounded-2xl bg-teal-500/12 border border-teal-400/30 flex items-center justify-center mb-7"
         >
-          {data.variant === 'what' ? (
-            <Workflow size={30} className="text-teal-300" strokeWidth={1.75} />
-          ) : (
+          {data.variant === 'anatomy' ? (
             <FileText size={30} className="text-cyan-300" strokeWidth={1.75} />
+          ) : (
+            <Workflow size={30} className="text-teal-300" strokeWidth={1.75} />
           )}
         </motion.div>
 
@@ -248,8 +248,141 @@ export default function OpenSpecSlide({ data, lang }: OpenSpecSlideProps) {
         </motion.div>
       </section>
 
-      {data.variant === 'what' ? <WhatBeats data={data} isRTL={isRTL} align={align} /> : <AnatomyBeats data={data} isRTL={isRTL} align={align} />}
+      {data.variant === 'unified' ? (
+        <UnifiedBeats data={data} isRTL={isRTL} align={align} />
+      ) : data.variant === 'what' ? (
+        <WhatBeats data={data} isRTL={isRTL} align={align} />
+      ) : (
+        <AnatomyBeats data={data} isRTL={isRTL} align={align} />
+      )}
     </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════════
+// VARIANT U — "OpenSpec in a nutshell" (merged: flow + example spec)
+// ════════════════════════════════════════════════════════════════════════════════
+function UnifiedBeats({ data, isRTL, align }: { data: OpenSpecSlideData; isRTL: boolean; align: string }) {
+  return (
+    <>
+      {/* ── BEAT 1 — Propose → Apply → Archive loop ── */}
+      <Beat accentBorder="border-emerald-500/10">
+        <BeatHeader kicker={data.loopKicker} heading={data.loopHeading} body={data.loopBody} align={align} accent="emerald" />
+
+        {/* Three connected cards — forced LTR (flow reads left→right) */}
+        <div dir="ltr" className="flex flex-col sm:flex-row items-stretch justify-center gap-3 sm:gap-2 mt-4">
+          {(data.loopSteps ?? []).map((step, i) => {
+            const colors = accentMap[step.accent] || accentMap.teal;
+            const Icon = iconMap[step.iconKey] || FilePlus2;
+            const isLast = i === (data.loopSteps?.length ?? 0) - 1;
+            return (
+              <React.Fragment key={step.label}>
+                <motion.div
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 + i * 0.15 }}
+                  className={`flex-1 rounded-2xl border ${colors.border} ${colors.bg} p-5 flex flex-col gap-2.5`}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Icon size={20} className={colors.text} />
+                    <span className="text-base font-black text-white/90">{step.label}</span>
+                  </div>
+                  <code className={`text-[11px] font-mono ${colors.badge} px-2 py-1 rounded w-fit`}>{step.command}</code>
+                  <span className="text-xs text-white/45 leading-snug">{step.note}</span>
+                </motion.div>
+                {!isLast && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.3 + i * 0.15 }}
+                    className="flex items-center justify-center text-white/25 rotate-90 sm:rotate-0 py-1 sm:py-0"
+                  >
+                    <ArrowRight size={20} />
+                  </motion.div>
+                )}
+              </React.Fragment>
+            );
+          })}
+        </div>
+
+        {/* Loop-back note */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.7 }}
+          className="flex items-center justify-center gap-2 mt-6 text-teal-300/60"
+        >
+          <RefreshCw size={14} />
+          <span className="text-xs font-mono">{data.loopBackNote}</span>
+        </motion.div>
+      </Beat>
+
+      {/* ── BEAT 2 — What a real spec looks like (requirement + scenarios) ── */}
+      <Beat accentBorder="border-cyan-500/10">
+        <BeatHeader kicker={data.reqKicker} heading={data.reqHeading} body={data.reqBody} align={align} accent="cyan" />
+
+        {/* Folder label — what change folder this spec lives in */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          dir="ltr"
+          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/60 border border-white/10 mb-5 ${isRTL ? 'self-end' : 'self-start'}`}
+        >
+          <FolderTree size={14} className="text-cyan-400/70" />
+          <code className="text-xs font-mono text-white/60">{data.folderLabel}</code>
+        </motion.div>
+
+        {/* The requirement, in plain language */}
+        <motion.pre
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          dir="ltr"
+          className="text-xs sm:text-sm font-mono bg-slate-900/80 border border-teal-500/25 rounded-xl p-5 text-teal-100/80 overflow-x-auto leading-relaxed whitespace-pre-wrap"
+        >
+          {data.requirementBlock}
+        </motion.pre>
+
+        {/* Scenario sub-heading */}
+        <motion.p
+          initial={{ opacity: 0, y: -8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className={`text-sm text-white/55 mt-6 mb-3 ${align}`}
+        >
+          {data.scenarioBody}
+        </motion.p>
+
+        {/* WHEN / THEN scenarios */}
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.35 }}
+        >
+          <ScenarioBlock text={data.scenarioBlock ?? ''} />
+        </motion.div>
+
+        {/* WHEN/THEN legend */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5 }}
+          dir="ltr"
+          className="flex items-center gap-4 mt-4 text-[11px] font-mono"
+        >
+          <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-cyan-400" /><span className="text-white/50">WHEN — condition</span></span>
+          <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-400" /><span className="text-white/50">THEN — outcome</span></span>
+        </motion.div>
+      </Beat>
+    </>
   );
 }
 

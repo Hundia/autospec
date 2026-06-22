@@ -131,23 +131,6 @@ export default function TitleSlide({ data, lang }: TitleSlideProps) {
             </motion.span>
           ))}
         </div>
-
-        {/* Bottom badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 + words.length * 0.15 + 0.3, duration: 0.5 }}
-          className="inline-flex items-center gap-3 px-5 py-2.5 bg-white/5 border border-white/15 rounded-full"
-        >
-          <motion.div
-            className="w-2.5 h-2.5 rounded-full bg-green-400"
-            animate={{ opacity: [1, 0.3, 1] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-          />
-          <span className="text-sm text-white/70 font-medium tracking-wide">
-            Spec-Driven Development Framework
-          </span>
-        </motion.div>
       </div>
     </div>
   );
