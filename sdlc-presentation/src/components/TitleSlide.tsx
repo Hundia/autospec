@@ -25,20 +25,6 @@ export default function TitleSlide({ data, lang }: TitleSlideProps) {
 
   return (
     <div className="relative w-full min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden">
-      {/* Animated gradient background */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        animate={{
-          background: [
-            'radial-gradient(ellipse at 30% 40%, rgba(59,130,246,0.18) 0%, rgba(139,92,246,0.12) 40%, rgba(6,182,212,0.08) 80%, transparent 100%)',
-            'radial-gradient(ellipse at 60% 55%, rgba(139,92,246,0.18) 0%, rgba(6,182,212,0.12) 40%, rgba(59,130,246,0.08) 80%, transparent 100%)',
-            'radial-gradient(ellipse at 45% 30%, rgba(6,182,212,0.18) 0%, rgba(59,130,246,0.12) 40%, rgba(139,92,246,0.08) 80%, transparent 100%)',
-            'radial-gradient(ellipse at 30% 40%, rgba(59,130,246,0.18) 0%, rgba(139,92,246,0.12) 40%, rgba(6,182,212,0.08) 80%, transparent 100%)',
-          ],
-        }}
-        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-      />
-
       {/* Floating ambient dots */}
       {ambientDots.map((dot, i) => (
         <motion.div

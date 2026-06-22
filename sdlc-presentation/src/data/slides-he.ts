@@ -79,10 +79,10 @@ export const slidesHE = [
     scrollable: true,
     kicker: 'בעיה שמסתתרת בתוך כוונות טובות',
     title: 'מלכודת הדחיסה',
-    hook: 'המלכודת היא שדווקא היסודיות היא זו שהורגת אותך.',
+    hook: 'שתי דרכים ממלאות את חלון ההקשר. שתיהן מגיעות לאותו קיר.',
     scrollHint: 'גלול וצפה בחלון מתמלא',
-    // ── Beat 1 — the instinct ──
-    instinctKicker: 'האינסטינקט',
+    // ── Beat 1 — on-ramp A: the instinct ──
+    instinctKicker: 'דרך א · האינסטינקט',
     instinctTitle: 'אתה עושה את הדבר האחראי — אתה נותן לו הכול.',
     instinctLead: 'עוד לפני שהסוכן כותב שורה, אתה מוסר לו את כל ההקשר: ה-PRD המלא, מסמך התכנון, ה-API reference, סיכומי הפגישות. המהלך האחראי. זו המלכודת.',
     bigDocs: [
@@ -94,10 +94,21 @@ export const slidesHE = [
       { icon: 'FileStack', name: 'ה-codebase הישן, נשפך פנימה', weight: 'all of it · ~70k tokens', fill: 95 },
     ],
     instinctReframe: 'שום דבר מזה אינו רשלני. כל אחד מאלה הוא הדבר המסור והנכון לעשות.',
-    // ── Beat 2 — the window fills ──
-    windowKicker: 'החלון מתמלא',
-    windowTitle: 'חלון ההקשר הוא תקציב — ואתה בזבזת אותו עוד לפני שהעבודה התחילה.',
-    windowLead: 'הוא סופי. כל מסמך שאתה מדביק תופס נתח. המד מטפס מעבר לקו הסכנה עוד לפני שניתנה הוראה מועילה אחת.',
+    // ── Beat 1B — on-ramp B: the long session ──
+    secondRampKicker: 'דרך ב · הסשן הארוך',
+    secondRampTitle: 'או שאתה לא מעלה כלום — אתה פשוט ממשיך לבנות.',
+    secondRampLead: 'בלי הדבקה ענקית. סשן אחד ארוך-חיים: מתכנן פיצ׳ר, מתקן באג, מתחיל את הבא. כל משימה משאירה את השארית שלה באותו הקשר. החלון מתמלא באותה ודאות — רק לאט יותר, ובשקט.',
+    sessionSteps: [
+      { label: 'Feature 1 — תוכנן ונבנה', detail: 'הכול בהקשר הראשי', fill: 30 },
+      { label: '+ איתור ותיקון באג', detail: 'אותו הקשר, אותה שיחה', fill: 55 },
+      { label: '+ Feature 2 יוצא לדרך', detail: 'המודל מסכם בשקט', fill: 78 },
+      { label: '+ סקירה ו-debug', detail: 'החלטות מוקדמות נדחסות החוצה', fill: 98 },
+    ],
+    secondRampReframe: 'אותו קיר, דרך אחרת. החלון מתמלא בין אם תעמיס מראש ובין אם תצמח לתוכו.',
+    // ── Beat 2 — two roads, one wall ──
+    windowKicker: 'שתי דרכים, קיר אחד',
+    windowTitle: 'חלון ההקשר הוא תקציב סופי — וכל דרך מבזבזת אותו עד לאותו קיר.',
+    windowLead: 'הוא סופי. בין אם תדביק הכול בבת אחת ובין אם תצבור משימה אחר משימה, המד מטפס מעבר לקו הסכנה עוד לפני שהחשיבה האמיתית מתחילה.',
     budgetLabel: 'תקציב חלון ההקשר',
     fillStages: [
       { label: 'PRD הודבק', detail: 'מסמך ענק אחד, מראש', fill: 20 },
@@ -105,10 +116,10 @@ export const slidesHE = [
       { label: '+ notes + code', detail: 'לא נשאר מקום לחשוב', fill: 98 },
     ],
     wallLabel: '98% מלא — לפני כל עבודה אמיתית',
-    onRampsLead: '→ דרכי גישה רבות, קיר אחד',
+    onRampsLead: '→ שתי דרכים, קיר אחד',
     onRamps: [
-      { label: 'מסמך ענק אחד, מראש', note: 'ממלא את החלון לפני שכתבת שורה' },
-      { label: 'כמה מסמכים גדולים לאורך איטרציות', note: 'נערמים כמו שיחה ארוכה' },
+      { label: 'דרך א — העמסה מראש', note: 'העלאה ענקית אחת ממלאת את החלון לפני שכתבת שורה' },
+      { label: 'דרך ב — צבירה', note: 'פיצ׳ר אחר פיצ׳ר נערם לאורך סשן ארוך אחד' },
       { label: 'פנייה חדה סמוך לגבול', note: 'מטה חלון כמעט-מלא אל מעבר לקצה' },
     ],
     // ── Beat 3 — the result (compaction) ──
@@ -475,9 +486,10 @@ export const slidesHE = [
     verdict: 'אז כשקוראים לזה Vibe Coding — זה לא. זה זה.',
   },
 
-  // 13. harness — SCROLLABLE · guardrail use-cases
+  // 13. harness — HIDDEN (repetitive with The Agentic SDLC)
   {
     type: 'harness',
+    hidden: true,
     scrollable: true,
     kicker: 'מערכה 3 · צינור ביצוע',
     heroTitle: 'The Execution Pipeline',
@@ -507,12 +519,12 @@ export const slidesHE = [
     title: 'תפקידים מחודשים',
     subtitle: 'אף אחד לא מוחלף. כולם מקודמים.',
     roles: [
-      { icon: '🎯', oldRole: 'מנהל מוצר', newRole: 'בעל תוצאות', oneLiner: "בעל ה'מה'; מאשר spec.md", stage: 'שלבים 1, 6', accent: 'blue' },
-      { icon: '🏛️', oldRole: 'ארכיטקט / ראש טכנולוגיה', newRole: 'בעל ממשל', oneLiner: 'מגדיר את גדרות ההגנה; חוקר את התכנית', stage: 'שלבים 1–3', accent: 'violet' },
-      { icon: '🔬', oldRole: 'מפתח', newRole: 'מתאם פיתוח', oneLiner: 'סוקר PR של סוכנים, מקרי קצה, כותב גדרות הגנה', stage: 'שלבים 4–5', accent: 'teal' },
-      { icon: '🤖', oldRole: 'לא קיים', newRole: 'כוח עבודה אוטונומי', oneLiner: 'מנסח את כל הארטיפקטים; מבצע משימות מוגבלות תחת גדרות', stage: 'שלבים 2–7', accent: 'cyan' },
-      { icon: '🔭', oldRole: 'SRE / DevOps', newRole: 'שומר תשתיות חכמות', oneLiner: 'שומר על תשתית ריפוי עצמי וטלמטריה של סוכנים', stage: 'שלב 7', accent: 'emerald' },
-      { icon: '🎨', oldRole: 'מעצב', newRole: 'מנהל יצירתי', oneLiner: "טעם אנושי, חוויה, מותג — מה ש-AI לא יכול לקודד", stage: 'שלבים 1–5', accent: 'amber' },
+      { icon: '🎯', oldRole: 'מנהל מוצר', newRole: 'בעל תוצאות', oneLiner: "בעל ה'מה' — כותב דרישות, מאשר spec.md, חותם על כל מחזור", stage: 'שלבים 1, 6', accent: 'blue' },
+      { icon: '🏛️', oldRole: 'ארכיטקט / ראש טכנולוגיה', newRole: 'בעל ממשל', oneLiner: 'מגדיר ארכיטקטורה, אילוצים ושערי צינור; חותם על constitution.md לפני שסוכן מתחיל', stage: 'שלבים 1–3', accent: 'violet' },
+      { icon: '🔬', oldRole: 'מפתח', newRole: 'מתאם פיתוח', oneLiner: 'מוביל סוכנים, כותב תקצירי sprint, סוקר כל PR — בעל איכות הפלט, לא כתיבת הקוד', stage: 'שלב 4', accent: 'teal' },
+      { icon: '🧪', oldRole: 'ליד QA', newRole: 'מתאם QA', oneLiner: 'מעצב ארכיטקטורת בדיקות מראש, מריץ בדיקות מול Feature Specs, בעל רשת ה-regression', stage: 'שלב 5', accent: 'cyan' },
+      { icon: '🤖', oldRole: 'לא קיים', newRole: 'סוכן AI', oneLiner: 'מבצע את כל עבודת הפיתוח — קוד, בדיקות, תיעוד — בתוך האילוצים שהגדיר בעל הממשל', stage: 'שלבים 2–7', accent: 'indigo' },
+      { icon: '🔭', oldRole: 'SRE / DevOps', newRole: 'ליד תצפיתיות', oneLiner: 'עוקב אחר ייצור מול כוונת ה-spec; מפעיל מחזורי תיקון עצמי כשמערכות סוטות', stage: 'שלב 7', accent: 'emerald' },
     ],
     coreShiftTitle: 'השינוי המרכזי',
     coreShift: [
@@ -549,16 +561,14 @@ export const slidesHE = [
     benefits: ['הקשר ראשי נקי', 'ביצוע מקבילי', 'עצי עבודה מבודדים'],
     callout: 'אותן ספסיפיקציות. אותן גדרות הגנה. כל מודל.',
     withoutBeat: {
-      kicker: 'פעימה 1 · ללא תזמור',
-      title: 'ללא תזמור, כל משימה עולה בהקשר.',
-      body: 'כשאין הפרדה בין תכנון לביצוע, ההקשר הראשי עושה הכול: מתכנן, מבצע, סוקר, מאבחן. הוא מתמלא מהר. ה-Compaction נכנס לפעולה. הפרויקט מאבד את הזיכרון שלו.',
-      trapReference: 'זכור שקופית 5 — מלכודת הדחיסה',
+      kicker: 'פעימה 1 · שורש הבעיה',
+      title: 'שתי הדרכים עוברות דרך הקשר אחד.',
+      body: 'למלכודת הדחיסה היו שתי דרכים — העמסת מסמכים ענקיים מראש, או פשוט בנייה של פיצ׳ר אחרי פיצ׳ר. לשתיהן שורש אחד: הקשר יחיד שעושה את כל העבודה. הוא מתמלא, ה-Compaction נכנס לפעולה, והפרויקט מאבד את הזיכרון שלו.',
+      trapReference: 'שתי הדרכים ממלכודת הדחיסה מגיעות לכאן',
       contextSteps: [
-        'Feature 1 תוכנן ובוצע בהקשר הראשי — הקשר ב-30%',
-        'איבחון באגים ותיקון באותו הקשר — הקשר ב-55%',
-        'Feature 2 החל — הקשר ב-75%, המודל מסכם בשקט',
-        'סקירה ואיבחון — הקשר דוחס, החלטות מוקדמות אבדו',
-        'Feature 3: ה-AI כבר לא זוכר את החלטות הארכיטקטורה המקוריות',
+        'תכנון, בנייה, debug — הכול בהקשר אחד',
+        'כל משימה משאירה שארית; החלון מטפס',
+        'ה-Compaction נכנס לפעולה; ההחלטות המוקדמות נעלמות',
         'הפיצ׳ר השני הוא המקום שבו רוב פרויקטי ה-AI מתים.',
       ],
     },
