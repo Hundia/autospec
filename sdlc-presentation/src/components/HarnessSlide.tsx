@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import {
   ShieldCheck,
+  Workflow,
   Boxes,
   ScrollText,
   Lock,
@@ -216,7 +217,7 @@ export default function HarnessSlide({ data, lang }: HarnessSlideProps) {
           transition={{ delay: 0.1, type: 'spring', stiffness: 180, damping: 16 }}
           className="w-16 h-16 rounded-2xl bg-emerald-500/12 border border-emerald-400/30 flex items-center justify-center mb-7"
         >
-          <ShieldCheck size={30} className="text-emerald-300" strokeWidth={1.75} />
+          <Workflow size={30} className="text-emerald-300" strokeWidth={1.75} />
         </motion.div>
 
         <motion.p
@@ -281,7 +282,7 @@ export default function HarnessSlide({ data, lang }: HarnessSlideProps) {
           viewport={{ once: true }}
           className="mb-6"
         >
-          <Layers size={28} className="text-emerald-300/80 mx-auto" />
+          <Workflow size={28} className="text-emerald-300/80 mx-auto" />
         </motion.div>
         <motion.p
           initial={{ opacity: 0, y: -8 }}
@@ -296,15 +297,43 @@ export default function HarnessSlide({ data, lang }: HarnessSlideProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-5 leading-tight max-w-3xl"
+          className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-8 leading-tight max-w-3xl"
         >
           {data.introHeading}
         </motion.h2>
+
+        {/* Pipeline stages visualization */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          dir="ltr"
+          className="flex flex-wrap items-center justify-center gap-2 mb-8"
+        >
+          {[
+            { label: 'Spec', color: 'border-cyan-500/40 text-cyan-300/80 bg-cyan-500/8' },
+            { label: 'Agent Task', color: 'border-blue-500/40 text-blue-300/80 bg-blue-500/8' },
+            { label: 'Pipeline Gates', color: 'border-emerald-500/50 text-emerald-300 bg-emerald-500/12 font-semibold' },
+            { label: 'Human Review', color: 'border-violet-500/40 text-violet-300/80 bg-violet-500/8' },
+            { label: 'Ship', color: 'border-teal-500/40 text-teal-300/80 bg-teal-500/8' },
+          ].map((stage, i, arr) => (
+            <React.Fragment key={stage.label}>
+              <span className={`px-3 py-1.5 rounded-lg border text-xs font-mono ${stage.color}`}>
+                {stage.label}
+              </span>
+              {i < arr.length - 1 && (
+                <ArrowRight size={14} className="text-white/20 shrink-0" />
+              )}
+            </React.Fragment>
+          ))}
+        </motion.div>
+
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.3 }}
           className="text-white/60 max-w-2xl leading-relaxed text-base sm:text-lg"
         >
           {data.introBody}
