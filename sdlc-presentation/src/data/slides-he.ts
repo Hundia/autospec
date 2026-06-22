@@ -14,8 +14,6 @@ export const slidesHE = [
   // 2. paradigmShift — the reframe: AI is not a tool you adopt
   {
     type: 'paradigmShift',
-    kicker: 'מבט מחדש',
-    mistake: "אני חושב שהטעות הראשונה בהטמעת AI היא לקרוא לזה 'הטמעת AI'. כי ברגע שקוראים לזה כך, אנשים חושבים שמדובר בכלי.",
     struckPhrase: 'AI Adoption',
     truth: 'בעיניי זה לא כלי שמטמיעים — זה שינוי באופן שבו העבודה עצמה מתבצעת.',
     dimensionsLead: 'מה באמת משתנה',
