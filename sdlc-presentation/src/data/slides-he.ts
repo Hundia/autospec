@@ -7,8 +7,7 @@ export const slidesHE = [
     title: 'The Agentic SDLC',
     subtitle: 'פיתוח מונחה-ספסיפיקציות בסקאלה ארגונית',
     tagline: 'סוכנים מבצעים. בני אדם מנהלים.',
-    presenter: 'מאת אלי חונדיה',
-    collaborator: 'בשיתוף עם שרון שוורץ',
+    presenter: 'מאת אלי חונדיה ושרון שוורץ',
   },
 
   // 2. paradigmShift — the reframe: AI is not a tool you adopt

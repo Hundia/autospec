@@ -7,7 +7,6 @@ interface TitleSlideProps {
     subtitle: string;
     tagline: string;
     presenter?: string;
-    collaborator?: string;
   };
   lang: 'en' | 'he';
 }
@@ -93,28 +92,16 @@ export default function TitleSlide({ data, lang }: TitleSlideProps) {
           {data.subtitle}
         </motion.p>
 
-        {/* Presenter name + collaborator credit */}
+        {/* Presenter names */}
         {data.presenter && (
-          <div className="mb-8">
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.55, duration: 0.4 }}
-              className="text-lg text-white/50 font-light"
-            >
-              {data.presenter}
-            </motion.p>
-            {data.collaborator && (
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.65, duration: 0.4 }}
-                className="text-sm text-white/35 font-light italic mt-1"
-              >
-                {data.collaborator}
-              </motion.p>
-            )}
-          </div>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.55, duration: 0.4 }}
+            className="text-lg text-white/50 font-light mb-8"
+          >
+            {data.presenter}
+          </motion.p>
         )}
 
         {/* Tagline — word-by-word stagger */}
