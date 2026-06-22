@@ -492,23 +492,23 @@ export const slidesEN = [
     type: 'harness',
     scrollable: true,
 
-    kicker: 'ACT 3 · THE SAFETY NET',
-    heroTitle: 'Guardrail Engineering',
-    heroSubtitle: 'Agents move fast and make mistakes. Guardrails are the automatic gates that catch every mistake before it ships.',
-    scrollHint: 'Scroll to see four guardrails through real moments',
+    kicker: 'ACT 3 · THE EXECUTION PIPELINE',
+    heroTitle: 'The Execution Pipeline',
+    heroSubtitle: 'A methodology for running AI agents with control. Every task flows through a structured pipeline — specs feed it, gates enforce it, humans govern it.',
+    scrollHint: 'Scroll to see four pipeline gates through real agent moments',
 
-    introKicker: 'What is a guardrail?',
-    introHeading: 'A rule the agent cannot talk its way past.',
+    introKicker: 'The methodology',
+    introHeading: 'Spec in. Verified output out.',
     introBody:
-      'A guardrail is an automated check that sits between the agent and your codebase. Every change the agent makes has to pass through it. If the change breaks a rule, the guardrail blocks it or corrects it — no human has to be watching. Let us look at four of them through something the agent actually tried to do.',
+      'Every agent task enters a structured pipeline: it starts from a spec, executes under a focused brief, and passes through automated gates before any output lands in the codebase. The gates do not slow the agent down — they make every output trustworthy. Here are four of those gates through something the agent actually tried to do.',
 
-    casesKicker: 'Four guardrails · four real moments',
+    casesKicker: 'Four pipeline gates · four real moments',
 
     cases: [
       {
         iconKey: 'Boxes',
         accent: 'blue',
-        kicker: 'Guardrail 01 · Tech Stack',
+        kicker: 'Gate 01 · Tech Stack',
         name: 'Tech Stack Enforcement',
         attemptLabel: 'Agent tried',
         scenario: 'Mid-task, the agent decides it would be easier to pull in a brand-new charting library — and a second framework to go with it.',
@@ -522,7 +522,7 @@ export const slidesEN = [
       {
         iconKey: 'ScrollText',
         accent: 'violet',
-        kicker: 'Guardrail 02 · Conventions',
+        kicker: 'Gate 02 · Conventions',
         name: 'Coding Conventions',
         attemptLabel: 'Agent tried',
         scenario: 'The agent writes working code, but in its own style — snake_case names, 2-space tabs, no semicolons — nothing like the rest of the repo.',
@@ -536,7 +536,7 @@ export const slidesEN = [
       {
         iconKey: 'Lock',
         accent: 'cyan',
-        kicker: 'Guardrail 03 · Security',
+        kicker: 'Gate 03 · Security',
         name: 'Security',
         attemptLabel: 'Agent tried',
         scenario: 'To "just make it work", the agent hardcodes an API key and builds a SQL query by gluing user input straight into the string.',
@@ -550,7 +550,7 @@ export const slidesEN = [
       {
         iconKey: 'Layers',
         accent: 'emerald',
-        kicker: 'Guardrail 04 · Architecture',
+        kicker: 'Gate 04 · Architecture',
         name: 'Architecture',
         attemptLabel: 'Agent tried',
         scenario: 'Taking a shortcut, the agent calls the database directly from a UI component instead of going through the service layer.',
@@ -564,17 +564,17 @@ export const slidesEN = [
     ],
 
     loopKicker: 'And it compounds',
-    loopHeading: 'Guardrails only ever get stronger.',
+    loopHeading: 'The pipeline only ever gets stronger.',
     loopBody:
-      'Here is the part that changes everything: every mistake the agent makes is not just blocked — it is captured as a new permanent guardrail. The net never shrinks. It grows with every error it has ever seen.',
+      'Here is the part that changes everything: every agent error is not just blocked — it is captured and encoded back into the pipeline as a permanent rule. The pipeline never shrinks. It grows with every mistake it has ever seen.',
     loopSteps: [
-      'Agent acts',
-      'Guardrail catches the error',
-      'Error encoded as a permanent rule',
-      'Guardrails grow',
+      'Agent executes',
+      'Gate catches the error',
+      'Error encoded as permanent rule',
+      'Pipeline grows',
     ],
-    loopBackNote: 'every error makes the next agent safer',
-    callout: 'Every agent error becomes a permanent guardrail. Humans never have to catch the same mistake twice — the net only ever grows stronger.',
+    loopBackNote: 'every error makes the next run safer',
+    callout: 'Every agent error becomes a permanent gate. Humans never have to catch the same mistake twice — the pipeline only ever gets stronger.',
   },
 
   // sdlcRoles
