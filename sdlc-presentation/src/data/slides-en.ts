@@ -761,17 +761,17 @@ export const slidesEN = [
           cells: ['✓ Enforced gate', '~ Conventions', '✗', '~ Via scripts', '✓', '✓ OSS (MIT)'],
         },
         {
-          id: 'openspec', glyph: '📐', name: 'OpenSpec', short: 'OpenSpec', role: 'The Proposal Flow', accent: 'teal',
-          tagline: 'Change-as-proposal: every delta is a reviewed spec.',
-          whatItIs: 'An open spec-driven approach where each change is authored as a proposal and approved before execution, keeping a reviewable history of intent.',
-          bullets: ['Change = proposal', 'Reviewable spec history', 'Lightweight, repo-native', 'Open source, no API keys'],
+          id: 'openspec', glyph: '📐', name: 'OpenSpec', short: 'OpenSpec', role: 'Propose → Apply → Archive', accent: 'teal',
+          tagline: 'Version control for intent — align humans and AI before any code.',
+          whatItIs: 'One calm loop for every change. Propose the intent as a change folder, apply the tasks against it, then archive it as the new source of truth — and that archived spec feeds the next change. Brownfield-first: it scales 1 → n on real codebases.',
+          bullets: ['Propose → Apply → Archive — one loop', 'Each change is a reviewed proposal first', 'Archived spec becomes the source of truth', 'Brownfield-first, scales 1 → n'],
           terminal: [
-            { text: '$ openspec propose "add waitlist"', type: 'command' },
-            { text: '✓ proposal/waitlist.md → review', type: 'success' },
-            { text: '✓ approved → ready to implement', type: 'success' },
+            { text: '$ /opsx:propose add-mfl-telemetry', type: 'command' },
+            { text: '✓ change folder created → review', type: 'success' },
+            { text: '$ /opsx:apply → /opsx:archive', type: 'success' },
           ],
           repo: 'openspec.dev',
-          cells: ['✓ Proposal → approve', '~ Spec-level', '~ Change history', '~ Via scripts', '✓', '✓ OSS'],
+          cells: ['✓ Propose → approve', '~ Spec-level', '✓ Archived truth', '~ Via scripts', '✓', '✓ OSS'],
         },
         {
           id: 'autospec', glyph: '🧬', name: 'AutoSpec', short: 'AutoSpec', role: 'The Unifier', accent: 'teal', home: true,
@@ -869,9 +869,10 @@ export const slidesEN = [
     closing: 'These are the tools that make the methodology real. Next: how to adopt them — Foundation → Expand → Optimize.',
   },
 
-  // openSpec — SCROLLABLE · merged "What is OpenSpec" + "Anatomy of a Spec"
+  // openSpec — HIDDEN (folded into the OpenSpec tab of the Tooling slide)
   {
     type: 'openSpec',
+    hidden: true,
     variant: 'unified',
     scrollable: true,
 

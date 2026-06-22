@@ -285,16 +285,11 @@ export default function DemoIntroSlide({ data, lang }: DemoIntroSlideProps) {
           playsInline
           aria-hidden="true"
         />
-        {/* Dark overlay — keeps text legible, lets corner drones show through */}
+        {/* Content sits above the raw video — no overlay; text carries its own shadow for legibility */}
         <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              'radial-gradient(ellipse at 50% 45%, rgba(15,23,42,0.88) 0%, rgba(15,23,42,0.75) 45%, rgba(15,23,42,0.60) 100%)',
-          }}
-        />
-        {/* Content sits above video layers */}
-        <div className="relative z-10 flex flex-col items-center">
+          className="relative z-10 flex flex-col items-center"
+          style={{ filter: 'drop-shadow(0 2px 10px rgba(0,0,0,0.75))' }}
+        >
           <motion.p
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
