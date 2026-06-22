@@ -293,46 +293,6 @@ export const slidesEN = [
 
   // ── ACT 3 — THE AGENTIC SDLC METHODOLOGY (slides 11–15) ──────────────────────
 
-  // 11. philosophy
-  {
-    type: 'philosophy',
-    title: 'Core Philosophy',
-    subtitle: 'Five ideas that change everything',
-    cards: [
-      {
-        icon: '🎯',
-        title: 'Cycles, Not Sprints',
-        description: 'A Cycle is a bounded, independently-testable delivery unit — spec-approved, AI-executed, guardrail-verified. Measured in hours or days, not weeks. Speed is the output of structure.',
-        accent: 'blue',
-      },
-      {
-        icon: '👁',
-        title: 'Humans as Orchestrators',
-        description: 'Engineers move from Executors (writing code) to Orchestrators — designing specs, reviewing agent output, maintaining the guardrails.',
-        accent: 'violet',
-      },
-      {
-        icon: '✍️',
-        title: 'Governors & Reviewers',
-        description: 'Without strong governance, HITL becomes rubber-stamping. AI-driven execution + structured specs + enforced governance is what separates genuine oversight from theater.',
-        accent: 'teal',
-      },
-      {
-        icon: '🛡',
-        title: 'Guardrails Cannot Be Bypassed',
-        description: 'Tests, linters, types, constraints agents cannot violate. Every agent error becomes a permanent guardrail test — it cannot recur. The guardrails only ever grow stronger.',
-        accent: 'emerald',
-      },
-      {
-        icon: '📄',
-        title: 'The Spec is the Truth',
-        description: 'No code before the spec is approved. Spec is version-controlled and updated before code changes. Kills spec rot.',
-        accent: 'amber',
-      },
-    ],
-    quote: 'The Spec is the Truth. The Guardrails are the Protection. The Human is the Judge.',
-  },
-
   // agentic5Acts — SCROLLABLE
   {
     type: 'agentic5Acts',
@@ -589,6 +549,47 @@ export const slidesEN = [
     callout: 'Every agent error becomes a permanent gate. Humans never have to catch the same mistake twice — the pipeline only ever gets stronger.',
   },
 
+  // philosophy — Core Philosophy — HIDDEN (kept in file, filtered out of the deck via `hidden`)
+  {
+    type: 'philosophy',
+    hidden: true,
+    title: 'Core Philosophy',
+    subtitle: 'Five ideas that change everything',
+    cards: [
+      {
+        icon: '🎯',
+        title: 'Cycles, Not Sprints',
+        description: 'A Cycle is a bounded, independently-testable delivery unit — spec-approved, AI-executed, guardrail-verified. Measured in hours or days, not weeks. Speed is the output of structure.',
+        accent: 'blue',
+      },
+      {
+        icon: '👁',
+        title: 'Humans as Orchestrators',
+        description: 'Engineers move from Executors (writing code) to Orchestrators — designing specs, reviewing agent output, maintaining the guardrails.',
+        accent: 'violet',
+      },
+      {
+        icon: '✍️',
+        title: 'Governors & Reviewers',
+        description: 'Without strong governance, HITL becomes rubber-stamping. AI-driven execution + structured specs + enforced governance is what separates genuine oversight from theater.',
+        accent: 'teal',
+      },
+      {
+        icon: '🛡',
+        title: 'Guardrails Cannot Be Bypassed',
+        description: 'Tests, linters, types, constraints agents cannot violate. Every agent error becomes a permanent guardrail test — it cannot recur. The guardrails only ever grow stronger.',
+        accent: 'emerald',
+      },
+      {
+        icon: '📄',
+        title: 'The Spec is the Truth',
+        description: 'No code before the spec is approved. Spec is version-controlled and updated before code changes. Kills spec rot.',
+        accent: 'amber',
+      },
+    ],
+    quote: 'The Spec is the Truth. The Guardrails are the Protection. The Human is the Judge.',
+  },
+
   // sdlcRoles
   {
     type: 'sdlcRoles',
@@ -760,17 +761,17 @@ export const slidesEN = [
           cells: ['✓ Enforced gate', '~ Conventions', '✗', '~ Via scripts', '✓', '✓ OSS (MIT)'],
         },
         {
-          id: 'openspec', glyph: '📐', name: 'OpenSpec', short: 'OpenSpec', role: 'The Proposal Flow', accent: 'teal',
-          tagline: 'Change-as-proposal: every delta is a reviewed spec.',
-          whatItIs: 'An open spec-driven approach where each change is authored as a proposal and approved before execution, keeping a reviewable history of intent.',
-          bullets: ['Change = proposal', 'Reviewable spec history', 'Lightweight, repo-native', 'Open source, no API keys'],
+          id: 'openspec', glyph: '📐', name: 'OpenSpec', short: 'OpenSpec', role: 'Propose → Apply → Archive', accent: 'teal',
+          tagline: 'Version control for intent — align humans and AI before any code.',
+          whatItIs: 'One calm loop for every change. Propose the intent as a change folder, apply the tasks against it, then archive it as the new source of truth — and that archived spec feeds the next change. Brownfield-first: it scales 1 → n on real codebases.',
+          bullets: ['Propose → Apply → Archive — one loop', 'Each change is a reviewed proposal first', 'Archived spec becomes the source of truth', 'Brownfield-first, scales 1 → n'],
           terminal: [
-            { text: '$ openspec propose "add waitlist"', type: 'command' },
-            { text: '✓ proposal/waitlist.md → review', type: 'success' },
-            { text: '✓ approved → ready to implement', type: 'success' },
+            { text: '$ /opsx:propose add-mfl-telemetry', type: 'command' },
+            { text: '✓ change folder created → review', type: 'success' },
+            { text: '$ /opsx:apply → /opsx:archive', type: 'success' },
           ],
           repo: 'openspec.dev',
-          cells: ['✓ Proposal → approve', '~ Spec-level', '~ Change history', '~ Via scripts', '✓', '✓ OSS'],
+          cells: ['✓ Propose → approve', '~ Spec-level', '✓ Archived truth', '~ Via scripts', '✓', '✓ OSS'],
         },
         {
           id: 'autospec', glyph: '🧬', name: 'AutoSpec', short: 'AutoSpec', role: 'The Unifier', accent: 'teal', home: true,
@@ -809,38 +810,38 @@ export const slidesEN = [
       eyebrow: 'Where the truth is protected.',
       thesis: 'The Guardrails are the Protection.',
       dimensions: [
-        'No code before a failing test',
-        'Enforced automatically (not advisory)',
-        'Hooks into the agent loop',
-        'Encodes every fix as a test',
+        'Behavioral skills (SKILL.md)',
+        'Brainstorm + plan before code',
+        'Enforced workflow, not advice',
+        'Subagent-driven execution',
         'Setup cost',
       ],
       frameworks: [
         {
-          id: 'superpowers', glyph: '🦸', name: 'Superpowers', short: 'Superpowers', role: 'Guardrail Enforcement', accent: 'violet',
-          tagline: 'Strict TDD for agents — no implementation before a failing test exists.',
-          whatItIs: 'An execution-discipline layer that governs agent behavior during implementation: agents are prohibited from writing implementation code until a failing test exists.',
-          bullets: ['Strict TDD, enforced on the agent', 'Blocks implementation without a red test', 'Plugs into the cycle loop', 'Turns every bug into a permanent test'],
+          id: 'superpowers', glyph: '🦸', name: 'Superpowers', short: 'Superpowers', role: 'Agentic Skills Framework', accent: 'violet',
+          tagline: 'Senior-engineering discipline for coding agents — skills they must follow, not tips they might.',
+          whatItIs: 'An open-source skills framework (obra) that pulls coding agents back into real engineering process. Composable SKILL.md behavioral guides the agent must consult before acting: brainstorm the design, break it into micro-tasks, write tests first, execute through fresh subagents, then review systematically — so agents stop producing spaghetti.',
+          bullets: ['SKILL.md guides — mandatory, not advisory', 'Brainstorm → plan → build → review workflow', 'Subagent-driven: a fresh agent per task', 'TDD + systematic debugging baked in'],
           terminal: [
-            { text: '$ superpowers cycle --task tasks.md#42', type: 'command' },
-            { text: '⛔ No implementation without failing test', type: 'error' },
-            { text: '✓ Test fails → OK to implement now', type: 'success' },
+            { text: '$ /plugin install superpowers', type: 'command' },
+            { text: '✓ skills armed — consulted before any task', type: 'success' },
+            { text: '→ brainstorm · plan · test-first · subagents', type: 'info' },
           ],
           repo: 'github.com/obra/superpowers',
-          cells: ['✓ Enforced', '✓ Hard block', '✓ Cycle hooks', '✓ Regression tests', '~ Install + config'],
+          cells: ['✓ 14 skills', '✓ Design-first', '✓ Mandatory', '✓ Fresh agent / task', '~ Install + config'],
         },
         {
-          id: 'diy-guard', glyph: '🛠️', name: 'Write Your Own Guardrails', short: 'DIY', role: 'The DIY Path', accent: 'violet',
-          tagline: 'CI + pre-commit can enforce the same discipline you build yourself.',
-          whatItIs: 'Reproduce the discipline with tooling you already own: pre-commit hooks, a CI gate that fails on missing tests, and an agent prompt contract that forbids untested code.',
-          bullets: ['pre-commit: tests + lint + types', 'CI gate fails on coverage drop', 'Prompt contract: red test first', 'Full control, you maintain it'],
+          id: 'diy-guard', glyph: '🛠️', name: 'Write Your Own Discipline', short: 'DIY', role: 'The DIY Path', accent: 'violet',
+          tagline: 'Encode the same skills yourself — a prompt contract plus CI and pre-commit gates.',
+          whatItIs: 'Reproduce the discipline with tooling you already own: a prompt contract that forces brainstorm-then-plan-then-test, pre-commit hooks for tests and lint, and a CI gate that fails on untested code.',
+          bullets: ['Prompt contract: design + plan first', 'pre-commit: tests + lint + types', 'CI gate fails on coverage drop', 'Full control, you maintain it'],
           terminal: [
             { text: '$ pre-commit install', type: 'command' },
-            { text: '# CI: fail if new code lacks a failing-then-passing test', type: 'info' },
-            { text: '✓ guardrails enforced in your pipeline', type: 'success' },
+            { text: '# prompt contract: brainstorm → plan → test-first', type: 'info' },
+            { text: '✓ discipline enforced in your pipeline', type: 'success' },
           ],
           repo: 'your repo',
-          cells: ['~ If you wire it', '~ Via CI only', '~ Manual', '~ If disciplined', '~ DIY effort'],
+          cells: ['~ Prompt contract', '~ If disciplined', '~ Via CI only', '✗ Manual', '~ DIY effort'],
         },
       ],
     },
@@ -868,9 +869,10 @@ export const slidesEN = [
     closing: 'These are the tools that make the methodology real. Next: how to adopt them — Foundation → Expand → Optimize.',
   },
 
-  // openSpec — SCROLLABLE · merged "What is OpenSpec" + "Anatomy of a Spec"
+  // openSpec — HIDDEN (folded into the OpenSpec tab of the Tooling slide)
   {
     type: 'openSpec',
+    hidden: true,
     variant: 'unified',
     scrollable: true,
 

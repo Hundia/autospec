@@ -281,46 +281,6 @@ export const slidesHE = [
 
   // ── ACT 3 — THE AGENTIC SDLC METHODOLOGY ─────────────────────────────────────
 
-  // 10. philosophy
-  {
-    type: 'philosophy',
-    title: 'הפילוסופיה המרכזית',
-    subtitle: 'חמש רעיונות שמשנות הכל',
-    cards: [
-      {
-        icon: '🎯',
-        title: 'מחזורים, לא ספרינטים',
-        description: 'מחזור הוא יחידת מסירה תחומה וניתנת לבדיקה עצמאית — ספסיפיקציה מאושרת, ביצוע AI, אימות גדרות הגנה. נמדד בשעות או ימים, לא שבועות. מהירות היא תוצר של מבנה.',
-        accent: 'blue',
-      },
-      {
-        icon: '👁',
-        title: 'בני אדם כמתזמנים',
-        description: 'מהנדסים עוברים ממבצעים (כותבי קוד) למתזמנים — מעצבי ספסיפיקציות, סוקרי פלט סוכנים, מתחזקי גדרות ההגנה.',
-        accent: 'violet',
-      },
-      {
-        icon: '✍️',
-        title: 'מנהלים ומסקרים',
-        description: 'ללא ממשל חזק, HITL הופך לאישור גומי. ביצוע אג\'נטי + ספסיפיקציות מובנות + ממשל נאכף — זה מה שמפריד פיקוח אמיתי מהצגה.',
-        accent: 'teal',
-      },
-      {
-        icon: '🛡',
-        title: 'גדרות ההגנה לא ניתנות לעקיפה',
-        description: 'בדיקות, linters, טיפוסים, אילוצים שסוכנים לא יכולים להפר. כל שגיאת סוכן הופכת לבדיקת הגנה קבועה — היא לא יכולה לחזור. גדרות ההגנה רק הולכות ומתחזקות.',
-        accent: 'emerald',
-      },
-      {
-        icon: '📄',
-        title: 'הספסיפיקציה היא האמת',
-        description: 'אין קוד לפני אישור הספסיפיקציה. הספסיפיקציה מנוהלת בגרסאות ומעודכנת לפני שינויי קוד. מסיים ריקבון ספסיפיקציות.',
-        accent: 'amber',
-      },
-    ],
-    quote: 'הספסיפיקציה היא האמת. גדרות ההגנה הן המגן. האדם הוא השופט.',
-  },
-
   // 11. agentic5Acts — SCROLLABLE
   {
     type: 'agentic5Acts',
@@ -484,6 +444,47 @@ export const slidesHE = [
       },
     ],
     verdict: 'אז כשקוראים לזה Vibe Coding — זה לא. זה זה.',
+  },
+
+  // philosophy — Core Philosophy — HIDDEN (kept in file, filtered out of the deck via `hidden`)
+  {
+    type: 'philosophy',
+    hidden: true,
+    title: 'הפילוסופיה המרכזית',
+    subtitle: 'חמש רעיונות שמשנות הכל',
+    cards: [
+      {
+        icon: '🎯',
+        title: 'מחזורים, לא ספרינטים',
+        description: 'מחזור הוא יחידת מסירה תחומה וניתנת לבדיקה עצמאית — ספסיפיקציה מאושרת, ביצוע AI, אימות גדרות הגנה. נמדד בשעות או ימים, לא שבועות. מהירות היא תוצר של מבנה.',
+        accent: 'blue',
+      },
+      {
+        icon: '👁',
+        title: 'בני אדם כמתזמנים',
+        description: 'מהנדסים עוברים ממבצעים (כותבי קוד) למתזמנים — מעצבי ספסיפיקציות, סוקרי פלט סוכנים, מתחזקי גדרות ההגנה.',
+        accent: 'violet',
+      },
+      {
+        icon: '✍️',
+        title: 'מנהלים ומסקרים',
+        description: 'ללא ממשל חזק, HITL הופך לאישור גומי. ביצוע אג\'נטי + ספסיפיקציות מובנות + ממשל נאכף — זה מה שמפריד פיקוח אמיתי מהצגה.',
+        accent: 'teal',
+      },
+      {
+        icon: '🛡',
+        title: 'גדרות ההגנה לא ניתנות לעקיפה',
+        description: 'בדיקות, linters, טיפוסים, אילוצים שסוכנים לא יכולים להפר. כל שגיאת סוכן הופכת לבדיקת הגנה קבועה — היא לא יכולה לחזור. גדרות ההגנה רק הולכות ומתחזקות.',
+        accent: 'emerald',
+      },
+      {
+        icon: '📄',
+        title: 'הספסיפיקציה היא האמת',
+        description: 'אין קוד לפני אישור הספסיפיקציה. הספסיפיקציה מנוהלת בגרסאות ומעודכנת לפני שינויי קוד. מסיים ריקבון ספסיפיקציות.',
+        accent: 'amber',
+      },
+    ],
+    quote: 'הספסיפיקציה היא האמת. גדרות ההגנה הן המגן. האדם הוא השופט.',
   },
 
   // 13. harness — HIDDEN (repetitive with The Agentic SDLC)
@@ -653,17 +654,17 @@ export const slidesHE = [
       dimensions: [ 'שער אישור ספסיפיקציה', 'אכיפת TDD / גדרות הגנה', 'סיכומי מחזורים / זיכרון', 'סנכרון ALM וכלים (Jira / TFS)', 'אגנוסטי למודל', 'רישיון / קוד פתוח' ],
       frameworks: [
         { id: 'spec-kit', glyph: '⚙️', name: 'Spec-Kit', short: 'Spec-Kit', role: 'עמוד השדרה', accent: 'teal', tagline: 'הספסיפיקציה במרכז; אין קוד עד שהספסיפיקציה מאושרת.', whatItIs: 'המסגרת הפתוחה של GitHub שמציבה ספסיפיקציה קריאת-מכונה במרכז זרימת העבודה ומתנה את המימוש באישור אנושי.', bullets: ['spec.md הוא החוזה', 'שער אישור אנושי לפני קוד', 'זרימת עבודה מבוססת-שלבים', 'קוד פתוח, ניטרלי לספק'], terminal: [ { text: '$ specify init && specify spec --from PROJ-421', type: 'command' }, { text: '✓ spec.md created — awaiting approval', type: 'success' }, { text: '⛔ implementation blocked: spec.approved = false', type: 'error' } ], repo: 'github.com/github/spec-kit', cells: ['✓ שער אכוף', '~ מוסכמות', '✗', '~ דרך סקריפטים', '✓', '✓ OSS (MIT)'] },
-        { id: 'openspec', glyph: '📐', name: 'OpenSpec', short: 'OpenSpec', role: 'זרימת הצעות', accent: 'teal', tagline: 'שינוי-כהצעה: כל דלתא היא ספסיפיקציה נסקרת.', whatItIs: 'גישה פתוחה מונחית-ספסיפיקציות שבה כל שינוי נכתב כהצעה ומאושר לפני ביצוע, תוך שמירת היסטוריית כוונות נסקרת.', bullets: ['שינוי = הצעה', 'היסטוריית ספסיפיקציות נסקרת', 'קליל, נטיב ל-repo', 'קוד פתוח, ללא מפתחות API'], terminal: [ { text: '$ openspec propose "add waitlist"', type: 'command' }, { text: '✓ proposal/waitlist.md → review', type: 'success' }, { text: '✓ approved → ready to implement', type: 'success' } ], repo: 'openspec.dev', cells: ['✓ הצעה → אישור', '~ ברמת ספסיפיקציה', '~ היסטוריית שינויים', '~ דרך סקריפטים', '✓', '✓ OSS'] },
+        { id: 'openspec', glyph: '📐', name: 'OpenSpec', short: 'OpenSpec', role: 'Propose → Apply → Archive', accent: 'teal', tagline: 'Version control לכוונה — יישור בין בני אדם ל-AI לפני קוד.', whatItIs: 'לולאה רגועה אחת לכל שינוי. מציעים את הכוונה כתיקיית שינוי, מיישמים את המשימות מולה, ואז מארכבים אותה כמקור האמת החדש — והספסיפיקציה המארכבת מזינה את השינוי הבא. Brownfield-first: מתרחב 1 → n על קוד אמיתי.', bullets: ['Propose → Apply → Archive — לולאה אחת', 'כל שינוי הוא קודם הצעה נסקרת', 'הספסיפיקציה המארכבת הופכת למקור האמת', 'Brownfield-first, מתרחב 1 → n'], terminal: [ { text: '$ /opsx:propose add-mfl-telemetry', type: 'command' }, { text: '✓ change folder created → review', type: 'success' }, { text: '$ /opsx:apply → /opsx:archive', type: 'success' } ], repo: 'openspec.dev', cells: ['✓ הצעה → אישור', '~ ברמת ספסיפיקציה', '✓ אמת מארכבת', '~ דרך סקריפטים', '✓', '✓ OSS'] },
         { id: 'autospec', glyph: '🧬', name: 'AutoSpec', short: 'AutoSpec', role: 'המאחד', accent: 'teal', home: true, tagline: 'שער ספסיפיקציה + גדרות הגנה + זיכרון חי + סנכרון ALM — מסגרת אחת.', whatItIs: 'המסגרת שהמצגת הזו עצמה בנויה בה. היא מאחדת את המשמעות: שער הספסיפיקציה, אכיפת TDD/גדרות הגנה, ו-Docs הנשמרים לצד ה-Specs כזיכרון חי ארוך-טווח, עם מיומנויות שמסנכרנות Jira / TFS.', bullets: ['שער ספסיפיקציה + ספסים מבוססי-תפקיד', 'גדרות הגנה אכופות, לא מוצעות', 'Docs ⇄ Specs = זיכרון עמיד', 'מיומנויות: Jira/TFS → ספסיפיקציה → PR', 'כל מודל (ניתוב FinOps)'], terminal: [ { text: '$ autospec cycle start --from PROJ-421', type: 'command' }, { text: '✓ spec.md gated · guardrails armed', type: 'success' }, { text: '✓ cycle-12 summary will persist to docs/', type: 'success' } ], repo: 'github.com/Hundia/autospec', cells: ['✓ שער + תפקידים', '✓ גדרות מובנות', '✓ זיכרון Docs ⇄ Specs', '✓ Jira / TFS', '✓ כל מודל', '✓ OSS (Hundia/autospec)'] },
         { id: 'diy', glyph: '✍️', name: 'Write Your Own Spec', short: 'DIY', role: 'הדרך העצמאית', accent: 'teal', tagline: 'אין מסגרת? קודד את המשמעת בעצמך.', whatItIs: 'אינך צריך מוצר — אתה צריך את המשמעות. constitution.md, תבנית ספסיפיקציה, שער אישור ב-CI וגדרות pre-commit משחזרים את רוב הערך.', bullets: ['constitution.md ככללים שלך', 'תבנית ספסיפיקציה + שער אישור PR', 'גדרות הגנה דרך CI / pre-commit', 'שליטה מלאה, תחזוקה מלאה'], terminal: [ { text: '$ mkdir specs && touch constitution.md spec-template.md', type: 'command' }, { text: '# CI: block merge unless spec.approved label', type: 'info' }, { text: '# pre-commit: tests + lint + types = guardrails', type: 'info' } ], repo: 'your repo', cells: ['~ אתה מגדיר', '~ hooks עצמאיים', '~ בעצמך', '~ אתה מחבר', '✓', 'n/a — repo שלך'] },
       ],
     },
     guardPage: {
       page: '2', accent: 'violet', label: 'משמעת ביצוע', eyebrow: 'היכן האמת מוגנת.', thesis: 'גדרות ההגנה הן ההגנה.',
-      dimensions: [ 'אין קוד לפני בדיקה כושלת', 'אכיפה אוטומטית (לא המלצה)', 'מתחבר ללולאת הסוכן', 'מקודד כל תיקון כבדיקה', 'עלות הקמה' ],
+      dimensions: [ 'מיומנויות התנהגות (SKILL.md)', 'סיעור מוחות + תכנון לפני קוד', 'תהליך אכוף, לא המלצה', 'ביצוע מבוסס תת-סוכנים', 'עלות הקמה' ],
       frameworks: [
-        { id: 'superpowers', glyph: '🦸', name: 'Superpowers', short: 'Superpowers', role: 'אכיפת גדרות הגנה', accent: 'violet', tagline: 'TDD קפדני לסוכנים — אין מימוש לפני שקיימת בדיקה כושלת.', whatItIs: 'שכבת משמעת-ביצוע שמנהלת את התנהגות הסוכן בזמן המימוש: אסור לסוכנים לכתוב קוד מימוש עד שקיימת בדיקה כושלת.', bullets: ['TDD קפדני, אכוף על הסוכן', 'חוסם מימוש ללא בדיקה אדומה', 'מתחבר ללולאת המחזור', 'הופך כל באג לבדיקה קבועה'], terminal: [ { text: '$ superpowers cycle --task tasks.md#42', type: 'command' }, { text: '⛔ No implementation without failing test', type: 'error' }, { text: '✓ Test fails → OK to implement now', type: 'success' } ], repo: 'github.com/obra/superpowers', cells: ['✓ אכוף', '✓ חסימה קשיחה', '✓ hooks למחזור', '✓ בדיקות רגרסיה', '~ התקנה + הגדרה'] },
-        { id: 'diy-guard', glyph: '🛠️', name: 'Write Your Own Guardrails', short: 'DIY', role: 'הדרך העצמאית', accent: 'violet', tagline: 'CI + pre-commit יכולים לאכוף את אותה משמעת שאתה בונה בעצמך.', whatItIs: 'שחזר את המשמעת עם כלים שכבר ברשותך: hooks של pre-commit, שער CI שנכשל על בדיקות חסרות, וחוזה פרומפט לסוכן שאוסר קוד לא-נבדק.', bullets: ['pre-commit: בדיקות + lint + types', 'שער CI נכשל על ירידת כיסוי', 'חוזה פרומפט: בדיקה אדומה תחילה', 'שליטה מלאה, אתה מתחזק'], terminal: [ { text: '$ pre-commit install', type: 'command' }, { text: '# CI: fail if new code lacks a failing-then-passing test', type: 'info' }, { text: '✓ guardrails enforced in your pipeline', type: 'success' } ], repo: 'your repo', cells: ['~ אם תחבר', '~ דרך CI בלבד', '~ ידני', '~ אם ממושמע', '~ מאמץ עצמאי'] },
+        { id: 'superpowers', glyph: '🦸', name: 'Superpowers', short: 'Superpowers', role: 'מסגרת skills אג\'נטית', accent: 'violet', tagline: 'משמעת של מהנדס בכיר לסוכני קוד — מיומנויות שהם חייבים לפעול לפיהן, לא טיפים שאולי.', whatItIs: 'מסגרת skills בקוד פתוח (obra) שמחזירה סוכני קוד אל תהליך הנדסי אמיתי. מדריכי התנהגות מסוג SKILL.md שהסוכן חייב להיוועץ בהם לפני פעולה: לסעור מוחות על העיצוב, לפרק למשימות-מיקרו, לכתוב בדיקות תחילה, לבצע דרך תת-סוכנים טריים, ואז לסקור באופן שיטתי — כדי שסוכנים יפסיקו לייצר ספגטי.', bullets: ['מדריכי SKILL.md — חובה, לא המלצה', 'זרימה: סיעור מוחות ← תכנון ← בנייה ← סקירה', 'מבוסס תת-סוכנים: סוכן טרי לכל משימה', 'TDD + דיבוג שיטתי מובנים בפנים'], terminal: [ { text: '$ /plugin install superpowers', type: 'command' }, { text: '✓ skills armed — consulted before any task', type: 'success' }, { text: '→ brainstorm · plan · test-first · subagents', type: 'info' } ], repo: 'github.com/obra/superpowers', cells: ['✓ 14 מיומנויות', '✓ עיצוב-תחילה', '✓ חובה', '✓ סוכן טרי / משימה', '~ התקנה + הגדרה'] },
+        { id: 'diy-guard', glyph: '🛠️', name: 'Write Your Own Discipline', short: 'DIY', role: 'הדרך העצמאית', accent: 'violet', tagline: 'קודד את אותן מיומנויות בעצמך — חוזה פרומפט יחד עם שערי CI ו-pre-commit.', whatItIs: 'שחזר את המשמעת עם כלים שכבר ברשותך: חוזה פרומפט שמכריח סיעור-מוחות-ואז-תכנון-ואז-בדיקה, hooks של pre-commit לבדיקות ו-lint, ושער CI שנכשל על קוד לא-נבדק.', bullets: ['חוזה פרומפט: עיצוב + תכנון תחילה', 'pre-commit: בדיקות + lint + types', 'שער CI נכשל על ירידת כיסוי', 'שליטה מלאה, אתה מתחזק'], terminal: [ { text: '$ pre-commit install', type: 'command' }, { text: '# prompt contract: brainstorm → plan → test-first', type: 'info' }, { text: '✓ discipline enforced in your pipeline', type: 'success' } ], repo: 'your repo', cells: ['~ חוזה פרומפט', '~ אם ממושמע', '~ דרך CI בלבד', '✗ ידני', '~ מאמץ עצמאי'] },
       ],
     },
     memoryPage: {
@@ -674,9 +675,10 @@ export const slidesHE = [
     closing: 'אלה הכלים שהופכים את המתודולוגיה לאמיתית. הבא: איך לאמץ אותם — יסוד → הרחבה → אופטימיזציה.',
   },
 
-  // 18. openSpec — SCROLLABLE · merged
+  // 18. openSpec — HIDDEN (folded into the OpenSpec tab of the Tooling slide)
   {
     type: 'openSpec',
+    hidden: true,
     variant: 'unified',
     scrollable: true,
     kicker: 'הכלי שמאחורי הדמו',
