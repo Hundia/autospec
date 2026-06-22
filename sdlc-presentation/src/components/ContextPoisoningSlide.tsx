@@ -24,6 +24,12 @@ interface FillStage {
   fill: number;     // window fill % after this on-ramp
 }
 
+interface SessionStep {
+  label: string;
+  detail: string;
+  fill: number;     // cumulative window fill % after this task
+}
+
 interface OnRamp {
   label: string;
   note: string;
@@ -47,6 +53,12 @@ interface ContextPoisoningData {
   instinctLead: string;
   bigDocs: BigDoc[];
   instinctReframe: string;
+  // Beat 1B — on-ramp B: the long session
+  secondRampKicker: string;
+  secondRampTitle: string;
+  secondRampLead: string;
+  sessionSteps: SessionStep[];
+  secondRampReframe: string;
   // Beat 2 — the window fills
   windowKicker: string;
   windowTitle: string;
@@ -208,6 +220,85 @@ export default function ContextPoisoningSlide({ data, lang }: ContextPoisoningSl
         >
           <FileStack size={24} className="text-amber-400/80 shrink-0" />
           <p className="text-lg sm:text-xl font-bold text-amber-200 leading-snug">{data.instinctReframe}</p>
+        </motion.div>
+      </section>
+
+      {/* ── BEAT 1B — ON-RAMP B: THE LONG SESSION (continuous development) ─────── */}
+      <section className="min-h-[90vh] flex flex-col justify-center py-20 px-6 border-t border-amber-500/15 bg-amber-500/[0.03]">
+        <motion.p
+          initial={{ opacity: 0, y: -10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className={`text-[10px] sm:text-xs tracking-[0.4em] text-amber-400/70 uppercase font-mono mb-4 ${isRTL ? 'text-right' : ''}`}
+        >
+          {data.secondRampKicker}
+        </motion.p>
+        <motion.h3
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+          className={`text-3xl sm:text-5xl font-black text-white leading-tight mb-4 ${isRTL ? 'text-right' : ''}`}
+        >
+          {data.secondRampTitle}
+        </motion.h3>
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className={`text-base sm:text-lg text-white/60 max-w-2xl mb-12 leading-relaxed ${isRTL ? 'text-right self-end' : ''}`}
+        >
+          {data.secondRampLead}
+        </motion.p>
+
+        {/* One long-lived session: tasks stack, the same window climbs (LTR) */}
+        <div dir="ltr" className="rounded-2xl border border-amber-500/20 bg-slate-950/40 px-5 sm:px-8 py-8">
+          <div className="flex items-center gap-2 mb-6 font-mono text-xs">
+            <MessageSquare size={15} className="text-amber-300/70" />
+            <span className="text-white/40 uppercase tracking-widest">One main context · one long session</span>
+          </div>
+          <div className="flex flex-col gap-4">
+            {data.sessionSteps.map((step, i) => {
+              const tier = fillTier(step.fill);
+              const pctColor = step.fill < 45 ? 'text-amber-300' : step.fill < 80 ? 'text-orange-400' : 'text-red-400';
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 + i * 0.18, duration: 0.4 }}
+                >
+                  <div className="flex items-baseline justify-between mb-1">
+                    <span className="text-sm font-bold text-white/75 leading-tight">{step.label}</span>
+                    <span className={`text-base sm:text-lg font-black ${pctColor}`}>{step.fill}%</span>
+                  </div>
+                  <span className="text-[11px] text-white/40 leading-snug">{step.detail}</span>
+                  <div className="mt-2 h-1.5 rounded-full bg-slate-700/50 overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${step.fill}%` }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.35 + i * 0.18, duration: 0.7 }}
+                      className={`h-full ${fillBar[tier]}`}
+                    />
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ delay: 0.2 }}
+          className={`mt-10 flex items-center gap-3 ${isRTL ? 'flex-row-reverse text-right' : ''}`}
+        >
+          <Zap size={22} className="text-amber-400/80 shrink-0" />
+          <p className="text-lg sm:text-xl font-bold text-amber-200 leading-snug">{data.secondRampReframe}</p>
         </motion.div>
       </section>
 

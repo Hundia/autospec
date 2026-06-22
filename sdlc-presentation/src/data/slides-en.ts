@@ -91,10 +91,10 @@ export const slidesEN = [
     scrollable: true,
     kicker: 'A PROBLEM HIDING INSIDE GOOD INTENTIONS',
     title: 'The Compaction Trap',
-    hook: 'The trap is that being thorough is exactly what kills you.',
+    hook: 'Two roads fill the context window. Both end at the same wall.',
     scrollHint: 'Scroll to watch the window fill',
-    // ── Beat 1 — the instinct ──
-    instinctKicker: 'THE INSTINCT',
+    // ── Beat 1 — on-ramp A: the instinct (front-load everything) ──
+    instinctKicker: 'ON-RAMP A · THE INSTINCT',
     instinctTitle: 'You do the responsible thing — you give it everything.',
     instinctLead: "Before the agent writes a line, you hand it all the context: the full PRD, the design doc, the API reference, the meeting notes. The responsible move. That's the trap.",
     bigDocs: [
@@ -106,10 +106,21 @@ export const slidesEN = [
       { icon: 'FileStack', name: 'The old codebase, dumped in', weight: 'all of it · ~70k tokens', fill: 95 },
     ],
     instinctReframe: 'None of this is careless. Every one of these is the diligent thing to do.',
-    // ── Beat 2 — the window fills ──
-    windowKicker: 'THE WINDOW FILLS',
-    windowTitle: 'The context window is a budget — and you spent it before work began.',
-    windowLead: 'It is finite. Every document you paste in claims a slice. The gauge climbs past the danger line before a single useful instruction is ever given.',
+    // ── Beat 1B — on-ramp B: the long session (just keep building) ──
+    secondRampKicker: 'ON-RAMP B · THE LONG SESSION',
+    secondRampTitle: 'Or you upload nothing — you just keep building.',
+    secondRampLead: 'No giant paste. One long-lived session: plan a feature, fix a bug, start the next. Every task leaves its residue in the same context. The window fills just as surely — only slower, and quieter.',
+    sessionSteps: [
+      { label: 'Feature 1 — planned & built', detail: 'all in the main context', fill: 30 },
+      { label: '+ bug triage & fix', detail: 'same context, same chat', fill: 55 },
+      { label: '+ Feature 2 kicked off', detail: 'the model quietly summarises', fill: 78 },
+      { label: '+ review & debug', detail: 'early decisions compacted away', fill: 98 },
+    ],
+    secondRampReframe: 'Same wall, different road. The window fills whether you front-load it or grow into it.',
+    // ── Beat 2 — two roads, one wall ──
+    windowKicker: 'TWO ROADS, ONE WALL',
+    windowTitle: 'The context window is a finite budget — and every road spends it to the same wall.',
+    windowLead: 'It is finite. Whether you paste it all in at once or accumulate it task by task, the gauge climbs past the danger line before the real thinking ever begins.',
     budgetLabel: 'Context window budget',
     fillStages: [
       { label: 'PRD pasted', detail: 'one giant doc, up front', fill: 20 },
@@ -117,10 +128,10 @@ export const slidesEN = [
       { label: '+ notes + code', detail: 'no room left to think', fill: 98 },
     ],
     wallLabel: '98% FULL — before any real work',
-    onRampsLead: 'Many on-ramps, one wall →',
+    onRampsLead: 'Two roads, one wall →',
     onRamps: [
-      { label: 'One giant doc, up front', note: 'fills the window before you write a line' },
-      { label: 'A few big docs over iterations', note: 'stacks up like a long chat' },
+      { label: 'Road A — front-loaded', note: 'one giant upload fills the window before you write a line' },
+      { label: 'Road B — accumulated', note: 'feature after feature stacks up across one long session' },
       { label: 'A late pivot near the limit', note: 'tips a nearly-full window over the edge' },
     ],
     // ── Beat 3 — the result (compaction) ──
@@ -626,16 +637,14 @@ export const slidesEN = [
     benefits: ['Clean main context', 'Parallel execution', 'Isolated worktrees'],
     callout: 'Same specs. Same guardrails. Any model.',
     withoutBeat: {
-      kicker: 'BEAT 1 · WITHOUT ORCHESTRATION',
-      title: 'Without orchestration, every task costs context.',
-      body: 'When there is no separation of concerns, the main context does all the work: planning, executing, reviewing, debugging. It fills fast. Compaction kicks in. The project loses its memory.',
-      trapReference: 'Remember slide 5 — The Compaction Trap',
+      kicker: 'BEAT 1 · THE ROOT CAUSE',
+      title: 'Both roads run through one context.',
+      body: 'The Compaction Trap had two on-ramps — front-loading giant docs, or just building feature after feature. They share one root cause: a single context doing all the work. It fills, compaction fires, and the project loses its memory.',
+      trapReference: 'Both roads from The Compaction Trap end here',
       contextSteps: [
-        'Feature 1 planned and executed in main context — context at 30%',
-        'Bug triage + fix in same context — context at 55%',
-        'Feature 2 kicked off — context at 75%, model summarises quietly',
-        'Review and debugging — context compacted, early decisions forgotten',
-        'Feature 3: AI no longer remembers the original architecture decisions',
+        'Plan, build, debug — all in one context',
+        'Every task leaves residue; the window climbs',
+        'Compaction fires; the early decisions vanish',
         'The second feature is where most AI projects go to die.',
       ],
     },
