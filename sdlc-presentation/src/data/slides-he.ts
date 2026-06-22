@@ -446,9 +446,10 @@ export const slidesHE = [
     verdict: 'אז כשקוראים לזה Vibe Coding — זה לא. זה זה.',
   },
 
-  // philosophy — Core Philosophy (placed AFTER "What You Just Saw Has a Name")
+  // philosophy — Core Philosophy — HIDDEN (kept in file, filtered out of the deck via `hidden`)
   {
     type: 'philosophy',
+    hidden: true,
     title: 'הפילוסופיה המרכזית',
     subtitle: 'חמש רעיונות שמשנות הכל',
     cards: [
@@ -660,10 +661,10 @@ export const slidesHE = [
     },
     guardPage: {
       page: '2', accent: 'violet', label: 'משמעת ביצוע', eyebrow: 'היכן האמת מוגנת.', thesis: 'גדרות ההגנה הן ההגנה.',
-      dimensions: [ 'אין קוד לפני בדיקה כושלת', 'אכיפה אוטומטית (לא המלצה)', 'מתחבר ללולאת הסוכן', 'מקודד כל תיקון כבדיקה', 'עלות הקמה' ],
+      dimensions: [ 'מיומנויות התנהגות (SKILL.md)', 'סיעור מוחות + תכנון לפני קוד', 'תהליך אכוף, לא המלצה', 'ביצוע מבוסס תת-סוכנים', 'עלות הקמה' ],
       frameworks: [
-        { id: 'superpowers', glyph: '🦸', name: 'Superpowers', short: 'Superpowers', role: 'אכיפת גדרות הגנה', accent: 'violet', tagline: 'TDD קפדני לסוכנים — אין מימוש לפני שקיימת בדיקה כושלת.', whatItIs: 'שכבת משמעת-ביצוע שמנהלת את התנהגות הסוכן בזמן המימוש: אסור לסוכנים לכתוב קוד מימוש עד שקיימת בדיקה כושלת.', bullets: ['TDD קפדני, אכוף על הסוכן', 'חוסם מימוש ללא בדיקה אדומה', 'מתחבר ללולאת המחזור', 'הופך כל באג לבדיקה קבועה'], terminal: [ { text: '$ superpowers cycle --task tasks.md#42', type: 'command' }, { text: '⛔ No implementation without failing test', type: 'error' }, { text: '✓ Test fails → OK to implement now', type: 'success' } ], repo: 'github.com/obra/superpowers', cells: ['✓ אכוף', '✓ חסימה קשיחה', '✓ hooks למחזור', '✓ בדיקות רגרסיה', '~ התקנה + הגדרה'] },
-        { id: 'diy-guard', glyph: '🛠️', name: 'Write Your Own Guardrails', short: 'DIY', role: 'הדרך העצמאית', accent: 'violet', tagline: 'CI + pre-commit יכולים לאכוף את אותה משמעת שאתה בונה בעצמך.', whatItIs: 'שחזר את המשמעת עם כלים שכבר ברשותך: hooks של pre-commit, שער CI שנכשל על בדיקות חסרות, וחוזה פרומפט לסוכן שאוסר קוד לא-נבדק.', bullets: ['pre-commit: בדיקות + lint + types', 'שער CI נכשל על ירידת כיסוי', 'חוזה פרומפט: בדיקה אדומה תחילה', 'שליטה מלאה, אתה מתחזק'], terminal: [ { text: '$ pre-commit install', type: 'command' }, { text: '# CI: fail if new code lacks a failing-then-passing test', type: 'info' }, { text: '✓ guardrails enforced in your pipeline', type: 'success' } ], repo: 'your repo', cells: ['~ אם תחבר', '~ דרך CI בלבד', '~ ידני', '~ אם ממושמע', '~ מאמץ עצמאי'] },
+        { id: 'superpowers', glyph: '🦸', name: 'Superpowers', short: 'Superpowers', role: 'מסגרת skills אג\'נטית', accent: 'violet', tagline: 'משמעת של מהנדס בכיר לסוכני קוד — מיומנויות שהם חייבים לפעול לפיהן, לא טיפים שאולי.', whatItIs: 'מסגרת skills בקוד פתוח (obra) שמחזירה סוכני קוד אל תהליך הנדסי אמיתי. מדריכי התנהגות מסוג SKILL.md שהסוכן חייב להיוועץ בהם לפני פעולה: לסעור מוחות על העיצוב, לפרק למשימות-מיקרו, לכתוב בדיקות תחילה, לבצע דרך תת-סוכנים טריים, ואז לסקור באופן שיטתי — כדי שסוכנים יפסיקו לייצר ספגטי.', bullets: ['מדריכי SKILL.md — חובה, לא המלצה', 'זרימה: סיעור מוחות ← תכנון ← בנייה ← סקירה', 'מבוסס תת-סוכנים: סוכן טרי לכל משימה', 'TDD + דיבוג שיטתי מובנים בפנים'], terminal: [ { text: '$ /plugin install superpowers', type: 'command' }, { text: '✓ skills armed — consulted before any task', type: 'success' }, { text: '→ brainstorm · plan · test-first · subagents', type: 'info' } ], repo: 'github.com/obra/superpowers', cells: ['✓ 14 מיומנויות', '✓ עיצוב-תחילה', '✓ חובה', '✓ סוכן טרי / משימה', '~ התקנה + הגדרה'] },
+        { id: 'diy-guard', glyph: '🛠️', name: 'Write Your Own Discipline', short: 'DIY', role: 'הדרך העצמאית', accent: 'violet', tagline: 'קודד את אותן מיומנויות בעצמך — חוזה פרומפט יחד עם שערי CI ו-pre-commit.', whatItIs: 'שחזר את המשמעת עם כלים שכבר ברשותך: חוזה פרומפט שמכריח סיעור-מוחות-ואז-תכנון-ואז-בדיקה, hooks של pre-commit לבדיקות ו-lint, ושער CI שנכשל על קוד לא-נבדק.', bullets: ['חוזה פרומפט: עיצוב + תכנון תחילה', 'pre-commit: בדיקות + lint + types', 'שער CI נכשל על ירידת כיסוי', 'שליטה מלאה, אתה מתחזק'], terminal: [ { text: '$ pre-commit install', type: 'command' }, { text: '# prompt contract: brainstorm → plan → test-first', type: 'info' }, { text: '✓ discipline enforced in your pipeline', type: 'success' } ], repo: 'your repo', cells: ['~ חוזה פרומפט', '~ אם ממושמע', '~ דרך CI בלבד', '✗ ידני', '~ מאמץ עצמאי'] },
       ],
     },
     memoryPage: {
