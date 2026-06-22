@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import TerminalVisualization from './pipeline/TerminalVisualization';
-import SpecGridVisualization from './pipeline/SpecGridVisualization';
+import ConstraintsVisualization from './pipeline/ConstraintsVisualization';
 import SkillsVisualization from './pipeline/SkillsVisualization';
 import WorktreeDiagram from './pipeline/WorktreeDiagram';
 import QALoopVisualization from './pipeline/QALoopVisualization';
@@ -32,7 +32,7 @@ interface AgenticFiveActsSlideProps {
 
 const vizMap: Record<string, React.FC<{ lang: 'en' | 'he' }>> = {
   '1': TerminalVisualization,
-  '2': SpecGridVisualization,
+  '2': ConstraintsVisualization,
   '3': SkillsVisualization,
   '4': WorktreeDiagram,
   '5': QALoopVisualization,
