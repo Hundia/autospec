@@ -37,10 +37,12 @@ import AgenticFiveActsSlide from '../components/AgenticFiveActsSlide';
 import SpecRotSlide from '../components/SpecRotSlide';
 import OpenSpecSlide from '../components/OpenSpecSlide';
 import DemoIntroSlide from '../components/DemoIntroSlide';
+import ParadigmShiftSlide from '../components/ParadigmShiftSlide';
 
 // Per-slide accent color — follows the deck's thermal identity
 const slideAccent: Record<string, string> = {
   title: '#60a5fa',
+  paradigmShift: '#818cf8',
   eraTraditional: '#94a3b8',
   eraAssistant: '#34d399',
   eraAgentic: '#fb923c',
@@ -62,8 +64,7 @@ const slideAccent: Record<string, string> = {
   tooling: '#2dd4bf',
   adoption: '#34d399',
   closing: '#a78bfa',
-  openSpecWhat: '#2dd4bf',
-  openSpecAnatomy: '#22d3ee',
+  openSpec: '#2dd4bf',
   demoIntro: '#34d399',
   finalTagline: '#60a5fa',
 };
@@ -185,6 +186,7 @@ function ZapMenu({ lang, setLang, accentColor, isRTL }: ZapMenuProps) {
 
 const slideComponents = {
   title: TitleSlide,
+  paradigmShift: ParadigmShiftSlide,
   eraTraditional: EraTraditionalSlide,
   eraAssistant: EraAssistantSlide,
   eraAgentic: EraAgenticSlide,
@@ -206,8 +208,7 @@ const slideComponents = {
   tooling: ToolingSlide,
   adoption: AdoptionSlide,
   closing: ClosingSlide,
-  openSpecWhat: OpenSpecSlide,
-  openSpecAnatomy: OpenSpecSlide,
+  openSpec: OpenSpecSlide,
   demoIntro: DemoIntroSlide,
   finalTagline: FinalTaglineSlide,
 };
@@ -218,7 +219,9 @@ export default function PresentationPage() {
   const [direction, setDirection] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const slides = lang === 'en' ? slidesEN : slidesHE;
+  const slides = (lang === 'en' ? slidesEN : slidesHE).filter(
+    (s) => !(s as { hidden?: boolean }).hidden
+  );
   const isRTL = lang === 'he';
 
   const nextSlide = () => {

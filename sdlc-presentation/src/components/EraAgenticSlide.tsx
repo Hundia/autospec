@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { motion } from 'framer-motion';
 
 interface EraAgenticSlideProps {
@@ -52,63 +53,59 @@ export default function EraAgenticSlide({ data }: EraAgenticSlideProps): JSX.Ele
         ))}
       </motion.div>
 
-      {/* Split layout */}
-      <div className="grid grid-cols-2 gap-6">
-        {/* The Power */}
-        <div>
-          <motion.h3
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="text-cyan-400 font-bold text-xl mb-4 text-center"
-          >
-            The Power
-          </motion.h3>
-          <div className="space-y-3">
-            {data.power.map((item, idx) => (
+      {/* Split layout: single grid so corresponding Power/Danger rows share height */}
+      <div className="grid grid-cols-2 gap-x-6 gap-y-3 auto-rows-fr items-stretch">
+        {/* Column headers (first grid row) */}
+        <motion.h3
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="text-cyan-400 font-bold text-xl mb-1 text-center"
+        >
+          The Power
+        </motion.h3>
+        <motion.h3
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="text-amber-400 font-bold text-xl mb-1 text-center"
+        >
+          The Danger
+        </motion.h3>
+
+        {/* Card rows: each Power/Danger pair occupies one auto-row of equal height */}
+        {data.power.map((powerItem, idx) => {
+          const dangerItem = data.danger[idx];
+          return (
+            <Fragment key={idx}>
               <motion.div
-                key={idx}
                 initial={{ opacity: 0, x: -15 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 + idx * 0.12 }}
-                className="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-4"
+                className="h-full bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-4"
               >
-                <p className="text-white font-semibold text-sm mb-0.5">{item.title}</p>
-                <p className="text-slate-400 text-xs">{item.description}</p>
+                <p className="text-white font-semibold text-sm mb-0.5">{powerItem.title}</p>
+                <p className="text-slate-400 text-xs">{powerItem.description}</p>
               </motion.div>
-            ))}
-          </div>
-        </div>
 
-        {/* The Danger */}
-        <div>
-          <motion.h3
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="text-amber-400 font-bold text-xl mb-4 text-center"
-          >
-            The Danger
-          </motion.h3>
-          <div className="space-y-3">
-            {data.danger.map((item, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: 15 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5 + idx * 0.12 }}
-                animate-custom={idx === data.danger.length - 1 ? 'glitch' : undefined}
-                className="bg-amber-500/10 border border-amber-500/40 border-dashed rounded-lg p-4"
-              >
-                <p className="text-amber-300 font-semibold text-sm mb-0.5">
-                  <span className="mr-1">⚠️</span>
-                  {item.title}
-                </p>
-                <p className="text-slate-400 text-xs">{item.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+              {dangerItem && (
+                <motion.div
+                  initial={{ opacity: 0, x: 15 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5 + idx * 0.12 }}
+                  animate-custom={idx === data.danger.length - 1 ? 'glitch' : undefined}
+                  className="h-full bg-amber-500/10 border border-amber-500/40 border-dashed rounded-lg p-4"
+                >
+                  <p className="text-amber-300 font-semibold text-sm mb-0.5">
+                    <span className="mr-1">⚠️</span>
+                    {dangerItem.title}
+                  </p>
+                  <p className="text-slate-400 text-xs">{dangerItem.description}</p>
+                </motion.div>
+              )}
+            </Fragment>
+          );
+        })}
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ScrollText, BookOpen, ArrowLeftRight, Database } from 'lucide-react';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -36,16 +37,10 @@ interface ComparePage {
   frameworks: Framework[];
 }
 
-interface PipelinePage {
-  page: string;
-  accent: string;
-  label: string;
-  eyebrow: string;
-  headline: string;
-  source: { id: string; title: string; status: string };
-  stages: Array<{ n: string; verb: string; sub: string }>;
-  terminal: TerminalLine[];
-  callout: string;
+interface MemoryMapping {
+  spec: string;     // e.g. 'specs/02-architect.md'
+  doc: string;      // e.g. 'docs/architecture/'
+  relation: string; // short caption of the mapping
 }
 
 interface MemoryPage {
@@ -55,9 +50,9 @@ interface MemoryPage {
   eyebrow: string;
   headline: string;
   syncBadge: string;
-  bullets: string[];
-  tree: Array<{ name: string; depth: number; icon: string; files?: string[] }>;
-  treeFooter: string;
+  specHeading: string;
+  docHeading: string;
+  mappings: MemoryMapping[];
   callout: string;
 }
 
@@ -70,7 +65,6 @@ interface ToolingSlideProps {
     intro: { roadmap: Array<{ id: string; label: string; accent: string }> };
     specPage: ComparePage;
     guardPage: ComparePage;
-    pipelinePage: PipelinePage;
     memoryPage: MemoryPage;
     closing: string;
   };
@@ -339,86 +333,10 @@ function TabbedCompare({ data, isRTL }: { data: ComparePage; isRTL: boolean }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Pipeline (Page 3)
+// Living memory: Specs ⇄ Docs mapping (Page 3)
 // ─────────────────────────────────────────────────────────────────────────────
 
-function TicketToPRFlow({ data, isRTL }: { data: PipelinePage; isRTL: boolean }) {
-  const colors = accentMap[data.accent] || accentMap.cyan;
-
-  return (
-    <SectionShell accent={data.accent} page={data.page} label={data.label} eyebrow={data.eyebrow} isRTL={isRTL}>
-      <motion.h3
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className={`text-3xl sm:text-4xl font-black mb-8 tracking-tight ${colors.text}`}
-      >
-        {data.headline}
-      </motion.h3>
-
-      {/* Flow chain (LTR) */}
-      <div dir="ltr" className="flex flex-col md:flex-row items-stretch md:items-center gap-3 mb-8">
-        {/* Source ticket card */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="rounded-lg border border-blue-500/30 bg-blue-500/10 px-3 py-2.5 font-mono text-[11px] shrink-0"
-        >
-          <div className="text-blue-300 font-bold">{data.source.id}</div>
-          <div className="text-white/60 mt-0.5">"{data.source.title}"</div>
-          <span className="inline-block mt-1.5 text-[9px] bg-blue-500/20 text-blue-300 rounded-full px-2 py-0.5">
-            🟦 {data.source.status}
-          </span>
-        </motion.div>
-
-        {data.stages.map((stage, idx) => (
-          <React.Fragment key={stage.n}>
-            <span className="hidden md:inline text-white/25 text-lg shrink-0">→</span>
-            <span className="md:hidden text-white/25 text-lg text-center">↓</span>
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.12 }}
-              className={`flex-1 rounded-lg border ${colors.border} bg-slate-900/60 px-3 py-2.5`}
-            >
-              <div className="flex items-center gap-2 mb-1">
-                <span className={`flex items-center justify-center w-5 h-5 rounded-full ${colors.badge} font-mono font-black text-[10px]`}>
-                  {stage.n}
-                </span>
-                <span className={`text-xs font-bold ${colors.text}`}>{stage.verb}</span>
-              </div>
-              <div className="text-[10px] text-white/45 leading-tight">{stage.sub}</div>
-            </motion.div>
-          </React.Fragment>
-        ))}
-      </div>
-
-      {/* Terminal narration */}
-      <div className="max-w-3xl">
-        <MiniTerminal lines={data.terminal} stagger={0.18} />
-      </div>
-
-      {/* Callout */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.4 }}
-        className={`mt-5 inline-flex self-start items-center gap-2 rounded-lg px-4 py-2.5 ${colors.bg} border ${colors.border}`}
-      >
-        <span className={`text-sm ${colors.text} font-medium`}>{data.callout}</span>
-      </motion.div>
-    </SectionShell>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Memory tree (Page 4)
-// ─────────────────────────────────────────────────────────────────────────────
-
-function MemoryTree({ data, isRTL }: { data: MemoryPage; isRTL: boolean }) {
+function LivingMemory({ data, isRTL }: { data: MemoryPage; isRTL: boolean }) {
   const colors = accentMap[data.accent] || accentMap.emerald;
 
   return (
@@ -427,79 +345,68 @@ function MemoryTree({ data, isRTL }: { data: MemoryPage; isRTL: boolean }) {
         initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className={`text-3xl sm:text-4xl font-black mb-8 tracking-tight ${colors.text}`}
+        className={`text-3xl sm:text-4xl font-black mb-3 tracking-tight ${colors.text}`}
       >
         {data.headline}
       </motion.h3>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
-        {/* Left: prose */}
-        <ul className="space-y-4">
-          {data.bullets.map((b, idx) => (
-            <motion.li
+      {/* Living-memory badge */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.1 }}
+        className="flex mb-7"
+      >
+        <span className={`inline-flex items-center gap-1.5 text-[11px] font-mono rounded-full px-3 py-1 ${colors.bg} border ${colors.border} ${colors.text}`}>
+          <Database className="w-3.5 h-3.5" />
+          {data.syncBadge}
+        </span>
+      </motion.div>
+
+      {/* Mapping board — Specs on the left, Docs on the right, arrows between (always LTR) */}
+      <div dir="ltr" className="rounded-2xl border border-white/10 bg-slate-950/60 p-4 sm:p-6 max-w-4xl mx-auto">
+        {/* Column headings */}
+        <div className="grid grid-cols-[1fr_auto_1fr] gap-3 sm:gap-4 items-center mb-3">
+          <div className="flex items-center gap-2">
+            <ScrollText className={`w-4 h-4 ${accentMap.teal.text}`} />
+            <span className={`text-xs font-bold uppercase tracking-wider ${accentMap.teal.text}`}>{data.specHeading}</span>
+          </div>
+          <div className="w-6" aria-hidden />
+          <div className="flex items-center gap-2 justify-end">
+            <BookOpen className={`w-4 h-4 ${colors.text}`} />
+            <span className={`text-xs font-bold uppercase tracking-wider ${colors.text}`}>{data.docHeading}</span>
+          </div>
+        </div>
+
+        {/* Mapping rows */}
+        <div className="space-y-2.5">
+          {data.mappings.map((m, idx) => (
+            <motion.div
               key={idx}
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.12 }}
-              className={`flex items-start gap-3 text-sm text-white/70 leading-relaxed ${isRTL ? 'flex-row-reverse text-right' : ''}`}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ delay: idx * 0.08 }}
+              className="grid grid-cols-[1fr_auto_1fr] gap-3 sm:gap-4 items-center"
             >
-              <span className={`shrink-0 mt-0.5 ${colors.text}`}>✓</span>
-              <span>{b}</span>
-            </motion.li>
-          ))}
-        </ul>
-
-        {/* Right: doc tree (LTR) */}
-        <div dir="ltr">
-          <div className="flex justify-center mb-3">
-            <span className={`inline-flex items-center gap-1.5 text-[11px] font-mono rounded-full px-3 py-1 ${colors.bg} border ${colors.border} ${colors.text}`}>
-              {data.syncBadge}
-            </span>
-          </div>
-          <div className="bg-slate-950 rounded-xl border border-emerald-500/20 p-5 max-w-md mx-auto font-mono text-sm">
-            {data.tree.map((folder, fi) => (
-              <div key={fi}>
-                <motion.div
-                  initial={{ opacity: 0, x: -15 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ delay: fi * 0.1 }}
-                  className="flex items-center gap-2 py-1"
-                  style={{ paddingLeft: `${folder.depth * 20}px` }}
-                >
-                  <span>{folder.icon}</span>
-                  <span className="text-emerald-400 font-bold">{folder.name}</span>
-                </motion.div>
-                {folder.files?.map((file, i) => {
-                  const isNew = file.includes('new');
-                  return (
-                    <motion.div
-                      key={file}
-                      initial={{ opacity: 0, x: -10, scale: isNew ? 0.96 : 1 }}
-                      whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                      viewport={{ once: true, amount: 0.3 }}
-                      transition={{ delay: fi * 0.1 + (i + 1) * 0.06 }}
-                      className="flex items-center gap-2 py-0.5"
-                      style={{ paddingLeft: `${(folder.depth + 1) * 20}px` }}
-                    >
-                      <span className={isNew ? 'text-emerald-400' : 'text-slate-600'}>{file.includes('/') ? '📁' : '📄'}</span>
-                      <span className={isNew ? 'text-emerald-300 font-semibold' : 'text-slate-400'}>{file}</span>
-                    </motion.div>
-                  );
-                })}
+              {/* Spec side */}
+              <div className={`rounded-lg border ${accentMap.teal.border} ${accentMap.teal.bg} px-3 py-2 font-mono text-[11px] sm:text-xs ${accentMap.teal.text} truncate`}>
+                {m.spec}
               </div>
-            ))}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 1.2 }}
-              className="mt-3 pt-3 border-t border-emerald-500/10 text-emerald-400/60 text-xs text-center"
-            >
-              {data.treeFooter}
+
+              {/* Connector */}
+              <div className="flex flex-col items-center justify-center text-white/30">
+                <ArrowLeftRight className="w-4 h-4" />
+                <span className="text-[8px] font-mono uppercase tracking-wider mt-0.5 text-white/25 whitespace-nowrap">{m.relation}</span>
+              </div>
+
+              {/* Doc side */}
+              <div className={`rounded-lg border ${colors.border} ${colors.bg} px-3 py-2 font-mono text-[11px] sm:text-xs ${colors.text} truncate text-right`}>
+                {m.doc}
+              </div>
             </motion.div>
-          </div>
+          ))}
         </div>
       </div>
 
@@ -599,8 +506,7 @@ export default function ToolingSlide({ data, lang }: ToolingSlideProps) {
       {/* ── PAGES ── */}
       <TabbedCompare data={data.specPage} isRTL={isRTL} />
       <TabbedCompare data={data.guardPage} isRTL={isRTL} />
-      <TicketToPRFlow data={data.pipelinePage} isRTL={isRTL} />
-      <MemoryTree data={data.memoryPage} isRTL={isRTL} />
+      <LivingMemory data={data.memoryPage} isRTL={isRTL} />
 
       {/* ── CLOSING HANDOFF ── */}
       <div className="min-h-[50vh] flex items-center justify-center px-6 pb-20">

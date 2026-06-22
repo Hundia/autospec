@@ -11,7 +11,35 @@ export const slidesEN = [
     collaborator: 'In collaboration with Sharon Schwartz',
   },
 
-  // 2. eraTraditional
+  // 2. paradigmShift — the reframe: AI is not a tool you adopt
+  {
+    type: 'paradigmShift',
+    kicker: 'A REFRAME',
+    mistake: "The first mistake in 'adopting AI' is calling it 'AI adoption.' The moment you name it that way, people assume it's just a tool.",
+    struckPhrase: 'AI Adoption',
+    truth: "It's not a tool you adopt — it's a shift in how the work itself happens.",
+    dimensionsLead: 'What actually shifts',
+    dimensions: {
+      knowledge: {
+        label: 'How knowledge is created',
+        detail: 'Understanding is generated in dialogue with the machine, not just retrieved from people.',
+      },
+      work: {
+        label: 'How work gets done',
+        detail: 'The unit of effort moves from typing code to specifying intent and steering outcomes.',
+      },
+      responsibility: {
+        label: 'How responsibility is shared',
+        detail: 'Accountability is redistributed between engineer and agent — neither owns it alone.',
+      },
+      engineers: {
+        label: 'How engineers see their craft',
+        detail: 'The profession redefines itself — from author of every line to architect of intent.',
+      },
+    },
+  },
+
+  // 3. eraTraditional
   {
     type: 'eraTraditional',
     title: 'The Traditional Era',
@@ -201,50 +229,13 @@ export const slidesEN = [
     },
   },
 
-  // ── ACT 2 — TURNING POINT (slides 8–9) ────────────────────────────────────────
+  // ── ACT 2 — TURNING POINT ─────────────────────────────────────────────────────
 
-  // 8. sddCostOfChaos
-  {
-    type: 'sddCostOfChaos',
-    kicker: 'DIAGNOSIS',
-    title: 'The Cost of No Specifications',
-    reframe: {
-      myth: 'The AI forgot everything.',
-      truth: 'You never gave it a source of truth.',
-    },
-    contrast: {
-      disease: 'DRIFT',
-      diseaseNote: 'no source of truth',
-      left: {
-        header: 'PROMPT-FIRST',
-        sub: 'intent lives in the prompt',
-        symptoms: [
-          'Session #51 — starts over',
-          'Turn 30 — context corrupts',
-          'Agent B — starts from zero',
-        ],
-      },
-      right: {
-        header: 'SPEC-FIRST',
-        sub: 'intent lives in the spec',
-        cures: [
-          'Define intent once',
-          'Anchor every agent',
-          'One shared document',
-        ],
-      },
-    },
-    crystal: {
-      word: 'SPECIFICATION',
-      definition: 'The source of truth you never wrote.',
-    },
-  },
-
-  // 9. bridge
+  // bridge
   {
     type: 'bridge',
     title: 'What if...',
-    question: 'What if the SDLC itself was rebuilt for agents?',
+    question: 'The SDLC itself was rebuilt for agents.',
     points: [
       'What if no agent could write code before a human approved the spec?',
       'What if every agent error became a permanent guardrail?',
@@ -252,9 +243,10 @@ export const slidesEN = [
     ],
   },
 
-  // 10. sddThreePillars — SDD DECLARATION (moved here from Act 4; defines the system before all methodology slides)
+  // sddThreePillars — HIDDEN (kept in file, filtered out of the deck via `hidden`)
   {
     type: 'sddThreePillars',
+    hidden: true,
     kicker: 'SPEC-DRIVEN DEVELOPMENT · WHAT IT IS',
     title: 'The Operating System of Agentic Development',
     definition: 'A methodology where the spec is never optional, every decision is traceable, and every agent operates inside human-approved boundaries.',
@@ -333,47 +325,7 @@ export const slidesEN = [
     quote: 'The Spec is the Truth. The Guardrails are the Protection. The Human is the Judge.',
   },
 
-  // 11. notVibeCoding
-  {
-    type: 'notVibeCoding',
-    title: 'What You Just Saw Has a Name',
-    subtitle: 'A discipline with rules, contracts, and accountability — by design.',
-    definitionLead: 'The practice',
-    definitionTerm: 'Governed Agentic Development',
-    pillars: [
-      {
-        key: 'teal',
-        icon: 'spec',
-        ordinal: '01',
-        label: 'The spec is the contract',
-        detail: 'No code before the spec is approved. The single source of truth every agent reads.',
-      },
-      {
-        key: 'emerald',
-        icon: 'guardrails',
-        ordinal: '02',
-        label: 'Guardrails are law',
-        detail: 'Tests, types, linters, constraints agents cannot bypass. Every error becomes a permanent test case.',
-      },
-      {
-        key: 'blue',
-        icon: 'human',
-        ordinal: '03',
-        label: 'The human is the judge',
-        detail: 'Human-in-the-loop checkpoints at every gate. Oversight, not rubber-stamping.',
-      },
-      {
-        key: 'violet',
-        icon: 'trail',
-        ordinal: '04',
-        label: 'Every move is on the record',
-        detail: 'Decisions, specs, and outputs are version-controlled and traceable. Nothing evaporates with the chat.',
-      },
-    ],
-    verdict: 'So when people call it vibe coding — it isn\'t. This is.',
-  },
-
-  // 12. agentic5Acts — SCROLLABLE
+  // agentic5Acts — SCROLLABLE
   {
     type: 'agentic5Acts',
     scrollable: true,
@@ -498,28 +450,137 @@ export const slidesEN = [
     ],
   },
 
-  // 13. harness
+  // notVibeCoding — "What You Just Saw Has a Name" (the summary of the Agentic SDLC)
   {
-    type: 'harness',
-    title: 'Guardrail Engineering',
-    subtitle: 'Automated protection that grows stronger with every agent error',
-    loopSteps: [
-      'Agent acts',
-      'Guardrails check',
-      'Error caught',
-      'Encoded as permanent test',
-      'Guardrails grow',
+    type: 'notVibeCoding',
+    title: 'What You Just Saw Has a Name',
+    subtitle: 'A discipline with rules, contracts, and accountability — by design.',
+    definitionLead: 'The practice',
+    definitionTerm: 'Governed Agentic Development',
+    pillars: [
+      {
+        key: 'teal',
+        icon: 'spec',
+        ordinal: '01',
+        label: 'The spec is the contract',
+        detail: 'No code before the spec is approved. The single source of truth every agent reads.',
+      },
+      {
+        key: 'emerald',
+        icon: 'guardrails',
+        ordinal: '02',
+        label: 'Guardrails are law',
+        detail: 'Tests, types, linters, constraints agents cannot bypass. Every error becomes a permanent test case.',
+      },
+      {
+        key: 'blue',
+        icon: 'human',
+        ordinal: '03',
+        label: 'The human is the judge',
+        detail: 'Human-in-the-loop checkpoints at every gate. Oversight, not rubber-stamping.',
+      },
+      {
+        key: 'violet',
+        icon: 'trail',
+        ordinal: '04',
+        label: 'Every move is on the record',
+        detail: 'Decisions, specs, and outputs are version-controlled and traceable. Nothing evaporates with the chat.',
+      },
     ],
-    layers: [
-      { icon: '✅', title: 'Tests (TDD-enforced)', description: 'No implementation without a failing test. Every agent error becomes a test case.', accent: 'green' },
-      { icon: '🔍', title: 'Linters & Static Analysis', description: 'Code style, security patterns, anti-patterns caught before merge.', accent: 'blue' },
-      { icon: '🔷', title: 'Type Systems', description: 'Types constrain what agents can generate — catching errors before runtime.', accent: 'violet' },
-      { icon: '⚖️', title: 'Constitution Constraints', description: 'Stack, security, architecture bounds injected into every agent context.', accent: 'amber' },
-    ],
-    callout: 'Every agent error becomes a permanent test case. The guardrails only ever get stronger.',
+    verdict: 'So when people call it vibe coding — it isn\'t. This is.',
   },
 
-  // 14. sdlcRoles
+  // harness — SCROLLABLE · guardrail use-cases
+  {
+    type: 'harness',
+    scrollable: true,
+
+    kicker: 'ACT 3 · THE SAFETY NET',
+    heroTitle: 'Guardrail Engineering',
+    heroSubtitle: 'Agents move fast and make mistakes. Guardrails are the automatic gates that catch every mistake before it ships.',
+    scrollHint: 'Scroll to see four guardrails through real moments',
+
+    introKicker: 'What is a guardrail?',
+    introHeading: 'A rule the agent cannot talk its way past.',
+    introBody:
+      'A guardrail is an automated check that sits between the agent and your codebase. Every change the agent makes has to pass through it. If the change breaks a rule, the guardrail blocks it or corrects it — no human has to be watching. Let us look at four of them through something the agent actually tried to do.',
+
+    casesKicker: 'Four guardrails · four real moments',
+
+    cases: [
+      {
+        iconKey: 'Boxes',
+        accent: 'blue',
+        kicker: 'Guardrail 01 · Tech Stack',
+        name: 'Tech Stack Enforcement',
+        attemptLabel: 'Agent tried',
+        scenario: 'Mid-task, the agent decides it would be easier to pull in a brand-new charting library — and a second framework to go with it.',
+        attemptCode: '$ npm install some-random-charts vue\n+ added 2 frameworks outside the approved stack',
+        verdict: 'BLOCKED',
+        responseLabel: 'Guardrail response',
+        response: 'The dependency gate compares the install against the approved stack and rejects anything outside it. The agent has to solve the problem with what the project already uses.',
+        ruleLabel: 'Rule enforced',
+        rule: 'Approved stack only: React + TypeScript + Postgres',
+      },
+      {
+        iconKey: 'ScrollText',
+        accent: 'violet',
+        kicker: 'Guardrail 02 · Conventions',
+        name: 'Coding Conventions',
+        attemptLabel: 'Agent tried',
+        scenario: 'The agent writes working code, but in its own style — snake_case names, 2-space tabs, no semicolons — nothing like the rest of the repo.',
+        attemptCode: 'const user_data = fetch_user( id )\n  return user_data',
+        verdict: 'BLOCKED',
+        responseLabel: 'Guardrail response',
+        response: 'lint + format run on every change. The code is auto-rewritten to the project style, and anything the formatter cannot fix fails the check until the agent matches the conventions.',
+        ruleLabel: 'Rule enforced',
+        rule: 'ESLint + Prettier: project style or no merge',
+      },
+      {
+        iconKey: 'Lock',
+        accent: 'cyan',
+        kicker: 'Guardrail 03 · Security',
+        name: 'Security',
+        attemptLabel: 'Agent tried',
+        scenario: 'To "just make it work", the agent hardcodes an API key and builds a SQL query by gluing user input straight into the string.',
+        attemptCode: "const KEY = 'sk_live_9f3a...'\ndb.query('SELECT * FROM users WHERE id=' + req.id)",
+        verdict: 'BLOCKED',
+        responseLabel: 'Guardrail response',
+        response: 'Secret scanning catches the hardcoded key and SAST flags the injection-prone query. The commit is blocked before it ever reaches the branch.',
+        ruleLabel: 'Rule enforced',
+        rule: 'No secrets in code · parameterized queries only',
+      },
+      {
+        iconKey: 'Layers',
+        accent: 'emerald',
+        kicker: 'Guardrail 04 · Architecture',
+        name: 'Architecture',
+        attemptLabel: 'Agent tried',
+        scenario: 'Taking a shortcut, the agent calls the database directly from a UI component instead of going through the service layer.',
+        attemptCode: "// components/UserCard.tsx\nimport { db } from '../db'\nconst rows = await db.query('SELECT ...')",
+        verdict: 'BLOCKED',
+        responseLabel: 'Guardrail response',
+        response: 'The architecture boundary rule sees the UI layer reaching past the service layer into the DB and rejects it. The call has to go back through the defined layering.',
+        ruleLabel: 'Rule enforced',
+        rule: 'UI → Service → DB · no layer skipping',
+      },
+    ],
+
+    loopKicker: 'And it compounds',
+    loopHeading: 'Guardrails only ever get stronger.',
+    loopBody:
+      'Here is the part that changes everything: every mistake the agent makes is not just blocked — it is captured as a new permanent guardrail. The net never shrinks. It grows with every error it has ever seen.',
+    loopSteps: [
+      'Agent acts',
+      'Guardrail catches the error',
+      'Error encoded as a permanent rule',
+      'Guardrails grow',
+    ],
+    loopBackNote: 'every error makes the next agent safer',
+    callout: 'Every agent error becomes a permanent guardrail. Humans never have to catch the same mistake twice — the net only ever grows stronger.',
+  },
+
+  // sdlcRoles
   {
     type: 'sdlcRoles',
     title: 'Roles Reinvented',
@@ -653,14 +714,13 @@ export const slidesEN = [
     scrollable: true,
     kicker: 'ACT 5 · THE TOOLING',
     title: 'Make It Real',
-    subtitle: 'The methodology, tooled — pick a spec framework, enforce the guardrails, and close the loop from ticket to PR.',
+    subtitle: 'The methodology, tooled — pick a spec framework, enforce the guardrails, and let docs alongside specs become the project’s living memory.',
     scrollHint: 'Scroll through the toolchain',
     intro: {
       roadmap: [
         { id: '1', label: 'Spec Frameworks', accent: 'teal' },
         { id: '2', label: 'Guardrails', accent: 'violet' },
-        { id: '3', label: 'Ticket → PR', accent: 'cyan' },
-        { id: '4', label: 'Long-Term Memory', accent: 'emerald' },
+        { id: '3', label: 'Living Memory', accent: 'emerald' },
       ],
     },
 
@@ -674,7 +734,7 @@ export const slidesEN = [
         'Spec approval gate',
         'TDD / guardrail enforcement',
         'Cycle summaries / memory',
-        'ALM & tool sync (Jira/Confluence)',
+        'ALM & tool sync (Jira / TFS)',
         'Model-agnostic',
         'License / openness',
       ],
@@ -707,16 +767,16 @@ export const slidesEN = [
         },
         {
           id: 'autospec', glyph: '🧬', name: 'AutoSpec', short: 'AutoSpec', role: 'The Unifier', accent: 'teal', home: true,
-          tagline: 'Spec gate + guardrails + cycle memory + ALM sync — one framework.',
-          whatItIs: 'The framework this very deck is built with. It unifies the disciplines: the spec gate, guardrail/TDD enforcement, cycle summaries as long-term memory, and skills that sync Jira/TFS and Confluence.',
-          bullets: ['Spec gate + role-based specs', 'Guardrails enforced, not suggested', 'Cycle summaries = durable memory', 'Skills: Jira/TFS → spec → PR', 'Any model (FinOps routing)'],
+          tagline: 'Spec gate + guardrails + living memory + ALM sync — one framework.',
+          whatItIs: 'The framework this very deck is built with. It unifies the disciplines: the spec gate, guardrail/TDD enforcement, and docs kept alongside specs as long-term living memory, with skills that sync Jira / TFS.',
+          bullets: ['Spec gate + role-based specs', 'Guardrails enforced, not suggested', 'Docs ⇄ specs = durable memory', 'Skills: Jira/TFS → spec → PR', 'Any model (FinOps routing)'],
           terminal: [
             { text: '$ autospec cycle start --from PROJ-421', type: 'command' },
             { text: '✓ spec.md gated · guardrails armed', type: 'success' },
             { text: '✓ cycle-12 summary will persist to docs/', type: 'success' },
           ],
           repo: 'github.com/Hundia/autospec',
-          cells: ['✓ Gate + roles', '✓ Built-in guardrails', '✓ Cycle summaries', '✓ Jira / TFS / Confluence', '✓ Any model', '✓ OSS (Hundia/autospec)'],
+          cells: ['✓ Gate + roles', '✓ Built-in guardrails', '✓ Docs ⇄ specs memory', '✓ Jira / TFS', '✓ Any model', '✓ OSS (Hundia/autospec)'],
         },
         {
           id: 'diy', glyph: '✍️', name: 'Write Your Own Spec', short: 'DIY', role: 'The DIY Path', accent: 'teal',
@@ -778,203 +838,41 @@ export const slidesEN = [
       ],
     },
 
-    // ── PAGE 3 — TICKET → PR PIPELINE ──
-    pipelinePage: {
-      page: '3',
-      accent: 'cyan',
-      label: 'The Killer Integration',
-      eyebrow: 'Where it connects to the work you already track.',
-      headline: 'One Skill. Ticket → Merged PR.',
-      source: { id: 'PROJ-421', title: 'Add waitlist to bookings', status: 'In Progress' },
-      stages: [
-        { n: '1', verb: 'Pull', sub: 'requirement → context' },
-        { n: '2', verb: 'Spec', sub: 'generate spec.md, await gate' },
-        { n: '3', verb: 'Execute', sub: 'agent implements in worktree' },
-        { n: '4', verb: 'Test', sub: 'guardrails: TDD, lint, types' },
-        { n: '5', verb: 'Open PR', sub: 'branch pushed, Jira updated' },
-      ],
-      terminal: [
-        { text: '$ autospec skill run jira-to-pr --ticket PROJ-421', type: 'command' },
-        { text: '→ pull       PROJ-421 "Add waitlist to bookings"', type: 'info' },
-        { text: '→ spec       spec.md drafted · gate: approved ✓', type: 'info' },
-        { text: '→ execute    agent implementing in worktree-a…', type: 'info' },
-        { text: '→ test       12 passed · lint ✓ · types ✓', type: 'info' },
-        { text: '→ pr         opened #318 → main · PROJ-421 → In Review ✓', type: 'info' },
-        { text: '✓ ticket → merged PR, fully traceable', type: 'success' },
-      ],
-      callout: 'One skill closes the loop — and writes its summary back to memory.',
-    },
-
-    // ── PAGE 4 — LONG-TERM MEMORY ──
+    // ── PAGE 3 — LIVING MEMORY (Docs ⇄ Specs mapping) ──
     memoryPage: {
-      page: '4',
+      page: '3',
       accent: 'emerald',
-      label: 'The Memory You Never Gave It',
+      label: 'The Living Memory',
       eyebrow: 'Where every decision is remembered.',
-      headline: 'Confluence + docs/ = Long-Term Memory.',
-      syncBadge: 'Confluence ⇄ docs/',
-      bullets: [
-        'Agents read it before they write — architecture, guardrails, and past decisions become live constraints.',
-        'It grows every cycle — each cycle summary appends new folders and decision records.',
-        'Nothing is re-derived — the memory you never gave it, finally given.',
+      headline: 'Docs alongside Specs = Living Memory.',
+      syncBadge: 'specs/ ⇄ docs/',
+      specHeading: 'Specs',
+      docHeading: 'Docs',
+      mappings: [
+        { spec: 'specs/02-architect.md', doc: 'docs/architecture/', relation: 'defines' },
+        { spec: 'specs/05-security.md', doc: 'docs/guardrails/', relation: 'enforces' },
+        { spec: 'specs/07-flows.md', doc: 'docs/flows/', relation: 'describes' },
+        { spec: 'specs/backlog.md', doc: 'docs/cycles/cycle-12.md', relation: 'records' },
       ],
-      tree: [
-        { name: 'docs/', depth: 0, icon: '📁' },
-        { name: 'architecture/', depth: 1, icon: '📁', files: ['01-system.md', '02-decisions.md'] },
-        { name: 'guardrails/', depth: 1, icon: '📁', files: ['01-tdd.md', '02-security.md'] },
-        { name: 'flows/', depth: 1, icon: '📁', files: ['01-ticket-to-pr.md'] },
-        { name: 'cycles/', depth: 1, icon: '📁', files: ['cycle-10/', 'cycle-11/', 'cycle-12/ ← new'] },
-      ],
-      treeFooter: '+1 cycle summary written back, every loop',
-      callout: 'The spec is the truth, the guardrails are the protection, and the docs are the memory — no context ever lost.',
+      callout: 'The spec is the truth, the guardrails are the protection — and docs mapped to specs are the living memory. No context ever lost.',
     },
 
     // ── CLOSING HANDOFF ──
     closing: 'These are the tools that make the methodology real. Next: how to adopt them — Foundation → Expand → Optimize.',
   },
 
-  // 20. adoption — SCROLLABLE · VISUAL JOURNEY
+  // openSpec — SCROLLABLE · merged "What is OpenSpec" + "Anatomy of a Spec"
   {
-    type: 'adoption',
-    scrollable: true,
-    title: 'Your SDD Adoption Journey',
-    subtitle: 'From pilot repo to compounding team velocity — in 60 days',
-    phases: [
-      {
-        number: '01',
-        name: 'Foundation & Quick Wins',
-        timeline: 'Week 1–2',
-        claim: 'You prepare your AI co-pilot for real work.',
-        color: 'emerald',
-        capabilities: [
-          { icon: 'Wrench', label: 'SDD Tool Setup', toolingLink: true },
-          { icon: 'Zap', label: 'Superpowers Active' },
-          { icon: 'Brain', label: 'Long-Term Memory', toolBadge: 'confluence' },
-          { icon: 'FileCheck', label: 'Spec Before Code' },
-          { icon: 'ShieldCheck', label: 'QA Regression Net', toolBadge: 'playwright' },
-        ],
-        terminalLines: [
-          '✓ SDD tool installed on pilot repo',
-          '✓ Superpowers active — 12 guardrail rules',
-          '✓ docs/ seeded — architecture memory live',
-          '✓ QA baseline: 0 → first spec committed',
-          '→ AI co-pilot ready for real work',
-        ],
-        vignette: 'cockpit',
-        milestone: 'First AI-generated PR that actually matches the spec',
-      },
-      {
-        number: '02',
-        name: 'Team Scale & Integration',
-        timeline: 'Week 3–6',
-        claim: 'You deploy the co-pilot across the whole team.',
-        color: 'blue',
-        capabilities: [
-          { icon: 'Users', label: 'Full Team Onboard' },
-          { icon: 'Tag', label: 'Ticket → Spec Pipeline', toolBadge: 'jira' },
-          { icon: 'GitBranch', label: 'CI/CD Spec Gates', toolBadge: 'github' },
-          { icon: 'Calendar', label: 'Review Cadence' },
-          { icon: 'BarChart2', label: 'Defect Rate Tracked' },
-        ],
-        vignette: 'teamTopology',
-        milestone: 'Sprint where AI closes 30%+ of tickets autonomously',
-      },
-      {
-        number: '03',
-        name: 'Optimize & Compound',
-        timeline: 'Month 2–3',
-        claim: 'The system learns and the gains compound.',
-        color: 'violet',
-        capabilities: [
-          { icon: 'Search', label: 'Retrospec Audits' },
-          { icon: 'Sliders', label: 'Guardrail Tuning' },
-          { icon: 'BookOpen', label: 'Architecture Memory', toolBadge: 'confluence' },
-          { icon: 'TrendingUp', label: 'Velocity Tracked' },
-          { icon: 'RefreshCw', label: 'Quarterly Health Check' },
-        ],
-        vignette: 'compoundChart',
-        milestone: 'Docs-as-memory: architecture never needs re-explained',
-      },
-    ],
-    metrics: [
-      { icon: '📈', value: '3×', label: 'ROI by Month 2', color: 'emerald' },
-      { icon: '⚡', value: '60%', label: 'Faster first PR', color: 'teal' },
-      { icon: '🛡️', value: '40%', label: 'Fewer defects', color: 'blue' },
-      { icon: '🤝', value: '100%', label: 'Team on SDD', color: 'violet' },
-    ],
-    closingQuote: "Velocity compounds. Chaos doesn't.",
-  },
-
-  // ── ACT 6 — CLOSE (slides 21–22) ──────────────────────────────────────────────
-
-  // 21. closing
-  {
-    type: 'closing',
-    title: 'Your Launchpad',
-    subtitle: 'Everything we covered — bookmark it, then go build.',
-    categories: [
-      {
-        label: 'Spec Frameworks',
-        accent: 'emerald',
-        icon: 'Compass',
-        links: [
-          { name: 'GitHub Spec Kit', url: 'https://github.com/github/spec-kit', note: 'Spec → Plan → Tasks → Implement' },
-          { name: 'OpenSpec', url: 'https://github.com/Fission-AI/OpenSpec', note: 'Lightweight spec-driven workflow' },
-        ],
-      },
-      {
-        label: 'Agentic Tooling & CLIs',
-        accent: 'blue',
-        icon: 'Terminal',
-        links: [
-          { name: 'GitHub Copilot', url: 'https://github.com/features/copilot', note: 'AI pair programmer' },
-          { name: 'Copilot CLI', url: 'https://github.com/github/copilot-cli', note: 'Copilot in your terminal' },
-          { name: 'Superpowers', url: 'https://github.com/obra/superpowers', note: 'Agentic skills methodology' },
-        ],
-      },
-      {
-        label: 'Skills & Guides',
-        accent: 'cyan',
-        icon: 'Sparkles',
-        links: [
-          { name: 'Anthropic Skills', url: 'https://github.com/anthropics/skills', note: 'Official Agent Skills' },
-          { name: 'Spec Kit Docs', url: 'https://github.github.com/spec-kit/', note: 'Getting started guide' },
-          { name: 'Spec-Driven w/ AI', url: 'https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/', note: 'The GitHub Blog intro' },
-        ],
-      },
-      {
-        label: 'AutoSpec Ecosystem',
-        accent: 'violet',
-        icon: 'Rocket',
-        links: [
-          { name: 'AutoSpec', url: 'https://github.com/Hundia/autospec', note: 'This framework' },
-          { name: 'AutoSpec Docs', url: 'https://hundia.github.io/autospec', note: 'Methodology & guides' },
-          { name: 'AutoDeck', url: 'https://github.com/Hundia/AutoDeck', note: 'This deck, open source' },
-        ],
-      },
-    ],
-    tagline: 'From intent to steering.',
-  },
-
-  // 22. openSpecWhat — SCROLLABLE · "What is OpenSpec"
-  {
-    type: 'openSpecWhat',
-    variant: 'what',
+    type: 'openSpec',
+    variant: 'unified',
     scrollable: true,
 
     kicker: 'THE TOOL BEHIND THE DEMO',
     heroTitle: 'OpenSpec',
-    heroSubtitle: 'Align humans and AI on what to build — before a single line of code.',
-    scrollHint: 'The framework powering Game Of Drones',
+    heroSubtitle: 'Align humans and AI on what to build before any code — version control for intent.',
+    scrollHint: 'See the loop, then a real spec',
 
-    // Beat 1 — Core idea
-    pullQuote: 'Version control for intent',
-    ideaKicker: 'THE CORE IDEA',
-    ideaHeading: 'Decide the what. Let the agent build the how.',
-    ideaBody:
-      'OpenSpec is a lightweight spec-driven framework that locks down intent first. Code becomes a faithful translation of an agreed spec — not a guess pulled from chat history.',
-
-    // Beat 2 — Loop
+    // Beat 1 — Propose → Apply → Archive loop
     loopKicker: 'ONE CALM LOOP',
     loopHeading: 'Propose → Apply → Archive',
     loopBody:
@@ -986,52 +884,10 @@ export const slidesEN = [
     ],
     loopBackNote: 'Archived truth feeds the next change — brownfield-first, 1 → n',
 
-    // Beat 3 — Two directories
-    dirKicker: 'WHERE IT ALL LIVES',
-    dirHeading: 'Truth in one place. Proposals in another.',
-    dirBody:
-      'Specs describe what the system does today. Changes describe what is in flight. Nothing is ambiguous.',
-    fileTree: `openspec/
-├── specs/      ← current source of truth
-└── changes/    ← proposed updates (in flight)
-    └── archive/
-        └── 2026-06-21-mfl-telemetry/`,
-    specsNote: 'The current source of truth — what the drone platform does right now.',
-    changesNote: 'Proposed updates still in flight — like REQ-MFL-001 before it ships.',
-
-    // Beat 4 — Why it lands
-    whyKicker: 'WORKS WHERE YOU ALREADY WORK',
-    whyHeading: 'Brownfield-first. Tool-agnostic.',
-    whyBody:
-      'Built to evolve existing codebases, not just greenfield demos. It plugs into 30+ AI assistants through simple slash commands.',
-    tools: ['Claude Code', 'Cursor', 'GitHub Copilot', 'OpenCode', '+ 30 more'],
-  },
-
-  // 23. openSpecAnatomy — SCROLLABLE · "Anatomy of a Spec"
-  {
-    type: 'openSpecAnatomy',
-    variant: 'anatomy',
-    scrollable: true,
-
-    kicker: 'WHAT A SPEC ACTUALLY LOOKS LIKE',
-    heroTitle: 'Anatomy of a Spec',
-    heroSubtitle: 'Open a change folder and see exactly what changed — and why.',
-    scrollHint: 'The drone requirement, as a real spec',
-
-    // Beat 1 — Four artifacts
-    artifactsKicker: 'INSIDE A CHANGE',
-    artifactsHeading: 'Four files. One feature.',
+    // Beat 2 — An example spec (the drone MFL requirement)
     folderLabel: 'openspec/changes/add-mfl-telemetry/',
-    artifacts: [
-      { iconKey: 'FileText',     name: 'proposal.md', desc: 'The WHY + WHAT — rationale and scope',      accent: 'teal' },
-      { iconKey: 'FolderTree',   name: 'specs/',      desc: 'Requirements with test scenarios',         accent: 'cyan' },
-      { iconKey: 'GitBranch',    name: 'design.md',   desc: 'The HOW — technical approach',             accent: 'violet' },
-      { iconKey: 'CheckCircle2', name: 'tasks.md',    desc: 'Implementation checklist the agent works', accent: 'emerald' },
-    ],
-
-    // Beat 2 — Requirement
     reqKicker: 'REQ-MFL-001',
-    reqHeading: 'The requirement, in plain language',
+    reqHeading: 'What a real spec looks like',
     reqBody:
       'A spec opens with a requirement anyone can read — no jargon, no ambiguity about what success means.',
     requirementBlock: `Requirement: MFL Telemetry Status
@@ -1039,12 +895,8 @@ export const slidesEN = [
 Each drone subsystem — camera, rotors, INS,
 IMU, GPS, comms — MUST report its health as
 OK / DEGRADED / FAIL on every telemetry cycle.`,
-
-    // Beat 3 — Scenarios
-    scenarioKicker: 'BEHAVIOR AS SCENARIOS',
-    scenarioHeading: 'WHEN this, THEN that.',
     scenarioBody:
-      'Each requirement carries scenarios in plain conditional language. Humans read them like sentences; the agent reads them like tests.',
+      'Behavior comes as scenarios in plain conditional language. Humans read them like sentences; the agent reads them like tests.',
     scenarioBlock: `Scenario: Healthy subsystem
   WHEN the camera responds within the cycle
   THEN the MFL reports camera = OK
@@ -1052,20 +904,9 @@ OK / DEGRADED / FAIL on every telemetry cycle.`,
 Scenario: Missed heartbeat
   WHEN the GPS misses its heartbeat
   THEN the MFL reports gps = FAIL`,
-
-    // Beat 4 — Delta specs
-    deltaKicker: 'SEE ONLY WHAT CHANGED',
-    deltaHeading: 'Delta specs — no diffing whole docs.',
-    deltaBody:
-      'Proposals tag each section so humans and AI see the change at a glance — exactly what this feature adds, alters, and retires.',
-    deltas: [
-      { tag: '## ADDED',    iconKey: 'FilePlus2', accent: 'emerald', content: 'Requirement: MFL Telemetry Status' },
-      { tag: '## MODIFIED', iconKey: 'FileEdit',  accent: 'indigo',  content: 'Telemetry cycle now carries the MFL payload' },
-      { tag: '## REMOVED',  iconKey: 'FileMinus2', accent: 'slate',  content: 'Legacy per-sensor status pings' },
-    ],
   },
 
-  // 24. demoIntro
+  // demoIntro
   {
     type: 'demoIntro',
     scrollable: true,
@@ -1192,10 +1033,133 @@ Scenario: Missed heartbeat
     handoffCallout: 'REQ-MFL-001 · Drone Telemetry Platform',
   },
 
-  // 23. finalTagline
+  // finalTagline
   {
     type: 'finalTagline',
     title: 'The Agentic SDLC',
     tagline: 'The Spec is the Truth. The Guardrails are the Protection. The Human is the Judge.',
+  },
+
+  // ── CLOSE — finishing slides (returned to after the demos) ──────────────────────
+
+  // adoption — SCROLLABLE · VISUAL JOURNEY
+  {
+    type: 'adoption',
+    scrollable: true,
+    title: 'Your SDD Adoption Journey',
+    subtitle: 'From pilot repo to compounding team velocity — in 60 days',
+    phases: [
+      {
+        number: '01',
+        name: 'Foundation & Quick Wins',
+        timeline: 'Week 1–2',
+        claim: 'You prepare your AI co-pilot for real work.',
+        color: 'emerald',
+        capabilities: [
+          { icon: 'Wrench', label: 'SDD Tool Setup', toolingLink: true },
+          { icon: 'Zap', label: 'Superpowers Active' },
+          { icon: 'Brain', label: 'Long-Term Memory', toolBadge: 'confluence' },
+          { icon: 'FileCheck', label: 'Spec Before Code' },
+          { icon: 'ShieldCheck', label: 'QA Regression Net', toolBadge: 'playwright' },
+        ],
+        terminalLines: [
+          '✓ SDD tool installed on pilot repo',
+          '✓ Superpowers active — 12 guardrail rules',
+          '✓ docs/ seeded — architecture memory live',
+          '✓ QA baseline: 0 → first spec committed',
+          '→ AI co-pilot ready for real work',
+        ],
+        vignette: 'cockpit',
+        milestone: 'First AI-generated PR that actually matches the spec',
+      },
+      {
+        number: '02',
+        name: 'Team Scale & Integration',
+        timeline: 'Week 3–6',
+        claim: 'You deploy the co-pilot across the whole team.',
+        color: 'blue',
+        capabilities: [
+          { icon: 'Users', label: 'Full Team Onboard' },
+          { icon: 'Tag', label: 'Ticket → Spec Pipeline', toolBadge: 'jira' },
+          { icon: 'GitBranch', label: 'CI/CD Spec Gates', toolBadge: 'github' },
+          { icon: 'Calendar', label: 'Review Cadence' },
+          { icon: 'BarChart2', label: 'Defect Rate Tracked' },
+        ],
+        vignette: 'teamTopology',
+        milestone: 'Sprint where AI closes 30%+ of tickets autonomously',
+      },
+      {
+        number: '03',
+        name: 'Optimize & Compound',
+        timeline: 'Month 2–3',
+        claim: 'The system learns and the gains compound.',
+        color: 'violet',
+        capabilities: [
+          { icon: 'Search', label: 'Retrospec Audits' },
+          { icon: 'Sliders', label: 'Guardrail Tuning' },
+          { icon: 'BookOpen', label: 'Architecture Memory', toolBadge: 'confluence' },
+          { icon: 'TrendingUp', label: 'Velocity Tracked' },
+          { icon: 'RefreshCw', label: 'Quarterly Health Check' },
+        ],
+        vignette: 'compoundChart',
+        milestone: 'Docs-as-memory: architecture never needs re-explained',
+      },
+    ],
+    metrics: [
+      { icon: '📈', value: '3×', label: 'ROI by Month 2', color: 'emerald' },
+      { icon: '⚡', value: '60%', label: 'Faster first PR', color: 'teal' },
+      { icon: '🛡️', value: '40%', label: 'Fewer defects', color: 'blue' },
+      { icon: '🤝', value: '100%', label: 'Team on SDD', color: 'violet' },
+    ],
+    closingQuote: "Velocity compounds. Chaos doesn't.",
+  },
+
+  // closing — Your Launchpad (the final slide)
+  {
+    type: 'closing',
+    title: 'Your Launchpad',
+    subtitle: 'Everything we covered — bookmark it, then go build.',
+    categories: [
+      {
+        label: 'Spec Frameworks',
+        accent: 'emerald',
+        icon: 'Compass',
+        links: [
+          { name: 'GitHub Spec Kit', url: 'https://github.com/github/spec-kit', note: 'Spec → Plan → Tasks → Implement' },
+          { name: 'OpenSpec', url: 'https://github.com/Fission-AI/OpenSpec', note: 'Lightweight spec-driven workflow' },
+          { name: 'AutoSpec', url: 'https://github.com/Hundia/autospec', note: 'This framework' },
+        ],
+      },
+      {
+        label: 'Agentic Tooling & CLIs',
+        accent: 'blue',
+        icon: 'Terminal',
+        links: [
+          { name: 'GitHub Copilot', url: 'https://github.com/features/copilot', note: 'AI pair programmer' },
+          { name: 'Copilot CLI', url: 'https://github.com/github/copilot-cli', note: 'Copilot in your terminal' },
+          { name: 'Superpowers', url: 'https://github.com/obra/superpowers', note: 'Agentic skills methodology' },
+        ],
+      },
+      {
+        label: 'Skills & Guides',
+        accent: 'cyan',
+        icon: 'Sparkles',
+        links: [
+          { name: 'Spec Kit Docs', url: 'https://github.github.com/spec-kit/', note: 'Getting started guide' },
+          { name: 'Spec-Driven w/ AI', url: 'https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/', note: 'The GitHub Blog intro' },
+        ],
+      },
+      {
+        label: 'AutoSpec Ecosystem',
+        accent: 'violet',
+        icon: 'Rocket',
+        links: [
+          { name: 'AutoSpec Docs', url: 'https://hundia.github.io/autospec', note: 'Methodology & guides' },
+          { name: 'AutoDeck', url: 'https://github.com/Hundia/AutoDeck', note: 'This deck, open source' },
+          { name: 'EasyDeck', url: 'https://github.com/Hundia/EasyDeck', note: 'Deck builder' },
+        ],
+      },
+    ],
+    tagline: 'From intent to steering.',
   },
 ];

@@ -1,5 +1,5 @@
 export const slidesHE = [
-  // ── ACT 1 — THE PROBLEM (slides 1–7) ────────────────────────────────────────
+  // ── ACT 1 — THE PROBLEM ──────────────────────────────────────────────────────
 
   // 1. title
   {
@@ -11,7 +11,23 @@ export const slidesHE = [
     collaborator: 'בשיתוף עם שרון שוורץ',
   },
 
-  // 2. eraTraditional
+  // 2. paradigmShift — the reframe: AI is not a tool you adopt
+  {
+    type: 'paradigmShift',
+    kicker: 'מבט מחדש',
+    mistake: "אני חושב שהטעות הראשונה בהטמעת AI היא לקרוא לזה 'הטמעת AI'. כי ברגע שקוראים לזה כך, אנשים חושבים שמדובר בכלי.",
+    struckPhrase: 'AI Adoption',
+    truth: 'בעיניי זה לא כלי שמטמיעים — זה שינוי באופן שבו העבודה עצמה מתבצעת.',
+    dimensionsLead: 'מה באמת משתנה',
+    dimensions: {
+      knowledge: { label: 'איך ידע נוצר', detail: 'הבנה נוצרת בדיאלוג עם המכונה, לא רק נשלפת מאנשים.' },
+      work: { label: 'איך עבודה מתבצעת', detail: 'יחידת המאמץ עוברת מכתיבת קוד להגדרת כוונה והכוונת התוצאה.' },
+      responsibility: { label: 'איך אחריות מתחלקת', detail: 'האחריות מתחלקת מחדש בין המהנדס לסוכן — אף אחד לא מחזיק בה לבד.' },
+      engineers: { label: 'איך מהנדסים מבינים את המקצוע', detail: 'המקצוע מגדיר את עצמו מחדש — ממחבר כל שורה לאדריכל של כוונה.' },
+    },
+  },
+
+  // 3. eraTraditional
   {
     type: 'eraTraditional',
     title: 'עידן הפיתוח המסורתי',
@@ -25,7 +41,7 @@ export const slidesHE = [
     metrics: { speed: 'נמוכה', predictability: 'גבוהה', docs: 'מקיף', knowledge: 'שמור' },
   },
 
-  // 3. eraAssistant
+  // 4. eraAssistant
   {
     type: 'eraAssistant',
     title: 'עידן עוזר הקוד',
@@ -42,7 +58,7 @@ export const slidesHE = [
     decisionAuthority: 'אנושי',
   },
 
-  // 4. eraAgentic
+  // 5. eraAgentic
   {
     type: 'eraAgentic',
     title: 'עידן הנדסת הפרומפטים',
@@ -60,7 +76,7 @@ export const slidesHE = [
     ],
   },
 
-  // 5. contextPoisoning (מלכודת הדחיסה) — שקופית נגללת
+  // 6. contextPoisoning (מלכודת הדחיסה) — שקופית נגללת
   {
     type: 'contextPoisoning',
     scrollable: true,
@@ -129,7 +145,7 @@ export const slidesHE = [
     },
   },
 
-  // 6. secondFeature (merged: The Reverse Engineering Tax + The Breaking Point)
+  // 7. secondFeature (merged: The Reverse Engineering Tax + The Breaking Point)
   {
     type: 'secondFeature',
     scrollable: true,
@@ -201,50 +217,13 @@ export const slidesHE = [
     },
   },
 
-  // ── ACT 2 — TURNING POINT (slides 8–9) ────────────────────────────────────────
+  // ── ACT 2 — TURNING POINT ─────────────────────────────────────────────────────
 
-  // 8. sddCostOfChaos
-  {
-    type: 'sddCostOfChaos',
-    kicker: 'אבחנה',
-    title: 'עלות היעדר ספסיפיקציות',
-    reframe: {
-      myth: 'ה-AI שכח הכל.',
-      truth: 'אתה מעולם לא נתת לו מקור אמת.',
-    },
-    contrast: {
-      disease: 'DRIFT',
-      diseaseNote: 'אין מקור אמת',
-      left: {
-        header: 'PROMPT-FIRST',
-        sub: 'הכוונה חיה בפרומפט',
-        symptoms: [
-          'סשן #51 — מתחיל מחדש',
-          'תור 30 — ההקשר משחית',
-          'סוכן B — מתחיל מאפס',
-        ],
-      },
-      right: {
-        header: 'SPEC-FIRST',
-        sub: 'הכוונה חיה בספסיפיקציה',
-        cures: [
-          'להגדיר כוונה פעם אחת',
-          'לעגן כל סוכן',
-          'מסמך משותף אחד',
-        ],
-      },
-    },
-    crystal: {
-      word: 'SPECIFICATION',
-      definition: 'מקור האמת שמעולם לא כתבת.',
-    },
-  },
-
-  // 9. bridge
+  // 8. bridge
   {
     type: 'bridge',
     title: 'מה אם...',
-    question: 'מה אם ה-SDLC עצמו נבנה מחדש עבור סוכנים?',
+    question: 'ה-SDLC עצמו נבנה מחדש עבור סוכנים.',
     points: [
       'מה אם אף סוכן לא יכול לכתוב קוד לפני שאדם אישר את הספסיפיקציה?',
       'מה אם כל שגיאת סוכן הפכה למגביל קבוע?',
@@ -252,9 +231,10 @@ export const slidesHE = [
     ],
   },
 
-  // 10. sddThreePillars — הצהרת SDD (הועבר לכאן מאקט 4; מגדיר את המערכת לפני כל שקפי המתודולוגיה)
+  // 9. sddThreePillars — HIDDEN (kept in file, filtered out of the deck via `hidden`)
   {
     type: 'sddThreePillars',
+    hidden: true,
     kicker: 'פיתוח מונחה-ספסיפיקציות · מה זה',
     title: 'מערכת ההפעלה של פיתוח אג\'נטי',
     definition: 'מתודולוגיה שבה הספסיפיקציה אף פעם לא אופציונלית, כל החלטה ניתנת למעקב, וכל סוכן פועל בתוך גבולות שאושרו על ידי בני אדם.',
@@ -291,9 +271,9 @@ export const slidesHE = [
     ],
   },
 
-  // ── ACT 3 — THE AGENTIC SDLC METHODOLOGY (slides 11–15) ──────────────────────
+  // ── ACT 3 — THE AGENTIC SDLC METHODOLOGY ─────────────────────────────────────
 
-  // 11. philosophy
+  // 10. philosophy
   {
     type: 'philosophy',
     title: 'הפילוסופיה המרכזית',
@@ -333,47 +313,7 @@ export const slidesHE = [
     quote: 'הספסיפיקציה היא האמת. גדרות ההגנה הן המגן. האדם הוא השופט.',
   },
 
-  // 11. notVibeCoding
-  {
-    type: 'notVibeCoding',
-    title: 'למה שראיתם זה עתה יש שם',
-    subtitle: 'משמעת עם חוקים, חוזים ואחריותיות — לפי תכנון.',
-    definitionLead: 'הפרקטיקה',
-    definitionTerm: 'Governed Agentic Development',
-    pillars: [
-      {
-        key: 'teal',
-        icon: 'spec',
-        ordinal: '01',
-        label: 'הספסיפיקציה היא החוזה',
-        detail: 'אין קוד לפני אישור הספסיפיקציה. מקור האמת היחיד שכל סוכן קורא.',
-      },
-      {
-        key: 'emerald',
-        icon: 'guardrails',
-        ordinal: '02',
-        label: 'גדרות ההגנה הן החוק',
-        detail: 'בדיקות, טיפוסים, linters ואילוצים שסוכנים לא יכולים לעקוף. כל שגיאה הופכת לבדיקה קבועה.',
-      },
-      {
-        key: 'blue',
-        icon: 'human',
-        ordinal: '03',
-        label: 'האדם הוא השופט',
-        detail: 'נקודות ביקורת אנושיות בכל שער. פיקוח אמיתי, לא אישור גומי.',
-      },
-      {
-        key: 'violet',
-        icon: 'trail',
-        ordinal: '04',
-        label: 'כל מהלך מתועד',
-        detail: "החלטות, ספסיפיקציות ופלטים מנוהלים בגרסאות וניתנים לאיתור. שום דבר לא מתאדה עם הצ'אט.",
-      },
-    ],
-    verdict: 'אז כשקוראים לזה Vibe Coding — זה לא. זה זה.',
-  },
-
-  // 12. agentic5Acts — SCROLLABLE
+  // 11. agentic5Acts — SCROLLABLE
   {
     type: 'agentic5Acts',
     scrollable: true,
@@ -498,25 +438,70 @@ export const slidesHE = [
     ],
   },
 
-  // 13. harness
+  // 12. notVibeCoding
+  {
+    type: 'notVibeCoding',
+    title: 'למה שראיתם זה עתה יש שם',
+    subtitle: 'משמעת עם חוקים, חוזים ואחריותיות — לפי תכנון.',
+    definitionLead: 'הפרקטיקה',
+    definitionTerm: 'Governed Agentic Development',
+    pillars: [
+      {
+        key: 'teal',
+        icon: 'spec',
+        ordinal: '01',
+        label: 'הספסיפיקציה היא החוזה',
+        detail: 'אין קוד לפני אישור הספסיפיקציה. מקור האמת היחיד שכל סוכן קורא.',
+      },
+      {
+        key: 'emerald',
+        icon: 'guardrails',
+        ordinal: '02',
+        label: 'גדרות ההגנה הן החוק',
+        detail: 'בדיקות, טיפוסים, linters ואילוצים שסוכנים לא יכולים לעקוף. כל שגיאה הופכת לבדיקה קבועה.',
+      },
+      {
+        key: 'blue',
+        icon: 'human',
+        ordinal: '03',
+        label: 'האדם הוא השופט',
+        detail: 'נקודות ביקורת אנושיות בכל שער. פיקוח אמיתי, לא אישור גומי.',
+      },
+      {
+        key: 'violet',
+        icon: 'trail',
+        ordinal: '04',
+        label: 'כל מהלך מתועד',
+        detail: "החלטות, ספסיפיקציות ופלטים מנוהלים בגרסאות וניתנים לאיתור. שום דבר לא מתאדה עם הצ'אט.",
+      },
+    ],
+    verdict: 'אז כשקוראים לזה Vibe Coding — זה לא. זה זה.',
+  },
+
+  // 13. harness — SCROLLABLE · guardrail use-cases
   {
     type: 'harness',
-    title: 'הנדסת גדרות ההגנה',
-    subtitle: 'הגנה אוטומטית שמתחזקת עם כל שגיאת סוכן',
-    loopSteps: [
-      'סוכן פועל',
-      'גדרות ההגנה בודקות',
-      'שגיאה נתפסת',
-      'מקודדת כבדיקה קבועה',
-      'גדרות ההגנה גדלות',
+    scrollable: true,
+    kicker: 'מערכה 3 · רשת הביטחון',
+    heroTitle: 'Guardrail Engineering',
+    heroSubtitle: 'הסוכנים זריזים — ולפעמים טועים. ה-Guardrails הם השערים האוטומטיים שתופסים כל טעות לפני שהיא מגיעה לקוד.',
+    scrollHint: 'גללו כדי לראות ארבעה Guardrails דרך מקרים אמיתיים',
+    introKicker: 'מהו Guardrail?',
+    introHeading: 'חוק שהסוכן לא יכול לדבר את עצמו החוצה ממנו.',
+    introBody: 'Guardrail הוא בדיקה אוטומטית שיושבת בין הסוכן לבין הקוד שלכם. כל שינוי שהסוכן עושה חייב לעבור דרכה. אם השינוי שובר חוק — ה-Guardrail חוסם אותו או מתקן אותו, בלי שאף אחד צריך לשבת ולשמור. נסתכל על ארבעה כאלה דרך משהו שהסוכן באמת ניסה לעשות.',
+    casesKicker: 'ארבעה Guardrails · ארבעה מקרים אמיתיים',
+    cases: [
+      { iconKey: 'Boxes', accent: 'blue', kicker: 'Guardrail 01 · Tech Stack', name: 'אכיפת ה-Tech Stack', attemptLabel: 'הסוכן ניסה', scenario: 'באמצע משימה הסוכן מחליט שיהיה לו קל יותר למשוך ספריית גרפים חדשה לגמרי — ועוד framework נוסף בדרך.', attemptCode: '$ npm install some-random-charts vue\n+ added 2 frameworks outside the approved stack', verdict: 'BLOCKED', responseLabel: 'תגובת ה-Guardrail', response: 'שער ה-dependencies משווה כל התקנה מול ה-stack המאושר ופוסל כל דבר שמחוצה לו. הסוכן חייב לפתור את הבעיה עם מה שכבר קיים בפרויקט.', ruleLabel: 'החוק שנאכף', rule: 'Approved stack only: React + TypeScript + Postgres' },
+      { iconKey: 'ScrollText', accent: 'violet', kicker: 'Guardrail 02 · Conventions', name: 'מוסכמות כתיבת קוד', attemptLabel: 'הסוכן ניסה', scenario: 'הסוכן כותב קוד שעובד — אבל בסגנון משלו: שמות ב-snake_case, הזחה של 2 רווחים, בלי נקודה-פסיק — שום דבר כמו שאר ה-repo.', attemptCode: 'const user_data = fetch_user( id )\n  return user_data', verdict: 'BLOCKED', responseLabel: 'תגובת ה-Guardrail', response: 'lint + format רצים על כל שינוי. הקוד נכתב מחדש אוטומטית לסגנון הפרויקט, וכל מה שה-formatter לא מצליח לתקן נכשל בבדיקה עד שהסוכן מיישר קו עם המוסכמות.', ruleLabel: 'החוק שנאכף', rule: 'ESLint + Prettier: project style or no merge' },
+      { iconKey: 'Lock', accent: 'cyan', kicker: 'Guardrail 03 · Security', name: 'אבטחה', attemptLabel: 'הסוכן ניסה', scenario: 'כדי "פשוט שזה יעבוד", הסוכן מטמיע API key קשיח בקוד ובונה שאילתת SQL על ידי הדבקת קלט המשתמש ישירות לתוך המחרוזת.', attemptCode: "const KEY = 'sk_live_9f3a...'\ndb.query('SELECT * FROM users WHERE id=' + req.id)", verdict: 'BLOCKED', responseLabel: 'תגובת ה-Guardrail', response: 'secret scanning תופס את ה-key הקשיח ו-SAST מסמן את השאילתה הפגיעה ל-injection. ה-commit נחסם עוד לפני שהוא מגיע ל-branch.', ruleLabel: 'החוק שנאכף', rule: 'No secrets in code · parameterized queries only' },
+      { iconKey: 'Layers', accent: 'emerald', kicker: 'Guardrail 04 · Architecture', name: 'ארכיטקטורה', attemptLabel: 'הסוכן ניסה', scenario: 'בקיצור דרך, הסוכן פונה ל-DB ישירות מתוך קומפוננטת UI במקום לעבור דרך שכבת ה-service.', attemptCode: "// components/UserCard.tsx\nimport { db } from '../db'\nconst rows = await db.query('SELECT ...')", verdict: 'BLOCKED', responseLabel: 'תגובת ה-Guardrail', response: 'חוק גבולות הארכיטקטורה מזהה ששכבת ה-UI מדלגת מעל שכבת ה-service ופונה ישירות ל-DB, ופוסל זאת. הקריאה חייבת לחזור ולעבור דרך השכבות המוגדרות.', ruleLabel: 'החוק שנאכף', rule: 'UI → Service → DB · no layer skipping' },
     ],
-    layers: [
-      { icon: '✅', title: 'בדיקות (TDD נאכף)', description: 'אין מימוש ללא בדיקה כושלת. כל שגיאת סוכן הופכת למקרה בדיקה.', accent: 'green' },
-      { icon: '🔍', title: 'Linters וניתוח סטטי', description: 'סגנון קוד, דפוסי אבטחה, אנטי-דפוסים נתפסים לפני מיזוג.', accent: 'blue' },
-      { icon: '🔷', title: 'מערכות טיפוסים', description: 'טיפוסים מגבילים את מה שסוכנים יכולים לייצר — תופסים שגיאות לפני זמן ריצה.', accent: 'violet' },
-      { icon: '⚖️', title: 'אילוצי חוקה', description: 'ערימה, אבטחה, גבולות ארכיטקטורה מוזרקים לכל הקשר סוכן.', accent: 'amber' },
-    ],
-    callout: 'כל שגיאת סוכן הופכת למקרה בדיקה קבוע. גדרות ההגנה רק הולכות ומתחזקות.',
+    loopKicker: 'וזה מצטבר',
+    loopHeading: 'ה-Guardrails רק הולכים ומתחזקים.',
+    loopBody: 'וזה החלק ששובר את המשחק: כל טעות שהסוכן עושה לא רק נחסמת — היא נתפסת כ-Guardrail קבוע חדש. הרשת אף פעם לא מתכווצת. היא גדלה עם כל טעות שהיא ראתה אי-פעם.',
+    loopSteps: ['הסוכן פועל', 'ה-Guardrail תופס את הטעות', 'הטעות מקודדת כחוק קבוע', 'ה-Guardrails גדלים'],
+    loopBackNote: 'כל טעות הופכת את הסוכן הבא לבטוח יותר',
+    callout: 'כל טעות של סוכן הופכת ל-Guardrail קבוע. בני אדם לעולם לא צריכים לתפוס את אותה טעות פעמיים — הרשת רק הולכת ומתחזקת.',
   },
 
   // 14. sdlcRoles
@@ -543,7 +528,7 @@ export const slidesHE = [
 
   // ── ACT 4 — IMPLEMENTED WITH SPEC-DRIVEN DEVELOPMENT ─────────────────────────
 
-  // orchestrator
+  // 15. orchestrator
   {
     type: 'orchestrator',
     scrollable: true,
@@ -613,7 +598,7 @@ export const slidesHE = [
     },
   },
 
-  // specRot — capstone של אקט המתודולוגיה: לקרוא לאויב בשמו, ולהראות שהוא מובס מעצם הבנייה
+  // 16. specRot — capstone של אקט המתודולוגיה: לקרוא לאויב בשמו, ולהראות שהוא מובס מעצם הבנייה
   {
     type: 'specRot',
     scrollable: true,
@@ -645,406 +630,71 @@ export const slidesHE = [
     payoff: 'הספסיפיקציה לא יכולה להתיישן בשקט. האמת נשארת האמת.',
   },
 
-  // ── ACT 5 — TOOLING & ADOPTION (slides 19–20) ────────────────────────────────
+  // ── ACT 5 — TOOLING ──────────────────────────────────────────────────────────
 
-  // 19. tooling — SCROLLABLE · TABBED COMPARE · PIPELINE · MEMORY
+  // 17. tooling — SCROLLABLE · Make It Real (simplified)
   {
     type: 'tooling',
     scrollable: true,
     kicker: 'אקט 5 · הכלים',
     title: 'להפוך את זה לאמיתי',
-    subtitle: 'המתודולוגיה, עם כלים — בחר מסגרת ספסיפיקציה, אכוף את גדרות ההגנה, וסגור את הלולאה מטיקט ל-PR.',
+    subtitle: 'המתודולוגיה, עם כלים — בחר מסגרת ספסיפיקציה, אכוף את גדרות ההגנה, ותן ל-Docs לצד ה-Specs להפוך לזיכרון החי של הפרויקט.',
     scrollHint: 'גלול דרך שרשרת הכלים',
-    intro: {
-      roadmap: [
-        { id: '1', label: 'מסגרות ספסיפיקציה', accent: 'teal' },
-        { id: '2', label: 'גדרות הגנה', accent: 'violet' },
-        { id: '3', label: 'טיקט → PR', accent: 'cyan' },
-        { id: '4', label: 'זיכרון ארוך-טווח', accent: 'emerald' },
-      ],
-    },
-
-    // ── PAGE 1 — SPEC FRAMEWORKS (4 tabs) ──
+    intro: { roadmap: [ { id: '1', label: 'מסגרות ספסיפיקציה', accent: 'teal' }, { id: '2', label: 'גדרות הגנה', accent: 'violet' }, { id: '3', label: 'זיכרון חי', accent: 'emerald' } ] },
     specPage: {
-      page: '1',
-      accent: 'teal',
-      label: 'מסגרות ספסיפיקציה',
-      eyebrow: 'היכן האמת נכתבת.',
-      dimensions: [
-        'שער אישור ספסיפיקציה',
-        'אכיפת TDD / גדרות הגנה',
-        'סיכומי מחזורים / זיכרון',
-        'סנכרון ALM וכלים (Jira/Confluence)',
-        'אגנוסטי למודל',
-        'רישיון / קוד פתוח',
-      ],
+      page: '1', accent: 'teal', label: 'מסגרות ספסיפיקציה', eyebrow: 'היכן האמת נכתבת.',
+      dimensions: [ 'שער אישור ספסיפיקציה', 'אכיפת TDD / גדרות הגנה', 'סיכומי מחזורים / זיכרון', 'סנכרון ALM וכלים (Jira / TFS)', 'אגנוסטי למודל', 'רישיון / קוד פתוח' ],
       frameworks: [
-        {
-          id: 'spec-kit', glyph: '⚙️', name: 'Spec-Kit', short: 'Spec-Kit', role: 'עמוד השדרה', accent: 'teal',
-          tagline: 'הספסיפיקציה במרכז; אין קוד עד שהספסיפיקציה מאושרת.',
-          whatItIs: 'המסגרת הפתוחה של GitHub שמציבה ספסיפיקציה קריאת-מכונה במרכז זרימת העבודה ומתנה את המימוש באישור אנושי.',
-          bullets: ['spec.md הוא החוזה', 'שער אישור אנושי לפני קוד', 'זרימת עבודה מבוססת-שלבים', 'קוד פתוח, ניטרלי לספק'],
-          terminal: [
-            { text: '$ specify init && specify spec --from PROJ-421', type: 'command' },
-            { text: '✓ spec.md created — awaiting approval', type: 'success' },
-            { text: '⛔ implementation blocked: spec.approved = false', type: 'error' },
-          ],
-          repo: 'github.com/github/spec-kit',
-          cells: ['✓ שער אכוף', '~ מוסכמות', '✗', '~ דרך סקריפטים', '✓', '✓ OSS (MIT)'],
-        },
-        {
-          id: 'openspec', glyph: '📐', name: 'OpenSpec', short: 'OpenSpec', role: 'זרימת הצעות', accent: 'teal',
-          tagline: 'שינוי-כהצעה: כל דלתא היא ספסיפיקציה נסקרת.',
-          whatItIs: 'גישה פתוחה מונחית-ספסיפיקציות שבה כל שינוי נכתב כהצעה ומאושר לפני ביצוע, תוך שמירת היסטוריית כוונות נסקרת.',
-          bullets: ['שינוי = הצעה', 'היסטוריית ספסיפיקציות נסקרת', 'קליל, נטיב ל-repo', 'קוד פתוח, ללא מפתחות API'],
-          terminal: [
-            { text: '$ openspec propose "add waitlist"', type: 'command' },
-            { text: '✓ proposal/waitlist.md → review', type: 'success' },
-            { text: '✓ approved → ready to implement', type: 'success' },
-          ],
-          repo: 'openspec.dev',
-          cells: ['✓ הצעה → אישור', '~ ברמת ספסיפיקציה', '~ היסטוריית שינויים', '~ דרך סקריפטים', '✓', '✓ OSS'],
-        },
-        {
-          id: 'autospec', glyph: '🧬', name: 'AutoSpec', short: 'AutoSpec', role: 'המאחד', accent: 'teal', home: true,
-          tagline: 'שער ספסיפיקציה + גדרות הגנה + זיכרון מחזורים + סנכרון ALM — מסגרת אחת.',
-          whatItIs: 'המסגרת שהמצגת הזו עצמה בנויה בה. היא מאחדת את המשמעות: שער הספסיפיקציה, אכיפת TDD/גדרות הגנה, סיכומי מחזורים כזיכרון ארוך-טווח, ומיומנויות שמסנכרנות Jira/TFS ו-Confluence.',
-          bullets: ['שער ספסיפיקציה + ספסים מבוססי-תפקיד', 'גדרות הגנה אכופות, לא מוצעות', 'סיכומי מחזורים = זיכרון עמיד', 'מיומנויות: Jira/TFS → ספסיפיקציה → PR', 'כל מודל (ניתוב FinOps)'],
-          terminal: [
-            { text: '$ autospec cycle start --from PROJ-421', type: 'command' },
-            { text: '✓ spec.md gated · guardrails armed', type: 'success' },
-            { text: '✓ cycle-12 summary will persist to docs/', type: 'success' },
-          ],
-          repo: 'github.com/Hundia/autospec',
-          cells: ['✓ שער + תפקידים', '✓ גדרות מובנות', '✓ סיכומי מחזורים', '✓ Jira / TFS / Confluence', '✓ כל מודל', '✓ OSS (Hundia/autospec)'],
-        },
-        {
-          id: 'diy', glyph: '✍️', name: 'Write Your Own Spec', short: 'DIY', role: 'הדרך העצמאית', accent: 'teal',
-          tagline: 'אין מסגרת? קודד את המשמעת בעצמך.',
-          whatItIs: 'אינך צריך מוצר — אתה צריך את המשמעות. constitution.md, תבנית ספסיפיקציה, שער אישור ב-CI וגדרות pre-commit משחזרים את רוב הערך.',
-          bullets: ['constitution.md ככללים שלך', 'תבנית ספסיפיקציה + שער אישור PR', 'גדרות הגנה דרך CI / pre-commit', 'שליטה מלאה, תחזוקה מלאה'],
-          terminal: [
-            { text: '$ mkdir specs && touch constitution.md spec-template.md', type: 'command' },
-            { text: '# CI: block merge unless spec.approved label', type: 'info' },
-            { text: '# pre-commit: tests + lint + types = guardrails', type: 'info' },
-          ],
-          repo: 'your repo',
-          cells: ['~ אתה מגדיר', '~ hooks עצמאיים', '~ בעצמך', '~ אתה מחבר', '✓', 'n/a — repo שלך'],
-        },
+        { id: 'spec-kit', glyph: '⚙️', name: 'Spec-Kit', short: 'Spec-Kit', role: 'עמוד השדרה', accent: 'teal', tagline: 'הספסיפיקציה במרכז; אין קוד עד שהספסיפיקציה מאושרת.', whatItIs: 'המסגרת הפתוחה של GitHub שמציבה ספסיפיקציה קריאת-מכונה במרכז זרימת העבודה ומתנה את המימוש באישור אנושי.', bullets: ['spec.md הוא החוזה', 'שער אישור אנושי לפני קוד', 'זרימת עבודה מבוססת-שלבים', 'קוד פתוח, ניטרלי לספק'], terminal: [ { text: '$ specify init && specify spec --from PROJ-421', type: 'command' }, { text: '✓ spec.md created — awaiting approval', type: 'success' }, { text: '⛔ implementation blocked: spec.approved = false', type: 'error' } ], repo: 'github.com/github/spec-kit', cells: ['✓ שער אכוף', '~ מוסכמות', '✗', '~ דרך סקריפטים', '✓', '✓ OSS (MIT)'] },
+        { id: 'openspec', glyph: '📐', name: 'OpenSpec', short: 'OpenSpec', role: 'זרימת הצעות', accent: 'teal', tagline: 'שינוי-כהצעה: כל דלתא היא ספסיפיקציה נסקרת.', whatItIs: 'גישה פתוחה מונחית-ספסיפיקציות שבה כל שינוי נכתב כהצעה ומאושר לפני ביצוע, תוך שמירת היסטוריית כוונות נסקרת.', bullets: ['שינוי = הצעה', 'היסטוריית ספסיפיקציות נסקרת', 'קליל, נטיב ל-repo', 'קוד פתוח, ללא מפתחות API'], terminal: [ { text: '$ openspec propose "add waitlist"', type: 'command' }, { text: '✓ proposal/waitlist.md → review', type: 'success' }, { text: '✓ approved → ready to implement', type: 'success' } ], repo: 'openspec.dev', cells: ['✓ הצעה → אישור', '~ ברמת ספסיפיקציה', '~ היסטוריית שינויים', '~ דרך סקריפטים', '✓', '✓ OSS'] },
+        { id: 'autospec', glyph: '🧬', name: 'AutoSpec', short: 'AutoSpec', role: 'המאחד', accent: 'teal', home: true, tagline: 'שער ספסיפיקציה + גדרות הגנה + זיכרון חי + סנכרון ALM — מסגרת אחת.', whatItIs: 'המסגרת שהמצגת הזו עצמה בנויה בה. היא מאחדת את המשמעות: שער הספסיפיקציה, אכיפת TDD/גדרות הגנה, ו-Docs הנשמרים לצד ה-Specs כזיכרון חי ארוך-טווח, עם מיומנויות שמסנכרנות Jira / TFS.', bullets: ['שער ספסיפיקציה + ספסים מבוססי-תפקיד', 'גדרות הגנה אכופות, לא מוצעות', 'Docs ⇄ Specs = זיכרון עמיד', 'מיומנויות: Jira/TFS → ספסיפיקציה → PR', 'כל מודל (ניתוב FinOps)'], terminal: [ { text: '$ autospec cycle start --from PROJ-421', type: 'command' }, { text: '✓ spec.md gated · guardrails armed', type: 'success' }, { text: '✓ cycle-12 summary will persist to docs/', type: 'success' } ], repo: 'github.com/Hundia/autospec', cells: ['✓ שער + תפקידים', '✓ גדרות מובנות', '✓ זיכרון Docs ⇄ Specs', '✓ Jira / TFS', '✓ כל מודל', '✓ OSS (Hundia/autospec)'] },
+        { id: 'diy', glyph: '✍️', name: 'Write Your Own Spec', short: 'DIY', role: 'הדרך העצמאית', accent: 'teal', tagline: 'אין מסגרת? קודד את המשמעת בעצמך.', whatItIs: 'אינך צריך מוצר — אתה צריך את המשמעות. constitution.md, תבנית ספסיפיקציה, שער אישור ב-CI וגדרות pre-commit משחזרים את רוב הערך.', bullets: ['constitution.md ככללים שלך', 'תבנית ספסיפיקציה + שער אישור PR', 'גדרות הגנה דרך CI / pre-commit', 'שליטה מלאה, תחזוקה מלאה'], terminal: [ { text: '$ mkdir specs && touch constitution.md spec-template.md', type: 'command' }, { text: '# CI: block merge unless spec.approved label', type: 'info' }, { text: '# pre-commit: tests + lint + types = guardrails', type: 'info' } ], repo: 'your repo', cells: ['~ אתה מגדיר', '~ hooks עצמאיים', '~ בעצמך', '~ אתה מחבר', '✓', 'n/a — repo שלך'] },
       ],
     },
-
-    // ── PAGE 2 — SUPERPOWERS / GUARDRAILS (2 tabs) ──
     guardPage: {
-      page: '2',
-      accent: 'violet',
-      label: 'משמעת ביצוע',
-      eyebrow: 'היכן האמת מוגנת.',
-      thesis: 'גדרות ההגנה הן ההגנה.',
-      dimensions: [
-        'אין קוד לפני בדיקה כושלת',
-        'אכיפה אוטומטית (לא המלצה)',
-        'מתחבר ללולאת הסוכן',
-        'מקודד כל תיקון כבדיקה',
-        'עלות הקמה',
-      ],
+      page: '2', accent: 'violet', label: 'משמעת ביצוע', eyebrow: 'היכן האמת מוגנת.', thesis: 'גדרות ההגנה הן ההגנה.',
+      dimensions: [ 'אין קוד לפני בדיקה כושלת', 'אכיפה אוטומטית (לא המלצה)', 'מתחבר ללולאת הסוכן', 'מקודד כל תיקון כבדיקה', 'עלות הקמה' ],
       frameworks: [
-        {
-          id: 'superpowers', glyph: '🦸', name: 'Superpowers', short: 'Superpowers', role: 'אכיפת גדרות הגנה', accent: 'violet',
-          tagline: 'TDD קפדני לסוכנים — אין מימוש לפני שקיימת בדיקה כושלת.',
-          whatItIs: 'שכבת משמעת-ביצוע שמנהלת את התנהגות הסוכן בזמן המימוש: אסור לסוכנים לכתוב קוד מימוש עד שקיימת בדיקה כושלת.',
-          bullets: ['TDD קפדני, אכוף על הסוכן', 'חוסם מימוש ללא בדיקה אדומה', 'מתחבר ללולאת המחזור', 'הופך כל באג לבדיקה קבועה'],
-          terminal: [
-            { text: '$ superpowers cycle --task tasks.md#42', type: 'command' },
-            { text: '⛔ No implementation without failing test', type: 'error' },
-            { text: '✓ Test fails → OK to implement now', type: 'success' },
-          ],
-          repo: 'github.com/obra/superpowers',
-          cells: ['✓ אכוף', '✓ חסימה קשיחה', '✓ hooks למחזור', '✓ בדיקות רגרסיה', '~ התקנה + הגדרה'],
-        },
-        {
-          id: 'diy-guard', glyph: '🛠️', name: 'Write Your Own Guardrails', short: 'DIY', role: 'הדרך העצמאית', accent: 'violet',
-          tagline: 'CI + pre-commit יכולים לאכוף את אותה משמעת שאתה בונה בעצמך.',
-          whatItIs: 'שחזר את המשמעת עם כלים שכבר ברשותך: hooks של pre-commit, שער CI שנכשל על בדיקות חסרות, וחוזה פרומפט לסוכן שאוסר קוד לא-נבדק.',
-          bullets: ['pre-commit: בדיקות + lint + types', 'שער CI נכשל על ירידת כיסוי', 'חוזה פרומפט: בדיקה אדומה תחילה', 'שליטה מלאה, אתה מתחזק'],
-          terminal: [
-            { text: '$ pre-commit install', type: 'command' },
-            { text: '# CI: fail if new code lacks a failing-then-passing test', type: 'info' },
-            { text: '✓ guardrails enforced in your pipeline', type: 'success' },
-          ],
-          repo: 'your repo',
-          cells: ['~ אם תחבר', '~ דרך CI בלבד', '~ ידני', '~ אם ממושמע', '~ מאמץ עצמאי'],
-        },
+        { id: 'superpowers', glyph: '🦸', name: 'Superpowers', short: 'Superpowers', role: 'אכיפת גדרות הגנה', accent: 'violet', tagline: 'TDD קפדני לסוכנים — אין מימוש לפני שקיימת בדיקה כושלת.', whatItIs: 'שכבת משמעת-ביצוע שמנהלת את התנהגות הסוכן בזמן המימוש: אסור לסוכנים לכתוב קוד מימוש עד שקיימת בדיקה כושלת.', bullets: ['TDD קפדני, אכוף על הסוכן', 'חוסם מימוש ללא בדיקה אדומה', 'מתחבר ללולאת המחזור', 'הופך כל באג לבדיקה קבועה'], terminal: [ { text: '$ superpowers cycle --task tasks.md#42', type: 'command' }, { text: '⛔ No implementation without failing test', type: 'error' }, { text: '✓ Test fails → OK to implement now', type: 'success' } ], repo: 'github.com/obra/superpowers', cells: ['✓ אכוף', '✓ חסימה קשיחה', '✓ hooks למחזור', '✓ בדיקות רגרסיה', '~ התקנה + הגדרה'] },
+        { id: 'diy-guard', glyph: '🛠️', name: 'Write Your Own Guardrails', short: 'DIY', role: 'הדרך העצמאית', accent: 'violet', tagline: 'CI + pre-commit יכולים לאכוף את אותה משמעת שאתה בונה בעצמך.', whatItIs: 'שחזר את המשמעת עם כלים שכבר ברשותך: hooks של pre-commit, שער CI שנכשל על בדיקות חסרות, וחוזה פרומפט לסוכן שאוסר קוד לא-נבדק.', bullets: ['pre-commit: בדיקות + lint + types', 'שער CI נכשל על ירידת כיסוי', 'חוזה פרומפט: בדיקה אדומה תחילה', 'שליטה מלאה, אתה מתחזק'], terminal: [ { text: '$ pre-commit install', type: 'command' }, { text: '# CI: fail if new code lacks a failing-then-passing test', type: 'info' }, { text: '✓ guardrails enforced in your pipeline', type: 'success' } ], repo: 'your repo', cells: ['~ אם תחבר', '~ דרך CI בלבד', '~ ידני', '~ אם ממושמע', '~ מאמץ עצמאי'] },
       ],
     },
-
-    // ── PAGE 3 — TICKET → PR PIPELINE ──
-    pipelinePage: {
-      page: '3',
-      accent: 'cyan',
-      label: 'האינטגרציה המכרעת',
-      eyebrow: 'היכן זה מתחבר לעבודה שאתה כבר עוקב אחריה.',
-      headline: 'מיומנות אחת. טיקט → PR ממוזג.',
-      source: { id: 'PROJ-421', title: 'הוסף רשימת המתנה להזמנות', status: 'בתהליך' },
-      stages: [
-        { n: '1', verb: 'משיכה', sub: 'דרישה → הקשר' },
-        { n: '2', verb: 'ספסיפיקציה', sub: 'יצירת spec.md, המתנה לשער' },
-        { n: '3', verb: 'ביצוע', sub: 'הסוכן מממש ב-worktree' },
-        { n: '4', verb: 'בדיקה', sub: 'גדרות: TDD, lint, types' },
-        { n: '5', verb: 'פתיחת PR', sub: 'ענף נדחף, Jira מעודכן' },
-      ],
-      terminal: [
-        { text: '$ autospec skill run jira-to-pr --ticket PROJ-421', type: 'command' },
-        { text: '→ pull       PROJ-421 "Add waitlist to bookings"', type: 'info' },
-        { text: '→ spec       spec.md drafted · gate: approved ✓', type: 'info' },
-        { text: '→ execute    agent implementing in worktree-a…', type: 'info' },
-        { text: '→ test       12 passed · lint ✓ · types ✓', type: 'info' },
-        { text: '→ pr         opened #318 → main · PROJ-421 → In Review ✓', type: 'info' },
-        { text: '✓ ticket → merged PR, fully traceable', type: 'success' },
-      ],
-      callout: 'מיומנות אחת סוגרת את הלולאה — וכותבת את הסיכום שלה בחזרה לזיכרון.',
-    },
-
-    // ── PAGE 4 — LONG-TERM MEMORY ──
     memoryPage: {
-      page: '4',
-      accent: 'emerald',
-      label: 'הזיכרון שמעולם לא נתת לו',
-      eyebrow: 'היכן כל החלטה נזכרת.',
-      headline: 'Confluence + docs/ = זיכרון ארוך-טווח.',
-      syncBadge: 'Confluence ⇄ docs/',
-      bullets: [
-        'הסוכנים קוראים את זה לפני שהם כותבים — ארכיטקטורה, גדרות הגנה והחלטות עבר הופכים לאילוצים חיים.',
-        'זה גדל בכל מחזור — כל סיכום מחזור מוסיף תיקיות חדשות ורשומות החלטה.',
-        'שום דבר לא נגזר מחדש — הזיכרון שמעולם לא נתת לו, סוף סוף ניתן.',
-      ],
-      tree: [
-        { name: 'docs/', depth: 0, icon: '📁' },
-        { name: 'architecture/', depth: 1, icon: '📁', files: ['01-system.md', '02-decisions.md'] },
-        { name: 'guardrails/', depth: 1, icon: '📁', files: ['01-tdd.md', '02-security.md'] },
-        { name: 'flows/', depth: 1, icon: '📁', files: ['01-ticket-to-pr.md'] },
-        { name: 'cycles/', depth: 1, icon: '📁', files: ['cycle-10/', 'cycle-11/', 'cycle-12/ ← new'] },
-      ],
-      treeFooter: '+סיכום מחזור אחד נכתב בחזרה, בכל לולאה',
-      callout: 'הספסיפיקציה היא האמת, גדרות ההגנה הן ההגנה, והמסמכים הם הזיכרון — שום הקשר לא אובד.',
+      page: '3', accent: 'emerald', label: 'הזיכרון החי', eyebrow: 'היכן כל החלטה נזכרת.', headline: 'Docs לצד Specs = זיכרון חי.', syncBadge: 'specs/ ⇄ docs/', specHeading: 'Specs', docHeading: 'Docs',
+      mappings: [ { spec: 'specs/02-architect.md', doc: 'docs/architecture/', relation: 'מגדיר' }, { spec: 'specs/05-security.md', doc: 'docs/guardrails/', relation: 'אוכף' }, { spec: 'specs/07-flows.md', doc: 'docs/flows/', relation: 'מתאר' }, { spec: 'specs/backlog.md', doc: 'docs/cycles/cycle-12.md', relation: 'מתעד' } ],
+      callout: 'הספסיפיקציה היא האמת, גדרות ההגנה הן ההגנה — ו-Docs הממופים ל-Specs הם הזיכרון החי. שום הקשר לא אובד.',
     },
-
-    // ── CLOSING HANDOFF ──
     closing: 'אלה הכלים שהופכים את המתודולוגיה לאמיתית. הבא: איך לאמץ אותם — יסוד → הרחבה → אופטימיזציה.',
   },
 
-  // 20. adoption — SCROLLABLE · VISUAL JOURNEY
+  // 18. openSpec — SCROLLABLE · merged
   {
-    type: 'adoption',
+    type: 'openSpec',
+    variant: 'unified',
     scrollable: true,
-    title: 'מסע האימוץ שלך ל-SDD',
-    subtitle: 'מ-repo ניסויי למהירות צוות מצטברת — תוך 60 יום',
-    phases: [
-      {
-        number: '01',
-        name: 'יסודות ורווחים מהירים',
-        timeline: 'שבוע 1–2',
-        claim: 'אתה מכין את ה-AI co-pilot שלך לעבודה אמיתית.',
-        color: 'emerald',
-        capabilities: [
-          { icon: 'Wrench', label: 'הגדרת כלי SDD', toolingLink: true },
-          { icon: 'Zap', label: 'Superpowers פעיל' },
-          { icon: 'Brain', label: 'זיכרון ארוך-טווח', toolBadge: 'confluence' },
-          { icon: 'FileCheck', label: 'Spec לפני קוד' },
-          { icon: 'ShieldCheck', label: 'רשת QA רגרסיה', toolBadge: 'playwright' },
-        ],
-        terminalLines: [
-          '✓ SDD tool installed on pilot repo',
-          '✓ Superpowers active — 12 guardrail rules',
-          '✓ docs/ seeded — architecture memory live',
-          '✓ QA baseline: 0 → first spec committed',
-          '→ AI co-pilot ready for real work',
-        ],
-        vignette: 'cockpit',
-        milestone: 'ה-PR הראשון שנוצר על ידי AI שתואם בפועל את ה-spec',
-      },
-      {
-        number: '02',
-        name: 'הרחבה ואינטגרציה',
-        timeline: 'שבוע 3–6',
-        claim: 'אתה פורס את ה-co-pilot על כל הצוות.',
-        color: 'blue',
-        capabilities: [
-          { icon: 'Users', label: 'כל הצוות על הסיפון' },
-          { icon: 'Tag', label: 'צינור טיקט → Spec', toolBadge: 'jira' },
-          { icon: 'GitBranch', label: 'שערי CI/CD Spec', toolBadge: 'github' },
-          { icon: 'Calendar', label: 'מחזוריות סקירה' },
-          { icon: 'BarChart2', label: 'מעקב שיעור פגמים' },
-        ],
-        vignette: 'teamTopology',
-        milestone: 'ספרינט שבו AI סוגר 30%+ מהטיקטים באופן עצמאי',
-      },
-      {
-        number: '03',
-        name: 'אופטימיזציה והצטברות',
-        timeline: 'חודש 2–3',
-        claim: 'המערכת לומדת והרווחים מצטברים.',
-        color: 'violet',
-        capabilities: [
-          { icon: 'Search', label: 'ביקורות Retrospec' },
-          { icon: 'Sliders', label: 'כיוון גדרות הגנה' },
-          { icon: 'BookOpen', label: 'זיכרון ארכיטקטורה', toolBadge: 'confluence' },
-          { icon: 'TrendingUp', label: 'מעקב מהירות' },
-          { icon: 'RefreshCw', label: 'בדיקת בריאות רבעונית' },
-        ],
-        vignette: 'compoundChart',
-        milestone: 'docs-as-memory: הארכיטקטורה לעולם לא צריכה להיות מוסברת מחדש',
-      },
-    ],
-    metrics: [
-      { icon: '📈', value: '3×', label: 'ROI עד חודש 2', color: 'emerald' },
-      { icon: '⚡', value: '60%', label: 'PR ראשון מהיר יותר', color: 'teal' },
-      { icon: '🛡️', value: '40%', label: 'פחות פגמים', color: 'blue' },
-      { icon: '🤝', value: '100%', label: 'כל הצוות על SDD', color: 'violet' },
-    ],
-    closingQuote: 'המהירות מצטברת. הכאוס לא.',
-  },
-
-  // ── ACT 6 — CLOSE (slides 21–22) ──────────────────────────────────────────────
-
-  // 21. closing
-  {
-    type: 'closing',
-    title: 'נקודת השיגור שלך',
-    subtitle: 'כל מה שעברנו עליו — סמנו, ואז צאו לבנות.',
-    categories: [
-      {
-        label: 'מסגרות ספסיפיקציה',
-        accent: 'emerald',
-        icon: 'Compass',
-        links: [
-          { name: 'GitHub Spec Kit', url: 'https://github.com/github/spec-kit', note: 'Spec → Plan → Tasks → Implement' },
-          { name: 'OpenSpec', url: 'https://github.com/Fission-AI/OpenSpec', note: 'תהליך spec-driven קליל' },
-        ],
-      },
-      {
-        label: 'כלים אג\'נטיים ו-CLI',
-        accent: 'blue',
-        icon: 'Terminal',
-        links: [
-          { name: 'GitHub Copilot', url: 'https://github.com/features/copilot', note: 'שותף תכנות AI' },
-          { name: 'Copilot CLI', url: 'https://github.com/github/copilot-cli', note: 'Copilot בטרמינל שלכם' },
-          { name: 'Superpowers', url: 'https://github.com/obra/superpowers', note: 'מתודולוגיית skills אג\'נטית' },
-        ],
-      },
-      {
-        label: 'Skills ומדריכים',
-        accent: 'cyan',
-        icon: 'Sparkles',
-        links: [
-          { name: 'Anthropic Skills', url: 'https://github.com/anthropics/skills', note: 'Agent Skills הרשמיים' },
-          { name: 'Spec Kit Docs', url: 'https://github.github.com/spec-kit/', note: 'מדריך התחלה' },
-          { name: 'Spec-Driven w/ AI', url: 'https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/', note: 'מאמר הפתיחה ב-GitHub Blog' },
-        ],
-      },
-      {
-        label: 'אקוסיסטם AutoSpec',
-        accent: 'violet',
-        icon: 'Rocket',
-        links: [
-          { name: 'AutoSpec', url: 'https://github.com/Hundia/autospec', note: 'המסגרת הזו' },
-          { name: 'AutoSpec Docs', url: 'https://hundia.github.io/autospec', note: 'מתודולוגיה ומדריכים' },
-          { name: 'AutoDeck', url: 'https://github.com/Hundia/AutoDeck', note: 'המצגת הזו, בקוד פתוח' },
-        ],
-      },
-    ],
-    tagline: 'מכוונה להיגוי.',
-  },
-
-  // 22. openSpecWhat — SCROLLABLE · "What is OpenSpec"
-  {
-    type: 'openSpecWhat',
-    variant: 'what',
-    scrollable: true,
-
     kicker: 'הכלי שמאחורי הדמו',
     heroTitle: 'OpenSpec',
-    heroSubtitle: 'יישור בין בני אדם ל-AI על מה לבנות — לפני שורת קוד אחת.',
-    scrollHint: 'המסגרת שמפעילה את Game Of Drones',
-
-    // Beat 1 — Core idea
-    pullQuote: 'Version control for intent',
-    ideaKicker: 'הרעיון המרכזי',
-    ideaHeading: 'מחליטים על ה-what. נותנים לסוכן לבנות את ה-how.',
-    ideaBody:
-      'OpenSpec היא מסגרת spec-driven קלת משקל שמקבעת קודם את הכוונה. הקוד הופך לתרגום נאמן של spec מוסכם — לא ניחוש מתוך היסטוריית שיחה.',
-
-    // Beat 2 — Loop
+    heroSubtitle: 'יישור בין בני אדם ל-AI על מה לבנות לפני קוד — version control לכוונה.',
+    scrollHint: 'רואים את הלולאה, ואז spec אמיתי',
     loopKicker: 'לולאה אחת רגועה',
     loopHeading: 'Propose → Apply → Archive',
-    loopBody:
-      'כל שינוי זורם דרך אותם שלושה שלבים. מציעים את הכוונה, מיישמים את המשימות, מארכבים כמקור האמת החדש.',
+    loopBody: 'כל שינוי זורם דרך אותם שלושה שלבים. מציעים את הכוונה, מיישמים את המשימות, מארכבים כמקור האמת החדש.',
     loopSteps: [
-      { iconKey: 'FilePlus2',    label: 'Propose', command: '/opsx:propose add-mfl-telemetry', note: 'יוצר את תיקיית השינוי', accent: 'teal' },
-      { iconKey: 'Workflow',     label: 'Apply',   command: '/opsx:apply',                     note: 'מיישם את המשימות',    accent: 'violet' },
-      { iconKey: 'CheckCircle2', label: 'Archive', command: '/opsx:archive',                   note: 'הופך למקור האמת',     accent: 'emerald' },
+      { iconKey: 'FilePlus2', label: 'Propose', command: '/opsx:propose add-mfl-telemetry', note: 'יוצר את תיקיית השינוי', accent: 'teal' },
+      { iconKey: 'Workflow', label: 'Apply', command: '/opsx:apply', note: 'מיישם את המשימות', accent: 'violet' },
+      { iconKey: 'CheckCircle2', label: 'Archive', command: '/opsx:archive', note: 'הופך למקור האמת', accent: 'emerald' },
     ],
     loopBackNote: 'האמת המארכבת מזינה את השינוי הבא — brownfield-first, 1 → n',
-
-    // Beat 3 — Two directories
-    dirKicker: 'איפה הכול חי',
-    dirHeading: 'אמת במקום אחד. הצעות באחר.',
-    dirBody:
-      'ה-specs מתארים מה המערכת עושה היום. ה-changes מתארים מה בתהליך. שום דבר לא מעורפל.',
-    fileTree: `openspec/
-├── specs/      ← current source of truth
-└── changes/    ← proposed updates (in flight)
-    └── archive/
-        └── 2026-06-21-mfl-telemetry/`,
-    specsNote: 'מקור האמת הנוכחי — מה שפלטפורמת הרחפן עושה כרגע.',
-    changesNote: 'עדכונים מוצעים שעדיין בתהליך — כמו REQ-MFL-001 לפני שהוא נשלח.',
-
-    // Beat 4 — Why it lands
-    whyKicker: 'עובד איפה שאתם כבר עובדים',
-    whyHeading: 'Brownfield-first. אגנוסטי לכלים.',
-    whyBody:
-      'נבנה כדי לפתח codebases קיימים, לא רק דמואים greenfield. מתחבר ל-30+ עוזרי AI דרך פקודות slash פשוטות.',
-    tools: ['Claude Code', 'Cursor', 'GitHub Copilot', 'OpenCode', '+ 30 more'],
-  },
-
-  // 23. openSpecAnatomy — SCROLLABLE · "Anatomy of a Spec"
-  {
-    type: 'openSpecAnatomy',
-    variant: 'anatomy',
-    scrollable: true,
-
-    kicker: 'איך spec באמת נראה',
-    heroTitle: 'Anatomy of a Spec',
-    heroSubtitle: 'פותחים תיקיית שינוי ורואים בדיוק מה השתנה — ולמה.',
-    scrollHint: 'דרישת הרחפן, כ-spec אמיתי',
-
-    // Beat 1 — Four artifacts
-    artifactsKicker: 'בתוך שינוי',
-    artifactsHeading: 'ארבעה קבצים. פיצ׳ר אחד.',
     folderLabel: 'openspec/changes/add-mfl-telemetry/',
-    artifacts: [
-      { iconKey: 'FileText',     name: 'proposal.md', desc: 'ה-WHY + WHAT — רציונל והיקף',        accent: 'teal' },
-      { iconKey: 'FolderTree',   name: 'specs/',      desc: 'דרישות עם תרחישי בדיקה',             accent: 'cyan' },
-      { iconKey: 'GitBranch',    name: 'design.md',   desc: 'ה-HOW — גישה טכנית',                 accent: 'violet' },
-      { iconKey: 'CheckCircle2', name: 'tasks.md',    desc: 'צ׳קליסט מימוש שהסוכן עובד לפיו',     accent: 'emerald' },
-    ],
-
-    // Beat 2 — Requirement
     reqKicker: 'REQ-MFL-001',
-    reqHeading: 'הדרישה, בשפה פשוטה',
-    reqBody:
-      'spec נפתח בדרישה שכל אחד יכול לקרוא — בלי ז׳רגון, בלי עמימות לגבי מה נחשב הצלחה.',
+    reqHeading: 'איך spec אמיתי נראה',
+    reqBody: 'spec נפתח בדרישה שכל אחד יכול לקרוא — בלי ז׳רגון, בלי עמימות לגבי מה נחשב הצלחה.',
     requirementBlock: `Requirement: MFL Telemetry Status
 
 Each drone subsystem — camera, rotors, INS,
 IMU, GPS, comms — MUST report its health as
 OK / DEGRADED / FAIL on every telemetry cycle.`,
-
-    // Beat 3 — Scenarios
-    scenarioKicker: 'התנהגות כתרחישים',
-    scenarioHeading: 'WHEN זה, THEN זה.',
-    scenarioBody:
-      'כל דרישה נושאת תרחישים בשפה תנאית פשוטה. בני אדם קוראים אותם כמשפטים; הסוכן קורא אותם כבדיקות.',
+    scenarioBody: 'ההתנהגות מגיעה כתרחישים בשפה תנאית פשוטה. בני אדם קוראים אותם כמשפטים; הסוכן קורא אותם כבדיקות.',
     scenarioBlock: `Scenario: Healthy subsystem
   WHEN the camera responds within the cycle
   THEN the MFL reports camera = OK
@@ -1052,20 +702,9 @@ OK / DEGRADED / FAIL on every telemetry cycle.`,
 Scenario: Missed heartbeat
   WHEN the GPS misses its heartbeat
   THEN the MFL reports gps = FAIL`,
-
-    // Beat 4 — Delta specs
-    deltaKicker: 'רואים רק מה שהשתנה',
-    deltaHeading: 'Delta specs — בלי לעשות diff למסמכים שלמים.',
-    deltaBody:
-      'הצעות מתייגות כל סעיף כך שבני אדם ו-AI רואים את השינוי במבט אחד — בדיוק מה הפיצ׳ר מוסיף, משנה, ומסיר.',
-    deltas: [
-      { tag: '## ADDED',    iconKey: 'FilePlus2', accent: 'emerald', content: 'Requirement: MFL Telemetry Status' },
-      { tag: '## MODIFIED', iconKey: 'FileEdit',  accent: 'indigo',  content: 'Telemetry cycle now carries the MFL payload' },
-      { tag: '## REMOVED',  iconKey: 'FileMinus2', accent: 'slate',  content: 'Legacy per-sensor status pings' },
-    ],
   },
 
-  // 24. demoIntro
+  // 19. demoIntro
   {
     type: 'demoIntro',
     scrollable: true,
@@ -1192,10 +831,133 @@ Scenario: Missed heartbeat
     handoffCallout: 'REQ-MFL-001 · Drone Telemetry Platform',
   },
 
-  // 23. finalTagline
+  // 20. finalTagline
   {
     type: 'finalTagline',
     title: 'The Agentic SDLC',
     tagline: 'הספסיפיקציה היא האמת. גדרות ההגנה הן המגן. האדם הוא השופט.',
+  },
+
+  // ── CLOSE — finishing slides (returned to after the demos) ──────────────────────
+
+  // 21. adoption — SCROLLABLE · VISUAL JOURNEY
+  {
+    type: 'adoption',
+    scrollable: true,
+    title: 'מסע האימוץ שלך ל-SDD',
+    subtitle: 'מ-repo ניסויי למהירות צוות מצטברת — תוך 60 יום',
+    phases: [
+      {
+        number: '01',
+        name: 'יסודות ורווחים מהירים',
+        timeline: 'שבוע 1–2',
+        claim: 'אתה מכין את ה-AI co-pilot שלך לעבודה אמיתית.',
+        color: 'emerald',
+        capabilities: [
+          { icon: 'Wrench', label: 'הגדרת כלי SDD', toolingLink: true },
+          { icon: 'Zap', label: 'Superpowers פעיל' },
+          { icon: 'Brain', label: 'זיכרון ארוך-טווח', toolBadge: 'confluence' },
+          { icon: 'FileCheck', label: 'Spec לפני קוד' },
+          { icon: 'ShieldCheck', label: 'רשת QA רגרסיה', toolBadge: 'playwright' },
+        ],
+        terminalLines: [
+          '✓ SDD tool installed on pilot repo',
+          '✓ Superpowers active — 12 guardrail rules',
+          '✓ docs/ seeded — architecture memory live',
+          '✓ QA baseline: 0 → first spec committed',
+          '→ AI co-pilot ready for real work',
+        ],
+        vignette: 'cockpit',
+        milestone: 'ה-PR הראשון שנוצר על ידי AI שתואם בפועל את ה-spec',
+      },
+      {
+        number: '02',
+        name: 'הרחבה ואינטגרציה',
+        timeline: 'שבוע 3–6',
+        claim: 'אתה פורס את ה-co-pilot על כל הצוות.',
+        color: 'blue',
+        capabilities: [
+          { icon: 'Users', label: 'כל הצוות על הסיפון' },
+          { icon: 'Tag', label: 'צינור טיקט → Spec', toolBadge: 'jira' },
+          { icon: 'GitBranch', label: 'שערי CI/CD Spec', toolBadge: 'github' },
+          { icon: 'Calendar', label: 'מחזוריות סקירה' },
+          { icon: 'BarChart2', label: 'מעקב שיעור פגמים' },
+        ],
+        vignette: 'teamTopology',
+        milestone: 'ספרינט שבו AI סוגר 30%+ מהטיקטים באופן עצמאי',
+      },
+      {
+        number: '03',
+        name: 'אופטימיזציה והצטברות',
+        timeline: 'חודש 2–3',
+        claim: 'המערכת לומדת והרווחים מצטברים.',
+        color: 'violet',
+        capabilities: [
+          { icon: 'Search', label: 'ביקורות Retrospec' },
+          { icon: 'Sliders', label: 'כיוון גדרות הגנה' },
+          { icon: 'BookOpen', label: 'זיכרון ארכיטקטורה', toolBadge: 'confluence' },
+          { icon: 'TrendingUp', label: 'מעקב מהירות' },
+          { icon: 'RefreshCw', label: 'בדיקת בריאות רבעונית' },
+        ],
+        vignette: 'compoundChart',
+        milestone: 'docs-as-memory: הארכיטקטורה לעולם לא צריכה להיות מוסברת מחדש',
+      },
+    ],
+    metrics: [
+      { icon: '📈', value: '3×', label: 'ROI עד חודש 2', color: 'emerald' },
+      { icon: '⚡', value: '60%', label: 'PR ראשון מהיר יותר', color: 'teal' },
+      { icon: '🛡️', value: '40%', label: 'פחות פגמים', color: 'blue' },
+      { icon: '🤝', value: '100%', label: 'כל הצוות על SDD', color: 'violet' },
+    ],
+    closingQuote: 'המהירות מצטברת. הכאוס לא.',
+  },
+
+  // 22. closing — נקודת השיגור שלך (the final slide)
+  {
+    type: 'closing',
+    title: 'נקודת השיגור שלך',
+    subtitle: 'כל מה שעברנו עליו — סמנו, ואז צאו לבנות.',
+    categories: [
+      {
+        label: 'מסגרות ספסיפיקציה',
+        accent: 'emerald',
+        icon: 'Compass',
+        links: [
+          { name: 'GitHub Spec Kit', url: 'https://github.com/github/spec-kit', note: 'Spec → Plan → Tasks → Implement' },
+          { name: 'OpenSpec', url: 'https://github.com/Fission-AI/OpenSpec', note: 'תהליך spec-driven קליל' },
+          { name: 'AutoSpec', url: 'https://github.com/Hundia/autospec', note: 'This framework' },
+        ],
+      },
+      {
+        label: 'כלים אג\'נטיים ו-CLI',
+        accent: 'blue',
+        icon: 'Terminal',
+        links: [
+          { name: 'GitHub Copilot', url: 'https://github.com/features/copilot', note: 'שותף תכנות AI' },
+          { name: 'Copilot CLI', url: 'https://github.com/github/copilot-cli', note: 'Copilot בטרמינל שלכם' },
+          { name: 'Superpowers', url: 'https://github.com/obra/superpowers', note: 'מתודולוגיית skills אג\'נטית' },
+        ],
+      },
+      {
+        label: 'Skills ומדריכים',
+        accent: 'cyan',
+        icon: 'Sparkles',
+        links: [
+          { name: 'Spec Kit Docs', url: 'https://github.github.com/spec-kit/', note: 'מדריך התחלה' },
+          { name: 'Spec-Driven w/ AI', url: 'https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/', note: 'מאמר הפתיחה ב-GitHub Blog' },
+        ],
+      },
+      {
+        label: 'אקוסיסטם AutoSpec',
+        accent: 'violet',
+        icon: 'Rocket',
+        links: [
+          { name: 'AutoSpec Docs', url: 'https://hundia.github.io/autospec', note: 'מתודולוגיה ומדריכים' },
+          { name: 'AutoDeck', url: 'https://github.com/Hundia/AutoDeck', note: 'המצגת הזו, בקוד פתוח' },
+          { name: 'EasyDeck', url: 'https://github.com/Hundia/EasyDeck', note: 'Deck builder' },
+        ],
+      },
+    ],
+    tagline: 'מכוונה להיגוי.',
   },
 ];
