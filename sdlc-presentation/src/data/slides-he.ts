@@ -788,8 +788,8 @@ export const slidesHE = [
       },
       {
         num: '06',
-        label: 'PR + AI Review',
-        detail: 'AWS Bedrock Agent מסכם עבור המפתח ומנהל הצוות',
+        label: 'PR נוצר אוטומטית',
+        detail: 'הסוכן פותח את ה-PR — ראש הצוות סוקר אותו ידנית',
         icon: 'GitPullRequest',
         accent: 'cyan',
       },

@@ -982,8 +982,8 @@ export const slidesEN = [
       },
       {
         num: '06',
-        label: 'PR + AI Review',
-        detail: 'AWS Bedrock Agent summarizes for dev + team lead',
+        label: 'PR Created Agentically',
+        detail: 'Agent opens the PR — team lead reviews it manually',
         icon: 'GitPullRequest',
         accent: 'cyan',
       },
