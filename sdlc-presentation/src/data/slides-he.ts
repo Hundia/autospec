@@ -333,7 +333,8 @@ export const slidesHE = [
         accent: 'emerald',
         bullets: [
           'שיחה איטרטיבית עם סוכן תכנון מייצרת plan.md ו-tasks.md גרגריים.',
-          'המשימות מנותקות לפי עיצוב — מאפשרות ביצוע מקבילי מבוסס AI מהרגע הראשון.',
+          'plan.md הוא מפת הדרכים של העיצוב — החלטות ארכיטקטורה, איך החלקים מתחברים, וסדר לפי גרף תלויות.',
+          'tasks.md מפרק את התכנית לכרטיסים אטומיים — כל אחד ניתן לבדיקה עצמאית ומנותק לפי עיצוב, ומאפשר ביצוע מקבילי מבוסס AI מהרגע הראשון.',
           'סוכן מתזמן מקצה משימות עצמאיות למספר סוכנים מתמחים בו-זמנית.',
           'מהנדסים בכירים חוקרים את התכנית, לא כותבים אותה — מתמקדים באילוצי מורשת, אבטחה, רדיוס פגיעה.',
           'ראש צוות QA מעצב ארכיטקטורת הבדיקות מראש: יכולת בדיקה אפויה לתוך התכנית לפני שנכתבת שורה אחת.',
@@ -675,44 +676,6 @@ export const slidesHE = [
     closing: 'אלה הכלים שהופכים את המתודולוגיה לאמיתית. הבא: איך לאמץ אותם — יסוד → הרחבה → אופטימיזציה.',
   },
 
-  // 18. openSpec — HIDDEN (folded into the OpenSpec tab of the Tooling slide)
-  {
-    type: 'openSpec',
-    hidden: true,
-    variant: 'unified',
-    scrollable: true,
-    kicker: 'הכלי שמאחורי הדמו',
-    heroTitle: 'OpenSpec',
-    heroSubtitle: 'יישור בין בני אדם ל-AI על מה לבנות לפני קוד — version control לכוונה.',
-    scrollHint: 'רואים את הלולאה, ואז spec אמיתי',
-    loopKicker: 'לולאה אחת רגועה',
-    loopHeading: 'Propose → Apply → Archive',
-    loopBody: 'כל שינוי זורם דרך אותם שלושה שלבים. מציעים את הכוונה, מיישמים את המשימות, מארכבים כמקור האמת החדש.',
-    loopSteps: [
-      { iconKey: 'FilePlus2', label: 'Propose', command: '/opsx:propose add-mfl-telemetry', note: 'יוצר את תיקיית השינוי', accent: 'teal' },
-      { iconKey: 'Workflow', label: 'Apply', command: '/opsx:apply', note: 'מיישם את המשימות', accent: 'violet' },
-      { iconKey: 'CheckCircle2', label: 'Archive', command: '/opsx:archive', note: 'הופך למקור האמת', accent: 'emerald' },
-    ],
-    loopBackNote: 'האמת המארכבת מזינה את השינוי הבא — brownfield-first, 1 → n',
-    folderLabel: 'openspec/changes/add-mfl-telemetry/',
-    reqKicker: 'REQ-MFL-001',
-    reqHeading: 'איך spec אמיתי נראה',
-    reqBody: 'spec נפתח בדרישה שכל אחד יכול לקרוא — בלי ז׳רגון, בלי עמימות לגבי מה נחשב הצלחה.',
-    requirementBlock: `Requirement: MFL Telemetry Status
-
-Each drone subsystem — camera, rotors, INS,
-IMU, GPS, comms — MUST report its health as
-OK / DEGRADED / FAIL on every telemetry cycle.`,
-    scenarioBody: 'ההתנהגות מגיעה כתרחישים בשפה תנאית פשוטה. בני אדם קוראים אותם כמשפטים; הסוכן קורא אותם כבדיקות.',
-    scenarioBlock: `Scenario: Healthy subsystem
-  WHEN the camera responds within the cycle
-  THEN the MFL reports camera = OK
-
-Scenario: Missed heartbeat
-  WHEN the GPS misses its heartbeat
-  THEN the MFL reports gps = FAIL`,
-  },
-
   // 19. demoIntro
   {
     type: 'demoIntro',
@@ -968,5 +931,16 @@ Scenario: Missed heartbeat
       },
     ],
     tagline: 'מכוונה להיגוי.',
+  },
+
+  // thankYou — finale over the Game Of Drones video
+  {
+    type: 'thankYou',
+    kicker: 'GAME OF DRONES · FIN',
+    title: 'תודה רבה',
+    subtitle: 'שהקשבתם',
+    tagline: 'העתיד שלנו, לכבוש אותו — באחריות. 🙂',
+    subline: 'סוכנים מבצעים. בני אדם מנהלים. אנחנו שולחים עם כוונה.',
+    presenter: 'אלי הונדיה ושרון שוורץ',
   },
 ];

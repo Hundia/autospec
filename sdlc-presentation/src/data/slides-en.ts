@@ -345,7 +345,8 @@ export const slidesEN = [
         accent: 'emerald',
         bullets: [
           'Iterative conversation with a planning agent produces plan.md and granular tasks.md.',
-          'Tasks are designed to be independently testable and decoupled by design — enabling parallel AI execution from the start.',
+          'plan.md is the design roadmap — architecture decisions, how the pieces fit, and sequencing by dependency graph.',
+          'tasks.md breaks that plan into atomic tickets — each independently testable and decoupled by design, enabling parallel AI execution from the start.',
           'An orchestrating agent assigns independent tasks to multiple specialist agents simultaneously.',
           'Senior engineers interrogate the plan, not write it — focusing on legacy constraints, security, blast radius.',
           'QA Team Lead shapes test architecture upfront: testability baked in before a single line is written.',
@@ -869,52 +870,6 @@ export const slidesEN = [
     closing: 'These are the tools that make the methodology real. Next: how to adopt them — Foundation → Expand → Optimize.',
   },
 
-  // openSpec — HIDDEN (folded into the OpenSpec tab of the Tooling slide)
-  {
-    type: 'openSpec',
-    hidden: true,
-    variant: 'unified',
-    scrollable: true,
-
-    kicker: 'THE TOOL BEHIND THE DEMO',
-    heroTitle: 'OpenSpec',
-    heroSubtitle: 'Align humans and AI on what to build before any code — version control for intent.',
-    scrollHint: 'See the loop, then a real spec',
-
-    // Beat 1 — Propose → Apply → Archive loop
-    loopKicker: 'ONE CALM LOOP',
-    loopHeading: 'Propose → Apply → Archive',
-    loopBody:
-      'Every change flows through the same three steps. Propose the intent, apply the tasks, archive it as the new source of truth.',
-    loopSteps: [
-      { iconKey: 'FilePlus2',    label: 'Propose', command: '/opsx:propose add-mfl-telemetry', note: 'Creates the change folder', accent: 'teal' },
-      { iconKey: 'Workflow',     label: 'Apply',   command: '/opsx:apply',                     note: 'Implements the tasks',     accent: 'violet' },
-      { iconKey: 'CheckCircle2', label: 'Archive', command: '/opsx:archive',                   note: 'Becomes source of truth',  accent: 'emerald' },
-    ],
-    loopBackNote: 'Archived truth feeds the next change — brownfield-first, 1 → n',
-
-    // Beat 2 — An example spec (the drone MFL requirement)
-    folderLabel: 'openspec/changes/add-mfl-telemetry/',
-    reqKicker: 'REQ-MFL-001',
-    reqHeading: 'What a real spec looks like',
-    reqBody:
-      'A spec opens with a requirement anyone can read — no jargon, no ambiguity about what success means.',
-    requirementBlock: `Requirement: MFL Telemetry Status
-
-Each drone subsystem — camera, rotors, INS,
-IMU, GPS, comms — MUST report its health as
-OK / DEGRADED / FAIL on every telemetry cycle.`,
-    scenarioBody:
-      'Behavior comes as scenarios in plain conditional language. Humans read them like sentences; the agent reads them like tests.',
-    scenarioBlock: `Scenario: Healthy subsystem
-  WHEN the camera responds within the cycle
-  THEN the MFL reports camera = OK
-
-Scenario: Missed heartbeat
-  WHEN the GPS misses its heartbeat
-  THEN the MFL reports gps = FAIL`,
-  },
-
   // demoIntro
   {
     type: 'demoIntro',
@@ -1170,5 +1125,16 @@ Scenario: Missed heartbeat
       },
     ],
     tagline: 'From intent to steering.',
+  },
+
+  // thankYou — finale over the Game Of Drones video
+  {
+    type: 'thankYou',
+    kicker: 'GAME OF DRONES · FIN',
+    title: 'Thank You',
+    subtitle: 'for listening',
+    tagline: 'The future is ours for the taking — responsibly. 🙂',
+    subline: 'Agents execute. Humans govern. We ship with intent.',
+    presenter: 'Eli Hundia & Sharon Schwartz',
   },
 ];

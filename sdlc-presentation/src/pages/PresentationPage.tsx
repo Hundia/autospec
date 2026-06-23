@@ -35,9 +35,9 @@ import ToolingSlide from '../components/ToolingSlide';
 import AdoptionSlide from '../components/AdoptionSlide';
 import AgenticFiveActsSlide from '../components/AgenticFiveActsSlide';
 import SpecRotSlide from '../components/SpecRotSlide';
-import OpenSpecSlide from '../components/OpenSpecSlide';
 import DemoIntroSlide from '../components/DemoIntroSlide';
 import ParadigmShiftSlide from '../components/ParadigmShiftSlide';
+import ThankYouSlide from '../components/ThankYouSlide';
 
 // Per-slide accent color — follows the deck's thermal identity
 const slideAccent: Record<string, string> = {
@@ -64,9 +64,9 @@ const slideAccent: Record<string, string> = {
   tooling: '#2dd4bf',
   adoption: '#34d399',
   closing: '#a78bfa',
-  openSpec: '#2dd4bf',
   demoIntro: '#34d399',
   finalTagline: '#60a5fa',
+  thankYou: '#818cf8',
 };
 
 interface ZapMenuProps {
@@ -208,9 +208,9 @@ const slideComponents = {
   tooling: ToolingSlide,
   adoption: AdoptionSlide,
   closing: ClosingSlide,
-  openSpec: OpenSpecSlide,
   demoIntro: DemoIntroSlide,
   finalTagline: FinalTaglineSlide,
+  thankYou: ThankYouSlide,
 };
 
 export default function PresentationPage() {
