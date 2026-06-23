@@ -345,7 +345,8 @@ export const slidesEN = [
         accent: 'emerald',
         bullets: [
           'Iterative conversation with a planning agent produces plan.md and granular tasks.md.',
-          'Tasks are designed to be independently testable and decoupled by design — enabling parallel AI execution from the start.',
+          'plan.md is the design roadmap — architecture decisions, how the pieces fit, and sequencing by dependency graph.',
+          'tasks.md breaks that plan into atomic tickets — each independently testable and decoupled by design, enabling parallel AI execution from the start.',
           'An orchestrating agent assigns independent tasks to multiple specialist agents simultaneously.',
           'Senior engineers interrogate the plan, not write it — focusing on legacy constraints, security, blast radius.',
           'QA Team Lead shapes test architecture upfront: testability baked in before a single line is written.',
