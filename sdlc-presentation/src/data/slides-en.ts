@@ -749,14 +749,14 @@ export const slidesEN = [
       ],
       frameworks: [
         {
-          id: 'spec-kit', glyph: '⚙️', name: 'Spec-Kit', short: 'Spec-Kit', role: 'The Backbone', accent: 'teal',
+          id: 'spec-kit', glyph: '⚙️', name: 'Spec-Kit', short: 'Spec-Kit', role: 'Specify → Plan → Tasks → Implement', accent: 'teal',
           tagline: 'Spec at the center; no code until the spec is approved.',
-          whatItIs: "GitHub's open framework that puts a machine-readable spec at the center of the workflow and gates implementation on human approval.",
-          bullets: ['spec.md is the contract', 'Human approval gate before code', 'Phase-driven workflow', 'Open source, vendor-neutral'],
+          whatItIs: "GitHub's open framework that drives every change through explicit phases. A constitution sets the house rules, /specify captures the what & why as spec.md, /plan turns it into a technical design, /tasks breaks it into work — and only then does /implement write code. A human approval gate sits at every handoff.",
+          bullets: ['Phase-driven: Specify → Plan → Tasks → Implement', 'spec.md is the approved contract — the what & why', 'Human approval gate between every phase', 'Open source, vendor-neutral (MIT)'],
           terminal: [
-            { text: '$ specify init && specify spec --from PROJ-421', type: 'command' },
-            { text: '✓ spec.md created — awaiting approval', type: 'success' },
-            { text: '⛔ implementation blocked: spec.approved = false', type: 'error' },
+            { text: '$ specify init && /specify --from PROJ-421', type: 'command' },
+            { text: '✓ spec.md → /plan → /tasks (awaiting approval)', type: 'success' },
+            { text: '⛔ /implement blocked: spec.approved = false', type: 'error' },
           ],
           repo: 'github.com/github/spec-kit',
           cells: ['✓ Enforced gate', '~ Conventions', '✗', '~ Via scripts', '✓', '✓ OSS (MIT)'],
