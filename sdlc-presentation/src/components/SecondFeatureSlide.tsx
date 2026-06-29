@@ -35,7 +35,7 @@ interface SecondFeatureSlideProps {
       };
       callout: { stat: string; text: string };
     };
-    chapter2: {
+    chapter2?: {
       label: string;
       headline: string;
       build: Array<{ value: string; label: string }>;
@@ -465,6 +465,11 @@ export default function SecondFeatureSlide({ data }: SecondFeatureSlideProps) {
         </motion.div>
       </motion.section>
 
+      {/* ── BEAT 4 & 5: Chapter 02 (The Breaking Point) — rendered only when present.
+          When chapter2 is split out into its own standalone slide, this slide ends after
+          Chapter 01 (The Reverse Engineering Tax). ── */}
+      {chapter2 && (
+        <>
       {/* ── BEAT 4: Chapter 02 — the zoom-out ── */}
       <motion.section
         initial={{ opacity: 0 }}
@@ -584,6 +589,8 @@ export default function SecondFeatureSlide({ data }: SecondFeatureSlideProps) {
           "{chapter2.bottomLine}"
         </motion.p>
       </motion.section>
+        </>
+      )}
     </div>
   );
 }

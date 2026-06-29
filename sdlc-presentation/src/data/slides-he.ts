@@ -202,27 +202,26 @@ export const slidesHE = [
       },
       callout: { stat: '73%', text: 'מפרויקטי AI ננטשים. לא כי הפיצ\'ר הראשון נכשל — כי הפיצ\'ר השני הפך לבלתי משתלם.' },
     },
-    chapter2: {
-      label: 'נקודת השבירה',
-      headline: 'עכשיו תכפיל בכל הצוות שלך.',
-      build: [
-        { value: '6', label: 'סוכני AI' },
-        { value: '200+', label: 'קבצים שנוצרו' },
-        { value: '50', label: 'סשני צ\'אט' },
-      ],
-      debt: [
-        { value: '0', label: 'מסמכים שנכתבו' },
-        { value: '0', label: 'החלטות שתועדו' },
-        { value: '0', label: 'מסירה אפשרית' },
-      ],
-      graveyard: { count: 50, youAreHereLabel: 'אתה כאן', stamp: 'GONE' },
-      stats: [
-        { value: '73%', label: 'מפרויקטי AI שננטשו תוך 6 חודשים' },
-        { value: '40 שעות', label: 'הבנת קוד מחדש, כל רבעון' },
-        { value: '$0', label: 'ערך של לוג צ\'אט אחרי שהסשן נגמר' },
-      ],
-      bottomLine: 'פיתוח מבוסס AI ללא ממשל הוא חוב טכני במהירות AI.',
-    },
+  },
+
+  // 7. breakingPoint (DANGER 03) — מס ההנדסה לאחור, מוכפל על פני כל הצוות
+  {
+    type: 'breakingPoint',
+    kicker: 'סכנה 03 · הפיצ\'ר השני, בקנה מידה של צוות',
+    label: 'נקודת השבירה',
+    headline: 'עכשיו תכפיל בכל הצוות שלך.',
+    build: [
+      { value: '6', label: 'סוכני AI' },
+      { value: '200+', label: 'קבצים שנוצרו' },
+      { value: '50', label: 'סשני צ\'אט' },
+    ],
+    debt: [
+      { value: '0', label: 'מסמכים שנכתבו' },
+      { value: '0', label: 'החלטות שתועדו' },
+      { value: '0', label: 'מסירה אפשרית' },
+    ],
+    graveyard: { count: 50, youAreHereLabel: 'אתה כאן', stamp: 'GONE' },
+    bottomLine: 'פיתוח מבוסס AI ללא ממשל הוא חוב טכני במהירות AI.',
   },
 
   // ── ACT 2 — TURNING POINT ─────────────────────────────────────────────────────

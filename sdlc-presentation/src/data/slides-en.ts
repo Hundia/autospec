@@ -214,27 +214,26 @@ export const slidesEN = [
       },
       callout: { stat: '73%', text: 'of AI projects are abandoned. Not because the first feature failed — because the second feature became unaffordable.' },
     },
-    chapter2: {
-      label: 'The Breaking Point',
-      headline: 'Now multiply by your whole team.',
-      build: [
-        { value: '6', label: 'AI agents' },
-        { value: '200+', label: 'files generated' },
-        { value: '50', label: 'chat sessions' },
-      ],
-      debt: [
-        { value: '0', label: 'docs written' },
-        { value: '0', label: 'decisions recorded' },
-        { value: '0', label: 'handoff possible' },
-      ],
-      graveyard: { count: 50, youAreHereLabel: 'you are here', stamp: 'GONE' },
-      stats: [
-        { value: '73%', label: 'of AI projects abandoned within 6 months' },
-        { value: '40hrs', label: 're-understanding code, every quarter' },
-        { value: '$0', label: 'value of a chat log after the session ends' },
-      ],
-      bottomLine: 'AI-driven development without governance is technical debt at AI speed.',
-    },
+  },
+
+  // 7. breakingPoint (DANGER 03) — the Reverse Engineering Tax, multiplied across the team
+  {
+    type: 'breakingPoint',
+    kicker: 'DANGER 03 · THE SECOND FEATURE, AT TEAM SCALE',
+    label: 'The Breaking Point',
+    headline: 'Now multiply by your whole team.',
+    build: [
+      { value: '6', label: 'AI agents' },
+      { value: '200+', label: 'files generated' },
+      { value: '50', label: 'chat sessions' },
+    ],
+    debt: [
+      { value: '0', label: 'docs written' },
+      { value: '0', label: 'decisions recorded' },
+      { value: '0', label: 'handoff possible' },
+    ],
+    graveyard: { count: 50, youAreHereLabel: 'you are here', stamp: 'GONE' },
+    bottomLine: 'AI-driven development without governance is technical debt at AI speed.',
   },
 
   // ── ACT 2 — TURNING POINT ─────────────────────────────────────────────────────
