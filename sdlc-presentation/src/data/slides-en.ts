@@ -214,27 +214,26 @@ export const slidesEN = [
       },
       callout: { stat: '73%', text: 'of AI projects are abandoned. Not because the first feature failed — because the second feature became unaffordable.' },
     },
-    chapter2: {
-      label: 'The Breaking Point',
-      headline: 'Now multiply by your whole team.',
-      build: [
-        { value: '6', label: 'AI agents' },
-        { value: '200+', label: 'files generated' },
-        { value: '50', label: 'chat sessions' },
-      ],
-      debt: [
-        { value: '0', label: 'docs written' },
-        { value: '0', label: 'decisions recorded' },
-        { value: '0', label: 'handoff possible' },
-      ],
-      graveyard: { count: 50, youAreHereLabel: 'you are here', stamp: 'GONE' },
-      stats: [
-        { value: '73%', label: 'of AI projects abandoned within 6 months' },
-        { value: '40hrs', label: 're-understanding code, every quarter' },
-        { value: '$0', label: 'value of a chat log after the session ends' },
-      ],
-      bottomLine: 'AI-driven development without governance is technical debt at AI speed.',
-    },
+  },
+
+  // 7. breakingPoint (DANGER 03) — the Reverse Engineering Tax, multiplied across the team
+  {
+    type: 'breakingPoint',
+    kicker: 'DANGER 03 · THE SECOND FEATURE, AT TEAM SCALE',
+    label: 'The Breaking Point',
+    headline: 'Now multiply by your whole team.',
+    build: [
+      { value: '6', label: 'AI agents' },
+      { value: '200+', label: 'files generated' },
+      { value: '50', label: 'chat sessions' },
+    ],
+    debt: [
+      { value: '0', label: 'docs written' },
+      { value: '0', label: 'decisions recorded' },
+      { value: '0', label: 'handoff possible' },
+    ],
+    graveyard: { count: 50, youAreHereLabel: 'you are here', stamp: 'GONE' },
+    bottomLine: 'AI-driven development without governance is technical debt at AI speed.',
   },
 
   // ── ACT 2 — TURNING POINT ─────────────────────────────────────────────────────
@@ -749,14 +748,14 @@ export const slidesEN = [
       ],
       frameworks: [
         {
-          id: 'spec-kit', glyph: '⚙️', name: 'Spec-Kit', short: 'Spec-Kit', role: 'The Backbone', accent: 'teal',
+          id: 'spec-kit', glyph: '⚙️', name: 'Spec-Kit', short: 'Spec-Kit', role: 'Specify → Plan → Tasks → Implement', accent: 'teal',
           tagline: 'Spec at the center; no code until the spec is approved.',
-          whatItIs: "GitHub's open framework that puts a machine-readable spec at the center of the workflow and gates implementation on human approval.",
-          bullets: ['spec.md is the contract', 'Human approval gate before code', 'Phase-driven workflow', 'Open source, vendor-neutral'],
+          whatItIs: "GitHub's open framework that drives every change through explicit phases. A constitution sets the house rules, /specify captures the what & why as spec.md, /plan turns it into a technical design, /tasks breaks it into work — and only then does /implement write code. A human approval gate sits at every handoff.",
+          bullets: ['Phase-driven: Specify → Plan → Tasks → Implement', 'spec.md is the approved contract — the what & why', 'Human approval gate between every phase', 'Open source, vendor-neutral (MIT)'],
           terminal: [
-            { text: '$ specify init && specify spec --from PROJ-421', type: 'command' },
-            { text: '✓ spec.md created — awaiting approval', type: 'success' },
-            { text: '⛔ implementation blocked: spec.approved = false', type: 'error' },
+            { text: '$ specify init && /specify --from PROJ-421', type: 'command' },
+            { text: '✓ spec.md → /plan → /tasks (awaiting approval)', type: 'success' },
+            { text: '⛔ /implement blocked: spec.approved = false', type: 'error' },
           ],
           repo: 'github.com/github/spec-kit',
           cells: ['✓ Enforced gate', '~ Conventions', '✗', '~ Via scripts', '✓', '✓ OSS (MIT)'],
@@ -982,8 +981,8 @@ export const slidesEN = [
       },
       {
         num: '06',
-        label: 'PR + AI Review',
-        detail: 'AWS Bedrock Agent summarizes for dev + team lead',
+        label: 'PR Created Agentically',
+        detail: 'Agent opens the PR — team lead reviews it manually',
         icon: 'GitPullRequest',
         accent: 'cyan',
       },

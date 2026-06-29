@@ -15,6 +15,7 @@ import EraAssistantSlide from '../components/EraAssistantSlide';
 import EraAgenticSlide from '../components/EraAgenticSlide';
 import ContextPoisoningSlide from '../components/ContextPoisoningSlide';
 import SecondFeatureSlide from '../components/SecondFeatureSlide';
+import BreakingPointSlide from '../components/BreakingPointSlide';
 import SDDCostOfChaosSlide from '../components/SDDCostOfChaosSlide';
 import BridgeSlide from '../components/BridgeSlide';
 import SDDThreePillarsSlide from '../components/SDDThreePillarsSlide';
@@ -48,6 +49,7 @@ const slideAccent: Record<string, string> = {
   eraAgentic: '#fb923c',
   contextPoisoning: '#f59e0b',
   secondFeature: '#ef4444',
+  breakingPoint: '#ef4444',
   sddCostOfChaos: '#22d3ee',
   bridge: '#2dd4bf',
   sddThreePillars: '#34d399',
@@ -192,6 +194,7 @@ const slideComponents = {
   eraAgentic: EraAgenticSlide,
   contextPoisoning: ContextPoisoningSlide,
   secondFeature: SecondFeatureSlide,
+  breakingPoint: BreakingPointSlide,
   sddCostOfChaos: SDDCostOfChaosSlide,
   bridge: BridgeSlide,
   sddThreePillars: SDDThreePillarsSlide,
